@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ item.item_id }} {{ item.name }} · Brickonomy{% endblock %}
+{% block content %}
+
+{{ m.autoscan_banner(auto_scan, item.item_id) }}
+
+<div class="sethead">
+  <figure class="setimg" style="margin:0;width:220px;min-height:220px">
+    <img src="{{ img_url(item.item_id, 'M') }}" alt="{{ item.name }}"
+         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>({{ item.item_id }})</div>'">
+  </figure>
+  <div style="flex:1;min-width:280px">
+    <div class="eyebrow">Minifigure{% if item.theme %} · {{ item.theme }}{% endif %}</div>
+    <h1 style="font-size:26px">{{ item.name or item.item_id }} <span style="color:var(--muted);font-weight:400">· {{ item.item_id }}</span></h1>
+    <p class="sub" style="margin-bottom:6px">
+      {% if item.year %}First appeared {{ item.year }} · {% endif %}
+      appears in {{ appears_in|length }} set(s)
+    </p>
+    <div class="facts">
+      <span class="chip">🧍 minifigure</span>
+      {% if appears_in %}<span class="chip">📦 {{ appears_in|length }} sets</span>{% endif %}
+      {{ m.confidence_chip(values.new.confidence) }}
+    </div>
+  </div>
+</div>
+
+<div class="tiles" style="margin-top:16px">
+  <div class="tile">
+    <div class="label">Value — new</div>
+    <div class="value">{{ values.new.value|money(ccy) if values.new.value else '—' }}</div>
+    <div class="delta">{{ m.delta(delta30) }} last 30 days</div>
+  </div>
+  <div class="tile">
+    <div class="label">Value — used</div>
+    <div class="value">{{ values.used.value|money(ccy) if values.used.value else '—' }}</div>
+    <div class="delta">{{ m.confidence_chip(values.used.confidence) }}</div>
+  </div>
+  <div class="tile">
+    <div class="label">Growth / yr</div>
+    <div class="value">{% if growth_cagr is not none %}{{ "%+.1f"|format(growth_cagr) }}%{% else %}—{% endif %}</div>
+    <div class="delta">annualized</div>
+  </div>
+  <div class="tile">
+    <div class="label">Buy target</div>
+    <div class="value">{% if values.new.value %}{{ (values.new.value * 0.8)|money(ccy) }}{% else %}—{% endif %}</div>
+    <div class="delta">80% of the BrickLink average</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Price history <span class="soft">({{ ccy }}, BrickLink average · new)</span></h3>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--s1)"></span>Value (new)</span>
+    <span><span class="sw" style="background:var(--s5)"></span>Used</span>
+    <span><span class="sw" style="background:var(--s2)"></span>BrickLink</span>
+    <span><span class="sw" style="background:var(--s3)"></span>eBay</span>
+    <span><span class="sw" style="background:var(--s4)"></span>BrickOwl</span>
+  </div>
+  <div class="chart-wrap"><canvas id="historyChart" data-item="{{ item.item_id }}"></canvas></div>
+</div>
+
+{% if offers %}
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to {{ ccy }}</span></h3>
+  <div class="three-col">
+    {% for source in ('bricklink', 'ebay', 'brickowl') %}
+      {% if source in offers %}
+      {% set o = offers[source] %}
+      <div class="{{ 'best' if source == best_source else 'offer' }}">
+        {% if source == best_source %}<span class="tag">Best deal</span>{% endif %}
+        <div><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span> <b>{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}</b></div>
+        <div class="price">{{ o.display|money(ccy) }}</div>
+        <div class="meta">{{ o.price|money(o.currency) }} native{% if o.description %}<br>“{{ o.description }}”{% endif %}</div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="two-col wide-left">
+  <div class="card">
+    <h3>Appears in sets</h3>
+    {% if appears_in %}
+    <div class="table-scroll">
+    <table>
+      <tr><th>Set</th><th>Theme</th><th class="num">Year</th><th class="num">Qty in set</th><th class="num">Set value</th></tr>
+      {% for s in appears_in %}
+      <tr>
+        <td>{{ m.thumb(s.set_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ s.set_id) }}"><b>{{ s.set_id }}</b> {{ s.name }}</a></td>
+        <td>{{ s.theme or '—' }}</td>
+        <td class="num">{{ s.year or '—' }}</td>
+        <td class="num">{{ s.qty }}</td>
+        <td class="num">{{ s.value|money(ccy) if s.value else '—' }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    {% else %}
+    <div style="color:var(--muted)">Not linked to any scanned set yet — refresh a set that contains this fig.</div>
+    {% endif %}
+  </div>
+  <div class="card">
+    <h3>Sources — latest scan</h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Source</th><th class="num">New</th><th class="num">Used</th><th>Confidence</th></tr>
+      {% for source in ('bricklink', 'ebay', 'brickowl') %}
+      {% set ps = per_source.get(source, {}) %}
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span>
+            {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}</td>
+        <td class="num">{{ ps.new.display|money(ccy) if ps.get('new') else '—' }}</td>
+        <td class="num">{{ ps.used.display|money(ccy) if ps.get('used') else '—' }}</td>
+        <td>{{ m.confidence_chip(ps.new.confidence if ps.get('new') else (ps.used.confidence if ps.get('used') else None)) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

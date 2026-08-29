@@ -1,0 +1,9 @@
+{
+  "display_currency": "ILS",
+  "scrape_ttl_days": 3,
+  "auto_scan_on_view_days": 30,
+  "request_delay_range": [2.0, 5.0],
+  "sources_enabled": ["bricklink", "ebay", "brickowl"],
+  "rates_ttl_hours": 24,
+  "fixture_mode": false
+}

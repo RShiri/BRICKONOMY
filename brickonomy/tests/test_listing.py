@@ -1,0 +1,97 @@
+"""Catalog listing filters — offline, on a synthetic catalog."""
+import pytest
+
+from brickonomy import db as dbq
+
+
+@pytest.fixture()
+def db_path(tmp_path):
+    path = str(tmp_path / "list.db")
+    c = dbq.connect(db_path=path)
+    # Ids sort as text, so the Marvel sets (76xxx) land after 600 filler rows.
+    # This is the exact shape that made /sets?theme=... show a single set: the
+    # route fetched the first N rows by id and filtered afterwards. The filler
+    # ids start at 2 so they cannot collide with 10075.
+    for i in range(600):
+        dbq.upsert_item(c, f"2{i:04d}", name=f"Filler {i}", item_type="S",
+                        theme="City")
+    dbq.upsert_item(c, "10075", name="Spider-Man Action Pack", item_type="S",
+                    theme="Super Heroes Marvel")
+    for n in range(76300, 76340):
+        dbq.upsert_item(c, str(n), name=f"Marvel {n}", item_type="S",
+                        theme="Super Heroes Marvel")
+    for i in range(30):
+        dbq.upsert_item(c, f"sh{i:04d}", name=f"Fig {i}", item_type="M")
+    c.commit()
+    c.close()
+    return path
+
+
+@pytest.fixture()
+def conn(db_path):
+    c = dbq.connect(db_path=db_path)
+    yield c
+    c.close()
+
+
+class TestListItems:
+    def test_theme_filter_reaches_past_the_row_limit(self, conn):
+        """The bug: a themed listing capped at 400 rows by id returned only
+        10075, because every other Marvel set sorts after the cap."""
+        rows = dbq.list_items(conn, theme="Super Heroes Marvel", limit=400)
+        ids = {r["item_id"] for r in rows}
+        assert len(rows) == 41, "every Marvel set, not just the low-numbered one"
+        assert "10075" in ids
+        assert "76339" in ids, "high ids must survive the limit"
+        assert all(r["theme"] == "Super Heroes Marvel" for r in rows)
+
+    def test_item_type_filter_separates_sets_from_figs(self, conn):
+        figs = dbq.list_items(conn, item_type="M", limit=400)
+        assert len(figs) == 30
+        assert all(r["item_type"] == "M" for r in figs)
+
+        sets = dbq.list_items(conn, item_type="S", limit=1000)
+        assert len(sets) == 641
+        assert all(r["item_type"] == "S" for r in sets)
+
+    def test_search_combines_with_theme_instead_of_widening_it(self, conn):
+        """The search clause is three ORs; without parentheses an added theme
+        filter would bind to the last one only and leak other themes in."""
+        rows = dbq.list_items(conn, search="Marvel", theme="Super Heroes Marvel",
+                              limit=400)
+        assert rows, "search inside a theme still matches"
+        assert all(r["theme"] == "Super Heroes Marvel" for r in rows)
+
+        # 'City' matches the filler names' theme via the search LIKE, so this
+        # would return rows if the AND/OR grouping were wrong.
+        leaked = dbq.list_items(conn, search="City", theme="Super Heroes Marvel",
+                                limit=400)
+        assert leaked == []
+
+    def test_no_filters_still_returns_the_whole_catalog(self, conn):
+        assert len(dbq.list_items(conn, limit=1000)) == 671
+
+
+class TestListingRoutes:
+    def _client(self, db_path, monkeypatch):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as app_mod
+
+        # A fresh connection per request: TestClient serves on another thread,
+        # and sqlite objects are bound to the thread that created them.
+        monkeypatch.setattr(app_mod, "get_conn",
+                            lambda: dbq.connect(db_path=db_path))
+        return TestClient(app_mod.app)
+
+    def test_marvel_theme_page_lists_the_whole_theme(self, db_path, monkeypatch):
+        html = self._client(db_path, monkeypatch).get(
+            "/sets?theme=Super+Heroes+Marvel").text
+        assert "76339" in html
+        assert "Filler" not in html, "other themes must not leak in"
+
+    def test_minifigs_tab_shows_figures_not_sets(self, db_path, monkeypatch):
+        html = self._client(db_path, monkeypatch).get("/minifigs").text
+        assert "sh0007" in html
+        assert "Minifigures" in html
+        assert "Filler" not in html, "the sets must not appear on the fig tab"

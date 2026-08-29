@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Set · Brickonomy{% endblock %}
+{% block content %}
+
+{# Client-rendered page for catalog sets that have no scraped prices yet.
+   The static build cannot pre-render 23k set pages, so this one page reads
+   the requested id from the query string and fills itself from the catalog
+   index. Scanned sets get their own fully rendered page instead. #}
+<div id="liteSet" data-lite="1">
+  <div class="eyebrow" id="liteTheme">Catalog</div>
+  <h1 id="liteName">Loading…</h1>
+  <p class="sub" id="liteMeta"></p>
+
+  <div class="card">
+    <h3>No prices scanned yet</h3>
+    <div style="color:var(--ink-2)">
+      This set is in the catalog, but no marketplace prices have been collected for it.
+      Scan it locally to get value, history and deal tracking:
+      <div class="log" style="margin-top:10px">python -m brickonomy.refresh --item <span id="liteId">…</span></div>
+      then <code>python -m brickonomy.export</code> and push to publish it here.
+    </div>
+    <div class="searchrow" style="margin-top:12px">
+      <a class="btn-ghost" id="liteBL" target="_blank" rel="noopener">View on BrickLink →</a>
+      <a class="btn-ghost" id="liteBE" target="_blank" rel="noopener">View on BrickEconomy →</a>
+      <a class="btn-ghost" id="liteEbay" target="_blank" rel="noopener">Search eBay →</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>More from this theme</h3>
+    <div class="relgrid" id="liteRelated"></div>
+  </div>
+</div>
+
+{% endblock %}

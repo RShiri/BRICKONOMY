@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Deals · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">Sniper</div>
+<h1>Deals</h1>
+<p class="sub">Live listings priced below the BrickLink average, after a 13% fee allowance. {{ total }} opportunities found across BrickLink, eBay and BrickOwl.</p>
+
+<div class="searchrow">
+  <a class="chip {{ 'on' if not rating }}" href="{{ u('/deals') }}">All ({{ total }})</a>
+  {% for r, label in (('EXCELLENT', '★ Excellent'), ('GREAT INVEST', '◆ Great invest'), ('GOOD', '● Good')) %}
+  {% if counts[r] %}
+  <a class="chip {{ 'on' if rating == r }}" href="{{ u('/deals?rating=' ~ r|urlencode) }}">{{ label }} ({{ counts[r] }})</a>
+  {% endif %}
+  {% endfor %}
+  {% if not static_mode %}
+  <span class="spacer"></span>
+  <form class="searchrow" method="get" action="/deals" style="margin:0">
+    <label class="chip">Min margin
+      <input class="inp" type="number" name="min_margin" value="{{ min_margin|int }}" min="0" max="100" step="5"
+             style="width:70px;padding:2px 6px;margin-left:6px"></label>
+    <button class="btn-primary" type="submit">Apply</button>
+  </form>
+  {% endif %}
+</div>
+
+<div class="card">
+  <div class="table-scroll">
+  <table>
+    <tr>
+      <th>Item</th><th>Theme</th><th>Where</th>
+      <th class="num">Ask</th><th class="num">Market</th><th class="num">Profit</th>
+      <th class="num">Margin</th><th>Rating</th><th>Status</th>
+    </tr>
+    {% for d in deals %}
+    <tr {{ 'class=hl' if d.rating in ('EXCELLENT', 'GREAT INVEST') }}>
+      <td>{{ m.thumb(d.item_id, d.item_type, img_url) }}<a href="{{ u('/sets/' ~ d.item_id) }}"><b>{{ d.item_id }}</b> {{ d.name }}</a></td>
+      <td>{{ d.theme or '—' }}</td>
+      <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
+          {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
+      <td class="num">{{ d.ask|money(ccy) }}</td>
+      <td class="num">{{ d.value|money(ccy) }}</td>
+      <td class="num delta up">{{ d.profit|money(ccy) }}</td>
+      <td class="num">{{ m.delta(d.margin, 0) }}</td>
+      <td>{{ m.rating_chip(d.rating) }}</td>
+      <td>{{ m.phase_chip(d.phase) }} {{ m.confidence_chip(d.confidence) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="9" style="color:var(--muted);text-align:center">
+      No deals right now — every tracked listing sits at or above market value.
+      Run a scan to refresh live listings.</td></tr>
+    {% endfor %}
+  </table>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    Margin = (market value − ask × 1.13) ÷ ask. Only listings that pass the completeness filters
+    (no instructions-only, minifig-only, incomplete or bulk lots) are considered.
+    Ratings follow the analyzer: ≥20% excellent, ≥10% good — upgraded to “great invest” for retired sets.
+  </div>
+</div>
+
+{% endblock %}

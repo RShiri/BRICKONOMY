@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Portfolio · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">My collection</div>
+<h1>Portfolio</h1>
+<p class="sub">{{ entries|length }} sets, each valued at the BrickLink average <b>for the condition you hold it in</b>{% if not static_mode %}. Import from BrickEconomy or BrickLink, edit inline{% endif %}.</p>
+
+{% if imported is not none %}
+<div class="notice">Imported {{ imported }} row(s){% if skipped %}, skipped {{ skipped }}{% endif %}{% if removed %}, removed {{ removed }} sold set(s){% endif %}.</div>
+{% endif %}
+
+<div class="{{ '' if static_mode else 'two-col wide-left' }}">
+  <div class="card">
+    <h3>Portfolio value over time <span class="soft">({{ ccy }})</span></h3>
+    <div class="chart-wrap"><canvas id="portfolioChart"></canvas></div>
+  </div>
+  {% if not static_mode %}
+  <div class="card">
+    <h3>Import portfolio</h3>
+    <form method="post" action="/portfolio/import" enctype="multipart/form-data">
+      <label class="dropzone" style="display:block;cursor:pointer">
+        <div style="font-size:24px">⤓</div>
+        Choose a file to import…
+        <input type="file" name="file" required style="display:block;margin:10px auto 0"
+               accept=".csv,.xml,.txt">
+        <div style="margin-top:8px;font-size:12px">
+          <span class="chip">BrickEconomy CSV export</span>
+          <span class="chip">BrickLink wanted list XML</span>
+          <span class="chip">plain set list (.txt)</span>
+        </div>
+      </label>
+      <div style="color:var(--muted);font-size:12px;margin:10px 0">
+        Rows are matched by set number; duplicates merge into quantities. You get a preview before anything is saved.
+      </div>
+      <button class="btn-primary" type="submit">Preview import</button>
+    </form>
+    <form class="searchrow" method="post" action="/portfolio/add" style="margin-top:12px">
+      <input class="inp" type="text" name="item_id" placeholder="…or add one set: number, e.g. 75313" required style="flex:1" aria-label="Add set number">
+      <input class="inp" type="number" name="qty" value="1" min="1" style="width:70px" aria-label="Quantity">
+      <button class="btn-primary" type="submit">+ Add</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Owned sets <span class="soft">— click a column to sort{% if not static_mode %}, ✎ to edit a row inline{% endif %}</span></h3>
+  <div class="searchrow" style="margin-bottom:8px">
+    <input class="inp" type="search" data-filter-table="ownedTable" placeholder="Filter by set, name or theme…" aria-label="Filter owned sets">
+  </div>
+  <div class="table-scroll">
+  <table id="ownedTable" data-sortable>
+    <thead>
+    <tr>
+      <th>Set</th><th>Theme</th><th class="num">Qty</th><th class="num">Paid</th>
+      <th>Condition</th><th class="num">Value</th><th class="num">Gain</th><th class="num">Δ 30d</th>{% if not static_mode %}<th data-nosort></th>{% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for e in entries %}
+    {% if edit == e.item_id %}
+    <tr class="editrow">
+      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<b>{{ e.item_id }} {{ e.name }}</b></td>
+      <td>{{ e.theme or '—' }}</td>
+      <td colspan="7">
+        <form class="editpanel" method="post" action="/portfolio/{{ e.item_id }}">
+          <label>Qty <input class="inp" type="number" name="qty" value="{{ e.qty }}" min="0" style="width:64px"></label>
+          <label>Condition
+            <select class="inp" name="condition">
+              <option value="new" {{ 'selected' if e.condition == 'new' }}>New / sealed</option>
+              <option value="used" {{ 'selected' if e.condition == 'used' }}>Used</option>
+            </select>
+          </label>
+          <label>Paid (each) <input class="inp" type="text" name="paid" value="{{ e.paid_raw or '' }}" style="width:90px"></label>
+          <label>
+            <select class="inp" name="paid_ccy">
+              {% for c in currencies %}<option value="{{ c }}" {{ 'selected' if c == e.paid_ccy }}>{{ c }}</option>{% endfor %}
+            </select>
+          </label>
+          <label>Bought <input class="inp" type="date" name="purchase_date" value="{{ e.purchase_date or '' }}"></label>
+          <button class="btn-primary" type="submit">Save</button>
+          <a class="btn-ghost" href="/portfolio">Cancel</a>
+        </form>
+        <form method="post" action="/portfolio/{{ e.item_id }}/delete" style="display:inline">
+          <button class="btn-ghost btn-danger" type="submit"
+                  onclick="return confirm('Remove {{ e.item_id }} from portfolio?')">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<a href="{{ u('/sets/' ~ e.item_id) }}">{{ e.item_id }} {{ e.name }}</a></td>
+      <td>{{ e.theme or '—' }}</td>
+      <td class="num" data-v="{{ e.qty }}">{{ e.qty }}</td>
+      <td class="num" data-v="{{ e.paid or '' }}">{{ e.paid|money(ccy) if e.paid else '—' }}</td>
+      <td data-v="{{ e.condition }}"><span class="chip">{{ 'Used' if e.condition == 'used' else 'New' }}</span></td>
+      <td class="num" data-v="{{ e.value or '' }}"><b>{{ e.value|money(ccy) if e.value else '—' }}</b></td>
+      <td class="num" data-v="{{ e.gain if e.gain is not none else '' }}">{{ m.delta(e.gain, 0) }}</td>
+      <td class="num" data-v="{{ e.delta30 if e.delta30 is not none else '' }}">{{ m.delta(e.delta30) }}</td>
+      {% if not static_mode %}<td><a class="btn-ghost" style="padding:2px 9px" href="/portfolio?edit={{ e.item_id }}" title="Edit">✎</a></td>{% endif %}
+    </tr>
+    {% endif %}
+    {% else %}
+    <tr><td colspan="9" style="color:var(--muted);text-align:center">Portfolio is empty — import a file or add a set above.</td></tr>
+    {% endfor %}
+    </tbody>
+    {% if entries %}
+    {# In tfoot so sorting the rows never moves the totals off the bottom. #}
+    <tfoot>
+    <tr class="total">
+      <td>Total ({{ entries|length }} sets)</td><td></td>
+      <td class="num">{{ total_qty }}</td>
+      <td class="num">{{ total_paid|money(ccy) }}</td>
+      <td></td>
+      <td class="num">{{ total_value|money(ccy) }}</td>
+      <td class="num">{{ m.delta(total_gain, 1) }}</td>
+      <td></td>{% if not static_mode %}<td></td>{% endif %}
+    </tr>
+    </tfoot>
+    {% endif %}
+  </table>
+  </div>
+</div>
+
+{% if wishlist %}
+<div class="card">
+  <h3>Wishlist <span class="soft">— {{ wishlist|length }} wanted, {{ wish_total|money(ccy) }} to buy at today's prices</span></h3>
+  <div class="table-scroll">
+  <table data-sortable>
+    <thead>
+    <tr>
+      <th>Set</th><th>Theme</th><th class="num">Wanted</th><th class="num">Retail</th>
+      <th class="num">Value now</th><th class="num">Δ 30d</th><th>Best offer</th><th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for w in wishlist %}
+    <tr>
+      <td>{{ m.thumb(w.item_id, w.item_type, img_url) }}<a href="{{ u('/sets/' ~ w.item_id) }}">{{ w.item_id }} {{ w.name }}</a></td>
+      <td>{{ w.theme or '—' }}</td>
+      <td class="num" data-v="{{ w.wanted }}">{{ w.wanted }}</td>
+      <td class="num" data-v="{{ w.retail or '' }}">{{ w.retail|money(ccy) if w.retail else '—' }}</td>
+      <td class="num" data-v="{{ w.value or '' }}"><b>{{ w.value|money(ccy) if w.value else '—' }}</b></td>
+      <td class="num" data-v="{{ w.delta30 if w.delta30 is not none else '' }}">{{ m.delta(w.delta30) }}</td>
+      <td>{% if w.deal and w.deal.rating != 'IRRELEVANT' %}
+            {{ w.deal.ask|money(ccy) }} on {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[w.deal.source] }}
+            {{ m.rating_chip(w.deal.rating) }}
+          {% else %}<span style="color:var(--muted)">no bargain right now</span>{% endif %}</td>
+      <td>{{ m.phase_chip(w.phase) }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    Wanted quantities come from your BrickEconomy CSV import. Retiring sets are the ones to buy first —
+    prices climb fastest in the two years after retirement.
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

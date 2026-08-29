@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Import preview · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">My collection</div>
+<h1>Import preview</h1>
+<p class="sub">{{ filename }} — nothing is saved until you confirm.</p>
+
+{% if parse_error %}
+<div class="card"><b style="color:var(--down)">Could not parse the file:</b> {{ parse_error }}</div>
+{% elif not rows %}
+<div class="card" style="color:var(--muted)">No set rows recognized in this file.
+  Supported: BrickEconomy CSV export, BrickLink wanted-list XML, plain set list.</div>
+{% else %}
+<div class="card">
+  <div class="table-scroll">
+  <table>
+    <tr><th>Set</th><th>Name</th><th>Theme</th><th class="num">Qty</th>
+        <th class="num">Paid</th><th>Condition</th><th>Action</th></tr>
+    {% for r in rows[:100] %}
+    <tr>
+      <td><b>{{ r.item_id }}</b></td>
+      <td>{{ r.name or '—' }}</td>
+      <td>{{ r.theme or '—' }}</td>
+      <td class="num">{{ r.qty }}</td>
+      <td class="num">
+        {%- if r.paid %}{{ r.paid|money(r.paid_ccy or 'USD') }}
+        {%- elif r.retail %}{{ r.retail|money(r.retail_ccy or 'USD') }} <span class="soft">retail</span>
+        {%- else %}—{% endif %}</td>
+      <td><span class="chip">{{ 'Used' if r.condition == 'used' else 'New' }}</span></td>
+      <td>
+        {% if r.status == 'merge' %}<span class="chip" style="color:var(--warn)">merge (+{{ r.qty }} to {{ r.existing_qty }})</span>
+        {% elif r.status == 'known' %}<span class="chip">add (known set)</span>
+        {% else %}<span class="chip on">add (new to catalog)</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+  {% if rows|length > 100 %}<div style="color:var(--muted);font-size:12px;margin-top:8px">…and {{ rows|length - 100 }} more rows.</div>{% endif %}
+  {# An export lists what is owned now, so anything owned here and missing
+     from it has been sold. Opt-in, and it names every row it would drop. #}
+  {% if sold %}
+  <div style="margin-top:16px;padding:12px 14px;border:1px solid var(--grid);border-radius:10px">
+    <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer">
+      <input type="checkbox" name="prune" value="true" form="importConfirm" style="margin-top:3px">
+      <span>
+        <b>Also remove {{ sold|length }} set(s) missing from this file</b>
+        <span class="soft">— sold since the export was made.</span>
+        <div style="color:var(--muted);font-size:12px;margin-top:6px">
+          {% for s in sold %}{{ s.item_id }} {{ s.name or '' }}{% if not loop.last %} · {% endif %}{% endfor %}
+        </div>
+        <div style="color:var(--muted);font-size:12px;margin-top:6px">
+          Wishlist entries and minifigures are never touched — only owned items of the
+          kind this file describes.
+        </div>
+      </span>
+    </label>
+  </div>
+  {% endif %}
+  <form id="importConfirm" method="post" action="/portfolio/import/confirm"
+        style="margin-top:14px;display:flex;gap:10px">
+    <input type="hidden" name="payload" value='{{ payload|e }}'>
+    <button class="btn-primary" type="submit">✔ Import {{ rows|length }} row(s)</button>
+    <a class="btn-ghost" href="/portfolio">Cancel</a>
+  </form>
+</div>
+{% endif %}
+
+{% endblock %}

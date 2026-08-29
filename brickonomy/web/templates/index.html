@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Dashboard · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">Overview</div>
+<h1>Dashboard</h1>
+<p class="sub">Your LEGO market at a glance — prices aggregated from BrickLink, eBay and BrickOwl.</p>
+
+<div class="tiles">
+  <div class="tile">
+    <div class="label">Portfolio value</div>
+    <div class="value">{{ total_value|money(ccy) }}</div>
+    <div class="delta">{{ counts.portfolio }} sets owned</div>
+  </div>
+  <div class="tile">
+    <div class="label">Gain vs paid/retail</div>
+    <div class="value">{% if gain_pct is not none %}{{ "%+.1f"|format(gain_pct) }}%{% else %}—{% endif %}</div>
+    <div class="delta {{ 'up' if gain_pct and gain_pct > 0 else 'down' if gain_pct and gain_pct < 0 }}">
+      {% if total_retail %}{{ (total_value - total_retail)|money(ccy) }} unrealized{% endif %}
+    </div>
+  </div>
+  <div class="tile">
+    <div class="label">Items tracked</div>
+    <div class="value">{{ counts['items'] }}</div>
+    <div class="delta">{{ counts.retired }} retired</div>
+  </div>
+  <div class="tile">
+    <div class="label">Last scan</div>
+    <div class="value" style="font-size:18px">{{ last_scan[:16].replace('T', ' ') if last_scan else 'never' }}</div>
+    <div class="delta">
+      {% if job.running %}<span class="dot" style="background:var(--warn)"></span> scan running…
+      {% else %}<span class="dot" style="background:var(--good)"></span> idle{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Top gainers <span class="soft">— 30 days, BrickLink average</span></h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr>
+      {% for g in gainers %}
+      <tr>
+        <td>{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
+        <td class="num">{{ g.value|money(ccy) }}</td>
+        <td class="num">{{ m.delta(g.delta) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" style="color:var(--muted)">Run at least two scans a week apart to see movers.</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  </div>
+  <div class="card">
+    <h3>Top decliners <span class="soft">— 30 days</span></h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr>
+      {% for g in decliners %}
+      <tr>
+        <td>{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
+        <td class="num">{{ g.value|money(ccy) }}</td>
+        <td class="num">{{ m.delta(g.delta) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" style="color:var(--muted)">No decliners in the last 30 days.</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Best deals right now <span class="soft">— cheapest live listing vs market value</span></h3>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Item</th><th>Where</th><th class="num">Ask</th><th class="num">Market</th><th class="num">Margin</th><th>Rating</th></tr>
+    {% for d in top_deals %}
+    <tr>
+      <td>{{ m.thumb(d.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ d.item_id) }}">{{ d.item_id }} {{ d.name }}</a></td>
+      <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
+          {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
+      <td class="num">{{ d.ask|money(ccy) }}</td>
+      <td class="num">{{ d.value|money(ccy) }}</td>
+      <td class="num">{{ m.delta(d.margin, 0) }}</td>
+      <td>{{ m.rating_chip(d.rating) }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="6" style="color:var(--muted)">No listing is currently below market value. <a href="{{ u('/deals') }}">See all deals →</a></td></tr>
+    {% endfor %}
+  </table>
+  </div>
+  {% if top_deals %}<div style="margin-top:8px"><a class="btn-ghost" href="{{ u('/deals') }}">All deals →</a></div>{% endif %}
+</div>
+
+<div class="three-col">
+  {{ m.toplist('Most valuable', most_valuable, ccy, img_url, metric='year', note='catalog-wide') }}
+  {{ m.toplist('Fastest growing', top_growth, ccy, img_url, metric='growth', note='per year') }}
+  {{ m.toplist('Retiring soon', retiring, ccy, img_url, metric='year', note='EOL watch') }}
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Portfolio value by theme</h3>
+    <div class="bars">
+      {% for theme, v in themes %}
+      <div class="row">
+        <span>{{ theme }}</span>
+        <div class="track"><div class="fill" style="width:{{ (v / max_theme * 100)|round(1) }}%"></div></div>
+        <span class="num">{{ v|money(ccy) }}</span>
+      </div>
+      {% else %}
+      <div style="color:var(--muted)">Import your portfolio to see the theme breakdown.</div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:10px"><a class="btn-ghost" href="{{ u('/themes') }}">Theme analysis →</a></div>
+  </div>
+  <div class="card">
+    {% if static_mode %}
+    <h3>About this snapshot</h3>
+    <div style="color:var(--ink-2)">
+      Static export of the Brickonomy database, published to GitHub Pages.
+      Prices were aggregated from BrickLink, eBay and BrickOwl at scan time
+      {% if last_scan %}(last scan {{ last_scan[:16].replace('T', ' ') }}){% endif %}.
+      To update: <code>python -m brickonomy.refresh</code> →
+      <code>python -m brickonomy.export</code> → push.
+    </div>
+    {% else %}
+    <h3>Scan activity</h3>
+    {% if job.running %}
+    <div style="color:var(--ink-2)">Scanning {{ job.done }} / {{ job.total }}
+      {% if job.current_item %}— currently: <b>{{ job.current_item }}</b>{% endif %}</div>
+    <div class="progress"><div style="width:{{ (job.done / job.total * 100)|round if job.total else 0 }}%"></div></div>
+    {% else %}
+    <div style="color:var(--ink-2)">No scan running.
+      <form method="post" action="/refresh" style="display:inline">
+        <input type="hidden" name="scope" value="portfolio">
+        <button class="btn-primary" type="submit" style="margin-left:8px">▶ Scan portfolio</button>
+      </form>
+    </div>
+    {% endif %}
+    {% if job.log %}
+    <div class="log" style="margin-top:12px">{% for line in job.log[-8:] %}{{ line }}
+{% endfor %}</div>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

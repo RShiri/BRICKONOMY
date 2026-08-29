@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ 'Minifigs' if kind == 'M' else 'Sets' }} · Brickonomy{% endblock %}
+{% block content %}
+{# Serves both catalog tabs. `catalog_total` counts the kind on screen, not the
+   whole catalog, so the copy has to name that kind rather than say "every set". #}
+{% set is_figs = kind == 'M' %}
+{% set noun = 'minifigures' if is_figs else 'sets' %}
+
+<div class="eyebrow">Catalog</div>
+<h1>{{ 'Minifigures' if is_figs else 'Sets' }}</h1>
+<p class="sub">Every LEGO {{ 'minifigure' if is_figs else 'set' }} ever released —
+   {{ "{:,}".format(catalog_total) }} {{ noun }}.
+   Search by number, name or theme; {{ noun }} with scanned prices open their own page.</p>
+
+<div class="searchrow">
+  <input class="inp" id="catalogSearch" type="search" autocomplete="off"
+         placeholder="{{ 'Search all minifigures… (e.g. sh0254, Iron Man)' if is_figs else 'Search the whole catalog… (e.g. 75192, Falcon, Technic)' }}"
+         aria-label="Search all {{ noun }}">
+  <select class="inp" id="catalogTheme" aria-label="Filter by theme"><option value="">All themes</option></select>
+  <select class="inp" id="catalogSort" aria-label="Sort">
+    <option value="year">Newest first</option>
+    <option value="year-asc">Oldest first</option>
+    <option value="id">Set number</option>
+    <option value="parts">Most parts</option>
+  </select>
+  <label class="chip"><input type="checkbox" id="catalogPriced" style="accent-color:var(--accent)"> priced only</label>
+</div>
+
+<div class="card">
+  <div id="catalogCount" style="color:var(--muted);font-size:12.5px;margin-bottom:8px">Loading catalog…</div>
+  <div class="table-scroll">
+  <table id="catalogTable">
+    <thead>
+      <tr><th>{{ 'Minifig' if is_figs else 'Set' }}</th><th>Theme</th><th class="num">Year</th><th class="num">Parts</th><th>Prices</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="justify-content:center;margin-top:12px">
+    <button class="btn-ghost" id="catalogMore" hidden>Show more</button>
+  </div>
+</div>
+
+{% endblock %}

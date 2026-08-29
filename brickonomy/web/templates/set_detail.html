@@ -1,0 +1,497 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}{{ item.item_id }} {{ item.name }} · Brickonomy{% endblock %}
+{% block content %}
+
+{{ m.autoscan_banner(auto_scan, item.item_id) }}
+
+<div class="sethead">
+  <figure class="setimg" style="margin:0">
+    <img src="{{ img_url(item.item_id, item.item_type) }}" alt="{{ item.name }}"
+         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>({{ item.item_id }})</div>'">
+  </figure>
+  <div style="flex:1;min-width:280px">
+    <div class="eyebrow">{{ item.theme or 'LEGO' }}{% if item.subtheme %} · {{ item.subtheme }}{% endif %}</div>
+    <h1 style="font-size:26px">{{ item.name }} <span style="color:var(--muted);font-weight:400">· {{ item.item_id }}</span></h1>
+    <p class="sub" style="margin-bottom:6px">
+      {% if item.year %}Released {{ item.year }}{% endif %}
+      {% if retail %} · Retail {{ retail|money(ccy) }}{% endif %}
+    </p>
+    <div class="facts">
+      {% if item.parts %}<span class="chip">🧱 {{ "{:,}".format(item.parts) }} parts</span>{% endif %}
+      {% if item.minifigs %}<span class="chip">🧍 {{ item.minifigs }} minifigs</span>{% endif %}
+      {% if item.weight_g %}<span class="chip">⚖️ {{ "{:,.0f}".format(item.weight_g) }} g</span>{% endif %}
+      {% if item.parts and values.new.value %}<span class="chip">{{ (values.new.value / item.parts)|money(ccy) }} / part</span>{% endif %}
+      {% if figs_pcts.used or figs_pcts.new %}
+      <span class="chip" id="figPctChip"
+            data-used="{{ '%.0f'|format(figs_pcts.used) if figs_pcts.used else '' }}"
+            data-new="{{ '%.0f'|format(figs_pcts.new) if figs_pcts.new else '' }}"
+            data-partial-used="{{ '1' if figs_partial.used else '' }}"
+            data-partial-new="{{ '1' if figs_partial.new else '' }}"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price.">
+        🧍 {% if figs_pcts.used %}{{ "%.0f"|format(figs_pcts.used) }}% in figs{% if figs_partial.used %} (partial){% endif %}{% else %}figs not priced{% endif %}</span>
+      {% elif figs %}
+      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
+      {% endif %}
+      {{ m.phase_chip(phase) }}
+      {% if not static_mode %}
+      <button class="btn-ghost" id="rescanBtn" data-item="{{ item.item_id }}"
+              title="Re-scrape prices for this set and for every minifig in it, and refresh the parts inventory. Takes a few minutes on a fig-heavy set.">↻ Rescan prices</button>
+      {% endif %}
+    </div>
+    {% if not static_mode %}
+    <!-- Live scan notes. A rescan runs for minutes across the set and every
+         fig in it, so show the worker's own log rather than a spinner. -->
+    <div id="rescanNotes" hidden style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px">
+        <b style="font-size:13px">Scan notes</b>
+        <span class="soft" style="font-size:12px" id="rescanNotesHead"></span>
+      </div>
+      <div class="log" id="rescanLog"></div>
+    </div>
+    {% endif %}
+    {% if phase.phase and item.year %}
+    <div class="phasebar" style="margin-top:16px">
+      <div class="phase {{ 'current' if phase.phase == 'NEW' }}" style="flex:4">Available {{ item.year }}–{{ phase.retirement_year }}</div>
+      <div class="phase {{ 'current' if phase.phase == 'EOL WATCH' }}" style="flex:2">Retirement</div>
+      <div class="phase {{ 'current' if phase.phase == 'RETIRED_ACCEL' }}" style="flex:2">Acceleration</div>
+      <div class="phase {{ 'current' if phase.phase == 'RETIRED_STABLE' }}" style="flex:3">Steady growth</div>
+    </div>
+    <div class="phaselbl"><span style="flex:4">{{ item.year }}</span><span style="flex:2">{{ phase.retirement_year }}</span><span style="flex:2">{{ phase.retirement_year + 1 }}</span><span style="flex:3">{{ phase.retirement_year + 2 }} →</span></div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="tiles" style="margin-top:16px">
+  <div class="tile">
+    <div class="label">Value — new / sealed</div>
+    <div class="value">{{ values.new.value|money(ccy) if values.new.value else '—' }}</div>
+    <div class="delta">
+      {% if growth_total is not none %}{{ m.delta(growth_total, 0) }} vs retail{% endif %}
+      {% if growth_cagr is not none %} · {{ "%+.1f"|format(growth_cagr) }}%/yr{% endif %}
+    </div>
+  </div>
+  <div class="tile">
+    <div class="label">Value — used</div>
+    <div class="value">{{ values.used.value|money(ccy) if values.used.value else '—' }}</div>
+    <div class="delta">{{ m.confidence_chip(values.used.confidence) }}</div>
+  </div>
+  <div class="tile">
+    <div class="label">Forecast {{ forecast.horizons[2].year if forecast }} <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">{% if forecast %}{{ forecast.horizons[2].value|money(ccy) }}{% else %}—{% endif %}</div>
+    <div class="delta">{% if forecast %}trend estimate · ±20% band{% else %}needs price history{% endif %}</div>
+  </div>
+  <div class="tile">
+    <div class="label">Buy target</div>
+    <div class="value">{{ buy_target|money(ccy) if buy_target else '—' }}</div>
+    <div class="delta">80% of the BrickLink average</div>
+  </div>
+</div>
+
+{% if deal and deal.rating != 'IRRELEVANT' %}
+<div class="dealbanner">
+  <div>
+    {{ m.rating_chip(deal.rating) }}
+    <b>Buy signal</b> — cheapest clean listing is
+    <b>{{ deal.ask|money(ccy) }}</b> on
+    {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[deal.source] }},
+    <b>{{ "%.0f"|format(deal.margin) }}%</b> under market after fees
+    (potential {{ deal.profit|money(ccy) }}).
+  </div>
+  <a class="btn-ghost" href="{{ u('/deals') }}">All deals →</a>
+</div>
+{% endif %}
+
+<div class="card">
+  <h3>Price history &amp; forecast <span class="soft">({{ ccy }}, BrickLink average · new/sealed)</span>
+    <span class="rangebtns" role="group" aria-label="Chart range">
+      <button class="rangebtn" data-range="365">1Y</button>
+      <button class="rangebtn" data-range="1095">3Y</button>
+      <button class="rangebtn active" data-range="0">All</button>
+    </span>
+  </h3>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--s1)"></span>Value (new)</span>
+    <span><span class="sw" style="background:var(--s5)"></span>Used</span>
+    <span><span class="sw" style="background:var(--s2)"></span>BrickLink</span>
+    <span><span class="sw" style="background:var(--s3)"></span>eBay</span>
+    <span><span class="sw" style="background:var(--s4)"></span>BrickOwl</span>
+    <span><span class="sw" style="background:var(--s1);opacity:.35"></span>Forecast ±20%</span>
+  </div>
+  <div class="chart-wrap"><canvas id="historyChart" data-item="{{ item.item_id }}"
+       data-retired="{{ phase.retirement_year if phase.retirement_year else '' }}"></canvas></div>
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Points before today are scraped snapshots; the dashed line is a trend estimate from observed growth and retirement phase.
+    {% if phase.retirement_year %}The vertical marker is the estimated retirement ({{ phase.retirement_year }}).{% endif %}
+  </div>
+</div>
+
+{% if retail or ppp %}
+<div class="two-col">
+  {% if retail %}
+  <div class="card">
+    <h3>Value vs retail</h3>
+    <div class="vsbars">
+      <div class="vsrow"><span>Retail</span>
+        <div class="track"><div class="fill retail" style="width:{{ (retail / [retail, values.new.value or retail]|max * 100)|round(1) }}%"></div></div>
+        <span class="num">{{ retail|money(ccy) }}</span></div>
+      <div class="vsrow"><span>Value new</span>
+        <div class="track"><div class="fill" style="width:{{ ((values.new.value or 0) / [retail, values.new.value or retail]|max * 100)|round(1) }}%"></div></div>
+        <span class="num">{{ values.new.value|money(ccy) if values.new.value else '—' }}</span></div>
+      <div class="vsrow"><span>Value used</span>
+        <div class="track"><div class="fill used" style="width:{{ ((values.used.value or 0) / [retail, values.new.value or retail]|max * 100)|round(1) }}%"></div></div>
+        <span class="num">{{ values.used.value|money(ccy) if values.used.value else '—' }}</span></div>
+    </div>
+    {% if growth_total is not none %}
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is {{ m.delta(growth_total, 0) }} today{% if growth_cagr is not none %},
+      compounding at {{ "%+.1f"|format(growth_cagr) }}% a year{% endif %}.
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% if ppp %}
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">{{ ppp|money(ccy) }}</div>
+        <div class="delta">{{ "{:,}".format(item.parts) }} parts</div>
+      </div>
+      {% if ppp_theme_avg %}
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">{{ item.theme }} average</div>
+        <div class="value" style="font-size:22px">{{ ppp_theme_avg|money(ccy) }}</div>
+        <div class="delta {{ 'up' if ppp < ppp_theme_avg else 'down' }}">
+          {{ "%.0f"|format((ppp - ppp_theme_avg) / ppp_theme_avg * 100)|replace('-', '−') }}% vs theme
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if offers %}
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to {{ ccy }}</span></h3>
+  <div class="three-col">
+    {% for source in ('bricklink', 'ebay', 'brickowl') %}
+      {% if source in offers %}
+      {% set o = offers[source] %}
+      <div class="{{ 'best' if source == best_source else 'offer' }}">
+        {% if source == best_source %}<span class="tag">Best deal</span>{% endif %}
+        <div><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span> <b>{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}</b></div>
+        <div class="price">{{ o.display|money(ccy) }}</div>
+        <div class="meta">{{ o.price|money(o.currency) }} native{% if o.description %}<br>“{{ o.description }}”{% endif %}</div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% if split %}
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="{{ "%.2f"|format(split.figs) }}"
+              data-parts="{{ "%.2f"|format(split.parts) }}"
+              data-ccy="{{ ccy }}"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>{{ split.figs|money(ccy) }} · {{ "%.0f"|format(split.figs_pct) }}%</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>{{ split.parts|money(ccy) }} · {{ "%.0f"|format(100 - split.figs_pct) }}%</dd>
+        <dt>Part-out total</dt>
+        <dd><b>{{ split.total|money(ccy) }}</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at new-condition
+        prices. Minifigures are counted whole and the remainder is the loose parts.
+        {% if split.partial %}<br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.{% endif %}
+        {% if split.over %}<br><span style="color:var(--warn)">The figures alone price above the
+        whole part-out total. The two come from different BrickLink readings, so treat this split
+        as approximate.</span>{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if import_cost and import_cost.conditions %}
+<div class="card" id="importCard"
+     data-vat="{{ import_cost.vat_pct }}"
+     data-ship-usd="{{ import_cost.shipping_usd }}"
+     data-ship-rate="{{ (import_cost.shipping / import_cost.shipping_usd) if import_cost.shipping_usd else 1 }}"
+     data-ccy="{{ ccy }}">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT {{ "%.0f"|format(import_cost.vat_pct) }}%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      {% for condition in ('new', 'used') %}
+      {% set c = import_cost.conditions.get(condition) %}
+      {% if c %}
+      <tr data-cond="{{ condition }}" data-base="{{ c.base }}">
+        <td>{{ 'New / sealed' if condition == 'new' else 'Used' }}</td>
+        <td class="num">{{ c.base|money(ccy) }}</td>
+        <td class="num">{{ c.vat|money(ccy) }}</td>
+        <td class="num import-ship">{{ import_cost.shipping|money(ccy) }}</td>
+        <td class="num import-total"><b>{{ c.total|money(ccy) }}</b></td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="{{ "%.0f"|format(import_cost.shipping_usd) }}"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
+{% endif %}
+
+{# Minifigures moved out into their own full-width section below, so this is
+   no longer a two-column row. #}
+<div>
+  <div class="card">
+    <h3>Sources — latest scan</h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Source</th><th class="num">Market new</th><th class="num">Market used</th>
+          <th class="num">Sold</th><th class="num">Listings</th><th>Native</th><th>Confidence</th></tr>
+      {% for source in ('bricklink', 'ebay', 'brickowl') %}
+      {% set ps = per_source.get(source, {}) %}
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span>
+            {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}
+            {% if source == 'bricklink' %}<span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
+            {% else %}<span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span>{% endif %}</td>
+        <td class="num">{{ ps.new.display|money(ccy) if ps.get('new') else '—' }}</td>
+        <td class="num">{{ ps.used.display|money(ccy) if ps.get('used') else '—' }}</td>
+        <td class="num">{{ source_stats[source].sold or '—' }}</td>
+        <td class="num">{{ source_stats[source].stock or '—' }}</td>
+        <td>{{ ps.new.currency if ps.get('new') else (ps.used.currency if ps.get('used') else '—') }}</td>
+        <td>{{ m.confidence_chip(ps.new.confidence if ps.get('new') else (ps.used.confidence if ps.get('used') else None)) }}
+            {% if ps.get('new') and ps.new.stale %}<span class="chip" style="color:var(--warn)">stale</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      The headline value is <b>BrickLink's 6-month sold average</b> — completed sales, so it is
+      what the set is actually worth. eBay and BrickOwl are still scraped and still power the
+      "cheapest right now" panel, but they do not move the valuation: eBay asks run 2–3× over
+      what the same set sells for, and BrickOwl is a thin market. Junk listings
+      (instructions-only, minifig-only, incomplete, bulk lots) are filtered before pricing.
+    </div>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>Minifigures <span class="soft">— {{ figs|length }} in this set<span id="figsTotalLabel">{% if figs_totals.used %}, {{ figs_totals.used|money(ccy) }} together{% endif %}</span></span></h3>
+  {% if figs %}
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="{{ figs_totals.used|money(ccy) if figs_totals.used else '' }}"
+         data-total-new="{{ figs_totals.new|money(ccy) if figs_totals.new else '' }}">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  {# Every tile carries both conditions; #figCond swaps which one shows. #}
+  <div class="figgrid" id="figGrid">
+    {% for f in figs %}
+    {% set share_new = (f.new.total / values.new.value * 100) if f.new.total and values.new.value else None %}
+    {% set share_used = (f.used.total / values.used.value * 100) if f.used.total and values.used.value else None %}
+    <a class="figtile" href="{{ u('/sets/' ~ f.id) }}" title="{{ f.name }}"
+       data-value="{{ f.used.value or 0 }}" data-name="{{ f.name|lower }}" data-qty="{{ f.qty or 1 }}"
+       data-v-used="{{ f.used.value or 0 }}" data-v-new="{{ f.new.value or 0 }}"
+       data-price-used="{{ f.used.value|money(ccy) if f.used.value else 'not priced' }}"
+       data-price-new="{{ f.new.value|money(ccy) if f.new.value else 'not priced' }}"
+       data-share-used="{{ '%.1f'|format(share_used) ~ '% of set' if share_used else '' }}"
+       data-share-new="{{ '%.1f'|format(share_new) ~ '% of set' if share_new else '' }}">
+      <div class="figtile-img">
+        <img src="{{ img_url(f.id, 'M') }}" alt="{{ f.name }}" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        {% if (f.qty or 1) > 1 %}<span class="figtile-qty">×{{ f.qty }}</span>{% endif %}
+      </div>
+      <div class="figtile-id">{{ f.id }}</div>
+      <div class="figtile-name">{{ f.name }}</div>
+      <div class="figtile-value">{{ f.used.value|money(ccy) if f.used.value else 'not priced' }}</div>
+      <div class="figtile-share">{% if share_used %}{{ "%.1f"|format(share_used) }}% of set{% endif %}</div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      {% for f in figs %}
+      {% set share_new = (f.new.total / values.new.value * 100) if f.new.total and values.new.value else None %}
+      {% set share_used = (f.used.total / values.used.value * 100) if f.used.total and values.used.value else None %}
+      <tr>
+        <td>{{ m.thumb(f.id, 'M', img_url) }}<a href="{{ u('/sets/' ~ f.id) }}"><b>{{ f.id }}</b> {{ f.name }}</a></td>
+        <td class="num" data-v="{{ f.qty or 1 }}">{{ f.qty or 1 }}</td>
+        <td class="num figcell-value" data-v="{{ f.used.value or '' }}"
+            data-v-used="{{ f.used.value or '' }}" data-v-new="{{ f.new.value or '' }}"
+            data-price-used="{{ f.used.value|money(ccy) if f.used.value else '—' }}"
+            data-price-new="{{ f.new.value|money(ccy) if f.new.value else '—' }}"
+            >{{ f.used.value|money(ccy) if f.used.value else '—' }}</td>
+        <td class="num figcell-share" data-v="{{ share_used or '' }}"
+            data-v-used="{{ share_used or '' }}" data-v-new="{{ share_new or '' }}"
+            data-share-used="{{ '%.1f'|format(share_used) ~ '%' if share_used else '—' }}"
+            data-share-new="{{ '%.1f'|format(share_new) ~ '%' if share_new else '—' }}"
+            >{% if share_used %}{{ "%.1f"|format(share_used) }}%{% else %}—{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    {% if figs_totals.used or figs_totals.new %}
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="{{ figs_totals.used|money(ccy) if figs_totals.used else '—' }}"
+              data-price-new="{{ figs_totals.new|money(ccy) if figs_totals.new else '—' }}"
+              >{{ figs_totals.used|money(ccy) if figs_totals.used else '—' }}</td>
+          <td class="num" id="figFootShare"
+              data-share-used="{{ '%.0f'|format(figs_pcts.used) ~ '%' if figs_pcts.used else '—' }}"
+              data-share-new="{{ '%.0f'|format(figs_pcts.new) ~ '%' if figs_pcts.new else '—' }}"
+              >{% if figs_pcts.used %}{{ "%.0f"|format(figs_pcts.used) }}%{% else %}—{% endif %}</td></tr>
+    </tfoot>
+    {% endif %}
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="{% if figs_pcts.used %}Figs are {{ '%.0f'|format(figs_pcts.used) }}% of the used set price{{ ' → strong part-out candidate.' if figs_pcts.used > 80 else ' → not a part-out candidate (flag raises at 80%).' }}{% if figs_partial.used %} Only {{ figs_priced.used }} of {{ figs|length }} figs have a used price, so the true share is higher.{% endif %}{% endif %}"
+       data-note-new="{% if figs_pcts.new %}Figs are {{ '%.0f'|format(figs_pcts.new) }}% of the sealed set price{{ ' → strong part-out candidate.' if figs_pcts.new > 80 else ' → not a part-out candidate (flag raises at 80%).' }}{% if figs_partial.new %} Only {{ figs_priced.new }} of {{ figs|length }} figs have a new price, so the true share is higher.{% endif %}{% endif %}">
+    {% if figs_pcts.used %}
+      Figs are <b>{{ "%.0f"|format(figs_pcts.used) }}% of the used set price</b>{% if figs_pcts.used > 80 %} → strong part-out candidate.{% else %} → not a part-out candidate (flag raises at 80%).{% endif %}
+      {% if figs_partial.used %}Only {{ figs_priced.used }} of {{ figs|length }} figs have a used price, so the true share is higher.{% endif %}
+    {% elif figs %}
+      None of this set's {{ figs|length }} figs have been priced, so the figure share is unknown.
+      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+    {% endif %}
+  </div>
+  {% if figs %}
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  {% endif %}
+  {% else %}
+  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
+  {% if parts_summary.lots > 0 %}
+  {% if static_mode %}
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">{{ "{:,}".format(parts_summary.lots) }} lots · {{ "{:,}".format(parts_summary.pieces) }} parts</span>
+    {% if pov %}
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;{{ pov|money(ccy) }}</b>
+      {% if pov_premium is not none %}&nbsp;· premium {{ m.delta(pov_premium, 0) }} vs set{% endif %}</span>
+    {% endif %}
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  {% else %}
+  <form class="searchrow" method="get" action="/sets/{{ item.item_id }}" style="margin-bottom:8px">
+    <span class="chip on">{{ "{:,}".format(parts_summary.lots) }} lots · {{ "{:,}".format(parts_summary.pieces) }} parts</span>
+    {% if pov %}
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;{{ pov|money(ccy) }}</b>
+      {% if pov_premium is not none %}&nbsp;· premium {{ m.delta(pov_premium, 0) }} vs set{% endif %}</span>
+    {% endif %}
+    <span class="spacer"></span>
+    <input class="inp" type="search" name="parts_q" value="{{ parts_q }}" placeholder="Filter parts…" aria-label="Filter parts">
+  </form>
+  {% endif %}
+  <div class="table-scroll">
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th><th class="num">Avg each</th><th class="num">Lot value</th></tr>
+    {% for p in parts %}
+    <tr>
+      <td>{{ p.part_no }}</td>
+      <td>{{ p.part_name }}</td>
+      <td>{{ p.color_name or '—' }}</td>
+      <td class="num">{{ p.qty }}</td>
+      <td class="num">{{ p.avg_price|money(p.price_currency) if p.avg_price else '—' }}</td>
+      <td class="num">{{ (p.avg_price * p.qty)|money(p.price_currency) if p.avg_price else '—' }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+  {% if parts_summary.lots > parts|length %}
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">Showing {{ parts|length }} of {{ "{:,}".format(parts_summary.lots) }} lots — use the filter to narrow.</div>
+  {% endif %}
+  {% else %}
+  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  {% endif %}
+</div>
+
+{% if related %}
+<div class="card">
+  <h3>More from {{ item.theme }} <span class="soft">— closest by release year</span></h3>
+  <div class="relgrid">
+    {% for r in related %}
+    <a class="relcard" href="{{ u('/sets/' ~ r.item_id) }}">
+      <img src="{{ img_url(r.item_id, 'S') }}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>{{ r.item_id }}</b> {{ (r.name or '')[:34] }}</div>
+      <div class="relmeta">{{ r.year or '' }} · {{ r.value|money(ccy) }}
+        {% if r.growth is not none %}· {{ m.delta(r.growth, 0) }}{% endif %}</div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+<!--
+  Trimmed copy of https://www.bricklink.com/catalogPOV.asp?itemType=S&itemNo=75192…
+  as served in 2026-08. The wording of the totals is what matters here: the
+  page no longer says "Average Value of N Lots", so the previous regex matched
+  nothing and every set logged "POV total not found on page".
+  Captured by: python -m brickonomy.doctor 75192 --source pov --dump
+-->
+<html>
+<head><title>BrickLink Price Guide</title></head>
+<body>
+<div class="pov-header">Price Guide : Part Out Value</div>
+<div class="pov-item">75192 Millennium Falcon - UCS {2nd edition}</div>
+<table>
+  <tr>
+    <td>* Average of last 6 months Sales:</td>
+    <td>US $1,234.66</td>
+    <td>Including 7521 Items in 684 Lots.</td>
+  </tr>
+  <tr>
+    <td>Current Items For Sale Average:</td>
+    <td>US $1,620.09</td>
+    <td>Including 7521 Items in 684 Lots.</td>
+  </tr>
+</table>
+</body>
+</html>

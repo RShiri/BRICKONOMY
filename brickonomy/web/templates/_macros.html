@@ -1,0 +1,80 @@
+{% macro delta(pct, digits=1) -%}
+  {%- if pct is none -%}
+    <span style="color:var(--muted)">—</span>
+  {%- elif pct >= 0 -%}
+    <span class="delta up">▲ {{ "%.*f"|format(digits, pct) }}%</span>
+  {%- else -%}
+    <span class="delta down">▼ {{ "%.*f"|format(digits, -pct) }}%</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro phase_chip(ph) -%}
+  {%- if ph.phase == 'NEW' -%}
+    <span class="chip"><span class="dot" style="background:var(--s3)"></span>Available</span>
+  {%- elif ph.phase == 'EOL WATCH' -%}
+    <span class="chip"><span class="dot" style="background:var(--warn)"></span>EOL watch</span>
+  {%- elif ph.phase in ('RETIRED_ACCEL', 'RETIRED_STABLE') -%}
+    <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
+  {%- else -%}
+    <span class="chip"><span class="dot" style="background:var(--muted)"></span>Unknown</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro confidence_chip(c) -%}
+  {%- if c == 'HIGH' -%}<span class="chip">● HIGH</span>
+  {%- elif c == 'MEDIUM' -%}<span class="chip">◑ MEDIUM</span>
+  {%- elif c == 'LOW' -%}<span class="chip">◐ LOW</span>
+  {%- else -%}<span class="chip" style="color:var(--muted)">—</span>{%- endif -%}
+{%- endmacro %}
+
+{% macro rating_chip(rating) -%}
+  {%- if rating == 'EXCELLENT' -%}<span class="chip rating-excellent">★ Excellent</span>
+  {%- elif rating == 'GREAT INVEST' -%}<span class="chip rating-great">◆ Great invest</span>
+  {%- elif rating == 'GOOD' -%}<span class="chip rating-good">● Good</span>
+  {%- else -%}<span class="chip" style="color:var(--muted)">—</span>{%- endif -%}
+{%- endmacro %}
+
+{% macro toplist(title, items, ccy, img_url, img_type='S', metric='value', note='') -%}
+<div class="card">
+  <h3>{{ title }}{% if note %} <span class="soft">— {{ note }}</span>{% endif %}</h3>
+  <div class="table-scroll">
+  <table>
+    {% for i in items %}
+    <tr>
+      <td>{{ thumb(i.item_id, i.item_type or img_type, img_url) }}<a href="{{ u('/sets/' ~ i.item_id) }}">{{ i.item_id }} {{ (i.name or '')[:30] }}</a></td>
+      <td class="num">{{ i.value|money(ccy) if i.value else '—' }}</td>
+      <td class="num">
+        {%- if metric == 'growth' -%}{{ delta(i.growth) }}
+        {%- elif metric == 'ppp' -%}{{ i.ppp|money(ccy) }}<span style="color:var(--muted)">/part</span>
+        {%- elif metric == 'year' -%}<span style="color:var(--muted)">{{ i.year or '—' }}</span>
+        {%- endif -%}
+      </td>
+    </tr>
+    {% else %}
+    <tr><td style="color:var(--muted)">Not enough scanned data yet.</td></tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro autoscan_banner(info, item_id) -%}
+{%- if info %}
+<div class="autoscan" id="autoScan" data-item="{{ item_id }}">
+  <span class="spinner"></span>
+  <span id="autoScanText">
+    {%- if info.age_days is none %}No prices yet — scanning this item now, about 30 seconds.
+    {%- elif info.state == 'scanning' %}Prices are {{ info.age_days }} days old — refreshing now.
+    {%- else %}Prices are {{ info.age_days }} days old — queued for a refresh
+      {%- if info.position > 1 %}, {{ info.position - 1 }} ahead{% endif %}.
+    {%- endif %}
+  </span>
+  <span class="soft">The page updates by itself when it finishes.</span>
+</div>
+{%- endif %}
+{%- endmacro %}
+
+{% macro thumb(item_id, item_type, img_url) -%}
+  <img class="thumb" src="{{ img_url(item_id, item_type) }}" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">
+{%- endmacro %}

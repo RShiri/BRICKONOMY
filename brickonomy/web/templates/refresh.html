@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Refresh & Sources · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">Data engine</div>
+<h1>Refresh &amp; Sources</h1>
+<p class="sub">Every scraping job lives here — nothing needs the command line.
+  {{ "{:,}".format(covered) }} of {{ "{:,}".format(n_items) }} catalog items have been priced
+  ({{ "{:,}".format(fresh) }} still fresh).</p>
+
+<div class="card">
+  <h3>1 · Source health</h3>
+  <div class="table-scroll">
+  <table>
+    <tr><th>Source</th><th>Method</th><th>Data</th><th class="num">Items (24h)</th><th>Last scan</th><th>Status</th></tr>
+    {% set meta = {
+      'bricklink': ('headless Chrome', 'sold 6m + current stock, new & used, inventories', 2),
+      'ebay': ('headless Chrome', 'Buy-It-Now asks' ~ (', + sold/completed (signed in)' if ebay_signed_in else ' only — sold needs sign-in'), 3),
+      'brickowl': ('plain HTTP', 'current asks, new & used (no sold history)', 4),
+    } %}
+    {% for s in sources_health %}
+    <tr>
+      <td style="white-space:nowrap"><span class="dot" style="background:var(--s{{ meta[s.source][2] }})"></span>
+        <b>{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[s.source] }}</b></td>
+      <td>{{ meta[s.source][0] }}</td>
+      <td>{{ meta[s.source][1] }}</td>
+      <td class="num">{{ s.items_24h }}</td>
+      <td>{{ s.last_scan[:16].replace('T', ' ') if s.last_scan else 'never' }}</td>
+      <td>{% if s.source in cfg.sources_enabled %}<span class="chip"><span class="dot" style="background:var(--good)"></span>enabled</span>
+          {% else %}<span class="chip"><span class="dot" style="background:var(--muted)"></span>disabled</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td style="white-space:nowrap"><span class="dot" style="background:var(--muted)"></span> <b>Exchange rates</b></td>
+      <td>frankfurter.app (ECB)</td>
+      <td>USD / EUR / GBP / ILS daily</td>
+      <td class="num">—</td>
+      <td>{{ rates.source or '—' }}</td>
+      <td>{% if rates.stale %}<span class="chip"><span class="dot" style="background:var(--warn)"></span>stale/fallback</span>
+          {% else %}<span class="chip"><span class="dot" style="background:var(--good)"></span>fresh</span>{% endif %}</td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>2 · Run a scan</h3>
+    <form class="searchrow" method="post" action="/refresh" style="margin-bottom:10px">
+      <select class="inp" name="scope">
+        <option value="portfolio">Portfolio ({{ n_portfolio }} sets)</option>
+        <option value="stale">Stale only (TTL &gt; {{ cfg.scrape_ttl_days|int }} days)</option>
+        <option value="all">Everything ({{ n_items }} items)</option>
+      </select>
+      <select class="inp" name="theme" style="max-width:230px">
+        <option value="">…or a whole theme</option>
+        {% for t in coverage %}
+        <option value="{{ t.theme }}">{{ t.theme }} — {{ t.left }} left of {{ t.total }}</option>
+        {% endfor %}
+      </select>
+      <input class="inp" type="text" name="item_id" placeholder="…or a single set, e.g. 75192" style="width:190px">
+      <label class="chip"><input type="checkbox" name="force" value="true" style="accent-color:var(--accent)"> force</label>
+      <button class="btn-primary" type="submit" {{ 'disabled' if job.running }}>▶ Start scan</button>
+    </form>
+    <div id="scanStatus" data-running="{{ 1 if job.running else 0 }}">
+      {% if job.running %}
+      <div style="color:var(--ink-2)">Scanning <span id="scanDone">{{ job.done }}</span> / <span id="scanTotal">{{ job.total }}</span>
+        <span id="scanCurrent">{% if job.current_item %}— currently: <b>{{ job.current_item }}</b>{% endif %}</span></div>
+      {% else %}
+      <div style="color:var(--ink-2)">No scan running.{% if job.finished_at %} Last finished {{ job.finished_at[:16].replace('T',' ') }}.{% endif %}</div>
+      {% endif %}
+      <div class="progress"><div id="scanBar" style="width:{{ (job.done / job.total * 100)|round if job.total else 0 }}%"></div></div>
+      <div class="log" id="scanLog" style="margin-top:12px">{% for line in job.log %}{{ line }}
+{% endfor %}</div>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:10px">
+      Scanning is deliberately slow — a few seconds between requests, about half a minute per set.
+      Schedule it with cron: <code>0 6 * * * cd &lt;repo&gt; &amp;&amp; python -m brickonomy.refresh --scope stale</code>
+    </div>
+
+    <h3 style="margin-top:18px">3 · Catalog &amp; publishing</h3>
+    <div class="searchrow">
+      <form method="post" action="/refresh/action" style="margin:0">
+        <input type="hidden" name="action" value="catalog">
+        <button class="btn-ghost" type="submit" {{ 'disabled' if job.running }}>⬇ Import full LEGO catalog</button>
+      </form>
+      <form method="post" action="/refresh/action" style="margin:0">
+        <input type="hidden" name="action" value="bl_tree">
+        <button class="btn-ghost" type="submit" {{ 'disabled' if job.running }}>🗂 BrickLink themes</button>
+      </form>
+      <form method="post" action="/refresh/action" style="margin:0">
+        <input type="hidden" name="action" value="export">
+        <button class="btn-ghost" type="submit" {{ 'disabled' if job.running }}>⬆ Rebuild published site</button>
+      </form>
+      <form method="post" action="/refresh/action" style="margin:0">
+        <input type="hidden" name="action" value="ebay_check">
+        <button class="btn-ghost" type="submit" {{ 'disabled' if job.running }}>⟳ Check eBay session</button>
+      </form>
+      <form method="post" action="/refresh/action" style="margin:0">
+        <input type="hidden" name="action" value="doctor">
+        <button class="btn-ghost" type="submit" {{ 'disabled' if job.running }}>🩺 Diagnose sources</button>
+      </form>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Catalog import refreshes names, years and part counts for every set and minifig from
+      Rebrickable (no prices). Rebuild writes <code>docs/</code> for GitHub Pages.
+      {% if ebay_signed_in %}
+      eBay is <b style="color:var(--good)">signed in</b>, so scans include sold prices.
+      {% else %}
+      eBay sold prices need a one-time sign-in — it opens a browser window, so it runs from a
+      terminal: <code>python -m brickonomy.ebay_login</code>. Until then eBay contributes asking
+      prices only, at LOW confidence.
+      {% endif %}
+    </div>
+  </div>
+  <div class="card">
+    <h3>4 · Configuration <span class="soft">— brickonomy/config.json / BRICKONOMY_* env</span></h3>
+    <dl class="kv">
+      <dt>Display currency</dt><dd>{{ cfg.display_currency }} <span style="color:var(--muted)">(switch in header; cookie per browser)</span></dd>
+      <dt>Scrape TTL</dt><dd>{{ cfg.scrape_ttl_days|int }} days <span style="color:var(--muted)">— sources scanned more recently are skipped</span></dd>
+      <dt>Polite delay</dt><dd>{{ cfg.request_delay_range[0] }} – {{ cfg.request_delay_range[1] }} s randomized between requests</dd>
+      <dt>Sources enabled</dt><dd>{{ cfg.sources_enabled|join(' · ') }}</dd>
+      <dt>Rates TTL</dt><dd>{{ cfg.rates_ttl_hours|int }} h, cached fallback if offline</dd>
+      <dt>Databases</dt><dd>brickonomy.db (snapshots) · bricklink_data.db (legacy, read-only seed)</dd>
+      <dt>Auto-scan on view</dt><dd>{% if cfg.auto_scan_on_view_days %}opening a set older than
+        {{ cfg.auto_scan_on_view_days|int }} days queues a scan for it{% else %}off{% endif %}</dd>
+      <dt>Fixture mode</dt><dd>{{ 'on — parsing saved HTML, no network' if cfg.fixture_mode else 'off' }}</dd>
+    </dl>
+    <div style="color:var(--muted);font-size:12px;margin-top:10px">
+      First run: <code>python -m brickonomy.importer</code> seeds the catalog from your existing
+      scraped items and BrickEconomy CSV, so charts start with a data point instead of empty.
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>5 · Scan coverage <span class="soft">— what has been scanned and what is still missing</span></h3>
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">{{ "{:,}".format(covered) }} of {{ "{:,}".format(n_items) }} items scanned</span>
+    <span class="chip">fresh = scanned within {{ (cfg.auto_scan_on_view_days or 30)|int }} days</span>
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="coverageTable" placeholder="Filter themes…" aria-label="Filter themes">
+  </div>
+  <div class="table-scroll">
+  <table id="coverageTable" data-sortable>
+    <thead>
+      <tr><th>Theme</th><th class="num">Items</th><th class="num">Scanned</th>
+          <th class="num">Fresh</th><th class="num">Stale</th><th class="num">Left</th>
+          <th>Progress</th><th>Last scan</th>{% if not static_mode %}<th></th>{% endif %}</tr>
+    </thead>
+    <tbody>
+      {% for t in coverage %}
+      <tr>
+        <td><a href="{{ u('/sets?theme=' ~ t.theme|urlencode) }}">{{ t.theme }}</a></td>
+        <td class="num" data-v="{{ t.total }}">{{ "{:,}".format(t.total) }}</td>
+        <td class="num" data-v="{{ t.scanned }}">{{ "{:,}".format(t.scanned) }}</td>
+        <td class="num" data-v="{{ t.fresh }}">{{ "{:,}".format(t.fresh) }}</td>
+        <td class="num" data-v="{{ t.stale }}">{% if t.stale %}<span style="color:var(--warn)">{{ "{:,}".format(t.stale) }}</span>{% else %}—{% endif %}</td>
+        <td class="num" data-v="{{ t.left }}">{{ "{:,}".format(t.left) }}</td>
+        <td data-v="{{ t.pct }}" style="min-width:110px">
+          <div class="progress" style="margin:0"><div style="width:{{ t.pct }}%"></div></div>
+          <span style="color:var(--muted);font-size:11px">{{ t.pct }}%</span>
+        </td>
+        <td data-v="{{ t.last_scan or '' }}" style="color:var(--ink-2)">{{ t.last_scan[:10] if t.last_scan else '—' }}</td>
+        {% if not static_mode %}
+        <td>
+          <form method="post" action="/refresh" style="margin:0">
+            <input type="hidden" name="scope" value="theme">
+            <input type="hidden" name="theme" value="{{ t.theme }}">
+            <button class="chip" type="submit" {{ 'disabled' if job.running }}>▶ Scan</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Themes · Brickonomy{% endblock %}
+{% block content %}
+
+<div class="eyebrow">Analysis</div>
+<h1>Themes</h1>
+<p class="sub">How each LEGO theme is performing — total tracked value, average growth per year, and the strongest set in each.</p>
+
+<div class="card">
+  <h3>Average growth per year <span class="soft">— by theme</span></h3>
+  <div class="bars">
+    {% for t in themes if t.avg_growth is not none %}
+    <div class="row">
+      <a href="{{ u('/sets?theme=' ~ t.theme|urlencode) }}" style="color:var(--ink);text-decoration:none">{{ t.theme }}</a>
+      <div class="track diverging">
+        {% set pct = (t.avg_growth / growth_scale * 50)|round(1) %}
+        {% if t.avg_growth >= 0 %}
+        <div class="fill up" style="left:50%;width:{{ pct }}%"></div>
+        {% else %}
+        <div class="fill down" style="left:{{ 50 + pct }}%;width:{{ -pct }}%"></div>
+        {% endif %}
+        <div class="zero"></div>
+      </div>
+      <span class="num">{{ m.delta(t.avg_growth) }}</span>
+    </div>
+    {% else %}
+    <div style="color:var(--muted)">Growth needs either a retail price or two scans a week apart.</div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h3>All themes</h3>
+  <div class="table-scroll">
+  <table id="themesTable">
+    <tr>
+      <th>Theme</th><th class="num">Items</th><th class="num">Years</th>
+      <th class="num">Total value</th><th class="num">Avg value</th>
+      <th class="num">Growth / yr</th><th class="num">vs retail</th><th>Best performer</th>
+    </tr>
+    {% for t in themes %}
+    <tr>
+      <td><a href="{{ u('/sets?theme=' ~ t.theme|urlencode) }}"><b>{{ t.theme }}</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:{{ (t.total / max_total * 100)|round(1) }}%"></div>
+        </div>
+      </td>
+      <td class="num">{{ t.count }}</td>
+      <td class="num">{% if t.span %}{{ t.span[0] }}–{{ t.span[1] }}{% else %}—{% endif %}</td>
+      <td class="num"><b>{{ t.total|money(ccy) }}</b></td>
+      <td class="num">{{ t.avg_value|money(ccy) if t.avg_value else '—' }}</td>
+      <td class="num">{{ m.delta(t.avg_growth) }}</td>
+      <td class="num">{{ m.delta(t.vs_retail, 0) }}</td>
+      <td>{% if t.best %}<a href="{{ u('/sets/' ~ t.best.item_id) }}">{{ t.best.item_id }} {{ t.best.name[:26] }}</a>
+          <span style="color:var(--muted)">({{ "%+.0f"|format(t.best.growth) }}%/yr)</span>{% else %}—{% endif %}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="8" style="color:var(--muted);text-align:center">No themes yet — run <code>python -m brickonomy.catalog --tree</code> or import your portfolio.</td></tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+
+{% endblock %}
