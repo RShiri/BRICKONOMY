@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>76218 Sanctum Sanctorum · Brickonomy</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-static="1" data-base="../">
+<header class="app">
+  <a class="logo" href="../index.html">
+    <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#38d4e0"/>
+      </linearGradient></defs>
+      <rect x="4"  y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="15" y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="0" y="4" width="26" height="16" rx="2.5" fill="url(#lg)"/>
+    </svg>
+    Brick<b>onomy</b>
+  </a>
+  <nav class="tabs">
+    
+    <a href="../index.html" class="">Dashboard</a>
+    <a href="../sets/index.html" class="active">Sets</a>
+    <a href="../minifigs.html" class="">Minifigs</a>
+    <a href="../themes.html" class="">Themes</a>
+    <a href="../deals.html" class="">Deals</a>
+    <a href="../portfolio.html" class="">Portfolio</a>
+    
+  </nav>
+  <div class="spacer"></div>
+  <div class="sitesearch">
+    <input class="inp" id="siteSearch" type="search" autocomplete="off"
+           placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
+    <div class="sresults" id="siteSearchResults" hidden></div>
+  </div>
+  
+  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  
+</header>
+
+<main>
+
+
+
+
+<div class="sethead">
+  <figure class="setimg" style="margin:0">
+    <img src="https://img.bricklink.com/ItemImage/SN/0/76218-1.png" alt="Sanctum Sanctorum"
+         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>(76218)</div>'">
+  </figure>
+  <div style="flex:1;min-width:280px">
+    <div class="eyebrow">Super Heroes Marvel · Doctor Strange in the Multiverse of Madness</div>
+    <h1 style="font-size:26px">Sanctum Sanctorum <span style="color:var(--muted);font-weight:400">· 76218</span></h1>
+    <p class="sub" style="margin-bottom:6px">
+      Released 2022
+       · Retail ₪743
+    </p>
+    <div class="facts">
+      <span class="chip">🧱 2,708 parts</span>
+      <span class="chip">🧍 9 minifigs</span>
+      <span class="chip">⚖️ 3,404 g</span>
+      <span class="chip">₪0.33 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="19"
+            data-new="23"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price.">
+        🧍 19% in figs</span>
+      
+      <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
+      
+    </div>
+    
+    
+    <div class="phasebar" style="margin-top:16px">
+      <div class="phase " style="flex:4">Available 2022–2025</div>
+      <div class="phase " style="flex:2">Retirement</div>
+      <div class="phase current" style="flex:2">Acceleration</div>
+      <div class="phase " style="flex:3">Steady growth</div>
+    </div>
+    <div class="phaselbl"><span style="flex:4">2022</span><span style="flex:2">2025</span><span style="flex:2">2026</span><span style="flex:3">2027 →</span></div>
+    
+  </div>
+</div>
+
+<div class="tiles" style="margin-top:16px">
+  <div class="tile">
+    <div class="label">Value — new / sealed</div>
+    <div class="value">₪903</div>
+    <div class="delta">
+      <span class="delta up">▲ 22%</span> vs retail
+       · +5.0%/yr
+    </div>
+  </div>
+  <div class="tile">
+    <div class="label">Value — used</div>
+    <div class="value">₪844</div>
+    <div class="delta"><span class="chip">● HIGH</span></div>
+  </div>
+  <div class="tile">
+    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">₪822</div>
+    <div class="delta">trend estimate · ±20% band</div>
+  </div>
+  <div class="tile">
+    <div class="label">Buy target</div>
+    <div class="value">₪723</div>
+    <div class="delta">80% of the BrickLink average</div>
+  </div>
+</div>
+
+
+<div class="dealbanner">
+  <div>
+    <span class="chip rating-good">● Good</span>
+    <b>Buy signal</b> — cheapest clean listing is
+    <b>₪705</b> on
+    BrickLink,
+    <b>15%</b> under market after fees
+    (potential ₪106).
+  </div>
+  <a class="btn-ghost" href="../deals.html">All deals →</a>
+</div>
+
+
+<div class="card">
+  <h3>Price history &amp; forecast <span class="soft">(ILS, BrickLink average · new/sealed)</span>
+    <span class="rangebtns" role="group" aria-label="Chart range">
+      <button class="rangebtn" data-range="365">1Y</button>
+      <button class="rangebtn" data-range="1095">3Y</button>
+      <button class="rangebtn active" data-range="0">All</button>
+    </span>
+  </h3>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--s1)"></span>Value (new)</span>
+    <span><span class="sw" style="background:var(--s5)"></span>Used</span>
+    <span><span class="sw" style="background:var(--s2)"></span>BrickLink</span>
+    <span><span class="sw" style="background:var(--s3)"></span>eBay</span>
+    <span><span class="sw" style="background:var(--s4)"></span>BrickOwl</span>
+    <span><span class="sw" style="background:var(--s1);opacity:.35"></span>Forecast ±20%</span>
+  </div>
+  <div class="chart-wrap"><canvas id="historyChart" data-item="76218"
+       data-retired="2025"></canvas></div>
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Points before today are scraped snapshots; the dashed line is a trend estimate from observed growth and retirement phase.
+    The vertical marker is the estimated retirement (2025).
+  </div>
+</div>
+
+
+<div class="two-col">
+  
+  <div class="card">
+    <h3>Value vs retail</h3>
+    <div class="vsbars">
+      <div class="vsrow"><span>Retail</span>
+        <div class="track"><div class="fill retail" style="width:82.3%"></div></div>
+        <span class="num">₪743</span></div>
+      <div class="vsrow"><span>Value new</span>
+        <div class="track"><div class="fill" style="width:100.0%"></div></div>
+        <span class="num">₪903</span></div>
+      <div class="vsrow"><span>Value used</span>
+        <div class="track"><div class="fill used" style="width:93.4%"></div></div>
+        <span class="num">₪844</span></div>
+    </div>
+    
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is <span class="delta up">▲ 22%</span> today,
+      compounding at +5.0% a year.
+    </div>
+    
+  </div>
+  
+  
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">₪0.33</div>
+        <div class="delta">2,708 parts</div>
+      </div>
+      
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">Super Heroes Marvel average</div>
+        <div class="value" style="font-size:22px">₪1.75</div>
+        <div class="delta up">
+          −81% vs theme
+        </div>
+      </div>
+      
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  
+</div>
+
+
+
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to ILS</span></h3>
+  <div class="three-col">
+    
+      
+      
+      <div class="best">
+        <span class="tag">Best deal</span>
+        <div><span class="dot" style="background:var(--s2)"></span> <b>BrickLink</b></div>
+        <div class="price">₪705</div>
+        <div class="meta">₪705 native</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
+        <div class="price">₪3,091</div>
+        <div class="meta">$1,040 native<br>“LEGO MARVEL 76218 Sanctum Sanctorum RETIRED PRODUCT Opens in a new window or tab”</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s4)"></span> <b>BrickOwl</b></div>
+        <div class="price">₪923</div>
+        <div class="meta">₪923 native<br>“New (Sealed) LEGO Sanctum Sanctorum Set 76218 2 ILS 923.32 ILS 1,093.22 The Brickest Link (3) Shipping ILS 169”</div>
+      </div>
+      
+    
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="207.04"
+              data-parts="911.74"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪207 · 19%</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪912 · 81%</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪1,119</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at new-condition
+        prices. Minifigures are counted whole and the remainder is the loose parts.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="card" id="importCard"
+     data-vat="18.0"
+     data-ship-usd="25.0"
+     data-ship-rate="2.9728"
+     data-ccy="ILS">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT 18%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr data-cond="new" data-base="903.24">
+        <td>New / sealed</td>
+        <td class="num">₪903</td>
+        <td class="num">₪163</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪1,140</b></td>
+      </tr>
+      
+      
+      
+      
+      <tr data-cond="used" data-base="843.61">
+        <td>Used</td>
+        <td class="num">₪844</td>
+        <td class="num">₪152</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪1,070</b></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="25"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
+
+
+
+<div>
+  <div class="card">
+    <h3>Sources — latest scan</h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Source</th><th class="num">Market new</th><th class="num">Market used</th>
+          <th class="num">Sold</th><th class="num">Listings</th><th>Native</th><th>Confidence</th></tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink
+            <span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
+            </td>
+        <td class="num">₪881</td>
+        <td class="num">₪801</td>
+        <td class="num">130</td>
+        <td class="num">97</td>
+        <td>ILS</td>
+        <td><span class="chip">● HIGH</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪2,891</td>
+        <td class="num">₪2,171</td>
+        <td class="num">61</td>
+        <td class="num">31</td>
+        <td>USD</td>
+        <td><span class="chip">● HIGH</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪1,026</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">8</td>
+        <td>ILS</td>
+        <td><span class="chip">◐ LOW</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+    </table>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      The headline value is <b>BrickLink's 6-month sold average</b> — completed sales, so it is
+      what the set is actually worth. eBay and BrickOwl are still scraped and still power the
+      "cheapest right now" panel, but they do not move the valuation: eBay asks run 2–3× over
+      what the same set sells for, and BrickOwl is a thin market. Junk listings
+      (instructions-only, minifig-only, incomplete, bulk lots) are filtered before pricing.
+    </div>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>Minifigures <span class="soft">— 9 in this set<span id="figsTotalLabel">, ₪159 together</span></span></h3>
+  
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪159"
+         data-total-new="₪207">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0832.html" title="Karl Mordo - Sand Green Suit"
+       data-value="26.14" data-name="karl mordo - sand green suit" data-qty="1"
+       data-v-used="26.14" data-v-new="32.4"
+       data-price-used="₪26.14"
+       data-price-new="₪32.40"
+       data-share-used="3.1% of set"
+       data-share-new="3.6% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0832.png" alt="Karl Mordo - Sand Green Suit" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0832</div>
+      <div class="figtile-name">Karl Mordo - Sand Green Suit</div>
+      <div class="figtile-value">₪26.14</div>
+      <div class="figtile-share">3.1% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0831.html" title="The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair with Tiara"
+       data-value="20.89" data-name="the scarlet witch (wanda maximoff) - plain legs, medium nougat hair with tiara" data-qty="1"
+       data-v-used="20.89" data-v-new="23.38"
+       data-price-used="₪20.89"
+       data-price-new="₪23.38"
+       data-share-used="2.5% of set"
+       data-share-new="2.6% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0831.png" alt="The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair with Tiara" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0831</div>
+      <div class="figtile-name">The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair with Tiara</div>
+      <div class="figtile-value">₪20.89</div>
+      <div class="figtile-share">2.5% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0833.html" title="Dead Strange"
+       data-value="20.66" data-name="dead strange" data-qty="1"
+       data-v-used="20.66" data-v-new="24.1"
+       data-price-used="₪20.66"
+       data-price-new="₪24.10"
+       data-share-used="2.4% of set"
+       data-share-new="2.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0833.png" alt="Dead Strange" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0833</div>
+      <div class="figtile-name">Dead Strange</div>
+      <div class="figtile-value">₪20.66</div>
+      <div class="figtile-share">2.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0829.html" title="Spider-Man - Printed Dark Blue Arms and Red Feet"
+       data-value="20.61" data-name="spider-man - printed dark blue arms and red feet" data-qty="1"
+       data-v-used="20.61" data-v-new="31.73"
+       data-price-used="₪20.61"
+       data-price-new="₪31.73"
+       data-share-used="2.4% of set"
+       data-share-new="3.5% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0829.png" alt="Spider-Man - Printed Dark Blue Arms and Red Feet" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0829</div>
+      <div class="figtile-name">Spider-Man - Printed Dark Blue Arms and Red Feet</div>
+      <div class="figtile-value">₪20.61</div>
+      <div class="figtile-share">2.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0830.html" title="Sinister Strange"
+       data-value="20.29" data-name="sinister strange" data-qty="1"
+       data-v-used="20.29" data-v-new="26.37"
+       data-price-used="₪20.29"
+       data-price-new="₪26.37"
+       data-share-used="2.4% of set"
+       data-share-new="2.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0830.png" alt="Sinister Strange" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0830</div>
+      <div class="figtile-name">Sinister Strange</div>
+      <div class="figtile-value">₪20.29</div>
+      <div class="figtile-share">2.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0828.html" title="Iron Man - Mark 50 Armor, Large Helmet Visor"
+       data-value="20.22" data-name="iron man - mark 50 armor, large helmet visor" data-qty="1"
+       data-v-used="20.22" data-v-new="31.78"
+       data-price-used="₪20.22"
+       data-price-new="₪31.78"
+       data-share-used="2.4% of set"
+       data-share-new="3.5% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0828.png" alt="Iron Man - Mark 50 Armor, Large Helmet Visor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0828</div>
+      <div class="figtile-name">Iron Man - Mark 50 Armor, Large Helmet Visor</div>
+      <div class="figtile-value">₪20.22</div>
+      <div class="figtile-share">2.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0827.html" title="Ebony Maw - Light Bluish Gray Head"
+       data-value="13.92" data-name="ebony maw - light bluish gray head" data-qty="1"
+       data-v-used="13.92" data-v-new="18.05"
+       data-price-used="₪13.92"
+       data-price-new="₪18.05"
+       data-share-used="1.7% of set"
+       data-share-new="2.0% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0827.png" alt="Ebony Maw - Light Bluish Gray Head" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0827</div>
+      <div class="figtile-name">Ebony Maw - Light Bluish Gray Head</div>
+      <div class="figtile-value">₪13.92</div>
+      <div class="figtile-share">1.7% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0802.html" title="Doctor Strange - Brooch, Flexible Rubber Cape"
+       data-value="9.67" data-name="doctor strange - brooch, flexible rubber cape" data-qty="1"
+       data-v-used="9.67" data-v-new="11.35"
+       data-price-used="₪9.67"
+       data-price-new="₪11.35"
+       data-share-used="1.1% of set"
+       data-share-new="1.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0802.png" alt="Doctor Strange - Brooch, Flexible Rubber Cape" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0802</div>
+      <div class="figtile-name">Doctor Strange - Brooch, Flexible Rubber Cape</div>
+      <div class="figtile-value">₪9.67</div>
+      <div class="figtile-share">1.1% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0826.html" title="Wong - Dark Red Robe, Dark Blue Legs"
+       data-value="6.95" data-name="wong - dark red robe, dark blue legs" data-qty="1"
+       data-v-used="6.95" data-v-new="7.88"
+       data-price-used="₪6.95"
+       data-price-new="₪7.88"
+       data-share-used="0.8% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0826.png" alt="Wong - Dark Red Robe, Dark Blue Legs" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0826</div>
+      <div class="figtile-name">Wong - Dark Red Robe, Dark Blue Legs</div>
+      <div class="figtile-value">₪6.95</div>
+      <div class="figtile-share">0.8% of set</div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0832.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0832.html"><b>sh0832</b> Karl Mordo - Sand Green Suit</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="26.14"
+            data-v-used="26.14" data-v-new="32.4"
+            data-price-used="₪26.14"
+            data-price-new="₪32.40"
+            >₪26.14</td>
+        <td class="num figcell-share" data-v="3.098588210191913"
+            data-v-used="3.098588210191913" data-v-new="3.587086488640893"
+            data-share-used="3.1%"
+            data-share-new="3.6%"
+            >3.1%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0831.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0831.html"><b>sh0831</b> The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair with Tiara</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="20.89"
+            data-v-used="20.89" data-v-new="23.38"
+            data-price-used="₪20.89"
+            data-price-new="₪23.38"
+            >₪20.89</td>
+        <td class="num figcell-share" data-v="2.4762627280378378"
+            data-v-used="2.4762627280378378" data-v-new="2.5884593242106195"
+            data-share-used="2.5%"
+            data-share-new="2.6%"
+            >2.5%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0833.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0833.html"><b>sh0833</b> Dead Strange</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="20.66"
+            data-v-used="20.66" data-v-new="24.1"
+            data-price-used="₪20.66"
+            data-price-new="₪24.10"
+            >₪20.66</td>
+        <td class="num figcell-share" data-v="2.448998945010135"
+            data-v-used="2.448998945010135" data-v-new="2.6681723572915286"
+            data-share-used="2.4%"
+            data-share-new="2.7%"
+            >2.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0829.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0829.html"><b>sh0829</b> Spider-Man - Printed Dark Blue Arms and Red Feet</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="20.61"
+            data-v-used="20.61" data-v-new="31.73"
+            data-price-used="₪20.61"
+            data-price-new="₪31.73"
+            >₪20.61</td>
+        <td class="num figcell-share" data-v="2.4430720356562867"
+            data-v-used="2.4430720356562867" data-v-new="3.512909082857269"
+            data-share-used="2.4%"
+            data-share-new="3.5%"
+            >2.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0830.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0830.html"><b>sh0830</b> Sinister Strange</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="20.29"
+            data-v-used="20.29" data-v-new="26.37"
+            data-price-used="₪20.29"
+            data-price-new="₪26.37"
+            >₪20.29</td>
+        <td class="num figcell-share" data-v="2.405139815791657"
+            data-v-used="2.405139815791657" data-v-new="2.919489836588282"
+            data-share-used="2.4%"
+            data-share-new="2.9%"
+            >2.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0828.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0828.html"><b>sh0828</b> Iron Man - Mark 50 Armor, Large Helmet Visor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="20.22"
+            data-v-used="20.22" data-v-new="31.78"
+            data-price-used="₪20.22"
+            data-price-new="₪31.78"
+            >₪20.22</td>
+        <td class="num figcell-share" data-v="2.3968421426962694"
+            data-v-used="2.3968421426962694" data-v-new="3.518444710154555"
+            data-share-used="2.4%"
+            data-share-new="3.5%"
+            >2.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0827.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0827.html"><b>sh0827</b> Ebony Maw - Light Bluish Gray Head</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="13.92"
+            data-v-used="13.92" data-v-new="18.05"
+            data-price-used="₪13.92"
+            data-price-new="₪18.05"
+            >₪13.92</td>
+        <td class="num figcell-share" data-v="1.6500515641113784"
+            data-v-used="1.6500515641113784" data-v-new="1.9983614543200037"
+            data-share-used="1.7%"
+            data-share-new="2.0%"
+            >1.7%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0802.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0802.html"><b>sh0802</b> Doctor Strange - Brooch, Flexible Rubber Cape</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="9.67"
+            data-v-used="9.67" data-v-new="11.35"
+            data-price-used="₪9.67"
+            data-price-new="₪11.35"
+            >₪9.67</td>
+        <td class="num figcell-share" data-v="1.1462642690342693"
+            data-v-used="1.1462642690342693" data-v-new="1.2565873964837695"
+            data-share-used="1.1%"
+            data-share-new="1.3%"
+            >1.1%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0826.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0826.html"><b>sh0826</b> Wong - Dark Red Robe, Dark Blue Legs</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.95"
+            data-v-used="6.95" data-v-new="7.88"
+            data-price-used="₪6.95"
+            data-price-new="₪7.88"
+            >₪6.95</td>
+        <td class="num figcell-share" data-v="0.8238404001849196"
+            data-v-used="0.8238404001849196" data-v-new="0.8724148620521677"
+            data-share-used="0.8%"
+            data-share-new="0.9%"
+            >0.8%</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪159"
+              data-price-new="₪207"
+              >₪159</td>
+          <td class="num" id="figFootShare"
+              data-share-used="19%"
+              data-share-new="23%"
+              >19%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 19% of the used set price → not a part-out candidate (flag raises at 80%)."
+       data-note-new="Figs are 23% of the sealed set price → not a part-out candidate (flag raises at 80%).">
+    
+      Figs are <b>19% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
+  
+</div>
+
+<div class="card">
+  <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
+  
+  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+</div>
+
+
+<div class="card">
+  <h3>More from Super Heroes Marvel <span class="soft">— closest by release year</span></h3>
+  <div class="relgrid">
+    
+    <a class="relcard" href="../sets/76210.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76210-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76210</b> Hulkbuster</div>
+      <div class="relmeta">2022 · ₪1,500
+        · <span class="delta up">▲ 19%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/76215.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76215-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76215</b> Black Panther</div>
+      <div class="relmeta">2022 · ₪789
+        </div>
+    </a>
+    
+    <a class="relcard" href="../sets/76209.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76209-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76209</b> Thor&#39;s Hammer</div>
+      <div class="relmeta">2022 · ₪589
+        · <span class="delta up">▲ 13%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/76223.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76223-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76223</b> Nano Gauntlet</div>
+      <div class="relmeta">2022 · ₪408
+        </div>
+    </a>
+    
+    <a class="relcard" href="../sets/66711.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/66711-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>66711</b> Infinity Saga Collection</div>
+      <div class="relmeta">2022 · ₪238
+        </div>
+    </a>
+    
+    <a class="relcard" href="../sets/76216.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76216-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76216</b> Iron Man Armoury</div>
+      <div class="relmeta">2022 · ₪185
+        · <span class="delta down">▼ 14%</span></div>
+    </a>
+    
+  </div>
+</div>
+
+
+
+</main>
+
+<footer class="note">
+  Brickonomy · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
+  · static snapshot — run <code>python -m brickonomy.export</code> to update
+  
+</footer>
+
+<script src="../static/app.js"></script>
+</body>
+</html>

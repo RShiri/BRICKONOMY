@@ -14,15 +14,85 @@ pixel-identical to the live one) and saves every page/API response:
   /sets?theme=T         -> sets/theme-<slug>.html
   /sets/<id>            -> sets/<id>.html        (sets AND minifig pages)
   /themes, /deals       -> themes.html, deals.html
-  /portfolio            -> portfolio.html
+  /portfolio            -> portfolio.html        (encrypted, or omitted)
   /api/...              -> api/....json          (chart data + search index)
 
 Server-only UI (refresh, import, editing, currency switch) is hidden by the
 templates when BRICKONOMY_STATIC_EXPORT is set.
+
+The portfolio names what you own and what you paid for it, which a public
+Pages site would hand to anyone. It is therefore never published in the clear:
+
+  BRICKONOMY_PORTFOLIO_PASSWORD=... python -m brickonomy.export
+        publishes it AES-256-GCM encrypted behind that password
+
+  python -m brickonomy.export
+        omits the portfolio page and its history entirely
+
+There is deliberately no third option. See brickonomy/lockbox.py.
 """
 import argparse
+import json
 import shutil
 from pathlib import Path
+from types import SimpleNamespace
+
+
+def save_portfolio(client, out, save, log):
+    """Publish the portfolio encrypted, or not at all. Returns pages written.
+
+    Never in the clear: a public Pages site would otherwise hand every visitor
+    the list of what is owned and what was paid for it.
+    """
+    from . import lockbox
+    from .web import app as webapp
+
+    password = lockbox.get_password()
+    if not password:
+        # A stub, not nothing: every page's nav links to portfolio.html, and a
+        # missing file would be a dead link on the whole site.
+        stub = SimpleNamespace(url=SimpleNamespace(path="/portfolio"))
+        rendered = webapp.templates.get_template("portfolio_locked.html").render(
+            request=stub, lockbox=None, static_mode=True, base_path="",
+            u=webapp.static_url, ccy="ILS", ccy_symbol="₪",
+            currencies=[], rates={}, job={}, img_url=webapp.img_url,
+        )
+        (out / "portfolio.html").write_text(rendered, encoding="utf-8")
+        log("  · portfolio NOT published (set "
+            f"{lockbox.ENV_VAR} to publish it password-protected)")
+        return 1
+
+    webapp.STATIC_DEPTH = 0
+    page = client.get("/portfolio")
+    history = client.get("/api/portfolio/history")
+    if page.status_code != 200:
+        log(f"  ! skip /portfolio ({page.status_code})")
+        return 0
+
+    # Only the <main> block is secret; the surrounding chrome is the same shell
+    # every other page uses, and the unlock template re-renders it.
+    html = page.text
+    start, end = html.find("<main"), html.rfind("</main>")
+    inner = html[html.find(">", start) + 1:end] if start != -1 and end != -1 else html
+
+    blob = lockbox.encrypt(
+        {"html": inner,
+         "history": history.json() if history.status_code == 200 else None},
+        password,
+    )
+    # base.html reads request.url.path to mark the active nav tab; the page is
+    # rendered outside the request cycle, so a stub stands in for it.
+    stub = SimpleNamespace(url=SimpleNamespace(path="/portfolio"))
+    rendered = webapp.templates.get_template("portfolio_locked.html").render(
+        request=stub, lockbox=blob, static_mode=True, base_path="",
+        u=webapp.static_url, ccy="ILS", ccy_symbol="₪",
+        currencies=[], rates={}, job={}, img_url=webapp.img_url,
+    )
+    (out / "portfolio.html").write_text(rendered, encoding="utf-8")
+    log(f"  · portfolio published encrypted "
+        f"({len(blob['ciphertext']):,} bytes of ciphertext, "
+        f"PBKDF2 x{blob['iterations']:,})")
+    return 1
 
 
 def export(out_dir: str, ccy: str = "ILS", quiet: bool = False):
@@ -101,7 +171,7 @@ def _crawl(webapp, out_dir: str, quiet: bool):
     n_pages += save("/minifigs", "minifigs.html")
     n_pages += save("/themes", "themes.html")
     n_pages += save("/deals", "deals.html")
-    n_pages += save("/portfolio", "portfolio.html")
+    n_pages += save_portfolio(client, out, save, log)
     n_pages += save("/set", "set.html")          # client-rendered catalog page
     for theme in themes:
         n_pages += save(f"/sets?theme={theme}", f"sets/theme-{webapp.slugify(theme)}.html")
@@ -109,7 +179,10 @@ def _crawl(webapp, out_dir: str, quiet: bool):
         n_pages += save(f"/sets/{iid}", f"sets/{iid}.html")
     for iid in snap_ids:
         n_json += save(f"/api/sets/{iid}/history", f"api/sets/{iid}/history.json")
-    n_json += save("/api/portfolio/history", "api/portfolio/history.json")
+    # api/portfolio/history.json is NOT written: it is the portfolio's value
+    # over time, and publishing it beside an encrypted page would give away
+    # exactly what the encryption is protecting. When the page is protected
+    # the history travels inside the ciphertext instead.
     n_json += save("/api/index", "api/index.json")
 
     static_src = Path(webapp.BASE_DIR) / "static"

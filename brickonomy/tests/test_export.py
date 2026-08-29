@@ -46,6 +46,8 @@ class TestExport:
         assert (out / "sets" / "sw0879.html").exists()
         assert (out / "set.html").exists()                   # catalog fallback
         assert (out / "sets" / "theme-star-wars.html").exists()
+        # The portfolio page exists so the nav link is never dead, but with no
+        # password configured it carries no holdings — see test_lockbox.py.
         assert (out / "portfolio.html").exists()
         assert (out / "themes.html").exists()
         assert (out / "deals.html").exists()
@@ -74,14 +76,21 @@ class TestExport:
         assert 'href="../static/style.css"' in sub
         assert 'data-base="../"' in sub
 
-    def test_server_only_ui_hidden(self, seeded_db, tmp_path):
+    def test_server_only_ui_hidden(self, seeded_db, tmp_path, monkeypatch):
+        from brickonomy import lockbox
+        # With a password the portfolio ships too, so it is covered here.
+        monkeypatch.setenv(lockbox.ENV_VAR, "pw")
         out = tmp_path / "site"
         export(str(out), "ILS", quiet=True)
         for page in ("index.html", "portfolio.html", "sets/index.html"):
             html = (out / page).read_text(encoding="utf-8")
-            assert 'method="post"' not in html, page
             assert "Refresh &amp; Sources" not in html, page
-        assert "Preview import" not in (out / "portfolio.html").read_text(encoding="utf-8")
+            if page != "portfolio.html":
+                assert 'method="post"' not in html, page
+        locked = (out / "portfolio.html").read_text(encoding="utf-8")
+        # The unlock form is the one form allowed; it posts nowhere.
+        assert "Preview import" not in locked
+        assert 'action=' not in locked
 
     def test_history_json_parses(self, seeded_db, tmp_path):
         out = tmp_path / "site"

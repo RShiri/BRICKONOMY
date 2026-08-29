@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>76216 Iron Man Armoury · Brickonomy</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-static="1" data-base="../">
+<header class="app">
+  <a class="logo" href="../index.html">
+    <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#38d4e0"/>
+      </linearGradient></defs>
+      <rect x="4"  y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="15" y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="0" y="4" width="26" height="16" rx="2.5" fill="url(#lg)"/>
+    </svg>
+    Brick<b>onomy</b>
+  </a>
+  <nav class="tabs">
+    
+    <a href="../index.html" class="">Dashboard</a>
+    <a href="../sets/index.html" class="active">Sets</a>
+    <a href="../minifigs.html" class="">Minifigs</a>
+    <a href="../themes.html" class="">Themes</a>
+    <a href="../deals.html" class="">Deals</a>
+    <a href="../portfolio.html" class="">Portfolio</a>
+    
+  </nav>
+  <div class="spacer"></div>
+  <div class="sitesearch">
+    <input class="inp" id="siteSearch" type="search" autocomplete="off"
+           placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
+    <div class="sresults" id="siteSearchResults" hidden></div>
+  </div>
+  
+  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  
+</header>
+
+<main>
+
+
+
+
+<div class="sethead">
+  <figure class="setimg" style="margin:0">
+    <img src="https://img.bricklink.com/ItemImage/SN/0/76216-1.png" alt="Iron Man Armoury"
+         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>(76216)</div>'">
+  </figure>
+  <div style="flex:1;min-width:280px">
+    <div class="eyebrow">Super Heroes Marvel · Iron Man 2</div>
+    <h1 style="font-size:26px">Iron Man Armoury <span style="color:var(--muted);font-weight:400">· 76216</span></h1>
+    <p class="sub" style="margin-bottom:6px">
+      Released 2022
+       · Retail ₪268
+    </p>
+    <div class="facts">
+      <span class="chip">🧱 496 parts</span>
+      <span class="chip">🧍 8 minifigs</span>
+      <span class="chip">⚖️ 660 g</span>
+      <span class="chip">₪0.37 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="82"
+            data-new="84"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price.">
+        🧍 82% in figs</span>
+      
+      <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
+      
+    </div>
+    
+    
+    <div class="phasebar" style="margin-top:16px">
+      <div class="phase " style="flex:4">Available 2022–2025</div>
+      <div class="phase " style="flex:2">Retirement</div>
+      <div class="phase current" style="flex:2">Acceleration</div>
+      <div class="phase " style="flex:3">Steady growth</div>
+    </div>
+    <div class="phaselbl"><span style="flex:4">2022</span><span style="flex:2">2025</span><span style="flex:2">2026</span><span style="flex:3">2027 →</span></div>
+    
+  </div>
+</div>
+
+<div class="tiles" style="margin-top:16px">
+  <div class="tile">
+    <div class="label">Value — new / sealed</div>
+    <div class="value">₪185</div>
+    <div class="delta">
+      <span class="delta down">▼ 31%</span> vs retail
+       · -8.8%/yr
+    </div>
+  </div>
+  <div class="tile">
+    <div class="label">Value — used</div>
+    <div class="value">₪150</div>
+    <div class="delta"><span class="chip">◑ MEDIUM</span></div>
+  </div>
+  <div class="tile">
+    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">₪134</div>
+    <div class="delta">trend estimate · ±20% band</div>
+  </div>
+  <div class="tile">
+    <div class="label">Buy target</div>
+    <div class="value">₪148</div>
+    <div class="delta">80% of the BrickLink average</div>
+  </div>
+</div>
+
+
+<div class="dealbanner">
+  <div>
+    <span class="chip rating-excellent">★ Excellent</span>
+    <b>Buy signal</b> — cheapest clean listing is
+    <b>₪121</b> on
+    BrickLink,
+    <b>39%</b> under market after fees
+    (potential ₪47.81).
+  </div>
+  <a class="btn-ghost" href="../deals.html">All deals →</a>
+</div>
+
+
+<div class="card">
+  <h3>Price history &amp; forecast <span class="soft">(ILS, BrickLink average · new/sealed)</span>
+    <span class="rangebtns" role="group" aria-label="Chart range">
+      <button class="rangebtn" data-range="365">1Y</button>
+      <button class="rangebtn" data-range="1095">3Y</button>
+      <button class="rangebtn active" data-range="0">All</button>
+    </span>
+  </h3>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--s1)"></span>Value (new)</span>
+    <span><span class="sw" style="background:var(--s5)"></span>Used</span>
+    <span><span class="sw" style="background:var(--s2)"></span>BrickLink</span>
+    <span><span class="sw" style="background:var(--s3)"></span>eBay</span>
+    <span><span class="sw" style="background:var(--s4)"></span>BrickOwl</span>
+    <span><span class="sw" style="background:var(--s1);opacity:.35"></span>Forecast ±20%</span>
+  </div>
+  <div class="chart-wrap"><canvas id="historyChart" data-item="76216"
+       data-retired="2025"></canvas></div>
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Points before today are scraped snapshots; the dashed line is a trend estimate from observed growth and retirement phase.
+    The vertical marker is the estimated retirement (2025).
+  </div>
+</div>
+
+
+<div class="two-col">
+  
+  <div class="card">
+    <h3>Value vs retail</h3>
+    <div class="vsbars">
+      <div class="vsrow"><span>Retail</span>
+        <div class="track"><div class="fill retail" style="width:100.0%"></div></div>
+        <span class="num">₪268</span></div>
+      <div class="vsrow"><span>Value new</span>
+        <div class="track"><div class="fill" style="width:69.1%"></div></div>
+        <span class="num">₪185</span></div>
+      <div class="vsrow"><span>Value used</span>
+        <div class="track"><div class="fill used" style="width:56.2%"></div></div>
+        <span class="num">₪150</span></div>
+    </div>
+    
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is <span class="delta down">▼ 31%</span> today,
+      compounding at -8.8% a year.
+    </div>
+    
+  </div>
+  
+  
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">₪0.37</div>
+        <div class="delta">496 parts</div>
+      </div>
+      
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">Super Heroes Marvel average</div>
+        <div class="value" style="font-size:22px">₪1.75</div>
+        <div class="delta up">
+          −79% vs theme
+        </div>
+      </div>
+      
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  
+</div>
+
+
+
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to ILS</span></h3>
+  <div class="three-col">
+    
+      
+      
+      <div class="best">
+        <span class="tag">Best deal</span>
+        <div><span class="dot" style="background:var(--s2)"></span> <b>BrickLink</b></div>
+        <div class="price">₪121</div>
+        <div class="meta">₪121 native</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
+        <div class="price">₪205</div>
+        <div class="meta">$68.97 native<br>“LEGO ® Marvel Iron Man Mark 85 sh824 set 76216 new Opens in a new window or tab”</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s4)"></span> <b>BrickOwl</b></div>
+        <div class="price">₪242</div>
+        <div class="meta">₪242 native<br>“New (Sealed) LEGO Iron Man Armory Set 76216 6 ILS 242.05 ILS 466.85 WHITESTOREMAN (34) Shipping ILS 224.79”</div>
+      </div>
+      
+    
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="155.68"
+              data-parts="146.62"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪156 · 51%</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪147 · 49%</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪302</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at new-condition
+        prices. Minifigures are counted whole and the remainder is the loose parts.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="card" id="importCard"
+     data-vat="18.0"
+     data-ship-usd="25.0"
+     data-ship-rate="2.9728"
+     data-ccy="ILS">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT 18%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr data-cond="new" data-base="184.91">
+        <td>New / sealed</td>
+        <td class="num">₪185</td>
+        <td class="num">₪33.28</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪293</b></td>
+      </tr>
+      
+      
+      
+      
+      <tr data-cond="used" data-base="150.44">
+        <td>Used</td>
+        <td class="num">₪150</td>
+        <td class="num">₪27.08</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪252</b></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="25"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
+
+
+
+<div>
+  <div class="card">
+    <h3>Sources — latest scan</h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Source</th><th class="num">Market new</th><th class="num">Market used</th>
+          <th class="num">Sold</th><th class="num">Listings</th><th>Native</th><th>Confidence</th></tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink
+            <span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
+            </td>
+        <td class="num">₪200</td>
+        <td class="num">₪139</td>
+        <td class="num">36</td>
+        <td class="num">98</td>
+        <td>ILS</td>
+        <td><span class="chip">● HIGH</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪876</td>
+        <td class="num">₪804</td>
+        <td class="num">10</td>
+        <td class="num">14</td>
+        <td>USD</td>
+        <td><span class="chip">● HIGH</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪255</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+        <td class="num">4</td>
+        <td>ILS</td>
+        <td><span class="chip">◐ LOW</span>
+            <span class="chip" style="color:var(--warn)">stale</span></td>
+      </tr>
+      
+    </table>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      The headline value is <b>BrickLink's 6-month sold average</b> — completed sales, so it is
+      what the set is actually worth. eBay and BrickOwl are still scraped and still power the
+      "cheapest right now" panel, but they do not move the valuation: eBay asks run 2–3× over
+      what the same set sells for, and BrickOwl is a thin market. Junk listings
+      (instructions-only, minifig-only, incomplete, bulk lots) are filtered before pricing.
+    </div>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>Minifigures <span class="soft">— 8 in this set<span id="figsTotalLabel">, ₪124 together</span></span></h3>
+  
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪124"
+         data-total-new="₪156">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0821.html" title="Whiplash"
+       data-value="24.71" data-name="whiplash" data-qty="1"
+       data-v-used="24.71" data-v-new="30.05"
+       data-price-used="₪24.71"
+       data-price-new="₪30.05"
+       data-share-used="16.4% of set"
+       data-share-new="16.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0821.png" alt="Whiplash" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0821</div>
+      <div class="figtile-name">Whiplash</div>
+      <div class="figtile-value">₪24.71</div>
+      <div class="figtile-share">16.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0823.html" title="Iron Man - Mark 25 Armor"
+       data-value="23.68" data-name="iron man - mark 25 armor" data-qty="1"
+       data-v-used="23.68" data-v-new="30.02"
+       data-price-used="₪23.68"
+       data-price-new="₪30.02"
+       data-share-used="15.7% of set"
+       data-share-new="16.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0823.png" alt="Iron Man - Mark 25 Armor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0823</div>
+      <div class="figtile-name">Iron Man - Mark 25 Armor</div>
+      <div class="figtile-value">₪23.68</div>
+      <div class="figtile-share">15.7% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0819.html" title="War Machine - Pearl Dark Gray and Silver Armor with Backpack"
+       data-value="19.39" data-name="war machine - pearl dark gray and silver armor with backpack" data-qty="1"
+       data-v-used="19.39" data-v-new="23.4"
+       data-price-used="₪19.39"
+       data-price-new="₪23.40"
+       data-share-used="12.9% of set"
+       data-share-new="12.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0819.png" alt="War Machine - Pearl Dark Gray and Silver Armor with Backpack" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0819</div>
+      <div class="figtile-name">War Machine - Pearl Dark Gray and Silver Armor with Backpack</div>
+      <div class="figtile-value">₪19.39</div>
+      <div class="figtile-share">12.9% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0824.html" title="Iron Man - Mark 85 Armor, Large Helmet Visor, Wings"
+       data-value="17.58" data-name="iron man - mark 85 armor, large helmet visor, wings" data-qty="1"
+       data-v-used="17.58" data-v-new="22.95"
+       data-price-used="₪17.58"
+       data-price-new="₪22.95"
+       data-share-used="11.7% of set"
+       data-share-new="12.4% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0824.png" alt="Iron Man - Mark 85 Armor, Large Helmet Visor, Wings" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0824</div>
+      <div class="figtile-name">Iron Man - Mark 85 Armor, Large Helmet Visor, Wings</div>
+      <div class="figtile-value">₪17.58</div>
+      <div class="figtile-share">11.7% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0825.html" title="Iron Man - Mark 3 Armor, Helmet"
+       data-value="16.35" data-name="iron man - mark 3 armor, helmet" data-qty="1"
+       data-v-used="16.35" data-v-new="20.05"
+       data-price-used="₪16.35"
+       data-price-new="₪20.05"
+       data-share-used="10.9% of set"
+       data-share-new="10.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0825.png" alt="Iron Man - Mark 3 Armor, Helmet" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0825</div>
+      <div class="figtile-name">Iron Man - Mark 3 Armor, Helmet</div>
+      <div class="figtile-value">₪16.35</div>
+      <div class="figtile-share">10.9% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0747.html" title="Tony Stark - Black Shirt with Gold Helmet"
+       data-value="8.14" data-name="tony stark - black shirt with gold helmet" data-qty="1"
+       data-v-used="8.14" data-v-new="10.48"
+       data-price-used="₪8.14"
+       data-price-new="₪10.48"
+       data-share-used="5.4% of set"
+       data-share-new="5.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0747.png" alt="Tony Stark - Black Shirt with Gold Helmet" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0747</div>
+      <div class="figtile-name">Tony Stark - Black Shirt with Gold Helmet</div>
+      <div class="figtile-value">₪8.14</div>
+      <div class="figtile-share">5.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0585b.html" title="Nick Fury - Gray Sweater and Black Trench Coat, No Shirt Tail"
+       data-value="7.61" data-name="nick fury - gray sweater and black trench coat, no shirt tail" data-qty="1"
+       data-v-used="7.61" data-v-new="10.15"
+       data-price-used="₪7.61"
+       data-price-new="₪10.15"
+       data-share-used="5.1% of set"
+       data-share-new="5.5% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0585b.png" alt="Nick Fury - Gray Sweater and Black Trench Coat, No Shirt Tail" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0585b</div>
+      <div class="figtile-name">Nick Fury - Gray Sweater and Black Trench Coat, No Shirt Tail</div>
+      <div class="figtile-value">₪7.61</div>
+      <div class="figtile-share">5.1% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0740.html" title="Pepper Potts - Black Suit, Dark Orange Ponytail"
+       data-value="6.12" data-name="pepper potts - black suit, dark orange ponytail" data-qty="1"
+       data-v-used="6.12" data-v-new="8.58"
+       data-price-used="₪6.12"
+       data-price-new="₪8.58"
+       data-share-used="4.1% of set"
+       data-share-new="4.6% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0740.png" alt="Pepper Potts - Black Suit, Dark Orange Ponytail" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0740</div>
+      <div class="figtile-name">Pepper Potts - Black Suit, Dark Orange Ponytail</div>
+      <div class="figtile-value">₪6.12</div>
+      <div class="figtile-share">4.1% of set</div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0821.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0821.html"><b>sh0821</b> Whiplash</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="24.71"
+            data-v-used="24.71" data-v-new="30.05"
+            data-price-used="₪24.71"
+            data-price-new="₪30.05"
+            >₪24.71</td>
+        <td class="num figcell-share" data-v="16.425152884871046"
+            data-v-used="16.425152884871046" data-v-new="16.251149207722676"
+            data-share-used="16.4%"
+            data-share-new="16.3%"
+            >16.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0823.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0823.html"><b>sh0823</b> Iron Man - Mark 25 Armor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="23.68"
+            data-v-used="23.68" data-v-new="30.02"
+            data-price-used="₪23.68"
+            data-price-new="₪30.02"
+            >₪23.68</td>
+        <td class="num figcell-share" data-v="15.74049454932199"
+            data-v-used="15.74049454932199" data-v-new="16.234925098696664"
+            data-share-used="15.7%"
+            data-share-new="16.2%"
+            >15.7%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0819.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0819.html"><b>sh0819</b> War Machine - Pearl Dark Gray and Silver Armor with Backpack</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="19.39"
+            data-v-used="19.39" data-v-new="23.4"
+            data-price-used="₪19.39"
+            data-price-new="₪23.40"
+            >₪19.39</td>
+        <td class="num figcell-share" data-v="12.888859345918638"
+            data-v-used="12.888859345918638" data-v-new="12.65480504028987"
+            data-share-used="12.9%"
+            data-share-new="12.7%"
+            >12.9%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0824.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0824.html"><b>sh0824</b> Iron Man - Mark 85 Armor, Large Helmet Visor, Wings</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="17.58"
+            data-v-used="17.58" data-v-new="22.95"
+            data-price-used="₪17.58"
+            data-price-new="₪22.95"
+            >₪17.58</td>
+        <td class="num figcell-share" data-v="11.685721882478063"
+            data-v-used="11.685721882478063" data-v-new="12.41144340489968"
+            data-share-used="11.7%"
+            data-share-new="12.4%"
+            >11.7%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0825.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0825.html"><b>sh0825</b> Iron Man - Mark 3 Armor, Helmet</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="16.35"
+            data-v-used="16.35" data-v-new="20.05"
+            data-price-used="₪16.35"
+            data-price-new="₪20.05"
+            >₪16.35</td>
+        <td class="num figcell-share" data-v="10.868120180802979"
+            data-v-used="10.868120180802979" data-v-new="10.843112865718458"
+            data-share-used="10.9%"
+            data-share-new="10.8%"
+            >10.9%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0747.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0747.html"><b>sh0747</b> Tony Stark - Black Shirt with Gold Helmet</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.14"
+            data-v-used="8.14" data-v-new="10.48"
+            data-price-used="₪8.14"
+            data-price-new="₪10.48"
+            >₪8.14</td>
+        <td class="num figcell-share" data-v="5.410795001329434"
+            data-v-used="5.410795001329434" data-v-new="5.667622086420421"
+            data-share-used="5.4%"
+            data-share-new="5.7%"
+            >5.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0585b.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0585b.html"><b>sh0585b</b> Nick Fury - Gray Sweater and Black Trench Coat, No Shirt Tail</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="7.61"
+            data-v-used="7.61" data-v-new="10.15"
+            data-price-used="₪7.61"
+            data-price-new="₪10.15"
+            >₪7.61</td>
+        <td class="num figcell-share" data-v="5.058495081095454"
+            data-v-used="5.058495081095454" data-v-new="5.489156887134282"
+            data-share-used="5.1%"
+            data-share-new="5.5%"
+            >5.1%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0740.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0740.html"><b>sh0740</b> Pepper Potts - Black Suit, Dark Orange Ponytail</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.12"
+            data-v-used="6.12" data-v-new="8.58"
+            data-price-used="₪6.12"
+            data-price-new="₪8.58"
+            >₪6.12</td>
+        <td class="num figcell-share" data-v="4.068067003456528"
+            data-v-used="4.068067003456528" data-v-new="4.640095181439619"
+            data-share-used="4.1%"
+            data-share-new="4.6%"
+            >4.1%</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪124"
+              data-price-new="₪156"
+              >₪124</td>
+          <td class="num" id="figFootShare"
+              data-share-used="82%"
+              data-share-new="84%"
+              >82%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 82% of the used set price → strong part-out candidate."
+       data-note-new="Figs are 84% of the sealed set price → strong part-out candidate.">
+    
+      Figs are <b>82% of the used set price</b> → strong part-out candidate.
+      
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
+  
+</div>
+
+<div class="card">
+  <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
+  
+  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+</div>
+
+
+<div class="card">
+  <h3>More from Super Heroes Marvel <span class="soft">— closest by release year</span></h3>
+  <div class="relgrid">
+    
+    <a class="relcard" href="../sets/76210.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76210-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76210</b> Hulkbuster</div>
+      <div class="relmeta">2022 · ₪1,500
+        · <span class="delta up">▲ 19%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/76218.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76218-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76218</b> Sanctum Sanctorum</div>
+      <div class="relmeta">2022 · ₪903
+        · <span class="delta down">▼ 3%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/76215.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76215-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76215</b> Black Panther</div>
+      <div class="relmeta">2022 · ₪789
+        </div>
+    </a>
+    
+    <a class="relcard" href="../sets/76209.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76209-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76209</b> Thor&#39;s Hammer</div>
+      <div class="relmeta">2022 · ₪589
+        · <span class="delta up">▲ 13%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/76223.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/76223-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>76223</b> Nano Gauntlet</div>
+      <div class="relmeta">2022 · ₪408
+        </div>
+    </a>
+    
+    <a class="relcard" href="../sets/66711.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/66711-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>66711</b> Infinity Saga Collection</div>
+      <div class="relmeta">2022 · ₪238
+        </div>
+    </a>
+    
+  </div>
+</div>
+
+
+
+</main>
+
+<footer class="note">
+  Brickonomy · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
+  · static snapshot — run <code>python -m brickonomy.export</code> to update
+  
+</footer>
+
+<script src="../static/app.js"></script>
+</body>
+</html>

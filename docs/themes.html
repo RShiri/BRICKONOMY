@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Themes · Brickonomy</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-static="1" data-base="">
+<header class="app">
+  <a class="logo" href="index.html">
+    <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#38d4e0"/>
+      </linearGradient></defs>
+      <rect x="4"  y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="15" y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="0" y="4" width="26" height="16" rx="2.5" fill="url(#lg)"/>
+    </svg>
+    Brick<b>onomy</b>
+  </a>
+  <nav class="tabs">
+    
+    <a href="index.html" class="">Dashboard</a>
+    <a href="sets/index.html" class="">Sets</a>
+    <a href="minifigs.html" class="">Minifigs</a>
+    <a href="themes.html" class="active">Themes</a>
+    <a href="deals.html" class="">Deals</a>
+    <a href="portfolio.html" class="">Portfolio</a>
+    
+  </nav>
+  <div class="spacer"></div>
+  <div class="sitesearch">
+    <input class="inp" id="siteSearch" type="search" autocomplete="off"
+           placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
+    <div class="sresults" id="siteSearchResults" hidden></div>
+  </div>
+  
+  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  
+</header>
+
+<main>
+
+
+<div class="eyebrow">Analysis</div>
+<h1>Themes</h1>
+<p class="sub">How each LEGO theme is performing — total tracked value, average growth per year, and the strongest set in each.</p>
+
+<div class="card">
+  <h3>Average growth per year <span class="soft">— by theme</span></h3>
+  <div class="bars">
+    
+    <div class="row">
+      <a href="sets/theme-super-heroes-marvel.html" style="color:var(--ink);text-decoration:none">Super Heroes Marvel</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:46.6%;width:3.4%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 2.0%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-icons.html" style="color:var(--ink);text-decoration:none">Icons</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:45.3%;width:4.7%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 2.7%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-technic.html" style="color:var(--ink);text-decoration:none">Technic</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:28.9%;width:21.1%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 12.1%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-lego-art.html" style="color:var(--ink);text-decoration:none">LEGO Art</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill up" style="left:50%;width:9.0%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta up">▲ 5.2%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-brickheadz.html" style="color:var(--ink);text-decoration:none">BrickHeadz</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill up" style="left:50%;width:15.6%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta up">▲ 9.0%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-disney.html" style="color:var(--ink);text-decoration:none">Disney</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill up" style="left:50%;width:8.7%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta up">▲ 5.0%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-city.html" style="color:var(--ink);text-decoration:none">City</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:0.0%;width:50.0%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 28.6%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-harry-potter.html" style="color:var(--ink);text-decoration:none">Harry Potter</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:27.6%;width:22.4%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 12.8%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-speed-champions.html" style="color:var(--ink);text-decoration:none">Speed Champions</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:28.4%;width:21.6%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 12.4%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-creator.html" style="color:var(--ink);text-decoration:none">Creator</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill down" style="left:26.9%;width:23.1%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta down">▼ 13.2%</span></span>
+    </div>
+    
+    <div class="row">
+      <a href="sets/theme-brick-sketches.html" style="color:var(--ink);text-decoration:none">Brick Sketches</a>
+      <div class="track diverging">
+        
+        
+        <div class="fill up" style="left:50%;width:0.0%"></div>
+        
+        <div class="zero"></div>
+      </div>
+      <span class="num"><span class="delta up">▲ 0.0%</span></span>
+    </div>
+    
+  </div>
+</div>
+
+<div class="card">
+  <h3>All themes</h3>
+  <div class="table-scroll">
+  <table id="themesTable">
+    <tr>
+      <th>Theme</th><th class="num">Items</th><th class="num">Years</th>
+      <th class="num">Total value</th><th class="num">Avg value</th>
+      <th class="num">Growth / yr</th><th class="num">vs retail</th><th>Best performer</th>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-super-heroes-marvel.html"><b>Super Heroes Marvel</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:100.0%"></div>
+        </div>
+      </td>
+      <td class="num">379</td>
+      <td class="num">2002–2026</td>
+      <td class="num"><b>₪114,481</b></td>
+      <td class="num">₪317</td>
+      <td class="num"><span class="delta down">▼ 2.0%</span></td>
+      <td class="num"><span class="delta up">▲ 755%</span></td>
+      <td><a href="sets/76051.html">76051 Super Hero Airport Battle</a>
+          <span style="color:var(--muted)">(+249%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-icons.html"><b>Icons</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:1.9%"></div>
+        </div>
+      </td>
+      <td class="num">87</td>
+      <td class="num">2020–2026</td>
+      <td class="num"><b>₪2,205</b></td>
+      <td class="num">₪735</td>
+      <td class="num"><span class="delta down">▼ 2.7%</span></td>
+      <td class="num"><span class="delta up">▲ 7%</span></td>
+      <td><a href="sets/10303.html">10303 Loop Coaster</a>
+          <span style="color:var(--muted)">(+4%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-star-wars.html"><b>Star Wars</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:1.8%"></div>
+        </div>
+      </td>
+      <td class="num">997</td>
+      <td class="num">1999–2026</td>
+      <td class="num"><b>₪2,115</b></td>
+      <td class="num">₪2,115</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-technic.html"><b>Technic</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:1.0%"></div>
+        </div>
+      </td>
+      <td class="num">578</td>
+      <td class="num">1977–2026</td>
+      <td class="num"><b>₪1,138</b></td>
+      <td class="num">₪569</td>
+      <td class="num"><span class="delta down">▼ 12.1%</span></td>
+      <td class="num"><span class="delta down">▼ 17%</span></td>
+      <td><a href="sets/42171.html">42171 Mercedes F1 Car</a>
+          <span style="color:var(--muted)">(-11%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-lego-ideas-and-cuusoo.html"><b>LEGO Ideas and CUUSOO</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:1.0%"></div>
+        </div>
+      </td>
+      <td class="num">95</td>
+      <td class="num">2011–2026</td>
+      <td class="num"><b>₪1,111</b></td>
+      <td class="num">₪1,111</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-marvel-super-heroes.html"><b>Marvel Super Heroes</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.4%"></div>
+        </div>
+      </td>
+      <td class="num">4</td>
+      <td class="num">2016–2017</td>
+      <td class="num"><b>₪509</b></td>
+      <td class="num">₪127</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-lego-art.html"><b>LEGO Art</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.4%"></div>
+        </div>
+      </td>
+      <td class="num">26</td>
+      <td class="num">2020–2026</td>
+      <td class="num"><b>₪482</b></td>
+      <td class="num">₪482</td>
+      <td class="num"><span class="delta up">▲ 5.2%</span></td>
+      <td class="num"><span class="delta up">▲ 35%</span></td>
+      <td><a href="sets/31199.html">31199 Marvel Studios Iron Man</a>
+          <span style="color:var(--muted)">(+5%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-brickheadz.html"><b>BrickHeadz</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.4%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">2017–2025</td>
+      <td class="num"><b>₪470</b></td>
+      <td class="num">₪78.26</td>
+      <td class="num"><span class="delta up">▲ 9.0%</span></td>
+      <td class="num"><span class="delta up">▲ 98%</span></td>
+      <td><a href="sets/41604.html">41604 Iron Man MK50</a>
+          <span style="color:var(--muted)">(+20%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-disney.html"><b>Disney</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.4%"></div>
+        </div>
+      </td>
+      <td class="num">284</td>
+      <td class="num">2000–2026</td>
+      <td class="num"><b>₪468</b></td>
+      <td class="num">₪468</td>
+      <td class="num"><span class="delta up">▲ 5.0%</span></td>
+      <td class="num"><span class="delta up">▲ 5%</span></td>
+      <td><a href="sets/43269.html">43269 101 Dalmatians Puppy</a>
+          <span style="color:var(--muted)">(+5%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-collectible-minifigures.html"><b>Collectible Minifigures</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.3%"></div>
+        </div>
+      </td>
+      <td class="num">153</td>
+      <td class="num">2008–2026</td>
+      <td class="num"><b>₪331</b></td>
+      <td class="num">₪82.73</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-city.html"><b>City</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.2%"></div>
+        </div>
+      </td>
+      <td class="num">972</td>
+      <td class="num">2005–2026</td>
+      <td class="num"><b>₪212</b></td>
+      <td class="num">₪212</td>
+      <td class="num"><span class="delta down">▼ 28.6%</span></td>
+      <td class="num"><span class="delta down">▼ 29%</span></td>
+      <td><a href="sets/60445.html">60445 F1 Truck with RB20 &amp; AMR24</a>
+          <span style="color:var(--muted)">(-29%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-harry-potter.html"><b>Harry Potter</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.1%"></div>
+        </div>
+      </td>
+      <td class="num">194</td>
+      <td class="num">2001–2026</td>
+      <td class="num"><b>₪158</b></td>
+      <td class="num">₪158</td>
+      <td class="num"><span class="delta down">▼ 12.8%</span></td>
+      <td class="num"><span class="delta down">▼ 24%</span></td>
+      <td><a href="sets/76433.html">76433 Mandrake</a>
+          <span style="color:var(--muted)">(-13%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-speed-champions.html"><b>Speed Champions</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.1%"></div>
+        </div>
+      </td>
+      <td class="num">105</td>
+      <td class="num">2015–2026</td>
+      <td class="num"><b>₪141</b></td>
+      <td class="num">₪70.31</td>
+      <td class="num"><span class="delta down">▼ 12.4%</span></td>
+      <td class="num"><span class="delta down">▼ 12%</span></td>
+      <td><a href="sets/77242.html">77242 Ferrari SF-24 F1 Race Car</a>
+          <span style="color:var(--muted)">(-3%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-creator.html"><b>Creator</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.1%"></div>
+        </div>
+      </td>
+      <td class="num">599</td>
+      <td class="num">1999–2026</td>
+      <td class="num"><b>₪123</b></td>
+      <td class="num">₪123</td>
+      <td class="num"><span class="delta down">▼ 13.2%</span></td>
+      <td class="num"><span class="delta down">▼ 25%</span></td>
+      <td><a href="sets/31152.html">31152 Space Astronaut</a>
+          <span style="color:var(--muted)">(-13%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-brick-sketches.html"><b>Brick Sketches</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">8</td>
+      <td class="num">2020–2022</td>
+      <td class="num"><b>₪50.52</b></td>
+      <td class="num">₪50.52</td>
+      <td class="num"><span class="delta up">▲ 0.0%</span></td>
+      <td class="num"><span class="delta up">▲ 0%</span></td>
+      <td><a href="sets/40535.html">40535 Iron Man</a>
+          <span style="color:var(--muted)">(+0%/yr)</span></td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-system.html"><b>System</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">319</td>
+      <td class="num">1955–1971</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-castle.html"><b>Castle</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">245</td>
+      <td class="num">1979–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-space.html"><b>Space</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">304</td>
+      <td class="num">1979–2015</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-town.html"><b>Town</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">589</td>
+      <td class="num">1978–2008</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-service-packs.html"><b>Service Packs</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">429</td>
+      <td class="num">1977–2013</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-duplo.html"><b>Duplo</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1366</td>
+      <td class="num">1969–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-universal-building-set.html"><b>Universal Building Set</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">324</td>
+      <td class="num">1969–2002</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-educational-and-dacta.html"><b>Educational and Dacta</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1085</td>
+      <td class="num">1960–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-train.html"><b>Train</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">179</td>
+      <td class="num">1966–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-bulk-bricks.html"><b>Bulk Bricks</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">128</td>
+      <td class="num">2000–2004</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-hobby-sets.html"><b>Hobby Sets</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">1975–2003</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-bionicle.html"><b>Bionicle</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">384</td>
+      <td class="num">2001–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-discovery.html"><b>Discovery</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">2003–2003</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-pirates.html"><b>Pirates</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">87</td>
+      <td class="num">1989–2015</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-seasonal.html"><b>Seasonal</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">485</td>
+      <td class="num">1977–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-clikits.html"><b>Clikits</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">82</td>
+      <td class="num">2003–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-sports.html"><b>Sports</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">144</td>
+      <td class="num">1998–2007</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-model-team.html"><b>Model Team</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">16</td>
+      <td class="num">1986–2004</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-other.html"><b>Other</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">110</td>
+      <td class="num">1957–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-modular-buildings.html"><b>Modular Buildings</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">22</td>
+      <td class="num">2007–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-factory.html"><b>Factory</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">7</td>
+      <td class="num">2005–2008</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-monster-fighters.html"><b>Monster Fighters</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">14</td>
+      <td class="num">2012–2012</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-the-hobbit-and-lord-of-the-rings.html"><b>The Hobbit and Lord of the Rings</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">38</td>
+      <td class="num">2012–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-adventurers.html"><b>Adventurers</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">70</td>
+      <td class="num">1998–2003</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-botanicals.html"><b>Botanicals</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">53</td>
+      <td class="num">2021–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-mindstorms.html"><b>Mindstorms</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">61</td>
+      <td class="num">1998–2021</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-legoland.html"><b>Legoland</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">92</td>
+      <td class="num">1969–1978</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-classic.html"><b>Classic</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">79</td>
+      <td class="num">2015–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-make-create.html"><b>Make &amp; Create</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">108</td>
+      <td class="num">2003–2014</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-juniors.html"><b>Juniors</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">68</td>
+      <td class="num">2013–2018</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-gabby-s-dollhouse.html"><b>Gabby&#39;s Dollhouse</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">12</td>
+      <td class="num">2023–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-super-heroes-dc.html"><b>Super Heroes DC</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">227</td>
+      <td class="num">2006–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-aquazone.html"><b>Aquazone</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">35</td>
+      <td class="num">1995–2007</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-ninja.html"><b>Ninja</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">29</td>
+      <td class="num">1998–2000</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-minitalia.html"><b>Minitalia</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">13</td>
+      <td class="num">1970–1973</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-ninjago.html"><b>Ninjago</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">642</td>
+      <td class="num">2011–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-bluey.html"><b>Bluey</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2025–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-editions.html"><b>Editions</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">23</td>
+      <td class="num">2026–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-primo.html"><b>Primo</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">133</td>
+      <td class="num">1995–2005</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-lego-originals.html"><b>LEGO Originals</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">18</td>
+      <td class="num">2019–2021</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-hero-factory.html"><b>Hero Factory</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">111</td>
+      <td class="num">2010–2014</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-racers.html"><b>Racers</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">246</td>
+      <td class="num">1998–2012</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-fabuland.html"><b>Fabuland</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">94</td>
+      <td class="num">1979–1989</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-jurassic-world.html"><b>Jurassic World</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">122</td>
+      <td class="num">2015–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-rock-raiders.html"><b>Rock Raiders</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">15</td>
+      <td class="num">1999–2000</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-studios.html"><b>Studios</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">51</td>
+      <td class="num">2000–2002</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-alpha-team.html"><b>Alpha Team</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">32</td>
+      <td class="num">2001–2004</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-4-juniors.html"><b>4 Juniors</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">50</td>
+      <td class="num">2001–2004</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-monkie-kid.html"><b>Monkie Kid</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">58</td>
+      <td class="num">2020–2025</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-value-packs.html"><b>Value Packs</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">32</td>
+      <td class="num">1988–2024</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-building-set-with-people.html"><b>Building Set with People</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">14</td>
+      <td class="num">1974–1978</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-boat.html"><b>Boat</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">14</td>
+      <td class="num">1974–1996</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-freestyle.html"><b>Freestyle</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">67</td>
+      <td class="num">1995–1999</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-time-cruisers.html"><b>Time Cruisers</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">1996–1997</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-bricklink-designer-program.html"><b>BrickLink Designer Program</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">68</td>
+      <td class="num">2019–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-architecture.html"><b>Architecture</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">65</td>
+      <td class="num">2008–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-indiana-jones.html"><b>Indiana Jones</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">20</td>
+      <td class="num">2008–2023</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-first-lego-league.html"><b>FIRST LEGO League</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">60</td>
+      <td class="num">2000–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-atlantis.html"><b>Atlantis</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">24</td>
+      <td class="num">2010–2011</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-lego-exclusive.html"><b>LEGO Exclusive</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">73</td>
+      <td class="num">2008–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-lego-brand-store.html"><b>LEGO Brand Store</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">355</td>
+      <td class="num">2010–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-master-builder-academy.html"><b>Master Builder Academy</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">21</td>
+      <td class="num">2011–2013</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-minecraft.html"><b>Minecraft</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">200</td>
+      <td class="num">2013–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-fusion.html"><b>Fusion</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">4</td>
+      <td class="num">2014–2014</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-elves.html"><b>Elves</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">42</td>
+      <td class="num">2015–2018</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-belville.html"><b>Belville</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">81</td>
+      <td class="num">1994–2008</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-homemaker.html"><b>Homemaker</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">20</td>
+      <td class="num">1971–1982</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-nexo-knights.html"><b>Nexo Knights</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">104</td>
+      <td class="num">2016–2018</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-western.html"><b>Western</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">20</td>
+      <td class="num">1996–2002</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-universe.html"><b>Universe</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">2</td>
+      <td class="num">2010–2010</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-games.html"><b>Games</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">46</td>
+      <td class="num">2009–2013</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-pharaoh-s-quest.html"><b>Pharaoh&#39;s Quest</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2011–2011</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-friends.html"><b>Friends</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">671</td>
+      <td class="num">2012–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-cars.html"><b>Cars</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">27</td>
+      <td class="num">2011–2012</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-legends-of-chima.html"><b>Legends of Chima</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">142</td>
+      <td class="num">2013–2015</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-the-lone-ranger.html"><b>The Lone Ranger</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">8</td>
+      <td class="num">2013–2013</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-teenage-mutant-ninja-turtles.html"><b>Teenage Mutant Ninja Turtles</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">18</td>
+      <td class="num">2013–2014</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-the-lego-movie.html"><b>The LEGO Movie</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">67</td>
+      <td class="num">2014–2019</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-super-mario.html"><b>Super Mario</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">118</td>
+      <td class="num">2020–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-minions.html"><b>Minions</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2020–2021</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-unikitty.html"><b>Unikitty!</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">11</td>
+      <td class="num">2018–2018</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-hidden-side.html"><b>Hidden Side</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">32</td>
+      <td class="num">2019–2020</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dc-super-hero-girls.html"><b>DC Super Hero Girls</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">11</td>
+      <td class="num">2016–2017</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-trolls-world-tour.html"><b>Trolls: World Tour</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2020–2020</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dots.html"><b>DOTS</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">93</td>
+      <td class="num">2020–2024</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-scooby-doo.html"><b>Scooby-Doo</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">7</td>
+      <td class="num">2015–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dreamzzz.html"><b>Dreamzzz</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">66</td>
+      <td class="num">2023–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-sonic-the-hedgehog.html"><b>Sonic The Hedgehog</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">25</td>
+      <td class="num">2023–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-despicable-me-4.html"><b>Despicable Me 4</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">5</td>
+      <td class="num">2024–2024</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-animal-crossing.html"><b>Animal Crossing</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">18</td>
+      <td class="num">2024–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-pok-mon.html"><b>Pokémon</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">29</td>
+      <td class="num">2026–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-scala.html"><b>Scala</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">68</td>
+      <td class="num">1979–2001</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-island-xtreme-stunts.html"><b>Island Xtreme Stunts</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">13</td>
+      <td class="num">2002–2003</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-sculptures.html"><b>Sculptures</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">2000–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-znap.html"><b>Znap</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">19</td>
+      <td class="num">1998–1999</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-spybotics.html"><b>Spybotics</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">4</td>
+      <td class="num">2002–2002</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-spongebob-squarepants.html"><b>SpongeBob SquarePants</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">14</td>
+      <td class="num">2006–2012</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-avatar-the-last-airbender.html"><b>Avatar: The Last Airbender</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">2</td>
+      <td class="num">2006–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-exo-force.html"><b>Exo-Force</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">45</td>
+      <td class="num">2006–2008</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-legoland-parks.html"><b>Legoland Parks</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">24</td>
+      <td class="num">2002–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-brickheadz.html"><b>Brickheadz</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">192</td>
+      <td class="num">2016–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-xtra.html"><b>Xtra</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">19</td>
+      <td class="num">2018–2021</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-galidor.html"><b>Galidor</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">20</td>
+      <td class="num">2002–2002</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-chinese-traditional-festivals.html"><b>Chinese Traditional Festivals</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">34</td>
+      <td class="num">2018–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-promotional.html"><b>Promotional</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1</td>
+      <td class="num">2026–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-the-powerpuff-girls.html"><b>The Powerpuff Girls</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">2</td>
+      <td class="num">2018–2018</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-mixels.html"><b>Mixels</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">123</td>
+      <td class="num">2014–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dino-attack-dino-2010.html"><b>Dino Attack / Dino 2010</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">12</td>
+      <td class="num">2005–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-nike.html"><b>Nike</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">5</td>
+      <td class="num">2025–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-vidiyo.html"><b>VIDIYO</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">24</td>
+      <td class="num">2021–2021</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-power-miners.html"><b>Power Miners</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">22</td>
+      <td class="num">2009–2010</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-agents.html"><b>Agents</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">28</td>
+      <td class="num">2008–2015</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-fortnite.html"><b>Fortnite</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">13</td>
+      <td class="num">2023–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-quatro.html"><b>Quatro</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2004–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dino.html"><b>Dino</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">7</td>
+      <td class="num">2012–2012</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dinosaurs.html"><b>Dinosaurs</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">16</td>
+      <td class="num">2001–2001</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-one-piece.html"><b>One Piece</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">14</td>
+      <td class="num">2025–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-vikings.html"><b>Vikings</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">8</td>
+      <td class="num">2005–2006</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-dimensions.html"><b>Dimensions</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">67</td>
+      <td class="num">2015–2017</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-shrek.html"><b>Shrek</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1</td>
+      <td class="num">2026–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-kpop-demon-hunters.html"><b>KPop Demon Hunters</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1</td>
+      <td class="num">2026–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-avatar.html"><b>Avatar</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2022–2023</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-wicked.html"><b>Wicked</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">11</td>
+      <td class="num">2024–2025</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-stranger-things.html"><b>Stranger Things</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1</td>
+      <td class="num">2019–2019</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-angry-birds.html"><b>Angry Birds</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">2016–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-ghostbusters.html"><b>Ghostbusters</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">2</td>
+      <td class="num">2016–2016</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-overwatch.html"><b>Overwatch</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">9</td>
+      <td class="num">2018–2019</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-wednesday.html"><b>Wednesday</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">7</td>
+      <td class="num">2024–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-horizon-adventures.html"><b>Horizon Adventures</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">1</td>
+      <td class="num">2025–2025</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-the-legend-of-zelda.html"><b>The Legend of Zelda</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">2</td>
+      <td class="num">2024–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-forma.html"><b>Forma</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">4</td>
+      <td class="num">2019–2019</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-speed-racer.html"><b>Speed Racer</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">4</td>
+      <td class="num">2008–2008</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-power-functions.html"><b>Power Functions</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">34</td>
+      <td class="num">2008–2026</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+    <tr>
+      <td><a href="sets/theme-ben-10.html"><b>Ben 10</b></a>
+        <div class="track" style="margin-top:5px;height:5px;max-width:180px">
+          <div class="fill" style="width:0.0%"></div>
+        </div>
+      </td>
+      <td class="num">6</td>
+      <td class="num">2010–2010</td>
+      <td class="num"><b>₪0.00</b></td>
+      <td class="num">—</td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td class="num"><span style="color:var(--muted)">—</span></td>
+      <td>—</td>
+    </tr>
+    
+  </table>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="note">
+  Brickonomy · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
+  · static snapshot — run <code>python -m brickonomy.export</code> to update
+  
+</footer>
+
+<script src="static/app.js"></script>
+</body>
+</html>

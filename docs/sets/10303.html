@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10303 Loop Coaster · Brickonomy</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-static="1" data-base="../">
+<header class="app">
+  <a class="logo" href="../index.html">
+    <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#38d4e0"/>
+      </linearGradient></defs>
+      <rect x="4"  y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="15" y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="0" y="4" width="26" height="16" rx="2.5" fill="url(#lg)"/>
+    </svg>
+    Brick<b>onomy</b>
+  </a>
+  <nav class="tabs">
+    
+    <a href="../index.html" class="">Dashboard</a>
+    <a href="../sets/index.html" class="active">Sets</a>
+    <a href="../minifigs.html" class="">Minifigs</a>
+    <a href="../themes.html" class="">Themes</a>
+    <a href="../deals.html" class="">Deals</a>
+    <a href="../portfolio.html" class="">Portfolio</a>
+    
+  </nav>
+  <div class="spacer"></div>
+  <div class="sitesearch">
+    <input class="inp" id="siteSearch" type="search" autocomplete="off"
+           placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
+    <div class="sresults" id="siteSearchResults" hidden></div>
+  </div>
+  
+  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  
+</header>
+
+<main>
+
+
+
+
+<div class="sethead">
+  <figure class="setimg" style="margin:0">
+    <img src="https://img.bricklink.com/ItemImage/SN/0/10303-1.png" alt="Loop Coaster"
+         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>(10303)</div>'">
+  </figure>
+  <div style="flex:1;min-width:280px">
+    <div class="eyebrow">Icons · Fairground</div>
+    <h1 style="font-size:26px">Loop Coaster <span style="color:var(--muted);font-weight:400">· 10303</span></h1>
+    <p class="sub" style="margin-bottom:6px">
+      Released 2022
+       · Retail ₪1,189
+    </p>
+    <div class="facts">
+      <span class="chip">🧱 3,756 parts</span>
+      <span class="chip">🧍 11 minifigs</span>
+      <span class="chip">⚖️ 5,870 g</span>
+      <span class="chip">₪0.37 / part</span>
+      
+      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
+      
+      <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
+      
+    </div>
+    
+    
+    <div class="phasebar" style="margin-top:16px">
+      <div class="phase " style="flex:4">Available 2022–2025</div>
+      <div class="phase " style="flex:2">Retirement</div>
+      <div class="phase current" style="flex:2">Acceleration</div>
+      <div class="phase " style="flex:3">Steady growth</div>
+    </div>
+    <div class="phaselbl"><span style="flex:4">2022</span><span style="flex:2">2025</span><span style="flex:2">2026</span><span style="flex:3">2027 →</span></div>
+    
+  </div>
+</div>
+
+<div class="tiles" style="margin-top:16px">
+  <div class="tile">
+    <div class="label">Value — new / sealed</div>
+    <div class="value">₪1,392</div>
+    <div class="delta">
+      <span class="delta up">▲ 17%</span> vs retail
+       · +4.0%/yr
+    </div>
+  </div>
+  <div class="tile">
+    <div class="label">Value — used</div>
+    <div class="value">₪897</div>
+    <div class="delta"><span class="chip">● HIGH</span></div>
+  </div>
+  <div class="tile">
+    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">₪1,564</div>
+    <div class="delta">trend estimate · ±20% band</div>
+  </div>
+  <div class="tile">
+    <div class="label">Buy target</div>
+    <div class="value">₪1,113</div>
+    <div class="delta">80% of the BrickLink average</div>
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h3>Price history &amp; forecast <span class="soft">(ILS, BrickLink average · new/sealed)</span>
+    <span class="rangebtns" role="group" aria-label="Chart range">
+      <button class="rangebtn" data-range="365">1Y</button>
+      <button class="rangebtn" data-range="1095">3Y</button>
+      <button class="rangebtn active" data-range="0">All</button>
+    </span>
+  </h3>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--s1)"></span>Value (new)</span>
+    <span><span class="sw" style="background:var(--s5)"></span>Used</span>
+    <span><span class="sw" style="background:var(--s2)"></span>BrickLink</span>
+    <span><span class="sw" style="background:var(--s3)"></span>eBay</span>
+    <span><span class="sw" style="background:var(--s4)"></span>BrickOwl</span>
+    <span><span class="sw" style="background:var(--s1);opacity:.35"></span>Forecast ±20%</span>
+  </div>
+  <div class="chart-wrap"><canvas id="historyChart" data-item="10303"
+       data-retired="2025"></canvas></div>
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Points before today are scraped snapshots; the dashed line is a trend estimate from observed growth and retirement phase.
+    The vertical marker is the estimated retirement (2025).
+  </div>
+</div>
+
+
+<div class="two-col">
+  
+  <div class="card">
+    <h3>Value vs retail</h3>
+    <div class="vsbars">
+      <div class="vsrow"><span>Retail</span>
+        <div class="track"><div class="fill retail" style="width:85.4%"></div></div>
+        <span class="num">₪1,189</span></div>
+      <div class="vsrow"><span>Value new</span>
+        <div class="track"><div class="fill" style="width:100.0%"></div></div>
+        <span class="num">₪1,392</span></div>
+      <div class="vsrow"><span>Value used</span>
+        <div class="track"><div class="fill used" style="width:64.4%"></div></div>
+        <span class="num">₪897</span></div>
+    </div>
+    
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is <span class="delta up">▲ 17%</span> today,
+      compounding at +4.0% a year.
+    </div>
+    
+  </div>
+  
+  
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">₪0.37</div>
+        <div class="delta">3,756 parts</div>
+      </div>
+      
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">Icons average</div>
+        <div class="value" style="font-size:22px">₪0.28</div>
+        <div class="delta down">
+          31% vs theme
+        </div>
+      </div>
+      
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  
+</div>
+
+
+
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to ILS</span></h3>
+  <div class="three-col">
+    
+      
+      
+      <div class="best">
+        <span class="tag">Best deal</span>
+        <div><span class="dot" style="background:var(--s2)"></span> <b>BrickLink</b></div>
+        <div class="price">₪1,258</div>
+        <div class="meta">₪1,258 native</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
+        <div class="price">₪4,616</div>
+        <div class="meta">$1,553 native<br>“Brand New Sealed Lego Loop Coaster 10303 See Pictures Opens in a new window or tab”</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s4)"></span> <b>BrickOwl</b></div>
+        <div class="price">₪1,556</div>
+        <div class="meta">₪1,556 native<br>“New (Complete) LEGO Loop Coaster Set 10303 1 ILS 1,556.15 N/A LA_Brickstore (303) Request a Shipping Quote”</div>
+      </div>
+      
+    
+  </div>
+</div>
+
+
+
+
+
+<div class="card" id="importCard"
+     data-vat="18.0"
+     data-ship-usd="25.0"
+     data-ship-rate="2.9728"
+     data-ccy="ILS">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT 18%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr data-cond="new" data-base="1391.61">
+        <td>New / sealed</td>
+        <td class="num">₪1,392</td>
+        <td class="num">₪250</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪1,716</b></td>
+      </tr>
+      
+      
+      
+      
+      <tr data-cond="used" data-base="896.68">
+        <td>Used</td>
+        <td class="num">₪897</td>
+        <td class="num">₪161</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪1,132</b></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="25"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
+
+
+
+<div>
+  <div class="card">
+    <h3>Sources — latest scan</h3>
+    <div class="table-scroll">
+    <table>
+      <tr><th>Source</th><th class="num">Market new</th><th class="num">Market used</th>
+          <th class="num">Sold</th><th class="num">Listings</th><th>Native</th><th>Confidence</th></tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink
+            <span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
+            </td>
+        <td class="num">₪1,409</td>
+        <td class="num">₪898</td>
+        <td class="num">34</td>
+        <td class="num">48</td>
+        <td>ILS</td>
+        <td><span class="chip">● HIGH</span>
+            </td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪5,505</td>
+        <td class="num">₪2,993</td>
+        <td class="num">—</td>
+        <td class="num">14</td>
+        <td>USD</td>
+        <td><span class="chip">◐ LOW</span>
+            </td>
+      </tr>
+      
+      
+      <tr>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl
+            <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪1,556</td>
+        <td class="num">₪956</td>
+        <td class="num">—</td>
+        <td class="num">3</td>
+        <td>ILS</td>
+        <td><span class="chip">◐ LOW</span>
+            </td>
+      </tr>
+      
+    </table>
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      The headline value is <b>BrickLink's 6-month sold average</b> — completed sales, so it is
+      what the set is actually worth. eBay and BrickOwl are still scraped and still power the
+      "cheapest right now" panel, but they do not move the valuation: eBay asks run 2–3× over
+      what the same set sells for, and BrickOwl is a thin market. Junk listings
+      (instructions-only, minifig-only, incomplete, bulk lots) are filtered before pricing.
+    </div>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>Minifigures <span class="soft">— 11 in this set<span id="figsTotalLabel"></span></span></h3>
+  
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used=""
+         data-total-new="">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/twn432.html" title="Set twn432"
+       data-value="0" data-name="set twn432" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn432.png" alt="Set twn432" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn432</div>
+      <div class="figtile-name">Set twn432</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn433.html" title="Set twn433"
+       data-value="0" data-name="set twn433" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="Set twn433" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn433</div>
+      <div class="figtile-name">Set twn433</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn434.html" title="Set twn434"
+       data-value="0" data-name="set twn434" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="Set twn434" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn434</div>
+      <div class="figtile-name">Set twn434</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn435.html" title="Set twn435"
+       data-value="0" data-name="set twn435" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="Set twn435" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn435</div>
+      <div class="figtile-name">Set twn435</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn436.html" title="Set twn436"
+       data-value="0" data-name="set twn436" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="Set twn436" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn436</div>
+      <div class="figtile-name">Set twn436</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn437.html" title="Set twn437"
+       data-value="0" data-name="set twn437" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="Set twn437" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn437</div>
+      <div class="figtile-name">Set twn437</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn438.html" title="Set twn438"
+       data-value="0" data-name="set twn438" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="Set twn438" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn438</div>
+      <div class="figtile-name">Set twn438</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn439.html" title="Set twn439"
+       data-value="0" data-name="set twn439" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="Set twn439" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn439</div>
+      <div class="figtile-name">Set twn439</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn440.html" title="Set twn440"
+       data-value="0" data-name="set twn440" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="Set twn440" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn440</div>
+      <div class="figtile-name">Set twn440</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn441.html" title="Set twn441"
+       data-value="0" data-name="set twn441" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="Set twn441" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn441</div>
+      <div class="figtile-name">Set twn441</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn442.html" title="Set twn442"
+       data-value="0" data-name="set twn442" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn442.png" alt="Set twn442" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn442</div>
+      <div class="figtile-name">Set twn442</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn432.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn432.html"><b>twn432</b> Set twn432</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn433.html"><b>twn433</b> Set twn433</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn434.html"><b>twn434</b> Set twn434</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn435.html"><b>twn435</b> Set twn435</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn436.html"><b>twn436</b> Set twn436</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn437.html"><b>twn437</b> Set twn437</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn438.html"><b>twn438</b> Set twn438</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn439.html"><b>twn439</b> Set twn439</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn440.html"><b>twn440</b> Set twn440</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn441.html"><b>twn441</b> Set twn441</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn442.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn442.html"><b>twn442</b> Set twn442</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used=""
+       data-note-new="">
+    
+      None of this set's 11 figs have been priced, so the figure share is unknown.
+      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
+  
+</div>
+
+<div class="card">
+  <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
+  
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">501 lots · 3,270 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪2,354</b>
+      &nbsp;· premium <span class="delta up">▲ 69%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th><th class="num">Avg each</th><th class="num">Lot value</th></tr>
+    
+    <tr>
+      <td>11203</td>
+      <td>11203</td>
+      <td>—</td>
+      <td class="num">139</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3941</td>
+      <td>3941</td>
+      <td>—</td>
+      <td class="num">125</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>68013</td>
+      <td>68013</td>
+      <td>—</td>
+      <td class="num">112</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td>87079</td>
+      <td>—</td>
+      <td class="num">104</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>15573</td>
+      <td>15573</td>
+      <td>—</td>
+      <td class="num">69</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>44861</td>
+      <td>44861</td>
+      <td>—</td>
+      <td class="num">62</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>39789</td>
+      <td>39789</td>
+      <td>—</td>
+      <td class="num">59</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td>3023</td>
+      <td>—</td>
+      <td class="num">55</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td>35787</td>
+      <td>—</td>
+      <td class="num">51</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td>35787</td>
+      <td>—</td>
+      <td class="num">51</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3738</td>
+      <td>3738</td>
+      <td>—</td>
+      <td class="num">49</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3034</td>
+      <td>3034</td>
+      <td>—</td>
+      <td class="num">43</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td>3023</td>
+      <td>—</td>
+      <td class="num">41</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2465</td>
+      <td>2465</td>
+      <td>—</td>
+      <td class="num">40</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td>3710</td>
+      <td>—</td>
+      <td class="num">38</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2456</td>
+      <td>2456</td>
+      <td>—</td>
+      <td class="num">37</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3022</td>
+      <td>3022</td>
+      <td>—</td>
+      <td class="num">36</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3068</td>
+      <td>3068</td>
+      <td>—</td>
+      <td class="num">36</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3460</td>
+      <td>3460</td>
+      <td>—</td>
+      <td class="num">36</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td>2431</td>
+      <td>—</td>
+      <td class="num">35</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td>3020</td>
+      <td>—</td>
+      <td class="num">33</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td>2412b</td>
+      <td>—</td>
+      <td class="num">32</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td>32607</td>
+      <td>—</td>
+      <td class="num">31</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>65509</td>
+      <td>65509</td>
+      <td>—</td>
+      <td class="num">31</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>26603</td>
+      <td>26603</td>
+      <td>—</td>
+      <td class="num">29</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td>4032</td>
+      <td>—</td>
+      <td class="num">29</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>75937</td>
+      <td>75937</td>
+      <td>—</td>
+      <td class="num">29</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3795</td>
+      <td>3795</td>
+      <td>—</td>
+      <td class="num">27</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>15712</td>
+      <td>15712</td>
+      <td>—</td>
+      <td class="num">26</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td>3004</td>
+      <td>—</td>
+      <td class="num">26</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td>3666</td>
+      <td>—</td>
+      <td class="num">25</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6192b</td>
+      <td>6192b</td>
+      <td>—</td>
+      <td class="num">24</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6636</td>
+      <td>6636</td>
+      <td>—</td>
+      <td class="num">24</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>30350b</td>
+      <td>30350b</td>
+      <td>—</td>
+      <td class="num">20</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>32000</td>
+      <td>32000</td>
+      <td>—</td>
+      <td class="num">20</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3709</td>
+      <td>3709</td>
+      <td>—</td>
+      <td class="num">17</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4282</td>
+      <td>4282</td>
+      <td>—</td>
+      <td class="num">17</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td>3020</td>
+      <td>—</td>
+      <td class="num">16</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td>3023</td>
+      <td>—</td>
+      <td class="num">16</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6541</td>
+      <td>6541</td>
+      <td>—</td>
+      <td class="num">16</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3034</td>
+      <td>3034</td>
+      <td>—</td>
+      <td class="num">15</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>35480</td>
+      <td>35480</td>
+      <td>—</td>
+      <td class="num">15</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6232</td>
+      <td>6232</td>
+      <td>—</td>
+      <td class="num">15</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>99207</td>
+      <td>99207</td>
+      <td>—</td>
+      <td class="num">15</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>11458</td>
+      <td>11458</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>13965</td>
+      <td>13965</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td>2412b</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td>3023</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td>3666</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3708</td>
+      <td>3708</td>
+      <td>—</td>
+      <td class="num">14</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3623</td>
+      <td>3623</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3705</td>
+      <td>3705</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4162</td>
+      <td>4162</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4477</td>
+      <td>4477</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4519</td>
+      <td>4519</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td>87580</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>92946</td>
+      <td>92946</td>
+      <td>—</td>
+      <td class="num">13</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>14418</td>
+      <td>14418</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>32140</td>
+      <td>32140</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>32803</td>
+      <td>32803</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>34103</td>
+      <td>34103</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4070</td>
+      <td>4070</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>90258</td>
+      <td>90258</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>92438</td>
+      <td>92438</td>
+      <td>—</td>
+      <td class="num">12</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3022</td>
+      <td>3022</td>
+      <td>—</td>
+      <td class="num">11</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3027</td>
+      <td>3027</td>
+      <td>—</td>
+      <td class="num">11</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>78329</td>
+      <td>78329</td>
+      <td>—</td>
+      <td class="num">11</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>24869</td>
+      <td>24869</td>
+      <td>—</td>
+      <td class="num">10</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>25059</td>
+      <td>25059</td>
+      <td>—</td>
+      <td class="num">10</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>27925</td>
+      <td>27925</td>
+      <td>—</td>
+      <td class="num">10</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3701</td>
+      <td>3701</td>
+      <td>—</td>
+      <td class="num">10</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6558</td>
+      <td>6558</td>
+      <td>—</td>
+      <td class="num">10</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td>2431</td>
+      <td>—</td>
+      <td class="num">9</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td>3020</td>
+      <td>—</td>
+      <td class="num">9</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>32054</td>
+      <td>32054</td>
+      <td>—</td>
+      <td class="num">9</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td>3710</td>
+      <td>—</td>
+      <td class="num">9</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>62462</td>
+      <td>62462</td>
+      <td>—</td>
+      <td class="num">9</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>11090</td>
+      <td>11090</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>18677</td>
+      <td>18677</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2420</td>
+      <td>2420</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td>3005</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3021</td>
+      <td>3021</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td>3023</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>30413</td>
+      <td>30413</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3711</td>
+      <td>3711</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4185</td>
+      <td>4185</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4286</td>
+      <td>4286</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>4477</td>
+      <td>4477</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>63864</td>
+      <td>63864</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6636</td>
+      <td>6636</td>
+      <td>—</td>
+      <td class="num">8</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>15712</td>
+      <td>15712</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>2540</td>
+      <td>2540</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>26601</td>
+      <td>26601</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td>3020</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td>3069</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td>3710</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>60479</td>
+      <td>60479</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>6187</td>
+      <td>6187</td>
+      <td>—</td>
+      <td class="num">7</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>11212</td>
+      <td>11212</td>
+      <td>—</td>
+      <td class="num">6</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+    <tr>
+      <td>11477</td>
+      <td>11477</td>
+      <td>—</td>
+      <td class="num">6</td>
+      <td class="num">—</td>
+      <td class="num">—</td>
+    </tr>
+    
+  </table>
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">Showing 100 of 501 lots — use the filter to narrow.</div>
+  
+  
+</div>
+
+
+<div class="card">
+  <h3>More from Icons <span class="soft">— closest by release year</span></h3>
+  <div class="relgrid">
+    
+    <a class="relcard" href="../sets/10283.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/10283-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>10283</b> NASA Space Shuttle Discovery</div>
+      <div class="relmeta">2021 · ₪597
+        · <span class="delta down">▼ 11%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/10338.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/10338-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>10338</b> Bumblebee</div>
+      <div class="relmeta">2024 · ₪216
+        · <span class="delta down">▼ 1%</span></div>
+    </a>
+    
+  </div>
+</div>
+
+
+
+</main>
+
+<footer class="note">
+  Brickonomy · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
+  · static snapshot — run <code>python -m brickonomy.export</code> to update
+  
+</footer>
+
+<script src="../static/app.js"></script>
+</body>
+</html>

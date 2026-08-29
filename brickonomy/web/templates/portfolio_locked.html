@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Portfolio · Brickonomy{% endblock %}
+{% block content %}
+
+{# What ships here is ciphertext, not a hidden page: the portfolio HTML is
+   AES-256-GCM encrypted and only exists in the browser after the password
+   derives the key. See brickonomy/lockbox.py for why a JS prompt would not
+   have been protection at all. #}
+<div id="lockIntro">
+  <div class="eyebrow">My collection</div>
+  <h1>Portfolio</h1>
+  <p class="sub">
+    {% if lockbox %}This page is encrypted. Enter the password to read it.
+    {% else %}Not published in this snapshot.{% endif %}
+  </p>
+</div>
+
+{% if not lockbox %}
+{# No password was set at export time, so the portfolio was deliberately left
+   out. The page still exists because every other page's nav links to it. #}
+<div class="card" style="max-width:520px;color:var(--ink-2)">
+  Holdings and purchase prices are not part of this published site. Run
+  Brickonomy locally to see them, or re-export with
+  <code>BRICKONOMY_PORTFOLIO_PASSWORD</code> set to publish this page
+  encrypted behind a password.
+</div>
+{% else %}
+
+<div class="card" id="lockCard" style="max-width:460px">
+  <form id="unlockForm" class="searchrow" autocomplete="off">
+    <input class="inp" type="password" id="unlockPw" style="flex:1"
+           placeholder="Password" aria-label="Portfolio password" autocomplete="current-password">
+    <button class="btn-primary" type="submit">Unlock</button>
+  </form>
+  <div id="unlockMsg" style="color:var(--muted);font-size:12.5px;margin-top:10px">
+    Holdings and purchase prices are not published in the clear — the file this page
+    downloaded is unreadable without the password.
+  </div>
+</div>
+
+<div id="unlocked" hidden></div>
+
+<script id="lockbox" type="application/json">{{ lockbox|tojson }}</script>
+<script>
+(function () {
+  "use strict";
+  var blob = JSON.parse(document.getElementById("lockbox").textContent);
+  var form = document.getElementById("unlockForm");
+  var pw = document.getElementById("unlockPw");
+  var msg = document.getElementById("unlockMsg");
+  var card = document.getElementById("lockCard");
+  var target = document.getElementById("unlocked");
+
+  var b64 = function (s) {
+    var bin = atob(s), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  };
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!window.crypto || !window.crypto.subtle) {
+      msg.textContent = "This browser cannot decrypt the page (WebCrypto needs HTTPS).";
+      return;
+    }
+    msg.textContent = "Deriving key…";
+    var enc = new TextEncoder();
+    crypto.subtle.importKey("raw", enc.encode(pw.value), "PBKDF2", false, ["deriveKey"])
+      .then(function (material) {
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: b64(blob.salt), iterations: blob.iterations, hash: "SHA-256" },
+          material, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+      })
+      .then(function (key) {
+        return crypto.subtle.decrypt({ name: "AES-GCM", iv: b64(blob.nonce) },
+                                     key, b64(blob.ciphertext));
+      })
+      .then(function (plain) {
+        var payload = JSON.parse(new TextDecoder().decode(plain));
+        // The value chart's data travels inside the encrypted payload too —
+        // publishing it as a plain .json alongside would undo the whole point.
+        window.__portfolioHistory = payload.history || null;
+        target.innerHTML = payload.html;
+        target.hidden = false;
+        card.hidden = true;
+        // The decrypted markup carries its own heading, so drop the lock one
+        // rather than show "Portfolio" twice.
+        document.getElementById("lockIntro").hidden = true;
+        msg.textContent = "";
+        // Re-run the client script so the injected markup gets its chart,
+        // sorting and filtering: innerHTML never executes <script> tags.
+        var s = document.createElement("script");
+        s.src = (document.body.dataset.base || "") + "static/app.js";
+        document.body.appendChild(s);
+      })
+      .catch(function () {
+        // AES-GCM authenticates, so a wrong password fails rather than
+        // returning plausible rubbish.
+        msg.textContent = "Wrong password.";
+        pw.select();
+      });
+  });
+})();
+</script>
+{% endif %}
+
+{% endblock %}
