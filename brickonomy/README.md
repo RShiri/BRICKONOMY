@@ -122,7 +122,7 @@ git add docs && git commit -m "Update site" && git push
 Then enable Pages once: repo **Settings → Pages → Deploy from a branch** →
 branch **`main`**, folder **`/docs`**. The site appears at
 
-> **https://rshiri.github.io/BrickLink-Price-Scraper-Analyzer/**
+> **https://rshiri.github.io/BRICKONOMY/**
 
 All links in the export are *relative*, so it also works if Pages is set to
 the repo root (the root `index.html` redirects into `docs/`) or served from a

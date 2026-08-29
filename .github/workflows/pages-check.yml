@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Probe the published site
         env:
-          BASE: https://rshiri.github.io/BrickLink-Price-Scraper-Analyzer
+          BASE: https://rshiri.github.io/BRICKONOMY
         run: |
           set -u
           # Pages can take a minute to publish after a push.

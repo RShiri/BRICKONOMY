@@ -24,7 +24,7 @@ import requests
 
 CDN = "https://cdn.rebrickable.com/media/downloads"
 FILES = {"themes": "themes.csv.gz", "sets": "sets.csv.gz", "minifigs": "minifigs.csv.gz"}
-USER_AGENT = "brickonomy/0.1 (+https://github.com/RShiri/BrickLink-Price-Scraper-Analyzer)"
+USER_AGENT = "brickonomy/0.1 (+https://github.com/RShiri/BRICKONOMY)"
 
 # Rebrickable keeps non-LEGO and non-set oddities in the same table; these
 # never appear on BrickLink as buyable sets.

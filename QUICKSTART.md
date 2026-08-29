@@ -20,12 +20,12 @@ You do not need to open Python. Ever.
 
 **Either** download the ZIP:
 
-> https://github.com/RShiri/BrickLink-Price-Scraper-Analyzer/archive/refs/heads/main.zip
+> https://github.com/RShiri/BRICKONOMY/archive/refs/heads/main.zip
 
 Right-click the downloaded file → *Extract All…* → pick somewhere easy like
 `C:\Brickonomy`. Extract it properly; running from inside the ZIP will fail.
 
-**Or**, if you have Git: `git clone https://github.com/RShiri/BrickLink-Price-Scraper-Analyzer.git`
+**Or**, if you have Git: `git clone https://github.com/RShiri/BRICKONOMY.git`
 
 ## 3. Double-click `run.bat`
 
