@@ -7,3 +7,4 @@ selenium
 beautifulsoup4
 pytest
 httpx              # starlette TestClient (static export)
+cryptography  # AES-GCM for the password-protected portfolio export
