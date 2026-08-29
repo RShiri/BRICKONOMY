@@ -1,0 +1,111 @@
+name: theme scan
+
+# Scrapes a whole theme on GitHub's runners — they have real network access
+# and Chrome, so nobody has to leave a laptop running for hours.
+#
+# The scanned database is committed to data/brickonomy.db, so each run builds
+# on the previous one instead of starting from scratch, and the published
+# site is rebuilt from it. Download that file and drop it in your own folder
+# (renamed brickonomy.db) if you want the results locally.
+#
+# eBay contributes asking prices only here: sold listings need a signed-in
+# session, and the runner has no cookies. BrickLink sold data — the number
+# that actually drives valuations — works fine.
+
+on:
+  # Every 6 hours, keep chewing through whatever the catalog is still
+  # missing — sets before minifigs, never-scanned before merely stale. No
+  # input needed; each run picks up where the last one stopped.
+  # Disabled at the owner's request — scanning happens on their own machine,
+  # where the eBay session lives and sold prices are available. Uncomment to
+  # let GitHub grind through the catalog again (asks-only for eBay).
+  # schedule:
+  #   - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      theme:
+        description: "Theme to scan; leave empty to continue the whole catalog"
+        default: "Super Heroes Marvel"
+      limit:
+        description: "Max items this run (≈35 s each; 300 ≈ 3 h)"
+        default: "300"
+      publish:
+        description: "Rebuild and commit the published site"
+        type: boolean
+        default: true
+
+concurrency: theme-scan          # one scan at a time, never two writers
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350         # under the 6 h hard limit
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r brickonomy/requirements.txt
+
+      - name: Restore the previous scan
+        run: |
+          if [ -f data/brickonomy.db ]; then
+            cp data/brickonomy.db brickonomy.db
+            echo "resuming from the committed database"
+          else
+            echo "first run — starting fresh"
+          fi
+
+      - name: Seed and import the catalog
+        run: |
+          python -m brickonomy.importer
+          python -m brickonomy.rebrickable --minifigs
+
+      - name: Scan
+        run: |
+          LIMIT="${{ inputs.limit }}"; LIMIT="${LIMIT:-300}"
+          THEME="${{ inputs.theme }}"
+          if [ -z "$THEME" ]; then
+            echo "No theme given — continuing the whole catalog."
+            python -m brickonomy.refresh --scope gaps --limit "$LIMIT"
+          else
+            python -m brickonomy.refresh --theme "$THEME" --limit "$LIMIT"
+          fi
+
+      - name: Coverage after this run
+        run: |
+          python - <<'PY'
+          from brickonomy import db as dbq
+          conn = dbq.connect()
+          for t in dbq.theme_coverage(conn)[:12]:
+              print(f"{t['theme'][:34]:<34} {t['scanned']:>6}/{t['total']:<6} "
+                    f"left {t['left']:>6}  {t['pct']:>3}%")
+          conn.close()
+          PY
+
+      - name: Rebuild the published site
+        if: ${{ inputs.publish }}
+        run: python -m brickonomy.export
+
+      - name: Commit results
+        run: |
+          mkdir -p data && cp brickonomy.db data/brickonomy.db
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/brickonomy.db docs || true
+          git diff --staged --quiet || git commit -m \
+            "Theme scan: ${{ inputs.theme }} (limit ${{ inputs.limit }})"
+          git pull --rebase --autostash origin main || true
+          git push origin HEAD:main
+
+      - name: Upload the database
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: brickonomy-db
+          path: brickonomy.db
+          retention-days: 14

@@ -1,0 +1,73 @@
+name: catalog-refresh
+
+# Imports the full LEGO catalog from Rebrickable's public CSV dumps, rebuilds
+# the static site and commits it. Prices are NOT scraped here — marketplace
+# scraping stays on your machine (see brickonomy.refresh); this only fills in
+# every set that exists so search covers the whole catalog.
+
+on:
+  workflow_dispatch:
+    inputs:
+      minifigs:
+        description: "Also import the minifig catalog (~15k rows)"
+        type: boolean
+        default: true
+  schedule:
+    - cron: "0 4 * * 1" # Mondays 04:00 UTC — Rebrickable refreshes daily
+
+permissions:
+  contents: write
+
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install fastapi jinja2 requests httpx python-multipart
+
+      - name: Seed the database from the repo's existing data
+        run: python -m brickonomy.importer
+
+      - name: Import the full LEGO catalog
+        run: |
+          python -m brickonomy.rebrickable \
+            ${{ (github.event_name == 'schedule' || inputs.minifigs) && '--minifigs' || '' }}
+
+      - name: Rebuild the static site
+        run: python -m brickonomy.export --out docs
+
+      - name: Summarise
+        run: |
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import sqlite3
+          conn = sqlite3.connect("brickonomy.db")
+          items = conn.execute("select count(*) from items").fetchone()[0]
+          sets = conn.execute("select count(*) from items where item_type='S'").fetchone()[0]
+          figs = conn.execute("select count(*) from items where item_type='M'").fetchone()[0]
+          priced = conn.execute("select count(distinct item_id) from price_snapshots").fetchone()[0]
+          print("## Catalog refresh\n")
+          print(f"- items: **{items:,}** ({sets:,} sets, {figs:,} minifigs)")
+          print(f"- with scraped prices: **{priced:,}**")
+          PY
+
+      - name: Commit the rebuilt site
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "Refresh catalog and rebuild site [skip ci]"
+            git push
+          fi

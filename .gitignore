@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Databases. These hold the portfolio — what is owned and what was paid for it
+# — so they stay local. `*.db` deliberately also covers the timestamped
+# backups that brickonomy.rebase / brickonomy.cleanup write next to it, which
+# the old `brickonomy.db` line did not match.
+*.db
+*.db.*.bak
+*.bak
+# SQLite's write-ahead log and shared-memory sidecars hold uncommitted pages
+# of the same private data.
+*.db-wal
+*.db-shm
+*.db-journal
+
+# ...except the one the theme-scan workflow commits so each run builds on the
+# last. `*.db` matches at any depth, so this has to be re-included explicitly.
+!data/brickonomy.db
+
+# Signed-in Chrome profile used for eBay sold listings: contains session
+# cookies for a real account.
+.chrome-ebay/
+
+# Saved marketplace pages from debugging a scraper. Large, and they go stale.
+debug_*.html

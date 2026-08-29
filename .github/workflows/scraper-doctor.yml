@@ -1,0 +1,51 @@
+name: scraper doctor
+
+# Diagnoses a source that returns nothing. GitHub's runners have internet and
+# Chrome, so this reaches eBay / BrickOwl / BrickLink from a clean IP and
+# prints what actually came back — page size, block detection, which selectors
+# still match, and the page's most common CSS classes.
+#
+# Run it from the Actions tab ("Run workflow") and read the log; the fetched
+# HTML is also attached as an artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      item_id:
+        description: "Set number to diagnose"
+        default: "75192"
+      source:
+        description: "Which source"
+        type: choice
+        options: [all, ebay, brickowl, pov, ebay-sold]
+        default: all
+
+jobs:
+  doctor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r brickonomy/requirements.txt
+
+      - name: Show Chrome version
+        run: google-chrome --version || chromium --version || echo "no chrome on PATH"
+
+      - name: Diagnose
+        run: |
+          python -m brickonomy.doctor "${{ inputs.item_id }}" \
+            --source "${{ inputs.source }}" --dump
+
+      - name: Upload fetched HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doctor-html-${{ inputs.item_id }}
+          path: doctor_*.html
+          if-no-files-found: ignore
+          retention-days: 7

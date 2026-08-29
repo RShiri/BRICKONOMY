@@ -1,0 +1,73 @@
+name: pages-check
+
+# Verifies that the published GitHub Pages site is actually reachable.
+# It runs on a GitHub runner, which can reach rshiri.github.io — handy when
+# whoever is debugging cannot. Nothing is deployed here; this only reads.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "index.html"
+      - ".nojekyll"
+      - ".github/workflows/pages-check.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe the published site
+        env:
+          BASE: https://rshiri.github.io/BrickLink-Price-Scraper-Analyzer
+        run: |
+          set -u
+          # Pages can take a minute to publish after a push.
+          sleep 45
+
+          declare -A EXPECT=(
+            ["/"]="200 301 302"
+            ["/docs/"]="200"
+            ["/docs/sets/75192.html"]="200"
+            ["/docs/api/index.json"]="200"
+            ["/docs/static/style.css"]="200"
+          )
+          ORDER=("/" "/docs/" "/docs/sets/75192.html" "/docs/api/index.json" "/docs/static/style.css")
+
+          echo "## Pages check" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| URL | status | expected | result |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+
+          failures=0
+          for path in "${ORDER[@]}"; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "${BASE}${path}" || echo "000")
+            want="${EXPECT[$path]}"
+            if [[ " $want " == *" $code "* ]]; then
+              mark="✅"
+            else
+              mark="❌"
+              failures=$((failures + 1))
+            fi
+            echo "| \`${path}\` | $code | $want | $mark |" >> "$GITHUB_STEP_SUMMARY"
+            echo "${mark} ${path} -> ${code} (expected ${want})"
+          done
+
+          # Show what the landing page actually serves, so a Jekyll-mangled or
+          # placeholder page is obvious in the log rather than just "200".
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "First bytes of ${BASE}/docs/ :" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          curl -s --max-time 30 "${BASE}/docs/" | head -c 400 >> "$GITHUB_STEP_SUMMARY" || true
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$failures" -gt 0 ]; then
+            echo "::error::${failures} Pages URL(s) did not return the expected status"
+            exit 1
+          fi
+          echo "All Pages URLs reachable."
