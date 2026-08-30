@@ -91,7 +91,8 @@
     </tr>
     {% else %}
     <tr>
-      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<a href="{{ u('/sets/' ~ e.item_id) }}">{{ e.item_id }} {{ e.name }}</a></td>
+      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<a href="{{ u('/sets/' ~ e.item_id) }}">{{ e.item_id }} {{ e.name }}</a>
+          {{ m.sell_chip(e.signal) }}</td>
       <td>{{ e.theme or '—' }}</td>
       <td class="num" data-v="{{ e.qty }}">{{ e.qty }}</td>
       <td class="num" data-v="{{ e.paid or '' }}">{{ e.paid|money(ccy) if e.paid else '—' }}</td>
@@ -138,7 +139,8 @@
     <tbody>
     {% for w in wishlist %}
     <tr>
-      <td>{{ m.thumb(w.item_id, w.item_type, img_url) }}<a href="{{ u('/sets/' ~ w.item_id) }}">{{ w.item_id }} {{ w.name }}</a></td>
+      <td>{{ m.thumb(w.item_id, w.item_type, img_url) }}<a href="{{ u('/sets/' ~ w.item_id) }}">{{ w.item_id }} {{ w.name }}</a>
+          {{ m.buy_window_chip(w.window) }}</td>
       <td>{{ w.theme or '—' }}</td>
       <td class="num" data-v="{{ w.wanted }}">{{ w.wanted }}</td>
       <td class="num" data-v="{{ w.retail or '' }}">{{ w.retail|money(ccy) if w.retail else '—' }}</td>

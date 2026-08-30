@@ -32,25 +32,6 @@ REALISATION_RATE = 0.70       # share of the part-out total that ever sells
 STALE_POV_DAYS = 30
 
 
-def landed_cost(conn, price, currency, to_ccy="ILS"):
-    """What a listing really costs delivered, in `to_ccy`.
-
-    Anything quoted in a foreign currency is treated as an import: VAT applies
-    on arrival and something has to pay for shipping. A domestic listing is
-    just its price.
-    """
-    from ..config import get_config
-    from ..currency import convert
-
-    cfg = get_config()
-    base = convert(conn, price, currency, to_ccy)
-    if currency == "ILS":
-        return base, 0.0
-    vat = base * cfg.import_vat_pct / 100.0
-    shipping = convert(conn, cfg.import_shipping_usd, "USD", to_ccy)
-    return base + vat + shipping, vat + shipping
-
-
 def opportunities(conn, ccy="ILS", limit=None, max_budget=None,
                   include_stale=True):
     """Ranked part-out opportunities. Most profitable first.
@@ -61,7 +42,7 @@ def opportunities(conn, ccy="ILS", limit=None, max_budget=None,
     """
     from ..currency import convert
     from . import velocity as velocity_mod
-    from .listings import believable_offers
+    from .listings import believable_offers, landed_cost
     from .valuation import current_value
 
     cutoff = datetime.now() - timedelta(days=STALE_POV_DAYS)

@@ -40,6 +40,24 @@
   {%- endif -%}
 {%- endmacro %}
 
+{# Act, or do not. Both chips carry their own reasoning: a signal about real
+   money should be able to explain itself rather than be trusted blindly. #}
+{% macro sell_chip(sig) -%}
+  {%- if sig and sig.fire -%}
+  <span class="chip" style="color:var(--warn);border-color:var(--warn)"
+        title="{{ sig.reasons|join('; ') }}. Based on {{ sig.points }} price points at {{ sig.confidence }} confidence.">
+    ▲ consider selling</span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro buy_window_chip(w) -%}
+  {%- if w and w.fire -%}
+  <span class="chip" style="color:var(--ok);border-color:var(--ok)"
+        title="Production is expected to end {{ 'this year' if w.years_left == 0 else 'within a year' }}, after which prices usually rise.{% if w.estimated %} The retirement date is estimated — release year plus a flat allowance, not a published date.{% endif %}">
+    ◷ buy window closing{% if w.estimated %}*{% endif %}</span>
+  {%- endif -%}
+{%- endmacro %}
+
 {# A value nobody can realise deserves to look different from one they can. #}
 {% macro value_class(confidence) -%}
 {{ 'opacity:.55' if confidence == 'LOW' else '' }}

@@ -96,3 +96,22 @@ def believable_offers(conn, item_id, value_ils, condition="new", to_ccy="ILS"):
         if plausible(ask_ils, value_ils):
             out[source] = o
     return out
+
+
+def landed_cost(conn, price, currency, to_ccy="ILS"):
+    """What a listing really costs delivered, in `to_ccy`.
+
+    Anything quoted in a foreign currency is treated as an import: VAT applies
+    on arrival and something has to pay for shipping. A domestic listing is
+    just its price.
+    """
+    from ..config import get_config
+    from ..currency import convert
+
+    cfg = get_config()
+    base = convert(conn, price, currency, to_ccy)
+    if currency == "ILS":
+        return base, 0.0
+    vat = base * cfg.import_vat_pct / 100.0
+    shipping = convert(conn, cfg.import_shipping_usd, "USD", to_ccy)
+    return base + vat + shipping, vat + shipping

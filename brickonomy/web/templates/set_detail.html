@@ -206,7 +206,8 @@
 
 {% if split %}
 <div class="card">
-  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts</span></h3>
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at {{ split.condition }} prices</span></h3>
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
@@ -224,8 +225,12 @@
         <dd><b>{{ split.total|money(ccy) }}</b></dd>
       </dl>
       <div style="color:var(--muted);font-size:12px;margin-top:10px">
-        Slices are of the <b>part-out value</b> — what the set fetches broken up, at new-condition
-        prices. Minifigures are counted whole and the remainder is the loose parts.
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>{{ split.condition }}</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts.
+        {%- if split.condition == 'new' %} No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.{% endif %}
         {% if split.partial %}<br>Not every figure has a price yet, so the minifig slice is a floor —
         rescan to fill it in.{% endif %}
         {% if split.over %}<br><span style="color:var(--warn)">The figures alone price above the

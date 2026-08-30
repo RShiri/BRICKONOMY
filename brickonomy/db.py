@@ -96,6 +96,11 @@ CREATE TABLE IF NOT EXISTS set_minifigs (    -- which figs are in which set
 
 MIGRATIONS = [
     "ALTER TABLE items ADD COLUMN category_id INTEGER",
+    # Part-out values are per condition. BrickLink's calculator prices a
+    # sealed break-up and a used one differently, and comparing used figure
+    # values against a new part-out total mixes two bases — the same mistake
+    # that made the figure-share look half its real size on set pages.
+    "ALTER TABLE part_out ADD COLUMN condition TEXT NOT NULL DEFAULT 'new'",
 ]
 
 
@@ -125,6 +130,7 @@ def connect(db_path: str = None) -> sqlite3.Connection:
         except sqlite3.OperationalError:
             pass  # column already exists
     conn.commit()
+    _ensure_part_out_key(conn)
     return conn
 
 
@@ -469,20 +475,57 @@ def parts_summary(conn, set_id):
     ).fetchone()
 
 
-def upsert_part_out(conn, set_id, pov_total, currency="ILS"):
+def _ensure_part_out_key(conn):
+    """Re-key part_out on (set_id, condition).
+
+    The original table had set_id as its whole primary key, so storing a used
+    part-out value would have overwritten the new one. SQLite cannot alter a
+    primary key, so the table is rebuilt once; rows already there are new.
+    """
+    sql = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE name='part_out'").fetchone()
+    if not sql or "PRIMARY KEY (set_id, condition)" in sql[0]:
+        return
+    conn.executescript("""
+        CREATE TABLE part_out_new (
+            set_id TEXT NOT NULL,
+            pov_total REAL NOT NULL,
+            currency TEXT DEFAULT 'ILS',
+            condition TEXT NOT NULL DEFAULT 'new',
+            scraped_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (set_id, condition),
+            FOREIGN KEY(set_id) REFERENCES items(item_id)
+        );
+        INSERT INTO part_out_new (set_id, pov_total, currency, condition, scraped_at)
+            SELECT set_id, pov_total, currency,
+                   COALESCE(condition, 'new'), scraped_at FROM part_out;
+        DROP TABLE part_out;
+        ALTER TABLE part_out_new RENAME TO part_out;
+    """)
+    conn.commit()
+
+
+def upsert_part_out(conn, set_id, pov_total, currency="ILS", condition="new"):
     conn.execute(
-        """INSERT INTO part_out (set_id, pov_total, currency, scraped_at)
-           VALUES (?,?,?,?)
-           ON CONFLICT(set_id) DO UPDATE SET
+        """INSERT INTO part_out (set_id, pov_total, currency, condition, scraped_at)
+           VALUES (?,?,?,?,?)
+           ON CONFLICT(set_id, condition) DO UPDATE SET
              pov_total=excluded.pov_total, currency=excluded.currency,
              scraped_at=excluded.scraped_at""",
-        (set_id, pov_total, currency, now_iso()),
+        (set_id, pov_total, currency, condition, now_iso()),
     )
     conn.commit()
 
 
-def get_part_out(conn, set_id):
-    return conn.execute("SELECT * FROM part_out WHERE set_id=?", (set_id,)).fetchone()
+def get_part_out(conn, set_id, condition="new"):
+    """The part-out value for one condition, or None.
+
+    Used break-ups are priced separately by BrickLink and are the honest
+    comparison for used figure values.
+    """
+    return conn.execute(
+        "SELECT * FROM part_out WHERE set_id=? AND condition=?",
+        (set_id, condition)).fetchone()
 
 
 # ── exchange rates ───────────────────────────────────────────────────────

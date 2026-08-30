@@ -6,7 +6,8 @@
 <div class="eyebrow">Sniper</div>
 <h1>Deals</h1>
 <p class="sub">Live listings priced below the BrickLink average, after a 13% fee allowance.
-   Ranked on the margin <b>adjusted for how often the item actually sells</b> — an edge you
+   Prices are what the set costs <b>delivered</b> — a listing abroad carries VAT and shipping —
+   and the ranking adjusts for <b>how often the item actually sells</b>, because an edge you
    cannot realise is not an edge. {{ total }} opportunities across BrickLink, eBay and BrickOwl.</p>
 
 <div class="searchrow">
@@ -32,8 +33,10 @@
   <table>
     <tr>
       <th>Item</th><th>Theme</th><th>Where</th>
-      <th class="num">Ask</th><th class="num">Market</th><th class="num">Profit</th>
-      <th class="num">Margin</th><th>Rating</th><th>Status</th>
+      <th class="num">Ask</th>
+      <th class="num" title="What it costs delivered. A listing priced abroad carries VAT and shipping into Israel.">Landed</th>
+      <th class="num">Market</th><th class="num">Profit</th>
+      <th class="num">Margin</th><th>Sells</th><th>Rating</th><th>Status</th>
     </tr>
     {% for d in deals %}
     <tr {{ 'class=hl' if d.rating in ('EXCELLENT', 'GREAT INVEST') }}>
@@ -41,10 +44,13 @@
       <td>{{ d.theme or '—' }}</td>
       <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
           {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
-      <td class="num">{{ d.ask|money(ccy) }}</td>
+      <td class="num">{{ d.ask|money(ccy) }}{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
+      <td class="num"><b>{{ d.landed|money(ccy) }}</b>
+        {%- if d.imported %}<br><span class="soft" style="font-size:11px" title="VAT plus shipping">+{{ d.import_extra|money(ccy) }} import</span>{% endif %}</td>
       <td class="num">{{ d.value|money(ccy) }}</td>
       <td class="num delta up">{{ d.profit|money(ccy) }}</td>
       <td class="num">{{ m.delta(d.margin, 0) }}</td>
+      <td>{{ m.velocity_chip(d.velocity) }}</td>
       <td>{{ m.rating_chip(d.rating) }}</td>
       <td>{{ m.phase_chip(d.phase) }} {{ m.confidence_chip(d.confidence) }}</td>
     </tr>

@@ -144,11 +144,13 @@ def merge(conn, incoming_path, dry_run=False, log=print):
                FROM incoming.set_parts
                WHERE set_id NOT IN (SELECT DISTINCT set_id FROM main.set_parts)""")
         conn.execute(
-            """INSERT INTO main.part_out (set_id, pov_total, currency, scraped_at)
-               SELECT i.set_id, i.pov_total, i.currency, i.scraped_at
+            """INSERT INTO main.part_out
+                 (set_id, pov_total, currency, condition, scraped_at)
+               SELECT i.set_id, i.pov_total, i.currency,
+                      COALESCE(i.condition, 'new'), i.scraped_at
                FROM incoming.part_out i
                WHERE TRUE
-               ON CONFLICT(set_id) DO UPDATE SET
+               ON CONFLICT(set_id, condition) DO UPDATE SET
                  pov_total  = excluded.pov_total,
                  currency   = excluded.currency,
                  scraped_at = excluded.scraped_at

@@ -23,8 +23,10 @@ from ..analytics import forecast as forecast_mod
 from ..analytics import growth as growth_mod
 from ..analytics import lifecycle
 from ..analytics import partout as partout_mod
+from ..analytics import signals as signals_mod
 from ..analytics import velocity as velocity_mod
-from ..analytics.listings import IMPLAUSIBLE_ASK_RATIO, cheapest_stock
+from ..analytics.listings import (IMPLAUSIBLE_ASK_RATIO, cheapest_stock,
+                                  landed_cost)
 from ..analytics.valuation import blend, current_value
 from ..compat import LEGACY_DB_PATH
 from ..config import SUPPORTED_CURRENCIES, get_config
@@ -221,8 +223,17 @@ def deal_for(conn, item_id, ccy, condition="new"):
     # selling a ₪1,000 set for three agorot.
     if ask_ils < value * IMPLAUSIBLE_ASK_RATIO:
         return None
-    profit = value - (ask_ils * 1.13)
-    margin = profit / ask_ils * 100.0
+    # What it costs delivered. A $162 eBay listing is ₪1,437 once VAT and
+    # shipping land, which is not a deal on a set worth ₪486 however cheap the
+    # sticker price looks next to a domestic one.
+    try:
+        cost_ils, import_extra = landed_cost(conn, o["price"], o["currency"], "ILS")
+    except ValueError:
+        return None
+    # Margin against the landed cost, plus the 13% fee/VAT allowance the
+    # analyzer applies to any purchase.
+    profit = value - (cost_ils * 1.13)
+    margin = profit / cost_ils * 100.0
     # A margin you cannot realise is not a margin. Rank on the liquidity-
     # adjusted figure so a 30% edge on something that trades weekly outranks
     # 45% on a set that moves twice a year and ties the money up meanwhile.
@@ -233,6 +244,9 @@ def deal_for(conn, item_id, ccy, condition="new"):
     return {
         "item_id": item_id, "source": best_source,
         "ask": disp(conn, ask_ils, "ILS", ccy),
+        "landed": disp(conn, cost_ils, "ILS", ccy),
+        "import_extra": disp(conn, import_extra, "ILS", ccy),
+        "imported": o["currency"] != "ILS",
         "value": disp(conn, value, "ILS", ccy),
         "profit": disp(conn, profit, "ILS", ccy),
         "margin": margin, "adjusted_margin": adjusted,
@@ -663,8 +677,14 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
 
         parts = dbq.get_set_parts(conn, item_id, search=parts_q, limit=100)
         psum = dbq.parts_summary(conn, item_id)
-        pov = dbq.get_part_out(conn, item_id)
-        pov_disp = disp(conn, pov["pov_total"], pov["currency"], ccy) if pov else None
+        # Both conditions, so the figure/parts split can compare like with
+        # like: used figure values against a used part-out total.
+        povs = {}
+        for condition in ("new", "used"):
+            po = dbq.get_part_out(conn, item_id, condition)
+            povs[condition] = disp(conn, po["pov_total"], po["currency"], ccy)                 if po else None
+        pov = dbq.get_part_out(conn, item_id, "new")
+        pov_disp = povs["new"]
         pov_premium = None
         if pov_disp and values["new"]["value"]:
             pov_premium = (pov_disp / values["new"]["value"] - 1) * 100.0
@@ -672,21 +692,29 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
         # Split the part-out value into minifigures and everything else.
         # The POV is scraped with breakType=M, so minifigs are counted whole
         # and are already inside that total — the rest is the loose parts.
-        # POV is a new-condition figure, so this pairs with the new fig total.
-        split = None
-        if pov_disp and figs_totals["new"]:
-            figs_share = min(figs_totals["new"], pov_disp)
-            split = {
+        #
+        # Used leads, matching the figure table: a figure pulled out of a set
+        # is a used figure, and a used part-out total is what it belongs
+        # against. Falls back to new where no used POV has been scraped yet.
+        splits = {}
+        for condition in ("used", "new"):
+            total, figs_total = povs[condition], figs_totals[condition]
+            if not total or not figs_total:
+                continue
+            figs_share = min(figs_total, total)
+            splits[condition] = {
                 "figs": figs_share,
-                "parts": max(0.0, pov_disp - figs_share),
-                "total": pov_disp,
-                "figs_pct": figs_share / pov_disp * 100.0,
+                "parts": max(0.0, total - figs_share),
+                "total": total,
+                "figs_pct": figs_share / total * 100.0,
                 # The two numbers come from different BrickLink readings (our
                 # own fig averages vs BrickLink's part-out calculator), so
                 # they can disagree. Say so rather than draw a bogus slice.
-                "over": figs_totals["new"] > pov_disp,
-                "partial": figs_partial["new"],
+                "over": figs_total > total,
+                "partial": figs_partial[condition],
+                "condition": condition,
             }
+        split = splits.get("used") or splits.get("new")
 
         # sold/listing counts per source for the comparison table
         stats = {}
@@ -742,7 +770,8 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
             parts=parts, parts_summary=psum, parts_q=parts_q,
             pov=pov_disp, pov_premium=pov_premium,
             related=related, ppp=ppp, ppp_theme_avg=ppp_theme_avg, deal=deal,
-            import_cost=import_cost, split=split,
+            import_cost=import_cost, split=split, splits=splits,
+            povs=povs,
         ))
     finally:
         conn.close()
@@ -897,6 +926,8 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
                 "purchase_date": row["purchase_date"], "condition": row["condition"],
                 "value": v, "gain": gain,
                 "delta30": dbq.market_delta(conn, row["item_id"], days=30),
+                "signal": signals_mod.sell_signal(
+                    conn, row["item_id"], paid=paid, condition=condition),
             })
             total_value += (v or 0) * qty
             total_paid += (paid or 0) * qty

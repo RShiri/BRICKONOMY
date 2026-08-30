@@ -240,14 +240,21 @@ def _refresh_parts(conn, set_id, force=False, log=print):
         elif err:
             log(f"  ✘ parts inventory: {err}")
     if not pov_fresh or force:
-        value, pov_ccy, err = src.fetch_part_out_value(set_id)
-        if value is not None:
-            # The POV page is fetched without a session, so it is in the site
-            # default currency, not the scraper's — store what it actually is.
-            dbq.upsert_part_out(conn, set_id, value, pov_ccy or "USD")
-            log(f"  ⚙ part-out value: {value:,.2f} {pov_ccy or 'USD'}")
-        elif err:
-            log(f"  ✘ part-out value: {err}")
+        # Both conditions: BrickLink prices a sealed break-up and a used one
+        # differently, and comparing used figure values against a new part-out
+        # total mixes two bases. One extra request per set.
+        for condition, flag in (("new", "N"), ("used", "U")):
+            value, pov_ccy, err = src.fetch_part_out_value(set_id, condition=flag)
+            if value is not None:
+                # The POV page is fetched without a session, so it is in the
+                # site default currency, not the scraper's — store what it is.
+                dbq.upsert_part_out(conn, set_id, value, pov_ccy or "USD",
+                                    condition=condition)
+                log(f"  ⚙ part-out value ({condition}): {value:,.2f} {pov_ccy or 'USD'}")
+            elif err:
+                log(f"  ✘ part-out value ({condition}): {err}")
+            if not get_config().fixture_mode:
+                polite_sleep()
 
 
 def _stale_items(conn, ttl_days):

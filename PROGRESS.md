@@ -156,23 +156,37 @@ a separate task.
 
 **Accept:** real message on your phone · zero repeats on re-run · thresholds in config.
 
-### [ ] D3 · Landed-Cost Deals — ½ session — depends: C1
-- [ ] `deal_for()` applies VAT + shipping to foreign-currency listings before margin
-- [ ] Deal cards show ask **and** landed
+### [x] D3 · Landed-Cost Deals — depends: C1
+- [x] `deal_for()` measures margin against the **landed** cost; `landed_cost` moved
+      from `partout` into the shared `analytics/listings.py`
+- [x] Deals table shows ask **and** landed, with the import surcharge broken out,
+      plus a sales-rate column
 
-**Accept:** the ₪1,437-landed eBay 76051 listing stops qualifying as a deal.
+**Accept:** ✅ **297 → 235 qualifying deals** — 62 were only deals because delivery
+was ignored · ✅ 3 tests incl. one proving import costs can disqualify outright.
 
-### [ ] D4 · Sell Signals — 1 session — depends: C1, C2
-- [ ] "Consider selling" chip: flat 6-mo CAGR + above-median velocity + positive gain
-- [ ] "Buy window closing" on wishlist items retiring inside 12 months
-- [ ] Silence on thin evidence (<3 history points or LOW confidence)
+### [x] D4 · Sell Signals — depends: C1 (C2 deferred)
+- [x] "▲ consider selling": flat growth **and** sells ≥6×/6mo **and** in profit
+- [x] "◷ buy window closing" on wishlist items retiring within a year, asterisked
+      because the retirement date is an estimate
+- [x] Silent below 3 history points or on LOW confidence
 
-**Accept:** flags the flat holdings only · tooltips state their numbers · none on unpriced rows.
+**Accept:** ✅ 14 tests · ✅ every chip states its own numbers in the tooltip ·
+✅ **fires on nothing today, correctly** — 91 of 92 holdings have fewer than three
+price points, since scanning began in August. The signals start working as the
+nightly scanner builds history; the logic is proven by test, not by the page.
 
 ### [~] Wave 3 QA gate *(D2/D3/D4 outstanding)*
 - [x] Full suite green — **180 passed** (was 159; +21)
 - [x] Mobile: `/partout` zero overflow at 375px **and** 320px
 - [x] Portfolio leak check green
+
+**Also this session:** the "Where the value sits" doughnut now compares **used
+figure values against a used part-out total**. `part_out` was keyed on `set_id`
+alone, so it could only hold one condition; re-keyed on `(set_id, condition)`
+with a table rebuild, and the scraper now fetches both. 76051 reads ₪195 figures
+/ ₪189 parts of a ₪384 used part-out, where before it mixed used figures into a
+new-condition total.
 
 **Found and fixed en route.** Hand-checking the top rows showed 2 of 5 were not
 sets at all: a *"LEGO Sticker Sheet for Set 5002145"* at ₪1.65, and a *"Black
@@ -217,6 +231,7 @@ One aggregate query replaces the per-row N+1; sets-only aggregates.
 | Date | What happened |
 |---|---|
 | 2026-08-30 | Plan drawn; baseline recorded; nothing started |
+| 2026-08-31 | **D3 + D4 complete.** Deals judged on landed cost (297 → 235 — 62 were only deals with delivery ignored). Sell/buy-window signals added, silent below 3 history points. Doughnut switched to used-vs-used after re-keying `part_out` by condition. Tests 180 → 197. |
 | 2026-08-31 | **D1 complete.** `/partout` ranks 357 sets on landed cost vs a realistic part-out yield, velocity-discounted. Caught two non-set listings topping the board (a sticker sheet and a wheel rim whose price came from its dimensions) and added a component filter. Retirement dates now labelled estimated rather than deferred silently. Tests 159 → 180. |
 | 2026-08-31 | **C1 + C3 complete.** Velocity surfaced from data already scraped but never shown; deals ranked on liquidity-adjusted margin; LOW confidence dimmed. Snapshot compaction with charts proven identical (591/592 byte-for-byte). Caught the deals page being topped by ₪0.03 phantom listings — BrickOwl matching parts to set numbers — and added a plausibility floor. Tests 136 → 159. |
 | 2026-08-31 | **Wave 1 complete.** B1: figures discovered mid-scan join the same run; `--limit` is one budget for the whole night; "Figs priced" column per theme. B2: `merge.py` with read-only ATTACH, dedupe and hard exclusions for portfolio/rates; `--rank-themes` puts collected themes in their own tier. Tests 118 → 136. |

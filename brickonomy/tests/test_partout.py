@@ -9,7 +9,8 @@ import pytest
 
 from brickonomy import db as dbq
 from brickonomy.analytics import partout
-from brickonomy.analytics.listings import looks_like_a_component
+from brickonomy.analytics.listings import (landed_cost,
+                                           looks_like_a_component)
 
 
 @pytest.fixture()
@@ -60,12 +61,12 @@ class TestYieldIsHonest:
 
 class TestLandedCost:
     def test_a_domestic_listing_costs_its_price(self, conn):
-        cost, extra = partout.landed_cost(conn, 100.0, "ILS")
+        cost, extra = landed_cost(conn, 100.0, "ILS")
         assert cost == pytest.approx(100.0) and extra == 0.0
 
     def test_an_import_carries_vat_and_shipping(self, conn):
         """A $100 listing is not ₪350 delivered."""
-        cost, extra = partout.landed_cost(conn, 100.0, "USD")
+        cost, extra = landed_cost(conn, 100.0, "USD")
         assert cost > 350.0
         assert extra == pytest.approx(cost - 350.0)
 
