@@ -22,7 +22,9 @@ from .. import db as dbq
 from ..analytics import forecast as forecast_mod
 from ..analytics import growth as growth_mod
 from ..analytics import lifecycle
+from ..analytics import partout as partout_mod
 from ..analytics import velocity as velocity_mod
+from ..analytics.listings import IMPLAUSIBLE_ASK_RATIO, cheapest_stock
 from ..analytics.valuation import blend, current_value
 from ..compat import LEGACY_DB_PATH
 from ..config import SUPPORTED_CURRENCIES, get_config
@@ -32,11 +34,6 @@ from ..importer import (item_type_for, normalize_item_id, parse_condition,
 from . import jobs
 
 BASE_DIR = Path(__file__).resolve().parent
-
-# A live ask below this fraction of the item's value is treated as a
-# mismatched listing rather than a bargain. 2% is far under any real discount
-# — the genuine deals in the data sit between 10% and 60% off.
-IMPLAUSIBLE_ASK_RATIO = 0.02
 
 # Static-export mode: brickonomy.export flips these, then crawls the app with
 # a TestClient. Links become RELATIVE .html paths (so the exported site works
@@ -243,28 +240,6 @@ def deal_for(conn, item_id, ccy, condition="new"):
     }
 
 
-def cheapest_stock(conn, item_id, condition="new"):
-    """{source: {price(display later), currency, description}} from the latest
-    stock snapshot's retained raw listings."""
-    out = {}
-    for source in ("bricklink", "ebay", "brickowl"):
-        row = dbq.latest_snapshot(conn, item_id, source, condition, kind="stock")
-        if not row or not row["raw_json"]:
-            continue
-        try:
-            listings = json.loads(row["raw_json"])
-        except json.JSONDecodeError:
-            continue
-        clean = [l for l in listings if l.get("price", 0) > 0]
-        if not clean:
-            continue
-        best = min(clean, key=lambda l: l["price"])
-        out[source] = {"price": best["price"], "currency": row["currency"],
-                       "description": (best.get("description") or "")[:110],
-                       "scraped_at": row["scraped_at"]}
-    return out
-
-
 # ── pages ────────────────────────────────────────────────────────────────
 
 @app.get("/")
@@ -412,6 +387,40 @@ def themes_page(request: Request):
 
         return templates.TemplateResponse(request, "themes.html", ctx(
             request, conn, themes=out, max_total=max_total, growth_scale=growth_scale,
+        ))
+    finally:
+        conn.close()
+
+
+@app.get("/partout")
+def partout_page(request: Request, budget: float = 0.0, sort: str = "adjusted",
+                 fresh_only: bool = False):
+    """Which sets are worth buying to break up, ranked.
+
+    The question neither BrickLink nor BrickEconomy answers: not "what are this
+    set's parts worth" but "of everything buyable today, which one makes the
+    most money broken up".
+    """
+    conn = get_conn()
+    try:
+        ccy = display_ccy(request)
+        rows = partout_mod.opportunities(
+            conn, ccy=ccy, max_budget=budget or None,
+            include_stale=not fresh_only)
+        keys = {
+            "adjusted": lambda r: r["adjusted_margin"],
+            "margin": lambda r: r["margin"],
+            "profit": lambda r: r["profit"],
+            "figs": lambda r: r["fig_share"] or -1,
+        }
+        rows.sort(key=keys.get(sort, keys["adjusted"]), reverse=True)
+        profitable = [r for r in rows if r["profit"] > 0]
+        return templates.TemplateResponse(request, "partout.html", ctx(
+            request, conn, rows=rows[:150], total=len(rows),
+            profitable=len(profitable), budget=budget, sort=sort,
+            fresh_only=fresh_only,
+            fee_pct=round(partout_mod.SELLER_FEE_RATE * 100),
+            realisation_pct=round(partout_mod.REALISATION_RATE * 100),
         ))
     finally:
         conn.close()

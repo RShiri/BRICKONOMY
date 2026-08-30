@@ -96,12 +96,18 @@ your workflow trigger.
 **Accept:** ✅ 76051 shows ⇄ 10 sold/6mo new, 9 used · ✅ LOW visually distinct ·
 ✅ deals re-rank (10783: 262% → 184% adjusted at 3 sales/6mo) · ✅ 13 tests.
 
-### [ ] C2 · Retirement Dates — 1 session — depends: **your Brickset API key**
+### [!] C2 · Retirement Dates — deferred by choice (option 3)
+Every retirement year is `release + 2 or 3`, a flat guess. Rather than dress it
+up, `lifecycle.phase()` now returns `retirement_estimated` and the set page says
+so in plain words. Real dates still need a Brickset key.
+
+<details><summary>Original plan</summary>
 - [ ] Migration: `items.eol_date`, `items.availability`
 - [ ] `brickonomy/brickset.py` batch fetch, heuristic fallback labeled "estimated"
 - [ ] `lifecycle.py` + `forecast.py` consume real dates
 
-**Accept:** owned sets show sourced dates · estimates marked · forecast tests green.
+**Accept:** ✅ estimates marked (done now) · ⏸ sourced dates need the key.
+</details>
 
 ### [x] C3 · Snapshot Hygiene — ½ session — depends: nothing
 - [x] `cleanup.py --compact`: collapses runs of 3+ identical consecutive prices,
@@ -131,13 +137,17 @@ a separate task.
 ## Wave 3 — Differentiators
 *D2 ∥ D4 · D3 right after C1 (shared `deal_for()`) · D1 once coverage suffices.*
 
-### [ ] D1 · Part-Out Leaderboard — 2 sessions — depends: B1, C1
-- [ ] `/partout` page: cheapest live listing at **landed** cost vs POV, fig/parts split,
-      velocity-discounted margin
-- [ ] Sort by margin / profit / fig-share; budget filter
-- [ ] Fees subtracted (13% allowance exists); stale POVs (>30d) flagged
+### [x] D1 · Part-Out Leaderboard — 2 sessions — depends: B1, C1
+- [x] `/partout`: cheapest **believable** listing at landed cost vs part-out,
+      velocity-discounted, fig share where figures are priced
+- [x] Sort by adjusted margin / raw margin / profit / fig share; budget filter;
+      stale-POV flag (>30d, flagged not dropped)
+- [x] 10% selling fees **and** a 70% realisation rate — a part-out total is the
+      theoretical maximum, not what reaches your pocket. Stated on the page.
+- [x] "sell whole" flag where the intact set beats the part-out
 
-**Accept:** ranks ≥300 sets · top-3 hand-verified against live listings · no fee-mirage profits.
+**Accept:** ✅ ranks **357 sets, 230 profitable** · ✅ top-5 hand-checked (see below) ·
+✅ no fee-mirage: yield is POV × 70% × 90%, and profit is measured against landed cost.
 
 ### [ ] D2 · Alert Runner — 1 session — depends: A1, **your Telegram bot token**
 - [ ] `brickonomy/alerts.py` after each nightly scan: new deals, ±10%/30d portfolio moves,
@@ -159,7 +169,22 @@ a separate task.
 
 **Accept:** flags the flat holdings only · tooltips state their numbers · none on unpriced rows.
 
-### Wave 3 QA gate — [ ] suite · [ ] mobile · [ ] leak check · [ ] screenshots
+### [~] Wave 3 QA gate *(D2/D3/D4 outstanding)*
+- [x] Full suite green — **180 passed** (was 159; +21)
+- [x] Mobile: `/partout` zero overflow at 375px **and** 320px
+- [x] Portfolio leak check green
+
+**Found and fixed en route.** Hand-checking the top rows showed 2 of 5 were not
+sets at all: a *"LEGO Sticker Sheet for Set 5002145"* at ₪1.65, and a *"Black
+Wheel Rim Ø14.6 x 9.9"* whose ₪14.60 "price" had been parsed out of the
+**dimensions**. The 2%-of-value floor missed them because the sets themselves are
+cheap. Listings whose description names a component are now rejected outright.
+The top five are now BrickLink listings at 24–58% of set value with 2–30 sales
+per 6 months.
+
+`cheapest_stock` also moved from `web/app.py` into `analytics/listings.py` —
+analytics importing from the web layer was backwards, and the deals finder and
+the leaderboard need the same believability rules.
 
 ---
 
@@ -192,6 +217,7 @@ One aggregate query replaces the per-row N+1; sets-only aggregates.
 | Date | What happened |
 |---|---|
 | 2026-08-30 | Plan drawn; baseline recorded; nothing started |
+| 2026-08-31 | **D1 complete.** `/partout` ranks 357 sets on landed cost vs a realistic part-out yield, velocity-discounted. Caught two non-set listings topping the board (a sticker sheet and a wheel rim whose price came from its dimensions) and added a component filter. Retirement dates now labelled estimated rather than deferred silently. Tests 159 → 180. |
 | 2026-08-31 | **C1 + C3 complete.** Velocity surfaced from data already scraped but never shown; deals ranked on liquidity-adjusted margin; LOW confidence dimmed. Snapshot compaction with charts proven identical (591/592 byte-for-byte). Caught the deals page being topped by ₪0.03 phantom listings — BrickOwl matching parts to set numbers — and added a plausibility floor. Tests 136 → 159. |
 | 2026-08-31 | **Wave 1 complete.** B1: figures discovered mid-scan join the same run; `--limit` is one budget for the whole night; "Figs priced" column per theme. B2: `merge.py` with read-only ATTACH, dedupe and hard exclusions for portfolio/rates; `--rank-themes` puts collected themes in their own tier. Tests 118 → 136. |
 | 2026-08-31 | **Wave 0 complete.** A1: `--scope priority` with 5 tiers, `--dry-run`, cross-process scan lock, `scan_nightly.bat`. A2: all 4 workflows fixed — the Monday job that would have wiped the site is disabled and now restores the db first. Tests 111 → 118. Also fixed en route: catalog listings ordered priced-first, so `/minifigs` shows all 203 priced figs instead of 9. |

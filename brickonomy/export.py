@@ -171,6 +171,7 @@ def _crawl(webapp, out_dir: str, quiet: bool):
     n_pages += save("/minifigs", "minifigs.html")
     n_pages += save("/themes", "themes.html")
     n_pages += save("/deals", "deals.html")
+    n_pages += save("/partout", "partout.html")
     n_pages += save_portfolio(client, out, save, log)
     n_pages += save("/set", "set.html")          # client-rendered catalog page
     for theme in themes:

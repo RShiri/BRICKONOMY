@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block title %}Part-out{% endblock %}
+{% block content %}
+
+<div class="eyebrow">Opportunities</div>
+<h1>Worth breaking up</h1>
+<p class="sub">
+  Not "what are this set's parts worth" — <b>which set buyable today makes the most money
+  broken up</b>. {{ profitable }} of {{ total }} sets clear their cost.
+</p>
+
+{% if not static_mode %}
+<form class="searchrow" method="get" action="/partout">
+  <label class="chip" style="gap:8px">Budget {{ ccy_symbol }}
+    <input class="inp" type="number" name="budget" min="0" step="10"
+           value="{{ budget|round|int if budget else '' }}" placeholder="any"
+           style="border:0;background:transparent;padding:0;width:76px"
+           aria-label="Maximum landed cost">
+  </label>
+  <a class="chip {{ 'on' if sort == 'adjusted' }}" href="/partout?budget={{ budget|round|int if budget else '' }}&sort=adjusted">Sort: adjusted margin</a>
+  <a class="chip {{ 'on' if sort == 'margin' }}" href="/partout?budget={{ budget|round|int if budget else '' }}&sort=margin">Raw margin</a>
+  <a class="chip {{ 'on' if sort == 'profit' }}" href="/partout?budget={{ budget|round|int if budget else '' }}&sort=profit">Profit</a>
+  <a class="chip {{ 'on' if sort == 'figs' }}" href="/partout?budget={{ budget|round|int if budget else '' }}&sort=figs">Figure share</a>
+  <button class="btn-primary" type="submit">Apply</button>
+</form>
+{% endif %}
+
+<div class="card">
+  <div class="table-scroll">
+  <table data-sortable>
+    <thead>
+      <tr>
+        <th>Set</th><th>Theme</th>
+        <th class="num" title="Cheapest believable live listing, delivered — foreign listings carry VAT and shipping">Landed cost</th>
+        <th>Where</th>
+        <th class="num" title="Part-out total, after {{ realisation_pct }}% realisation and {{ fee_pct }}% selling fees">Realistic yield</th>
+        <th class="num">Profit</th>
+        <th class="num">Margin</th>
+        <th class="num" title="Margin discounted by how often the set actually sells">Adjusted</th>
+        <th class="num" title="Share of the part-out value sitting in minifigures — the half that sells quickly">Figs</th>
+        <th>Sells</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr class="{{ 'hl' if r.profit > 0 and loop.index0 < 3 }}">
+        <td>{{ m.thumb(r.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ r.item_id) }}">{{ r.item_id }} {{ (r.name or '')[:34] }}</a>
+          {% if r.better_whole %}<span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>{% endif %}
+          {% if r.stale %}<span class="chip" style="color:var(--muted)" title="Part-out value last checked {{ r.pov_as_of[:10] }} — older than 30 days.">stale POV</span>{% endif %}
+        </td>
+        <td>{{ r.theme or '—' }}</td>
+        <td class="num" data-v="{{ r.cost }}">{{ r.cost|money(ccy) }}
+          {%- if r.imported %}<br><span class="soft" style="font-size:11px" title="{{ r.ask|money(ccy) }} listed in {{ r.ask_currency }}, plus {{ r.import_extra|money(ccy) }} VAT and shipping">incl. import</span>{% endif %}</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[r.source] }})"></span>
+            {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[r.source] }}</td>
+        <td class="num" data-v="{{ r.revenue }}">{{ r.revenue|money(ccy) }}
+          <br><span class="soft" style="font-size:11px">of {{ r.pov|money(ccy) }}</span></td>
+        <td class="num" data-v="{{ r.profit }}"><b style="color:{{ 'var(--ok)' if r.profit > 0 else 'var(--down)' }}">{{ r.profit|money(ccy) }}</b></td>
+        <td class="num" data-v="{{ r.margin }}">{{ "%.0f"|format(r.margin) }}%</td>
+        <td class="num" data-v="{{ r.adjusted_margin }}"><b>{{ "%.0f"|format(r.adjusted_margin) }}%</b></td>
+        <td class="num" data-v="{{ r.fig_share if r.fig_share is not none else -1 }}">
+          {%- if r.fig_share is not none %}{{ "%.0f"|format(r.fig_share) }}%
+            {%- if r.figs_priced < r.figs_total %}<span class="soft" title="{{ r.figs_priced }} of {{ r.figs_total }} figures priced">*</span>{% endif %}
+          {%- elif r.figs_total %}<span class="soft" title="{{ r.figs_total }} figures, none priced yet">—</span>
+          {%- else %}<span class="soft">—</span>{% endif %}</td>
+        <td>{{ m.velocity_chip(r.velocity) }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="10" style="color:var(--muted);text-align:center">
+        Nothing to rank yet — part-out values come from a BrickLink scan.
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% if total > rows|length %}
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    Showing the top {{ rows|length }} of {{ total }}.
+  </div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h3>What these numbers assume</h3>
+  <div style="color:var(--ink-2);font-size:13px;line-height:1.7">
+    <p style="margin:0 0 10px">
+      A part-out total is a <b>theoretical maximum</b> — what a set is worth if every last brick
+      eventually finds a buyer. For the long tail of common parts that means years, or never. So
+      the yield here is the part-out value at <b>{{ realisation_pct }}% realisation</b>, less
+      <b>{{ fee_pct }}% selling fees</b>, which is what plausibly reaches your pocket. BrickEconomy
+      quotes the maximum; this quotes the outcome.
+    </p>
+    <p style="margin:0 0 10px">
+      <b>Landed cost</b> means delivered. A listing priced in dollars carries VAT and shipping into
+      Israel, so a set that looks cheap abroad often is not — and the cheapest row here is chosen
+      after that, not before.
+    </p>
+    <p style="margin:0 0 10px">
+      <b>Adjusted margin</b> discounts the paper margin by how often the set actually sells. A fat
+      edge on something that trades twice a year ties your money up for months; a thinner one you
+      can turn over is usually the better trade.
+    </p>
+    <p style="margin:0">
+      Two honest caveats. Sets marked <b>sell whole</b> fetch more intact than broken up — the
+      part-out is the worse move there. And parting out is <i>work</i>: sorting, listing and
+      posting hundreds of lots. None of these numbers price your time.
+    </p>
+  </div>
+</div>
+
+{% endblock %}

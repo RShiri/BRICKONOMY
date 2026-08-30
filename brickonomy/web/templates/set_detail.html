@@ -58,6 +58,12 @@
       <div class="phase {{ 'current' if phase.phase == 'RETIRED_STABLE' }}" style="flex:3">Steady growth</div>
     </div>
     <div class="phaselbl"><span style="flex:4">{{ item.year }}</span><span style="flex:2">{{ phase.retirement_year }}</span><span style="flex:2">{{ phase.retirement_year + 1 }}</span><span style="flex:3">{{ phase.retirement_year + 2 }} →</span></div>
+    {% if phase.retirement_estimated %}
+    <div style="color:var(--muted);font-size:11px;margin-top:4px">
+      Retirement {{ phase.retirement_year }} is <b>estimated</b> — release year plus a flat
+      allowance, not a published date. Real runs vary from 18 months to eight years.
+    </div>
+    {% endif %}
     {% endif %}
   </div>
 </div>
