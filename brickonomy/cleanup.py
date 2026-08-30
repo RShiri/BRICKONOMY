@@ -97,8 +97,80 @@ def clean(conn, dry_run=False, log=print):
     return {"rows": len(bad_rows), "names": len(bad_names), "types": len(mistyped)}
 
 
+def compactable_runs(conn):
+    """Runs of three or more consecutive snapshots holding the same price.
+
+    A scan burst writes the same figure several times in an evening — three
+    identical rows minutes apart say nothing four don't. Keeping the first and
+    last of each run preserves the shape of every chart exactly (the segment
+    between them is a straight line either way) and preserves *when* the price
+    was known to start and stop holding, which is the only information the
+    middle rows carried.
+    """
+    rows = conn.execute(
+        """SELECT id, item_id, source, condition, kind,
+                  COALESCE(market_price, price_avg, -1) AS v, scraped_at
+           FROM price_snapshots
+           ORDER BY item_id, source, condition, kind, scraped_at, id""").fetchall()
+    runs, prev_key, run = [], None, []
+    for r in rows:
+        key = (r["item_id"], r["source"], r["condition"], r["kind"], r["v"])
+        if key == prev_key:
+            run.append(r)
+        else:
+            if len(run) > 2:
+                runs.append(run)
+            prev_key, run = key, [r]
+    if len(run) > 2:
+        runs.append(run)
+    return runs
+
+
+def compact_snapshots(conn, dry_run=False, log=print):
+    """Drop the interior of each identical-price run. Returns rows removed."""
+    runs = compactable_runs(conn)
+    doomed = [r["id"] for run in runs for r in run[1:-1]]
+    total = conn.execute("SELECT COUNT(*) c FROM price_snapshots").fetchone()["c"]
+    log(f"  snapshot rows: {total:,}")
+    log(f"  identical-price runs of 3+: {len(runs)} · interior rows: {len(doomed):,}")
+    for run in sorted(runs, key=len, reverse=True)[:5]:
+        log(f"      {run[0]['item_id']:12} {run[0]['source']:10} "
+            f"{run[0]['condition']:5} {run[0]['kind']:7} x{len(run)}")
+    if dry_run or not doomed:
+        if dry_run:
+            log("  dry run — nothing written")
+        return 0
+    conn.executemany("DELETE FROM price_snapshots WHERE id = ?",
+                     [(i,) for i in doomed])
+    conn.commit()
+    log(f"✔ removed {len(doomed):,} rows; {total - len(doomed):,} remain")
+    return len(doomed)
+
+
+def audit_indexes(conn, log=print):
+    """Report whether the hot query paths are covered. Creates nothing that
+    already exists; the point is to notice when a new query has no index."""
+    have = {r["name"] for r in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='price_snapshots'")}
+    wanted = {
+        "idx_snapshots_lookup":
+            "latest_snapshot / is_fresh — (item_id, source, condition, kind, scraped_at)",
+    }
+    for name, why in wanted.items():
+        log(f"  {'✔' if name in have else '✘'} {name}: {why}")
+    # The scheduler asks "which items have ever been scanned" on every run;
+    # the leading item_id of the lookup index serves it.
+    plan = conn.execute(
+        "EXPLAIN QUERY PLAN SELECT DISTINCT item_id FROM price_snapshots").fetchall()
+    detail = " ".join(str(p["detail"]) for p in plan)
+    log(f"  scheduler's coverage probe: {detail}")
+    return have
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--compact", action="store_true",
+                    help="also collapse runs of identical consecutive snapshots")
     ap.add_argument("--dry-run", action="store_true",
                     help="report what would change and write nothing")
     ap.add_argument("--no-backup", action="store_true",
@@ -113,6 +185,11 @@ def main():
     conn = dbq.connect()
     try:
         clean(conn, dry_run=args.dry_run)
+        if args.compact:
+            print("Compacting the snapshot history")
+            compact_snapshots(conn, dry_run=args.dry_run)
+            print("Index audit")
+            audit_indexes(conn)
     finally:
         conn.close()
     if not args.dry_run:

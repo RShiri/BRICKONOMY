@@ -22,6 +22,7 @@ from .. import db as dbq
 from ..analytics import forecast as forecast_mod
 from ..analytics import growth as growth_mod
 from ..analytics import lifecycle
+from ..analytics import velocity as velocity_mod
 from ..analytics.valuation import blend, current_value
 from ..compat import LEGACY_DB_PATH
 from ..config import SUPPORTED_CURRENCIES, get_config
@@ -31,6 +32,11 @@ from ..importer import (item_type_for, normalize_item_id, parse_condition,
 from . import jobs
 
 BASE_DIR = Path(__file__).resolve().parent
+
+# A live ask below this fraction of the item's value is treated as a
+# mismatched listing rather than a bargain. 2% is far under any real discount
+# — the genuine deals in the data sit between 10% and 60% off.
+IMPLAUSIBLE_ASK_RATIO = 0.02
 
 # Static-export mode: brickonomy.export flips these, then crawls the app with
 # a TestClient. Links become RELATIVE .html paths (so the exported site works
@@ -211,15 +217,29 @@ def deal_for(conn, item_id, ccy, condition="new"):
     ask_ils = disp(conn, o["price"], o["currency"], "ILS")
     if not ask_ils or ask_ils <= 0:
         return None
+    # An ask far below the market is a mismatched listing, not a bargain.
+    # BrickOwl matches some set numbers against parts that share the number
+    # (11211 is a set *and* a very common brick), yielding ₪0.03 "sets" that
+    # otherwise top the deals list at a few million percent margin. Nobody is
+    # selling a ₪1,000 set for three agorot.
+    if ask_ils < value * IMPLAUSIBLE_ASK_RATIO:
+        return None
     profit = value - (ask_ils * 1.13)
     margin = profit / ask_ils * 100.0
-    rating = "EXCELLENT" if margin >= 20 else "GOOD" if margin >= 10 else "IRRELEVANT"
+    # A margin you cannot realise is not a margin. Rank on the liquidity-
+    # adjusted figure so a 30% edge on something that trades weekly outranks
+    # 45% on a set that moves twice a year and ties the money up meanwhile.
+    v = velocity_mod.velocity(conn, item_id, condition)
+    adjusted = margin * velocity_mod.liquidity_factor(v)
+    rating = ("EXCELLENT" if adjusted >= 20 else
+              "GOOD" if adjusted >= 10 else "IRRELEVANT")
     return {
         "item_id": item_id, "source": best_source,
         "ask": disp(conn, ask_ils, "ILS", ccy),
         "value": disp(conn, value, "ILS", ccy),
         "profit": disp(conn, profit, "ILS", ccy),
-        "margin": margin, "rating": rating, "confidence": confidence,
+        "margin": margin, "adjusted_margin": adjusted,
+        "rating": rating, "confidence": confidence, "velocity": v,
     }
 
 
@@ -415,7 +435,10 @@ def deals_page(request: Request, min_margin: float = 0.0, rating: str = ""):
                 continue
             deals.append({**d, "name": row["name"], "theme": row["theme"],
                           "item_type": row["item_type"], "phase": ph})
-        deals.sort(key=lambda d: d["margin"], reverse=True)
+        # Sorted on the liquidity-adjusted margin, which is the whole point of
+        # measuring velocity: a fat edge on something that never trades is
+        # worth less than a thinner one you can actually turn over.
+        deals.sort(key=lambda d: d["adjusted_margin"], reverse=True)
         counts = {r: sum(1 for d in deals if d["rating"] == r)
                   for r in ("EXCELLENT", "GREAT INVEST", "GOOD", "IRRELEVANT")}
         return templates.TemplateResponse(request, "deals.html", ctx(
@@ -552,7 +575,8 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
                 info["display"] = disp(conn, info["native"], info["currency"], ccy)
                 per_source_all.setdefault(s, {})[condition] = info
             values[condition] = {"value": disp(conn, val, "ILS", ccy),
-                                 "confidence": conf, "as_of": ts}
+                                 "confidence": conf, "as_of": ts,
+                                 "velocity": velocity_mod.velocity(conn, item_id, condition)}
 
         retail_disp = disp(conn, row["retail_price"], row["retail_currency"] or "USD", ccy) \
             if row["retail_price"] else None

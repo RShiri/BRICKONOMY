@@ -65,16 +65,18 @@
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
     <div class="label">Value — new / sealed</div>
-    <div class="value">{{ values.new.value|money(ccy) if values.new.value else '—' }}</div>
+    <div class="value" style="{{ m.value_class(values.new.confidence) }}">{{ values.new.value|money(ccy) if values.new.value else '—' }}</div>
     <div class="delta">
       {% if growth_total is not none %}{{ m.delta(growth_total, 0) }} vs retail{% endif %}
       {% if growth_cagr is not none %} · {{ "%+.1f"|format(growth_cagr) }}%/yr{% endif %}
     </div>
+    <div style="margin-top:6px">{{ m.velocity_chip(values.new.velocity) }}</div>
   </div>
   <div class="tile">
     <div class="label">Value — used</div>
-    <div class="value">{{ values.used.value|money(ccy) if values.used.value else '—' }}</div>
+    <div class="value" style="{{ m.value_class(values.used.confidence) }}">{{ values.used.value|money(ccy) if values.used.value else '—' }}</div>
     <div class="delta">{{ m.confidence_chip(values.used.confidence) }}</div>
+    <div style="margin-top:6px">{{ m.velocity_chip(values.used.velocity) }}</div>
   </div>
   <div class="tile">
     <div class="label">Forecast {{ forecast.horizons[2].year if forecast }} <span title="Trend estimate, not a guarantee">ⓘ</span></div>

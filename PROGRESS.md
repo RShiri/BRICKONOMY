@@ -86,12 +86,15 @@ your workflow trigger.
 ## Wave 2 — Data quality
 *C1 ∥ C2 ∥ C3 (different files). Runs while Wave 1 scans in the background.*
 
-### [ ] C1 · Velocity — 1 session — depends: nothing
-- [ ] "Sold /6mo" + velocity chip (weekly · monthly · rare) on set pages, listings, deals
-- [ ] Grey out LOW-confidence values
-- [ ] Velocity-weighted deal ranking
+### [x] C1 · Velocity — 1 session — depends: nothing
+- [x] `analytics/velocity.py` + velocity chip on both value tiles; BrickLink only
+      (eBay's sold count is a paginated signed-in search, so it measures the
+      scrape, not the market). "No sold data" reads as unknown, never as zero.
+- [x] LOW confidence dimmed and amber-chipped
+- [x] Deals **ranked** on the liquidity-adjusted margin, not the paper one
 
-**Accept:** 76051 shows its 10 sales/6mo · LOW values visually distinct · deals re-rank.
+**Accept:** ✅ 76051 shows ⇄ 10 sold/6mo new, 9 used · ✅ LOW visually distinct ·
+✅ deals re-rank (10783: 262% → 184% adjusted at 3 sales/6mo) · ✅ 13 tests.
 
 ### [ ] C2 · Retirement Dates — 1 session — depends: **your Brickset API key**
 - [ ] Migration: `items.eol_date`, `items.availability`
@@ -100,13 +103,28 @@ your workflow trigger.
 
 **Accept:** owned sets show sourced dates · estimates marked · forecast tests green.
 
-### [ ] C3 · Snapshot Hygiene — ½ session — depends: nothing
-- [ ] Compaction of consecutive identical snapshot rows (keep first + last)
-- [ ] Index audit for `(item_id, source, condition, kind, scraped_at)`
+### [x] C3 · Snapshot Hygiene — ½ session — depends: nothing
+- [x] `cleanup.py --compact`: collapses runs of 3+ identical consecutive prices,
+      keeping first and last so both endpoints — when a price started and last
+      held — survive
+- [x] Index audit: `idx_snapshots_lookup` already covers the hot paths, and the
+      scheduler's coverage probe runs as a COVERING INDEX scan. Nothing added.
 
-**Accept:** charts pixel-identical · row count down · `latest_snapshot` timing measured.
+**Accept:** ✅ **591/592 chart series byte-identical**; the one that changed kept
+identical first/last values (removed points sat 15s and 3min apart at the same
+price) · ✅ 7,837 → 7,825 rows · ✅ `latest_snapshot` ×400: 6ms → 5ms · ✅ 9 tests.
 
-### Wave 2 QA gate — [ ] suite · [ ] mobile · [ ] leak check · [ ] screenshots
+### [~] Wave 2 QA gate *(C2 still outstanding — needs your Brickset key)*
+- [x] Full suite green — **159 passed** (was 136; +23)
+- [x] Mobile: `/sets/76051` and `/deals` zero overflow at 375px **and** 320px
+- [x] Portfolio leak check green
+
+**Found and fixed en route:** the deals page was topped by BrickOwl listings at
+₪0.03–0.06 for sets worth ₪1,000+ — millions of percent margin. BrickOwl matches
+some set numbers against *parts* sharing the number (11211 is both a set and a
+very common brick); 16 items affected. A plausibility floor now rejects any ask
+under 2% of value. The scraper itself still stores the wrong prices — flagged as
+a separate task.
 
 ---
 
@@ -174,5 +192,6 @@ One aggregate query replaces the per-row N+1; sets-only aggregates.
 | Date | What happened |
 |---|---|
 | 2026-08-30 | Plan drawn; baseline recorded; nothing started |
+| 2026-08-31 | **C1 + C3 complete.** Velocity surfaced from data already scraped but never shown; deals ranked on liquidity-adjusted margin; LOW confidence dimmed. Snapshot compaction with charts proven identical (591/592 byte-for-byte). Caught the deals page being topped by ₪0.03 phantom listings — BrickOwl matching parts to set numbers — and added a plausibility floor. Tests 136 → 159. |
 | 2026-08-31 | **Wave 1 complete.** B1: figures discovered mid-scan join the same run; `--limit` is one budget for the whole night; "Figs priced" column per theme. B2: `merge.py` with read-only ATTACH, dedupe and hard exclusions for portfolio/rates; `--rank-themes` puts collected themes in their own tier. Tests 118 → 136. |
 | 2026-08-31 | **Wave 0 complete.** A1: `--scope priority` with 5 tiers, `--dry-run`, cross-process scan lock, `scan_nightly.bat`. A2: all 4 workflows fixed — the Monday job that would have wiped the site is disabled and now restores the db first. Tests 111 → 118. Also fixed en route: catalog listings ordered priced-first, so `/minifigs` shows all 203 priced figs instead of 9. |
