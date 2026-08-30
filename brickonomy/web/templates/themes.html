@@ -5,7 +5,9 @@
 
 <div class="eyebrow">Analysis</div>
 <h1>Themes</h1>
-<p class="sub">How each LEGO theme is performing — total tracked value, average growth per year, and the strongest set in each.</p>
+<p class="sub">How each LEGO theme is performing — total tracked value, average growth per year,
+   and the strongest set in each. Every figure covers the sets that have been scanned, which in most
+   themes is a small part of the theme; the Sets column says how many.</p>
 
 <div class="card">
   <h3>Average growth per year <span class="soft">— by theme</span></h3>
@@ -35,8 +37,9 @@
   <div class="table-scroll">
   <table id="themesTable">
     <tr>
-      <th>Theme</th><th class="num">Items</th><th class="num">Years</th>
-      <th class="num">Total value</th><th class="num">Avg value</th>
+      <th>Theme</th><th class="num">Sets</th><th class="num">Years</th>
+      <th class="num" title="Summed over the priced sets only — the second number in the Sets column. A theme with 997 sets and one price has a total that describes that one set.">Total value</th>
+      <th class="num" title="Mean of the priced sets, not of the theme.">Avg value</th>
       <th class="num">Growth / yr</th><th class="num">vs retail</th><th>Best performer</th>
     </tr>
     {% for t in themes %}
@@ -46,10 +49,17 @@
           <div class="fill" style="width:{{ (t.total / max_total * 100)|round(1) }}%"></div>
         </div>
       </td>
-      <td class="num">{{ t.count }}</td>
+      {# The totals beside this cover t.valued sets, not t.count. Star Wars
+         has 997 sets and one scanned price, and showing only "997" next to a
+         total made that total read as the theme's worth. #}
+      <td class="num">{{ t.count }}<div class="soft" style="font-size:11px">
+        {% if t.valued %}{{ t.valued }} priced{% else %}none priced{% endif %}</div></td>
       <td class="num">{% if t.span %}{{ t.span[0] }}–{{ t.span[1] }}{% else %}—{% endif %}</td>
-      <td class="num"><b>{{ t.total|money(ccy) }}</b></td>
-      <td class="num">{{ t.avg_value|money(ccy) if t.avg_value else '—' }}</td>
+      <td class="num" {% if t.valued < 3 %}style="opacity:.55"
+          title="Only {{ t.valued }} of {{ t.count }} sets in this theme have a scanned price."{% endif %}>
+        <b>{{ t.total|money(ccy) }}</b></td>
+      <td class="num" {% if t.valued < 3 %}style="opacity:.55"{% endif %}>
+        {{ t.avg_value|money(ccy) if t.avg_value else '—' }}</td>
       <td class="num">{{ m.delta(t.avg_growth) }}</td>
       <td class="num">{{ m.delta(t.vs_retail, 0) }}</td>
       <td>{% if t.best %}<a href="{{ u('/sets/' ~ t.best.item_id) }}">{{ t.best.item_id }} {{ t.best.name[:26] }}</a>

@@ -5,7 +5,7 @@
 
 <div class="eyebrow">Overview</div>
 <h1>Dashboard</h1>
-<p class="sub">Your LEGO market at a glance — prices aggregated from BrickLink, eBay and BrickOwl.</p>
+<p class="sub">Your LEGO market at a glance — every value is BrickLink’s six-month sold average.</p>
 
 <div class="tiles">
   <div class="tile">
@@ -122,7 +122,7 @@
     <h3>About this snapshot</h3>
     <div style="color:var(--ink-2)">
       Static export of the Brickonomy database, published to GitHub Pages.
-      Prices were aggregated from BrickLink, eBay and BrickOwl at scan time
+      Values are BrickLink’s six-month sold average as of the last scan
       {% if last_scan %}(last scan {{ last_scan[:16].replace('T', ' ') }}){% endif %}.
       To update: <code>python -m brickonomy.refresh</code> →
       <code>python -m brickonomy.export</code> → push.

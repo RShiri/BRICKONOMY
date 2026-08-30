@@ -117,6 +117,23 @@ def img_url(item_id: str, item_type: str = "S") -> str:
     return f"https://img.bricklink.com/ItemImage/SN/0/{suffix}.png"
 
 
+def asset_version():
+    """A cache-busting stamp for the CSS and JS, from their own mtimes.
+
+    Both are served with far-future caching by the browser, and the static
+    export puts them behind GitHub Pages' CDN, so without this a returning
+    visitor keeps whatever stylesheet they first downloaded — a layout fix
+    ships and nobody who has already visited ever sees it.
+    """
+    stamp = 0
+    for name in ("style.css", "app.js"):
+        try:
+            stamp = max(stamp, int((BASE_DIR / "static" / name).stat().st_mtime))
+        except OSError:
+            pass
+    return str(stamp)
+
+
 def ctx(request: Request, conn, **extra):
     ccy = display_ccy(request)
     return {
@@ -130,6 +147,7 @@ def ctx(request: Request, conn, **extra):
         "static_mode": STATIC_MODE,
         "base_path": static_prefix(),
         "u": static_url,
+        "asset_v": asset_version(),
         **extra,
     }
 

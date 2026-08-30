@@ -6,9 +6,12 @@
 <div class="eyebrow">Sniper</div>
 <h1>Deals</h1>
 <p class="sub">Live listings priced below the BrickLink average, after a 13% fee allowance.
-   Prices are what the set costs <b>delivered</b> — a listing abroad carries VAT and shipping —
-   and the ranking adjusts for <b>how often the item actually sells</b>, because an edge you
-   cannot realise is not an edge. {{ total }} opportunities across BrickLink, eBay and BrickOwl.</p>
+   A price quoted in a foreign currency is shown <b>delivered</b>, with VAT and shipping added;
+   BrickLink and BrickOwl quote in {{ ccy_symbol }} whatever country the seller is in, so those
+   rows are the sticker price and the real delivered cost can be higher. The ranking adjusts for
+   <b>how often the item actually sells</b>, because an edge you cannot realise is not an edge.
+   {{ total }} live listings across BrickLink, eBay and BrickOwl, priced against BrickLink’s
+   sold average.</p>
 
 <div class="searchrow">
   <a class="chip {{ 'on' if not rating }}" href="{{ u('/deals') }}">All ({{ total }})</a>
@@ -40,13 +43,19 @@
     </tr>
     {% for d in deals %}
     <tr {{ 'class=hl' if d.rating in ('EXCELLENT', 'GREAT INVEST') }}>
-      <td>{{ m.thumb(d.item_id, d.item_type, img_url) }}<a href="{{ u('/sets/' ~ d.item_id) }}"><b>{{ d.item_id }}</b> {{ d.name }}</a></td>
-      <td>{{ d.theme or '—' }}</td>
+      <td class="name"><a href="{{ u('/sets/' ~ d.item_id) }}" title="{{ d.item_id }} {{ d.name }}">
+          {{- m.thumb(d.item_id, d.item_type, img_url) }}<b>{{ d.item_id }}</b> {{ d.name }}</a></td>
+      <td class="theme" title="{{ d.theme or '' }}">{{ d.theme or '—' }}</td>
       <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
           {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
       <td class="num">{{ d.ask|money(ccy) }}{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
+      {# Only a foreign-currency listing is known to be an import. BrickLink
+         quotes every seller in the display currency, so for those rows the
+         delivered cost is unknown rather than zero — say so instead of
+         letting the sticker price pass as a landed one. #}
       <td class="num"><b>{{ d.landed|money(ccy) }}</b>
-        {%- if d.imported %}<br><span class="soft" style="font-size:11px" title="VAT plus shipping">+{{ d.import_extra|money(ccy) }} import</span>{% endif %}</td>
+        {%- if d.imported %}<br><span class="soft" style="font-size:11px" title="VAT plus shipping">+{{ d.import_extra|money(ccy) }} import</span>
+        {%- else %}<br><span class="soft" style="font-size:11px" title="Quoted in {{ ccy }}, so the seller’s country is unknown — no import cost is assumed. If the seller ships from abroad, add VAT and shipping.">as quoted</span>{% endif %}</td>
       <td class="num">{{ d.value|money(ccy) }}</td>
       <td class="num delta up">{{ d.profit|money(ccy) }}</td>
       <td class="num">{{ m.delta(d.margin, 0) }}</td>

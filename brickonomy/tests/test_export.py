@@ -66,14 +66,17 @@ class TestExport:
         # Root page: links are relative with no prefix.
         html = (out / "index.html").read_text(encoding="utf-8")
         assert 'href="sets/index.html"' in html
-        assert 'href="static/style.css"' in html
+        # The ?v= stamp is deliberate: GitHub Pages sits behind a CDN, so
+        # without it a returning visitor keeps the stylesheet they first
+        # downloaded and never sees a layout fix.
+        assert 'href="static/style.css?v=' in html
         assert 'href="/sets"' not in html
         assert 'data-base=""' in html and 'data-static="1"' in html
 
         # One level down: links climb back out with ../
         sub = (out / "sets" / "75192.html").read_text(encoding="utf-8")
         assert 'href="../index.html"' in sub
-        assert 'href="../static/style.css"' in sub
+        assert 'href="../static/style.css?v=' in sub
         assert 'data-base="../"' in sub
 
     def test_server_only_ui_hidden(self, seeded_db, tmp_path, monkeypatch):
