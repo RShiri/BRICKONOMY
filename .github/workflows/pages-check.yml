@@ -3,6 +3,14 @@ name: pages-check
 # Verifies that the published GitHub Pages site is actually reachable.
 # It runs on a GitHub runner, which can reach rshiri.github.io — handy when
 # whoever is debugging cannot. Nothing is deployed here; this only reads.
+#
+# Pinned to the "branch main, folder /docs" Pages setting, where docs/ IS the
+# site root: the export's index.html answers "/" and there is no "/docs/" URL
+# at all. The previous version expected both "/" and "/docs/" to succeed,
+# which no single Pages configuration can satisfy — serving from /docs makes
+# "/docs/" a 404, serving from the root makes the export unreachable.
+# The repo-root index.html redirect only matters in the root configuration
+# and is not published in this one.
 
 on:
   workflow_dispatch:
@@ -30,13 +38,13 @@ jobs:
           sleep 45
 
           declare -A EXPECT=(
-            ["/"]="200 301 302"
-            ["/docs/"]="200"
-            ["/docs/sets/75192.html"]="200"
-            ["/docs/api/index.json"]="200"
-            ["/docs/static/style.css"]="200"
+            ["/"]="200"
+            ["/sets/75192.html"]="200"
+            ["/minifigs.html"]="200"
+            ["/api/index.json"]="200"
+            ["/static/style.css"]="200"
           )
-          ORDER=("/" "/docs/" "/docs/sets/75192.html" "/docs/api/index.json" "/docs/static/style.css")
+          ORDER=("/" "/sets/75192.html" "/minifigs.html" "/api/index.json" "/static/style.css")
 
           echo "## Pages check" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
@@ -60,9 +68,9 @@ jobs:
           # Show what the landing page actually serves, so a Jekyll-mangled or
           # placeholder page is obvious in the log rather than just "200".
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "First bytes of ${BASE}/docs/ :" >> "$GITHUB_STEP_SUMMARY"
+          echo "First bytes of ${BASE}/ :" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          curl -s --max-time 30 "${BASE}/docs/" | head -c 400 >> "$GITHUB_STEP_SUMMARY" || true
+          curl -s --max-time 30 "${BASE}/" | head -c 400 >> "$GITHUB_STEP_SUMMARY" || true
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 

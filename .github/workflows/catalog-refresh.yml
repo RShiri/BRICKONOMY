@@ -12,8 +12,11 @@ on:
         description: "Also import the minifig catalog (~15k rows)"
         type: boolean
         default: true
-  schedule:
-    - cron: "0 4 * * 1" # Mondays 04:00 UTC — Rebrickable refreshes daily
+  # The weekly schedule is off until this workflow has been proven to
+  # preserve theme-scan's database. It previously rebuilt the site from an
+  # EMPTY db and force-published the result, erasing every scanned price.
+  #   schedule:
+  #     - cron: "0 4 * * 1"
 
 permissions:
   contents: write
@@ -33,7 +36,19 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install fastapi jinja2 requests httpx python-multipart
+        run: pip install fastapi jinja2 requests httpx python-multipart beautifulsoup4
+
+      - name: Restore the scanned database
+        # Without this the export runs against an empty database and the
+        # commit below replaces the published site with a price-less one,
+        # wiping whatever theme-scan published.
+        run: |
+          if [ -f data/brickonomy.db ]; then
+            cp data/brickonomy.db brickonomy.db
+            echo "restored the committed database"
+          else
+            echo "no committed database yet — catalog metadata only"
+          fi
 
       - name: Seed the database from the repo's existing data
         run: python -m brickonomy.importer
@@ -64,10 +79,13 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs
+          cp brickonomy.db data/brickonomy.db
+          git add -f docs data/brickonomy.db
           if git diff --cached --quiet; then
             echo "No changes to publish."
           else
             git commit -m "Refresh catalog and rebuild site [skip ci]"
-            git push
+            # theme-scan pushes to the same branch; never clobber its results.
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
           fi

@@ -66,9 +66,15 @@ jobs:
           python -m brickonomy.rebrickable --minifigs
 
       - name: Scan
+        # Inputs arrive through env, never interpolated into the script text:
+        # ${{ }} is substituted before the shell parses the line, so a theme
+        # name containing shell syntax would be executed.
+        env:
+          IN_THEME: ${{ inputs.theme }}
+          IN_LIMIT: ${{ inputs.limit }}
         run: |
-          LIMIT="${{ inputs.limit }}"; LIMIT="${LIMIT:-300}"
-          THEME="${{ inputs.theme }}"
+          LIMIT="${IN_LIMIT:-300}"
+          THEME="$IN_THEME"
           if [ -z "$THEME" ]; then
             echo "No theme given — continuing the whole catalog."
             python -m brickonomy.refresh --scope gaps --limit "$LIMIT"
@@ -92,13 +98,16 @@ jobs:
         run: python -m brickonomy.export
 
       - name: Commit results
+        env:
+          IN_THEME: ${{ inputs.theme }}
+          IN_LIMIT: ${{ inputs.limit }}
         run: |
           mkdir -p data && cp brickonomy.db data/brickonomy.db
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f data/brickonomy.db docs || true
           git diff --staged --quiet || git commit -m \
-            "Theme scan: ${{ inputs.theme }} (limit ${{ inputs.limit }})"
+            "Theme scan: ${IN_THEME:-whole catalog} (limit ${IN_LIMIT:-300})"
           git pull --rebase --autostash origin main || true
           git push origin HEAD:main
 

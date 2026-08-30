@@ -233,7 +233,12 @@ def list_items(conn, search: str = "", limit: int = 500, theme: str = "",
         args.append(item_type)
     if where:
         q += " WHERE " + " AND ".join(where)
-    q += " ORDER BY item_id LIMIT ?"
+    # Priced items first. Only ~2% of the catalog has been scanned, so a
+    # window ordered by bare id fills up with never-scanned imports and the
+    # listing looks like it has no prices at all — on /minifigs, 9 of the
+    # first 400 ids were priced while all 203 priced figs sorted past the cap.
+    q += """ ORDER BY item_id IN (SELECT DISTINCT item_id FROM price_snapshots)
+                 DESC, item_id LIMIT ?"""
     args.append(limit)
     return conn.execute(q, args).fetchall()
 

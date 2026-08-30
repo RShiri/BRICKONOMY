@@ -15,16 +15,111 @@ Used by both the CLI and the web app's background job (via run_refresh with a
 progress callback).
 """
 import argparse
+import contextlib
+import os
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from . import db as dbq
 from .analytics.valuation import store_blended
+from .compat import REPO_ROOT
 from .config import get_config
 from .importer import item_type_for, normalize_item_id
 from .scrapers import SOURCES
 from .scrapers.base import polite_sleep
 
 PARTS_TTL_DAYS = 30
+LOCK_PATH = REPO_ROOT / ".scan.lock"
+
+# Tier labels for --scope priority, in the order the SQL assigns them.
+PRIORITY_TIERS = {
+    1: "owned",
+    2: "wishlist",
+    3: "fig in owned set",
+    4: "held theme",
+    5: "catalog",
+}
+
+
+# Windows byte-range locks apply to the locked bytes themselves, so the lock
+# is taken far past any content the file will ever hold — otherwise the owner
+# cannot write its own pid line without colliding with its own lock.
+_LOCK_OFFSET = 1 << 30
+
+
+def _try_lock(handle):
+    """Take an exclusive OS lock on an open file, or return False."""
+    try:
+        import msvcrt                                   # Windows
+    except ImportError:
+        import fcntl                                    # POSIX
+        try:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return True
+        except OSError:
+            return False
+    try:
+        handle.seek(_LOCK_OFFSET)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        return True
+    except OSError:
+        return False
+
+
+@contextlib.contextmanager
+def scan_lock(path=None):
+    """Yield True if this process took the scan lock, False if one is held.
+
+    A nightly task and a hand-run scan must not overlap: they would interleave
+    writes to the same SQLite file and hit the same sites twice as fast from a
+    single address. This is an OS-level file lock rather than a pid written to
+    a file, so a killed run releases it automatically and there is no stale
+    lock to clean up — and notably no pid liveness check, which on Windows
+    would mean os.kill(pid, 0), and os.kill there *terminates* the process.
+    """
+    path = Path(path or LOCK_PATH)
+    handle = open(path, "a+", encoding="utf-8")
+    try:
+        if not _try_lock(handle):
+            yield False
+            return
+        # Informational only — the lock is the OS's, not this line's.
+        handle.seek(0)
+        handle.write(f"{os.getpid()} {datetime.now().isoformat(timespec='seconds')}\n")
+        handle.flush()
+        yield True
+    finally:
+        handle.close()
+        # Best-effort tidy-up; the lock itself was released by closing.
+        with contextlib.suppress(OSError):
+            path.unlink()
+
+
+def plan_targets(scope="portfolio", item_id=None, theme=None, limit=None):
+    """[(item_id, item_type, why), ...] — what a run would scan, in order."""
+    conn = dbq.connect()
+    try:
+        targets = select_targets(conn, scope, item_id, theme)
+        if limit:
+            targets = targets[:limit]
+        if scope != "priority":
+            return [(i, t, scope) for i, t, *_ in targets]
+        tiers = {r["item_id"]: r["tier"] for r in conn.execute(
+            """SELECT i.item_id,
+                      CASE WHEN p.owned > 0 THEN 1
+                           WHEN p.wanted > 0 THEN 2
+                           WHEN i.item_id IN (SELECT sm.fig_id FROM set_minifigs sm
+                                              JOIN portfolio op ON op.item_id = sm.set_id
+                                              WHERE op.owned > 0) THEN 3
+                           WHEN i.theme IN (SELECT DISTINCT ti.theme FROM items ti
+                                            JOIN portfolio tp ON tp.item_id = ti.item_id
+                                            WHERE tp.owned > 0 AND ti.theme IS NOT NULL) THEN 4
+                           ELSE 5 END AS tier
+               FROM items i LEFT JOIN portfolio p ON p.item_id = i.item_id""")}
+        return [(i, t, PRIORITY_TIERS.get(tiers.get(i, 5), "catalog"))
+                for i, t, *_ in targets]
+    finally:
+        conn.close()
 
 
 def _update_item_meta(conn, item_id, meta):
@@ -167,6 +262,91 @@ def _stale_items(conn, ttl_days):
     return stale
 
 
+def select_targets(conn, scope="portfolio", item_id=None, theme=None):
+    """The ordered work list for a scope. Shared by the real run and
+    --dry-run, so what gets previewed is exactly what gets scanned."""
+    cfg = get_config()
+    if item_id:
+        targets = [(normalize_item_id(item_id), None)]
+    elif scope == "portfolio":
+        targets = [(r["item_id"], r["item_type"]) for r in dbq.get_portfolio(conn)]
+    elif scope == "stale":
+        targets = _stale_items(conn, cfg.scrape_ttl_days)
+    elif scope == "theme":
+        if not theme:
+            raise ValueError("scope 'theme' needs a theme name")
+        # Sets first, then the theme's minifigs; never-scanned before
+        # stale, so an interrupted run made progress where it mattered.
+        #
+        # The minifig half needs the set_minifigs join: figs imported from
+        # the catalog have no theme of their own, so `theme = ?` alone
+        # would scan a theme's sets and silently skip every fig in them.
+        targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
+            """SELECT i.item_id, i.item_type FROM items i
+               LEFT JOIN (SELECT item_id, MAX(scraped_at) ts
+                          FROM price_snapshots GROUP BY item_id) s
+                 ON s.item_id = i.item_id
+               WHERE i.theme = ?
+                  OR i.item_id IN (
+                       SELECT sm.fig_id FROM set_minifigs sm
+                       JOIN items si ON si.item_id = sm.set_id
+                       WHERE si.theme = ?)
+               ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""",
+            (theme, theme))]
+    elif scope == "priority":
+        # What an unattended nightly run should spend its budget on, in
+        # the order it matters. `gaps` walks the catalog by id and would
+        # spend weeks on sets nobody here owns before reaching the figures
+        # sitting inside the collection.
+        #
+        #   1 owned          the portfolio itself
+        #   2 wanted         the wishlist
+        #   3 owned figs     figures inside owned sets — the biggest hole,
+        #                    since scanning a set never priced its figures
+        #   4 held themes    other sets in themes already collected
+        #   5 everything     the rest of the catalog
+        #
+        # Within a tier: never-scanned first, then oldest scan first, so an
+        # interrupted run always made progress where it counted.
+        targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
+            """SELECT i.item_id, i.item_type,
+                      CASE
+                        WHEN p.owned > 0 THEN 1
+                        WHEN p.wanted > 0 THEN 2
+                        WHEN i.item_id IN (
+                             SELECT sm.fig_id FROM set_minifigs sm
+                             JOIN portfolio op ON op.item_id = sm.set_id
+                             WHERE op.owned > 0) THEN 3
+                        WHEN i.theme IN (
+                             SELECT DISTINCT ti.theme FROM items ti
+                             JOIN portfolio tp ON tp.item_id = ti.item_id
+                             WHERE tp.owned > 0 AND ti.theme IS NOT NULL) THEN 4
+                        ELSE 5
+                      END AS tier
+               FROM items i
+               LEFT JOIN portfolio p ON p.item_id = i.item_id
+               LEFT JOIN (SELECT item_id, MAX(scraped_at) ts
+                          FROM price_snapshots GROUP BY item_id) s
+                 ON s.item_id = i.item_id
+               ORDER BY tier, s.ts IS NOT NULL, s.ts, i.item_id""")]
+    elif scope == "gaps":
+        # Whatever the catalog is still missing, most-useful first: sets
+        # before minifigs, never-scanned before merely stale. Feeding this
+        # a --limit repeatedly walks the whole catalog over many runs.
+        targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
+            """SELECT i.item_id, i.item_type FROM items i
+               LEFT JOIN (SELECT item_id, MAX(scraped_at) ts
+                          FROM price_snapshots GROUP BY item_id) s
+                 ON s.item_id = i.item_id
+               ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""")]
+    elif scope == "all":
+        targets = [(r["item_id"], r["item_type"])
+                   for r in conn.execute("SELECT item_id, item_type FROM items")]
+    else:
+        raise ValueError(f"unknown scope {scope!r}")
+    return targets
+
+
 def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
                 limit=None, progress=None, log=print, inventory_only=False):
     """Entry point shared by the CLI and the web background job.
@@ -176,48 +356,7 @@ def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
     cfg = get_config()
     conn = dbq.connect()
     try:
-        if item_id:
-            targets = [(normalize_item_id(item_id), None)]
-        elif scope == "portfolio":
-            targets = [(r["item_id"], r["item_type"]) for r in dbq.get_portfolio(conn)]
-        elif scope == "stale":
-            targets = _stale_items(conn, cfg.scrape_ttl_days)
-        elif scope == "theme":
-            if not theme:
-                raise ValueError("scope 'theme' needs a theme name")
-            # Sets first, then the theme's minifigs; never-scanned before
-            # stale, so an interrupted run made progress where it mattered.
-            #
-            # The minifig half needs the set_minifigs join: figs imported from
-            # the catalog have no theme of their own, so `theme = ?` alone
-            # would scan a theme's sets and silently skip every fig in them.
-            targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
-                """SELECT i.item_id, i.item_type FROM items i
-                   LEFT JOIN (SELECT item_id, MAX(scraped_at) ts
-                              FROM price_snapshots GROUP BY item_id) s
-                     ON s.item_id = i.item_id
-                   WHERE i.theme = ?
-                      OR i.item_id IN (
-                           SELECT sm.fig_id FROM set_minifigs sm
-                           JOIN items si ON si.item_id = sm.set_id
-                           WHERE si.theme = ?)
-                   ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""",
-                (theme, theme))]
-        elif scope == "gaps":
-            # Whatever the catalog is still missing, most-useful first: sets
-            # before minifigs, never-scanned before merely stale. Feeding this
-            # a --limit repeatedly walks the whole catalog over many runs.
-            targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
-                """SELECT i.item_id, i.item_type FROM items i
-                   LEFT JOIN (SELECT item_id, MAX(scraped_at) ts
-                              FROM price_snapshots GROUP BY item_id) s
-                     ON s.item_id = i.item_id
-                   ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""")]
-        elif scope == "all":
-            targets = [(r["item_id"], r["item_type"])
-                       for r in conn.execute("SELECT item_id, item_type FROM items")]
-        else:
-            raise ValueError(f"unknown scope {scope!r}")
+        targets = select_targets(conn, scope, item_id, theme)
 
         if limit and len(targets) > limit:
             # Targets are ordered never-scanned first, so a limited run always
@@ -250,7 +389,9 @@ def main():
     ap = argparse.ArgumentParser(description="Refresh prices across sources")
     ap.add_argument("--item", help="single item id, e.g. 75192 or sw0636")
     ap.add_argument("--scope", default="portfolio",
-                    choices=["portfolio", "stale", "theme", "gaps", "all"])
+                    choices=["portfolio", "priority", "stale", "theme", "gaps", "all"],
+                    help="priority = owned, wishlist, figs of owned sets, held "
+                         "themes, then everything else (for unattended runs)")
     ap.add_argument("--theme", help="theme name for --scope theme, "
                                     "e.g. \"Super Heroes Marvel\"")
     ap.add_argument("--force", action="store_true",
@@ -259,14 +400,30 @@ def main():
                     help="scan at most N items (never-scanned ones first)")
     ap.add_argument("--inventory-only", action="store_true",
                     help="only fetch parts + minifig inventory, no price scrape")
+    ap.add_argument("--dry-run", action="store_true",
+                    help="list what would be scanned, in order, and stop")
     args = ap.parse_args()
 
     if args.theme and args.scope == "portfolio":
         args.scope = "theme"          # --theme alone implies --scope theme
 
-    summary = run_refresh(scope=args.scope, item_id=args.item,
-                          force=args.force, theme=args.theme, limit=args.limit,
-                          inventory_only=args.inventory_only)
+    if args.dry_run:
+        for i, (iid, itype, tier) in enumerate(
+                plan_targets(scope=args.scope, item_id=args.item,
+                             theme=args.theme, limit=args.limit), 1):
+            print(f"{i:5}  {iid:14} {itype or '?':2}  {tier}")
+        return
+
+    # One scraper at a time. Two concurrent runs would interleave writes to the
+    # same SQLite file and hammer the same sites from one IP; the web app's
+    # queue lock is in-process only and cannot see a CLI run at all.
+    with scan_lock() as acquired:
+        if not acquired:
+            print(f"Another scan is already running (see {LOCK_PATH}). Nothing done.")
+            raise SystemExit(3)
+        summary = run_refresh(scope=args.scope, item_id=args.item,
+                              force=args.force, theme=args.theme, limit=args.limit,
+                              inventory_only=args.inventory_only)
     print(f"\nRefreshed {summary['done']} item(s); {len(summary['errors'])} source error(s).")
     for iid, source, err in summary["errors"][:20]:
         print(f"  {iid} · {source}: {err}")

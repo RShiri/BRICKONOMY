@@ -37,9 +37,13 @@ jobs:
         run: google-chrome --version || chromium --version || echo "no chrome on PATH"
 
       - name: Diagnose
+        # Via env, not interpolation: ${{ }} is substituted before the
+        # shell parses the line, so an id with shell syntax would run.
+        env:
+          IN_ITEM: ${{ inputs.item_id }}
+          IN_SOURCE: ${{ inputs.source }}
         run: |
-          python -m brickonomy.doctor "${{ inputs.item_id }}" \
-            --source "${{ inputs.source }}" --dump
+          python -m brickonomy.doctor "$IN_ITEM" --source "$IN_SOURCE" --dump
 
       - name: Upload fetched HTML
         if: always()
