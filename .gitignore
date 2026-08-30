@@ -28,3 +28,6 @@ venv/
 
 # Saved marketplace pages from debugging a scraper. Large, and they go stale.
 debug_*.html
+
+# Nightly scan logs — machine-local noise.
+logs/
