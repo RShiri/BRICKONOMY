@@ -14,10 +14,11 @@
     <div class="delta">{{ counts.portfolio }} sets owned</div>
   </div>
   <div class="tile">
-    <div class="label">Gain vs paid/retail</div>
+    <div class="label" title="Today's value against what was paid, falling back to retail where no price was recorded. Both sides cover the same sets — a set with neither is left out of both.">Gain vs paid</div>
     <div class="value">{% if gain_pct is not none %}{{ "%+.1f"|format(gain_pct) }}%{% else %}—{% endif %}</div>
     <div class="delta {{ 'up' if gain_pct and gain_pct > 0 else 'down' if gain_pct and gain_pct < 0 }}">
-      {% if total_retail %}{{ (total_value - total_retail)|money(ccy) }} unrealized{% endif %}
+      {% if gain_abs is not none %}{{ gain_abs|money(ccy) }} unrealized{% if gain_rows < owned_rows %}
+        <span class="soft">· {{ gain_rows }} of {{ owned_rows }} sets</span>{% endif %}{% endif %}
     </div>
   </div>
   <div class="tile">

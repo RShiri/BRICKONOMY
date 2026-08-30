@@ -140,6 +140,10 @@ td.name { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-spa
 /* Theme names are short but repetitive — "Super Heroes Marvel" stacked three
    lines high in every row of the Deals table. */
 td.theme { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* For a cell that has to keep something after the name — a warning chip —
+   clip the link itself rather than the cell. */
+a.name-clip { display: inline-block; max-width: 260px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
 tr.total td { font-weight: 700; border-top: 1px solid var(--baseline); }
 tr.hl td { background: rgba(79,140,255,0.07); }
 /* Long tables: keep the column names visible and give the eye a line to

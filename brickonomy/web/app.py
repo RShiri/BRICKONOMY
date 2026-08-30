@@ -110,6 +110,12 @@ def display_ccy(request: Request) -> str:
     return ccy if ccy in SUPPORTED_CURRENCIES else get_config().display_currency
 
 
+# How much of the collection must have been scanned before a day is worth
+# plotting. Below this the total is dominated by which sets happen to have a
+# price yet rather than by what they are worth.
+PORTFOLIO_CHART_COVERAGE = 0.9
+
+
 def img_url(item_id: str, item_type: str = "S") -> str:
     if item_type == "M" or any(c.isalpha() for c in item_id):
         return f"https://img.bricklink.com/ItemImage/MN/0/{item_id}.png"
@@ -287,16 +293,40 @@ def dashboard(request: Request):
         rows = dbq.get_portfolio(conn)
 
         total_value = total_retail = 0.0
+        # The gain figure has to compare like with like. It divided the value
+        # of all 92 sets by the retail of the 78 that have one, which is not a
+        # return on anything; and it read "paid/retail" while only ever using
+        # retail, so a set bought below list looked like a loss. Both sides of
+        # the ratio now cover the same rows, costed at what was paid where
+        # that is known.
+        basis_value = basis_cost = 0.0
+        basis_rows = 0
         movers = []
         theme_totals = {}
         for row in rows:
-            val, _, _ = current_value(conn, row["item_id"], "new")
+            # The condition the set is actually held in. 76 of the 92 rows in
+            # this collection are used, and valuing them as new overstated the
+            # portfolio by 43% — the headline number on the landing page
+            # disagreed with the portfolio page, which had it right.
+            held = row["condition"] or "new"
+            val, _, _ = current_value(conn, row["item_id"], held)
             v = disp(conn, val, "ILS", ccy) or 0.0
             qty = row["owned"] or 1
             total_value += v * qty
             if row["retail_price"]:
                 total_retail += (disp(conn, row["retail_price"],
                                       row["retail_currency"] or "USD", ccy) or 0.0) * qty
+            cost = None
+            if row["purchase_price"]:
+                cost = disp(conn, row["purchase_price"],
+                            row["purchase_currency"] or "USD", ccy)
+            elif row["retail_price"]:
+                cost = disp(conn, row["retail_price"],
+                            row["retail_currency"] or "USD", ccy)
+            if cost:
+                basis_value += v * qty
+                basis_cost += cost * qty
+                basis_rows += 1
             theme = row["theme"] or "Other"
             theme_totals[theme] = theme_totals.get(theme, 0.0) + v * qty
             delta = dbq.market_delta(conn, row["item_id"], days=30)
@@ -327,7 +357,8 @@ def dashboard(request: Request):
             "SELECT MAX(scraped_at) ts FROM price_snapshots WHERE source != 'blended'"
         ).fetchone()["ts"]
 
-        gain_pct = ((total_value - total_retail) / total_retail * 100.0) if total_retail else None
+        gain_pct = ((basis_value - basis_cost) / basis_cost * 100.0) if basis_cost else None
+        gain_abs = basis_value - basis_cost if basis_cost else None
 
         # Catalog-wide top lists (BrickEconomy-style leaderboards).
         catalog = []
@@ -363,6 +394,7 @@ def dashboard(request: Request):
         return templates.TemplateResponse(request, "index.html", ctx(
             request, conn,
             total_value=total_value, total_retail=total_retail, gain_pct=gain_pct,
+            gain_abs=gain_abs, gain_rows=basis_rows, owned_rows=len(rows),
             gainers=gainers, decliners=decliners,
             themes=top_themes, max_theme=max_theme,
             counts=counts, last_scan=last_scan,
@@ -1048,7 +1080,8 @@ def portfolio_history(request: Request):
         dates = set()
         for row in rows:
             qty = row["owned"] or 1
-            pts = growth_mod.series(conn, row["item_id"])
+            pts = growth_mod.series(conn, row["item_id"],
+                                    condition=row["condition"] or "new")
             if not pts:
                 continue
             daily = {}
@@ -1057,14 +1090,25 @@ def portfolio_history(request: Request):
             per_item[row["item_id"]] = daily
             dates.update(daily)
 
-        series = []
-        last_known = {}
+        # A set contributes nothing until it has been scanned once, so the
+        # early part of this series measured how much of the collection had
+        # been scanned, not what it was worth: 45 of 84 sets were known on the
+        # first date, and the line climbed as the other 39 arrived. That reads
+        # as a portfolio appreciating when it is only a scanner catching up.
+        # Start where the collection is substantially covered instead.
+        total = len(per_item)
+        series, last_known = [], {}
         for d in sorted(dates):
             for iid, daily in per_item.items():
                 if d in daily:
                     last_known[iid] = daily[d]
-            series.append({"t": d, "v": round(sum(last_known.values()), 2)})
-        return JSONResponse({"currency": ccy, "series": series})
+            if total and len(last_known) < total * PORTFOLIO_CHART_COVERAGE:
+                continue
+            series.append({"t": d, "v": round(sum(last_known.values()), 2),
+                           "n": len(last_known)})
+        return JSONResponse({"currency": ccy, "series": series,
+                             "tracked": total, "covered_from": series[0]["t"]
+                             if series else None})
     finally:
         conn.close()
 

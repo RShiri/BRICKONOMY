@@ -162,6 +162,19 @@
           pfCanvas.parentElement.textContent = "No history yet — run a scan to record the first snapshot.";
           return;
         }
+        // The series starts where most of the collection had been scanned.
+        // Before that its rise is the scanner catching up rather than the sets
+        // gaining value, so say where it starts and why rather than let a
+        // three-point chart look broken.
+        const note = document.getElementById("portfolioChartNote");
+        if (note && data.tracked) {
+          note.textContent = pts.length < 8
+            ? `${pts.length} scan${pts.length === 1 ? "" : "s"} since `
+              + `${data.covered_from}, the first day most of the ${data.tracked} `
+              + "tracked sets had a price. Earlier days would measure how much "
+              + "of the collection had been scanned, not what it was worth."
+            : `${data.tracked} tracked sets, from ${data.covered_from}.`;
+        }
         new Chart(pfCanvas, {
           type: "line",
           data: {
