@@ -156,8 +156,13 @@ def item_view(conn, row, ccy):
         "name": row["name"],
         "theme": row["theme"] if "theme" in row.keys() else None,
         "year": row["year"],
+        # Both: the converted figure drives comparisons, the native one is
+        # what LEGO actually charged. Converting an MSRP into shekels invents
+        # a price that never existed on any shelf.
         "retail": disp(conn, row["retail_price"],
                        row["retail_currency"] or "USD", ccy) if "retail_price" in row.keys() and row["retail_price"] else None,
+        "retail_native": row["retail_price"] if "retail_price" in row.keys() else None,
+        "retail_ccy": (row["retail_currency"] or "USD") if "retail_price" in row.keys() else None,
         "value_new": disp(conn, val_new, "ILS", ccy),
         "value_used": disp(conn, val_used, "ILS", ccy),
         "confidence": conf,
@@ -603,6 +608,10 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
 
         retail_disp = disp(conn, row["retail_price"], row["retail_currency"] or "USD", ccy) \
             if row["retail_price"] else None
+        # The MSRP as LEGO set it. Converting it into shekels invents a
+        # price that never existed on any shelf.
+        retail_native = row["retail_price"]
+        retail_ccy = row["retail_currency"] or "USD"
         g_total, g_cagr = growth_mod.growth_vs_retail(conn, item_id)
         fc = forecast_mod.forecast(conn, item_id)
         if fc:
@@ -758,10 +767,18 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
                 ppp_theme_avg = sum(peers) / len(peers)
 
         deal = deal_for(conn, item_id, ccy)
+        # Whether it is already in the collection, so the buttons can say what
+        # pressing them will do rather than offering "add" to something owned.
+        held = conn.execute(
+            "SELECT owned, wanted FROM portfolio WHERE item_id=?", (item_id,)
+        ).fetchone()
+        holding = {"owned": held["owned"] if held else 0,
+                   "wanted": held["wanted"] if held else 0}
 
         return templates.TemplateResponse(request, "set_detail.html", ctx(
             request, conn, auto_scan=_maybe_auto_scan(conn, item_id),
             item=row, values=values, retail=retail_disp,
+            retail_native=retail_native, retail_ccy=retail_ccy,
             growth_total=g_total, growth_cagr=g_cagr, forecast=fc, phase=ph,
             buy_target=buy_target, per_source=per_source_all, source_stats=stats,
             offers=offers, best_source=best_source,
@@ -771,6 +788,7 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
             pov=pov_disp, pov_premium=pov_premium,
             related=related, ppp=ppp, ppp_theme_avg=ppp_theme_avg, deal=deal,
             import_cost=import_cost, split=split, splits=splits,
+            holding=holding,
             povs=povs,
         ))
     finally:
@@ -949,6 +967,8 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
                 "item_type": row["item_type"], "wanted": row["wanted"], "value": v,
                 "retail": disp(conn, row["retail_price"],
                                row["retail_currency"] or "USD", ccy) if row["retail_price"] else None,
+                "retail_native": row["retail_price"],
+                "retail_ccy": row["retail_currency"] or "USD",
                 "delta30": dbq.market_delta(conn, row["item_id"], days=30),
                 "deal": deal,
                 "phase": lifecycle.phase(row["year"], row["theme"]),
@@ -1000,15 +1020,35 @@ def portfolio_history(request: Request):
 
 @app.post("/portfolio/add")
 def portfolio_add(request: Request, item_id: str = Form(...),
-                  qty: int = Form(1), condition: str = Form("new")):
+                  qty: int = Form(1), condition: str = Form("new"),
+                  want: bool = Form(False), back: str = Form("")):
+    """Add to the collection, or to the wishlist.
+
+    `back` returns to the page the button was pressed on, so adding from a set
+    page does not throw you out to the portfolio and lose your place.
+    """
     conn = get_conn()
     try:
         iid = normalize_item_id(item_id.strip())
         if iid:
             dbq.upsert_item(conn, iid, item_type=item_type_for(iid))
-            dbq.upsert_portfolio(conn, iid, owned=max(1, qty), condition=condition,
-                                 merge_qty=True)
-        return RedirectResponse("/portfolio", status_code=303)
+            existing = conn.execute(
+                "SELECT owned, wanted FROM portfolio WHERE item_id=?", (iid,)
+            ).fetchone()
+            owned = existing["owned"] if existing else 0
+            wanted = existing["wanted"] if existing else 0
+            if want:
+                # Wanting something already owned is a second copy wanted, not
+                # a contradiction — leave the holding alone.
+                dbq.upsert_portfolio(conn, iid, owned=owned, wanted=wanted + 1,
+                                     condition=condition)
+            else:
+                dbq.upsert_portfolio(conn, iid, owned=owned + max(1, qty),
+                                     wanted=wanted, condition=condition)
+        # Only ever back to a path on this site, never an absolute URL from
+        # the form: that would make this an open redirect.
+        target = back if back.startswith("/") and not back.startswith("//")             else "/portfolio"
+        return RedirectResponse(f"{target}?added={iid}", status_code=303)
     finally:
         conn.close()
 

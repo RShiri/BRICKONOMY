@@ -26,10 +26,14 @@ Pages site would hand to anyone. It is therefore never published in the clear:
   BRICKONOMY_PORTFOLIO_PASSWORD=... python -m brickonomy.export
         publishes it AES-256-GCM encrypted behind that password
 
+  portfolio_public = true  (config, or BRICKONOMY_PORTFOLIO_PUBLIC=1)
+        publishes it in the clear — an explicit choice, never a default
+
   python -m brickonomy.export
         omits the portfolio page and its history entirely
 
-There is deliberately no third option. See brickonomy/lockbox.py.
+Publishing in the clear takes a deliberate setting rather than the absence of
+one, so it can never happen by forgetting a password. See lockbox.py.
 """
 import argparse
 import json
@@ -46,6 +50,17 @@ def save_portfolio(client, out, save, log):
     """
     from . import lockbox
     from .web import app as webapp
+
+    if lockbox.publish_in_the_clear():
+        # Deliberately unencrypted, by an explicit setting. The page is the
+        # ordinary portfolio; there is nothing to hide it behind.
+        webapp.STATIC_DEPTH = 0
+        if save("/portfolio", "portfolio.html"):
+            log("  · portfolio published IN THE CLEAR "
+                "(portfolio_public is set)")
+            save("/api/portfolio/history", "api/portfolio/history.json")
+            return 1
+        return 0
 
     password = lockbox.get_password()
     if not password:

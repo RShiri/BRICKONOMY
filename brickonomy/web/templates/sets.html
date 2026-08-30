@@ -75,7 +75,9 @@
         {% if i.item_type == 'M' %}<span style="color:var(--muted)"> (minifig)</span>{% endif %}</td>
       <td>{{ i.theme or '—' }}</td>
       <td class="num">{{ i.year or '—' }}</td>
-      <td class="num">{{ i.retail|money(ccy) if i.retail else '—' }}</td>
+      <td class="num" data-v="{{ i.retail or '' }}"
+          {%- if i.retail and i.retail_ccy != ccy %} title="{{ i.retail|money(ccy) }} at today's rate"{% endif %}>
+        {{- i.retail_native|money(i.retail_ccy) if i.retail_native else '—' }}</td>
       <td class="num"><b>{{ i.value_new|money(ccy) if i.value_new else '—' }}</b></td>
       <td class="num">{{ i.value_used|money(ccy) if i.value_used else '—' }}</td>
       <td class="num">{{ m.delta(i.growth) }}</td>

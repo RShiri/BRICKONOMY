@@ -168,3 +168,42 @@ class TestRetirementIsLabelledAsAGuess:
         ph = lifecycle.phase(None)
         assert ph["retirement_year"] is None
         assert ph["retirement_estimated"] is False
+
+
+class TestUnderMarketListingsAreWholeSets:
+    """An under-market price is only a deal if the thing on sale is the set.
+    eBay searches free text and BrickOwl matches numbers across item types, so
+    both surface figures, helmets and sticker sheets under a set number."""
+
+    @pytest.mark.parametrize("desc", [
+        # All observed live in the deals list.
+        "LEGO - Minifigs - Super Heroes - sh1131 - Phil Coulson (76354)",
+        "LEGO Spider Man Green Goblin Minifigure HELMET Spd006 4851 4852",
+        "New LEGO SHIELD Agent Statuette Minifigure 20 ILS",
+        "New LEGO Sticker Sheet for Set 5002145",
+        "LEGO 75192 instructions only, no bricks",
+        "Empty box for 76060",
+    ])
+    def test_a_part_or_figure_is_not_a_set(self, desc):
+        assert looks_like_a_component(desc, "S")
+
+    @pytest.mark.parametrize("desc", [
+        "LEGO Marvel 76060 Doctor Strange Sanctum Sanctorum, 4 minifigures",
+        "New sealed LEGO 75192 Millennium Falcon UCS, box has shelf wear",
+        "LEGO 76049 Avenjet - complete with all minifigs and instructions",
+    ])
+    def test_a_complete_set_survives_even_when_it_mentions_minifigures(self, desc):
+        """Sets legitimately advertise the figures they contain; that must not
+        be read as the listing *being* a figure."""
+        assert not looks_like_a_component(desc, "S")
+
+    def test_a_figure_id_is_expected_on_a_figure_page(self):
+        assert not looks_like_a_component(
+            "LEGO Minifigs sh1131 Phil Coulson", "M")
+
+    def test_bricklink_listings_are_trusted_without_a_description(self):
+        """BrickLink is fetched at catalogitem.page?S=<id>, pinned to the Set
+        item type, so its listings are the set by construction — which is why
+        it stores no description and needs none."""
+        assert not looks_like_a_component("", "S")
+        assert not looks_like_a_component(None, "S")

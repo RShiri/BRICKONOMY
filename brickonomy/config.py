@@ -38,6 +38,10 @@ class Config:
     # instead of PriceAnalyzer's 70/30 sold-and-asks blend. eBay asks are
     # aspirational; its sales are the honest number.
     ebay_price_from_sold_only: bool = True
+    # Publish the portfolio — holdings, what was paid, the collection total —
+    # in the clear on the exported site. Off by default because that site is
+    # usually public; see brickonomy/lockbox.py for the encrypted alternative.
+    portfolio_public: bool = False
     # Importing to Israel: VAT charged on arrival, plus a flat shipping
     # allowance. The shipping figure is a starting point the set page lets you
     # change per item — courier rates vary far more than the tax does.

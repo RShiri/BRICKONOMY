@@ -5,6 +5,10 @@
 
 {{ m.autoscan_banner(auto_scan, item.item_id) }}
 
+{% if request.query_params.get('added') %}
+<div class="notice">Added to your collection — <a href="{{ u('/portfolio') }}">see the portfolio</a>.</div>
+{% endif %}
+
 <div class="sethead">
   <figure class="setimg" style="margin:0">
     <img src="{{ img_url(item.item_id, item.item_type) }}" alt="{{ item.name }}"
@@ -15,7 +19,8 @@
     <h1 style="font-size:26px">{{ item.name }} <span style="color:var(--muted);font-weight:400">· {{ item.item_id }}</span></h1>
     <p class="sub" style="margin-bottom:6px">
       {% if item.year %}Released {{ item.year }}{% endif %}
-      {% if retail %} · Retail {{ retail|money(ccy) }}{% endif %}
+      {% if retail_native %} · Retail {{ retail_native|money(retail_ccy) }}{% if retail_ccy != ccy %}
+        <span class="soft" title="Converted at today's rate; the MSRP itself is {{ retail_ccy }}">({{ retail|money(ccy) }})</span>{% endif %}{% endif %}
     </p>
     <div class="facts">
       {% if item.parts %}<span class="chip">🧱 {{ "{:,}".format(item.parts) }} parts</span>{% endif %}
@@ -35,6 +40,25 @@
       {% endif %}
       {{ m.phase_chip(phase) }}
       {% if not static_mode %}
+      {# Collection controls. They post rather than fetch so the page state is
+         always the server's, and each returns here instead of jumping to the
+         portfolio and losing your place. #}
+      <form method="post" action="/portfolio/add" style="display:inline">
+        <input type="hidden" name="item_id" value="{{ item.item_id }}">
+        <input type="hidden" name="back" value="/sets/{{ item.item_id }}">
+        <input type="hidden" name="condition" value="used">
+        <button class="btn-ghost" type="submit"
+                title="{% if holding.owned %}You own {{ holding.owned }}. This adds another copy.{% else %}Add this set to your collection.{% endif %}">
+          {% if holding.owned %}✓ owned ×{{ holding.owned }} · add another{% else %}+ I own this{% endif %}</button>
+      </form>
+      <form method="post" action="/portfolio/add" style="display:inline">
+        <input type="hidden" name="item_id" value="{{ item.item_id }}">
+        <input type="hidden" name="back" value="/sets/{{ item.item_id }}">
+        <input type="hidden" name="want" value="true">
+        <button class="btn-ghost" type="submit"
+                title="{% if holding.wanted %}Already on your wishlist ×{{ holding.wanted }}.{% else %}Track this on your wishlist.{% endif %}">
+          {% if holding.wanted %}★ wanted ×{{ holding.wanted }}{% else %}☆ want this{% endif %}</button>
+      </form>
       <button class="btn-ghost" id="rescanBtn" data-item="{{ item.item_id }}"
               title="Re-scrape prices for this set and for every minifig in it, and refresh the parts inventory. Takes a few minutes on a fig-heavy set.">↻ Rescan prices</button>
       {% endif %}
@@ -142,7 +166,7 @@
     <div class="vsbars">
       <div class="vsrow"><span>Retail</span>
         <div class="track"><div class="fill retail" style="width:{{ (retail / [retail, values.new.value or retail]|max * 100)|round(1) }}%"></div></div>
-        <span class="num">{{ retail|money(ccy) }}</span></div>
+        <span class="num" title="{{ retail_native|money(retail_ccy) }} at launch">{{ retail|money(ccy) }}</span></div>
       <div class="vsrow"><span>Value new</span>
         <div class="track"><div class="fill" style="width:{{ ((values.new.value or 0) / [retail, values.new.value or retail]|max * 100)|round(1) }}%"></div></div>
         <span class="num">{{ values.new.value|money(ccy) if values.new.value else '—' }}</span></div>

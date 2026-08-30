@@ -143,7 +143,9 @@
           {{ m.buy_window_chip(w.window) }}</td>
       <td>{{ w.theme or '—' }}</td>
       <td class="num" data-v="{{ w.wanted }}">{{ w.wanted }}</td>
-      <td class="num" data-v="{{ w.retail or '' }}">{{ w.retail|money(ccy) if w.retail else '—' }}</td>
+      <td class="num" data-v="{{ w.retail or '' }}"
+          {%- if w.retail and w.retail_ccy != ccy %} title="{{ w.retail|money(ccy) }} at today's rate"{% endif %}>
+        {{- w.retail_native|money(w.retail_ccy) if w.retail_native else '—' }}</td>
       <td class="num" data-v="{{ w.value or '' }}"><b>{{ w.value|money(ccy) if w.value else '—' }}</b></td>
       <td class="num" data-v="{{ w.delta30 if w.delta30 is not none else '' }}">{{ m.delta(w.delta30) }}</td>
       <td>{% if w.deal and w.deal.rating != 'IRRELEVANT' %}

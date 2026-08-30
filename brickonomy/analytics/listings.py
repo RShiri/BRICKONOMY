@@ -6,6 +6,7 @@ lives in analytics rather than the web layer because the web layer is a view
 over this, not the other way round.
 """
 import json
+import re
 
 # A live ask below this fraction of the item's value is a mismatched listing,
 # not a bargain. BrickOwl matches some set numbers against parts that share the
@@ -32,25 +33,54 @@ COMPONENT_MARKERS = (
     "sticker sheet", "sticker set", "instruction manual", "instructions for",
     "wheel rim", "minifigure head", "minifigure torso", "minifigure legs",
     "baseplate only", "replacement part", "single part", "spare part",
+    # Nouns that are the *subject* of the listing rather than something a set
+    # contains. "Statuette" caught the 90398pb trophies; "helmet" caught a
+    # Green Goblin helmet listed under set 4851.
+    "statuette", "helmet", "torso", "headgear", "keychain", "key chain",
+    "magnet", "poster", "box only", "empty box", "manual only",
+    "instructions only", "figure only", "minifig only",
+    # "X from set N" is only ever said of a piece taken out of one. A whole
+    # set is never "from" a set. This caught a Nick Fury figure listed under
+    # 76354 that carried no catalogue id to give it away.
+    "minifigure from set", "minifig from set", "figure from set",
+    "minifigure from lego set", "from set no", "taken from set",
 )
 # Part names in these catalogues carry dimensions; set names never do.
 DIMENSION_MARKERS = ("ø", " x 1.", " x 2.", " x 9.9")
 
+# A minifigure's own catalogue id — sh1131, spd006, cty1837, col334. A listing
+# for a *set* that quotes one of these is selling the figure, not the set:
+# "LEGO - Minifigs - Super Heroes - sh1131 - Phil Coulson (76354)" was priced
+# as though it were the whole Helicarrier.
+MINIFIG_ID_IN_TEXT = re.compile(r"\b(?:sh|sw|cty|col|spd|hp|njo|tlm)\d{3,4}[a-z]?\b")
 
-def looks_like_a_component(description):
-    """True when the listing describes a part or accessory, not the item."""
+
+def looks_like_a_component(description, item_type="S"):
+    """True when the listing describes a part or figure, not the item priced.
+
+    Only meaningful for sources whose listings are free text — eBay searches
+    anything, and BrickOwl matches numbers across item types. BrickLink pins
+    its request to `catalogitem.page?S=<id>`, so its listings are the set by
+    construction, which is why it stores no description and needs none.
+    """
     text = (description or "").lower()
     if not text:
         return False               # no description is not evidence either way
-    return (any(m in text for m in COMPONENT_MARKERS)
-            or any(m in text for m in DIMENSION_MARKERS))
+    if any(m in text for m in COMPONENT_MARKERS):
+        return True
+    if any(m in text for m in DIMENSION_MARKERS):
+        return True
+    # Only when pricing a set: on a minifig's own page such an id is correct.
+    return item_type == "S" and bool(MINIFIG_ID_IN_TEXT.search(text))
 
 
-def cheapest_stock(conn, item_id, condition="new"):
+def cheapest_stock(conn, item_id, condition="new", item_type=None):
     """{source: {price, currency, description, scraped_at}} from the latest
     stock snapshot's retained raw listings."""
     from .. import db as dbq
+    from ..importer import item_type_for
 
+    item_type = item_type or item_type_for(item_id)
     out = {}
     for source in ("bricklink", "ebay", "brickowl"):
         row = dbq.latest_snapshot(conn, item_id, source, condition, kind="stock")
@@ -62,7 +92,7 @@ def cheapest_stock(conn, item_id, condition="new"):
             continue
         clean = [l for l in listings
                  if l.get("price", 0) > 0
-                 and not looks_like_a_component(l.get("description"))]
+                 and not looks_like_a_component(l.get("description"), item_type)]
         if not clean:
             continue
         best = min(clean, key=lambda l: l["price"])
@@ -79,7 +109,8 @@ def plausible(ask, value):
     return ask >= value * IMPLAUSIBLE_ASK_RATIO
 
 
-def believable_offers(conn, item_id, value_ils, condition="new", to_ccy="ILS"):
+def believable_offers(conn, item_id, value_ils, condition="new", to_ccy="ILS",
+                      item_type=None):
     """cheapest_stock, minus listings too cheap to be the item in question.
 
     `value_ils` is the item's market value in ILS; offers are compared against
@@ -88,7 +119,7 @@ def believable_offers(conn, item_id, value_ils, condition="new", to_ccy="ILS"):
     from ..currency import convert
 
     out = {}
-    for source, o in cheapest_stock(conn, item_id, condition).items():
+    for source, o in cheapest_stock(conn, item_id, condition, item_type).items():
         try:
             ask_ils = convert(conn, o["price"], o["currency"], "ILS")
         except ValueError:

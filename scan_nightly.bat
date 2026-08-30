@@ -25,8 +25,14 @@ set SCAN_LIMIT=150
 set SCAN_SCOPE=priority
 
 if not exist "logs" mkdir "logs"
-for /f "tokens=2 delims==" %%d in ('wmic os get localdatetime /value') do set LDT=%%d
-set STAMP=%LDT:~0,4%-%LDT:~4,2%-%LDT:~6,2%
+
+REM Date for the log filename. Not via wmic: it was removed in Windows 11
+REM 24H2/26200, and its absence left the name containing a colon, which is
+REM illegal in a filename, so the redirect failed and nothing was ever logged.
+REM Python is already required for the scan itself, so it does the formatting.
+set STAMP=
+for /f "usebackq delims=" %%d in (`.venv\Scripts\python.exe -c "import datetime;print(datetime.date.today().isoformat())"`) do set STAMP=%%d
+if "%STAMP%"=="" set STAMP=undated
 set LOGFILE=logs\scan-%STAMP%.log
 
 REM Emoji in the scan log would die on this machine's default codepage.
@@ -45,7 +51,7 @@ if %RC%==3 (
 )
 
 REM Keep a fortnight of logs, drop the rest.
-forfiles /p logs /m scan-*.log /d -14 /c "cmd /c del @path" 2>nul
+".venv\Scripts\python.exe" -c "import pathlib,time; [p.unlink() for p in pathlib.Path('logs').glob('scan-*.log') if time.time()-p.stat().st_mtime > 14*86400]" 2>nul
 
 endlocal
 exit /b %RC%

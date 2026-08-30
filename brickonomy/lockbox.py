@@ -28,11 +28,27 @@ import secrets
 
 PBKDF2_ITERATIONS = 310_000        # OWASP's 2023 floor for PBKDF2-HMAC-SHA256
 ENV_VAR = "BRICKONOMY_PORTFOLIO_PASSWORD"
+PUBLIC_ENV_VAR = "BRICKONOMY_PORTFOLIO_PUBLIC"
 
 
 def get_password():
     """The configured password, or None when protection is not enabled."""
     return os.environ.get(ENV_VAR) or None
+
+
+def publish_in_the_clear():
+    """True when the portfolio is deliberately published unencrypted.
+
+    Requires an explicit opt-in, and the opt-in is a setting rather than a
+    default, because the exported site is normally public and the data names
+    what is owned and what it cost. Set portfolio_public in the config, or
+    BRICKONOMY_PORTFOLIO_PUBLIC=1 for a one-off export.
+    """
+    from .config import get_config
+
+    if os.environ.get(PUBLIC_ENV_VAR, "").strip().lower() in ("1", "true", "yes"):
+        return True
+    return bool(get_config().portfolio_public)
 
 
 def encrypt(payload: dict, password: str) -> dict:
