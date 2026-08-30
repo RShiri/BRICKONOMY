@@ -494,7 +494,8 @@ def sets_page(request: Request, q: str = "", filter: str = "", sort: str = "grow
         # Filtering happens in SQL: ids sort as text, so post-filtering a
         # capped fetch showed only the themes whose ids sort early.
         rows = dbq.list_items(conn, search=q, limit=400, theme=theme,
-                              item_type=kind if kind in ("S", "M") else "")
+                              item_type=kind if kind in ("S", "M") else "",
+                              order="value" if sort == "value" else "")
         if filter == "portfolio":
             owned = {r["item_id"] for r in dbq.get_portfolio(conn)}
             rows = [r for r in rows if r["item_id"] in owned]

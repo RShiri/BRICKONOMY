@@ -20,7 +20,8 @@ from datetime import datetime
 from pathlib import Path
 
 from . import db as dbq
-from .analytics.valuation import BLEND_CURRENCY, HEADLINE_BASIS, HEADLINE_SOURCE
+from .analytics.valuation import (BLEND_CURRENCY, HEADLINE_BASIS,
+                                 HEADLINE_SOURCE, MIN_ASKS_FOR_FALLBACK)
 from .config import get_config
 from .currency import convert
 
@@ -76,8 +77,21 @@ def rebuild(conn, dry_run=False, log=print):
         if current is None or priority[row["kind"]] < priority[current["kind"]]:
             best[key] = row
 
-    new_rows, skipped = [], 0
+    # Asks per (item, condition, scrape), so the same evidence rule the live
+    # valuation applies can be applied here: a value not backed by completed
+    # sales needs more than one seller behind it.
+    asks = {(r["item_id"], r["condition"], r["scraped_at"]): (r["listing_count"] or 0)
+            for r in conn.execute(
+                """SELECT item_id, condition, scraped_at, listing_count
+                   FROM price_snapshots WHERE source = ? AND kind = 'stock'""",
+                (HEADLINE_SOURCE,))}
+
+    new_rows, skipped, thin = [], 0, 0
     for (item_id, condition, scraped_at), row in best.items():
+        thin_evidence = asks.get((item_id, condition, scraped_at), 0)
+        if row["kind"] != "sold" and thin_evidence < MIN_ASKS_FOR_FALLBACK:
+            thin += 1
+            continue        # one ask is not a price
         value = _headline_at(conn, row)
         if value is None:
             skipped += 1
@@ -91,6 +105,8 @@ def rebuild(conn, dry_run=False, log=print):
     log(f"  new headline rows:     {len(new_rows):,} across {items:,} items")
     if skipped:
         log(f"  skipped (no usable BrickLink figure): {skipped:,}")
+    if thin:
+        log(f"  skipped (fewer than {MIN_ASKS_FOR_FALLBACK} asks, no sales): {thin:,}")
 
     if dry_run:
         log("  dry run — nothing written")

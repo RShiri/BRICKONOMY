@@ -95,3 +95,51 @@ class TestListingRoutes:
         assert "sh0007" in html
         assert "Minifigures" in html
         assert "Filler" not in html, "the sets must not appear on the fig tab"
+
+
+class TestValueOrdering:
+    """Sorting by value has to happen in SQL. Ordering a capped window
+    afterwards ranks only what fell inside it — the same trap the theme filter
+    fell into, invisible while few items are priced and wrong as soon as the
+    scanner outgrows the cap."""
+
+    def _priced(self, conn, item_id, value):
+        dbq.insert_snapshot(conn, item_id, "blended", "new", "market", "ILS",
+                            market_price=value)
+        conn.commit()
+
+    def test_the_most_valuable_item_wins_even_from_outside_the_window(self, conn):
+        # 76339 sorts last by id, so a window of 5 by id would never see it.
+        self._priced(conn, "20000", 10.0)
+        self._priced(conn, "76339", 9999.0)
+        rows = dbq.list_items(conn, order="value", limit=5)
+        assert rows[0]["item_id"] == "76339"
+
+    def test_it_combines_with_a_theme_filter(self, conn):
+        self._priced(conn, "76300", 500.0)
+        self._priced(conn, "20001", 9999.0)          # City, must not appear
+        rows = dbq.list_items(conn, theme="Super Heroes Marvel",
+                              order="value", limit=5)
+        assert rows[0]["item_id"] == "76300"
+        assert all(r["theme"] == "Super Heroes Marvel" for r in rows)
+
+    def test_it_combines_with_search(self, conn):
+        self._priced(conn, "76301", 400.0)
+        rows = dbq.list_items(conn, search="Marvel", order="value", limit=5)
+        assert rows[0]["item_id"] == "76301"
+
+    def test_it_combines_with_the_item_type(self, conn):
+        self._priced(conn, "sh0005", 800.0)
+        self._priced(conn, "76302", 9999.0)
+        rows = dbq.list_items(conn, item_type="M", order="value", limit=5)
+        assert rows[0]["item_id"] == "sh0005"
+        assert all(r["item_type"] == "M" for r in rows)
+
+    def test_unpriced_items_sort_last_not_first(self, conn):
+        self._priced(conn, "76303", 50.0)
+        rows = dbq.list_items(conn, item_type="S", order="value", limit=3)
+        assert rows[0]["item_id"] == "76303"
+
+    def test_the_default_order_is_unchanged(self, conn):
+        rows = dbq.list_items(conn, item_type="M", limit=5)
+        assert [r["item_id"] for r in rows] == sorted(r["item_id"] for r in rows)

@@ -99,6 +99,8 @@ class TestBlend:
         dbq.upsert_item(conn, "6666", name="Test", year=2018)
         seed_series(conn, "6666", [(3500, 0)], source="bricklink",
                     currency="ILS", confidence="HIGH")
+        # A value not backed by sales needs more than one seller behind it.
+        seed_sold(conn, "6666", 3500.0, qty=4, kind="stock")
         out = store_blended(conn, "6666")
         assert out["new"] == pytest.approx(3500.0)
         row = dbq.latest_snapshot(conn, "6666", "blended", "new")
@@ -146,16 +148,38 @@ class TestHeadlineValue:
 
     def test_falls_back_to_market_then_asks_when_never_sold(self, conn):
         dbq.upsert_item(conn, "7003", name="Test", year=2026)
-        seed_series(conn, "7003", [(300.0, 0)], source="bricklink")   # market only
+        seed_series(conn, "7003", [(300.0, 0)], source="bricklink")   # market
+        seed_sold(conn, "7003", 300.0, qty=4, kind="stock")           # 4 asks
         value, _, basis, _ = headline_value(conn, "7003", "new")
         assert value == pytest.approx(300.0)
         assert "no sold history" in basis
 
         dbq.upsert_item(conn, "7004", name="Test", year=2026)
-        seed_sold(conn, "7004", 250.0, kind="stock")                  # asks only
+        seed_sold(conn, "7004", 250.0, qty=4, kind="stock")           # asks only
         value, _, basis, _ = headline_value(conn, "7004", "new")
         assert value == pytest.approx(250.0)
         assert "never sold" in basis
+
+    def test_a_single_ask_is_not_a_price(self, conn):
+        """Set 65572 had no sales and one 45,061 listing. PriceAnalyzer turned
+        that ask into a "market price", which became the headline value and put
+        a 0-part co-pack at the top of every list sorted by price."""
+        dbq.upsert_item(conn, "65572", name="Co-Pack", year=2005)
+        seed_series(conn, "65572", [(45061.0, 0)], source="bricklink")
+        seed_sold(conn, "65572", 45061.0, qty=1, kind="stock")        # one ask
+        assert headline_value(conn, "65572", "new")[0] is None
+
+        # Two sellers agreeing is thin, but it is a market.
+        dbq.upsert_item(conn, "65573", name="Other", year=2005)
+        seed_series(conn, "65573", [(120.0, 0)], source="bricklink")
+        seed_sold(conn, "65573", 120.0, qty=2, kind="stock")
+        assert headline_value(conn, "65573", "new")[0] == pytest.approx(120.0)
+
+    def test_completed_sales_never_need_an_ask_to_back_them(self, conn):
+        """The rule is about *unsold* evidence; a real sale stands alone."""
+        dbq.upsert_item(conn, "7010", name="Test", year=2018)
+        seed_sold(conn, "7010", 500.0, qty=12)      # sold, no stock row at all
+        assert headline_value(conn, "7010", "new")[0] == pytest.approx(500.0)
 
     def test_thin_and_stale_evidence_lowers_confidence(self, conn):
         dbq.upsert_item(conn, "7005", name="Test", year=2018)

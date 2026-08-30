@@ -38,6 +38,13 @@ HEADLINE_BASIS = (
     ("stock", "price_avg", "BrickLink current asking average (never sold)"),
 )
 
+# Any value not backed by completed sales needs more than one seller behind
+# it. A lone ask is one person's opinion, not a market: set 65572 had no sold
+# history at all and a single ₪45,061 listing. PriceAnalyzer turned that ask
+# into a "market price", which became the headline value and put a 0-part
+# co-pack at the top of every list sorted by price.
+MIN_ASKS_FOR_FALLBACK = 2
+
 
 def latest_per_source(conn, item_id, condition):
     """{source: snapshot_row} of the freshest market snapshot per source."""
@@ -104,6 +111,15 @@ def headline_value(conn, item_id, condition, max_age_days=MAX_SOURCE_AGE_DAYS):
                                   kind=kind)
         if not row or not row[column] or row[column] <= 0:
             continue
+        if kind != "sold":
+            # Both fallbacks rest on current asks — the market price is
+            # derived from them when nothing has sold — so both need more
+            # than one. Count the asks themselves, not the derived row.
+            stock = dbq.latest_snapshot(conn, item_id, HEADLINE_SOURCE,
+                                        condition, kind="stock")
+            asks = (stock["listing_count"] or 0) if stock else 0
+            if asks < MIN_ASKS_FOR_FALLBACK:
+                continue    # one ask is not a price
         value = convert(conn, row[column], row["currency"], BLEND_CURRENCY)
         if not value or value <= 0:
             continue

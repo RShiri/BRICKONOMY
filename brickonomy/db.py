@@ -221,7 +221,7 @@ def get_item(conn, item_id: str):
 
 
 def list_items(conn, search: str = "", limit: int = 500, theme: str = "",
-               item_type: str = ""):
+               item_type: str = "", order: str = ""):
     """Catalog rows, filtered in SQL.
 
     theme and item_type belong in the query, not in a comprehension over the
@@ -247,8 +247,30 @@ def list_items(conn, search: str = "", limit: int = 500, theme: str = "",
     # window ordered by bare id fills up with never-scanned imports and the
     # listing looks like it has no prices at all — on /minifigs, 9 of the
     # first 400 ids were priced while all 203 priced figs sorted past the cap.
-    q += """ ORDER BY item_id IN (SELECT DISTINCT item_id FROM price_snapshots)
-                 DESC, item_id LIMIT ?"""
+    if order == "value":
+        # Sorting by value has to happen in SQL. Ordering a capped window
+        # afterwards ranks only what happened to be in it, which is the same
+        # trap the theme filter fell into — invisible today at 393 priced
+        # sets, wrong the moment the scanner pushes that past the limit.
+        q = q.replace("SELECT * FROM items", """
+            SELECT i.*, COALESCE(v.market_price, 0) AS _value FROM items i
+            LEFT JOIN (SELECT s.item_id, s.market_price FROM price_snapshots s
+                       JOIN (SELECT item_id, MAX(scraped_at) ts
+                             FROM price_snapshots
+                             WHERE source='blended' AND condition='new'
+                               AND kind='market' GROUP BY item_id) l
+                         ON l.item_id = s.item_id AND l.ts = s.scraped_at
+                       WHERE s.source='blended' AND s.condition='new'
+                         AND s.kind='market') v ON v.item_id = i.item_id""")
+        q = q.replace("WHERE item_id LIKE", "WHERE i.item_id LIKE")
+        for col in ("theme = ?", "item_type = ?"):
+            q = q.replace(col, "i." + col)
+        q = q.replace("(item_id LIKE ? OR name LIKE ? OR theme LIKE ?)",
+                      "(i.item_id LIKE ? OR i.name LIKE ? OR i.theme LIKE ?)")
+        q += " ORDER BY _value DESC, i.item_id LIMIT ?"
+    else:
+        q += """ ORDER BY item_id IN (SELECT DISTINCT item_id FROM price_snapshots)
+                     DESC, item_id LIMIT ?"""
     args.append(limit)
     return conn.execute(q, args).fetchall()
 
