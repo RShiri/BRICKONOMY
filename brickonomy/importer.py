@@ -142,7 +142,8 @@ def import_csv(conn, csv_path: str, prune: bool = False, log=print) -> dict:
                 # BrickEconomy renamed this column between exports.
                 name=((row.get("SetName") or row.get("Name") or "").strip()
                       or None),
-                theme=(row.get("Theme") or "").strip() or None,
+                theme=dbq.theme_as_catalogued(
+                    conn, (row.get("Theme") or "").strip() or None),
                 subtheme=(row.get("Subtheme") or "").strip() or None,
                 year=year,
                 retail_price=retail,

@@ -187,6 +187,25 @@ def normalize_themes(conn, log=print):
                                (canon, row["theme"]))
             changed += cur.rowcount
             log(f"  theme {row['theme']!r} → {canon!r} ({cur.rowcount} items)")
+
+    # THEME_ALIASES only covers the disagreements someone thought to list. Two
+    # importers can also differ on case alone, and SQLite groups those as two
+    # themes — "Brickheadz" (192 sets from Rebrickable) and "BrickHeadz" (6
+    # from a BrickEconomy export) were two rows on /themes with separate
+    # averages. Fold what the aliases missed into the majority spelling.
+    for row in conn.execute(
+            """SELECT lower(theme) AS folded FROM items WHERE theme IS NOT NULL
+               GROUP BY lower(theme) HAVING COUNT(DISTINCT theme) > 1""").fetchall():
+        win = conn.execute(
+            "SELECT theme FROM items WHERE lower(theme) = ? "
+            "GROUP BY theme ORDER BY COUNT(*) DESC LIMIT 1",
+            (row["folded"],)).fetchone()["theme"]
+        cur = conn.execute(
+            "UPDATE items SET theme = ? WHERE lower(theme) = ? AND theme != ?",
+            (win, row["folded"], win))
+        changed += cur.rowcount
+        log(f"  theme spelling folded into {win!r} ({cur.rowcount} items)")
+
     conn.commit()
     if changed:
         log(f"✔ {changed} items moved onto canonical theme names")
@@ -302,6 +321,43 @@ def latest_snapshot(conn, item_id, source, condition, kind="market"):
            ORDER BY scraped_at DESC LIMIT 1""",
         (item_id, source, condition, kind),
     ).fetchone()
+
+
+def theme_as_catalogued(conn, theme):
+    """canonical_theme, then snapped to the spelling the catalog already uses.
+
+    THEME_ALIASES only covers the disagreements someone thought to list. Two
+    importers can also disagree on case alone — Rebrickable's dump says
+    "Brickheadz", BrickEconomy's export says "BrickHeadz" — and SQLite groups
+    those as two themes, so one theme becomes a 192-set entry and a 6-set one,
+    each with its own averages. The catalog's majority spelling wins; the
+    point is that one wins, not which.
+    """
+    theme = canonical_theme(theme)
+    if not theme:
+        return theme
+    row = conn.execute(
+        "SELECT theme FROM items WHERE theme = ? COLLATE NOCASE "
+        "GROUP BY theme ORDER BY COUNT(*) DESC LIMIT 1", (theme,)).fetchone()
+    return row["theme"] if row else theme
+
+
+def latest_values(conn, condition="new", source="blended"):
+    """{item_id: market_price} of every item's freshest headline value.
+
+    One query for the whole catalog. The alternative — calling current_value
+    per row — is what made /themes walk 17k items and issue a query for each,
+    and it scales with the catalog rather than with the priced subset.
+    """
+    return {r["item_id"]: r["market_price"] for r in conn.execute(
+        """SELECT s.item_id, s.market_price FROM price_snapshots s
+           JOIN (SELECT item_id, MAX(scraped_at) AS ts FROM price_snapshots
+                 WHERE source=? AND condition=? AND kind='market'
+                 GROUP BY item_id) latest
+             ON latest.item_id = s.item_id AND latest.ts = s.scraped_at
+           WHERE s.source=? AND s.condition=? AND s.kind='market'
+             AND s.market_price > 0""",
+        (source, condition, source, condition))}
 
 
 def snapshot_history(conn, item_id, condition="new", kind="market", sources=None):

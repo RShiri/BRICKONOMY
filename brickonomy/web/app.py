@@ -361,16 +361,24 @@ def themes_page(request: Request):
     conn = get_conn()
     try:
         ccy = display_ccy(request)
+        # Sets only. A theme's size and average value are statements about
+        # sets; the eight themed minifigures in the catalog would be counted
+        # alongside them as if a fig and a 7,500-piece UCS set were peers.
         rows = conn.execute(
             "SELECT item_id, name, theme, year, retail_price, retail_currency "
-            "FROM items WHERE theme IS NOT NULL AND theme != ''"
+            "FROM items WHERE item_type='S' AND theme IS NOT NULL AND theme != ''"
         ).fetchall()
+
+        # Every value in one query rather than one query per row, and growth
+        # only for the rows that have a value — the loop below already ignores
+        # growth for the rest, so estimating it for 16.5k unpriced sets was
+        # work whose result was thrown away.
+        values = dbq.latest_values(conn, "new")
 
         themes = {}
         for row in rows:
-            value, _, _ = current_value(conn, row["item_id"], "new")
-            v = disp(conn, value, "ILS", ccy)
-            g, _ = growth_mod.best_growth_estimate(conn, row["item_id"])
+            v = disp(conn, values.get(row["item_id"]), "ILS", ccy)
+            g = growth_mod.best_growth_estimate(conn, row["item_id"])[0] if v else None
             t = themes.setdefault(row["theme"], {
                 "theme": row["theme"], "count": 0, "valued": 0, "total": 0.0,
                 "growths": [], "retail": 0.0, "best": None, "years": [],

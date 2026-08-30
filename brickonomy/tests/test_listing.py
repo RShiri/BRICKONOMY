@@ -143,3 +143,64 @@ class TestValueOrdering:
     def test_the_default_order_is_unchanged(self, conn):
         rows = dbq.list_items(conn, item_type="M", limit=5)
         assert [r["item_id"] for r in rows] == sorted(r["item_id"] for r in rows)
+
+
+class TestLatestValues:
+    """One query for every headline value. /themes used to call current_value
+    per row, so its cost tracked the catalog (17k sets) rather than the priced
+    subset (a few hundred)."""
+
+    def test_it_returns_only_the_freshest_row_per_item(self, conn):
+        dbq.insert_snapshot(conn, "10075", "blended", "new", "market", "ILS",
+                            market_price=100.0, scraped_at="2026-01-01T00:00:00")
+        dbq.insert_snapshot(conn, "10075", "blended", "new", "market", "ILS",
+                            market_price=250.0, scraped_at="2026-06-01T00:00:00")
+        conn.commit()
+        assert dbq.latest_values(conn, "new")["10075"] == 250.0
+
+    def test_it_keeps_the_conditions_apart(self, conn):
+        dbq.insert_snapshot(conn, "76300", "blended", "new", "market", "ILS",
+                            market_price=400.0)
+        dbq.insert_snapshot(conn, "76300", "blended", "used", "market", "ILS",
+                            market_price=180.0)
+        conn.commit()
+        assert dbq.latest_values(conn, "new")["76300"] == 400.0
+        assert dbq.latest_values(conn, "used")["76300"] == 180.0
+
+    def test_unpriced_items_are_absent_rather_than_zero(self, conn):
+        assert "20000" not in dbq.latest_values(conn, "new")
+
+    def test_it_agrees_with_current_value(self, conn):
+        from brickonomy.analytics.valuation import current_value
+
+        dbq.insert_snapshot(conn, "76301", "blended", "new", "market", "ILS",
+                            market_price=333.0)
+        conn.commit()
+        assert dbq.latest_values(conn, "new")["76301"] == current_value(
+            conn, "76301", "new")[0]
+
+
+class TestThemeAsCatalogued:
+    """Rebrickable's dump and BrickEconomy's export disagree on case, and
+    SQLite groups the two spellings as two themes — so one theme becomes two
+    entries on /themes, each with its own averages."""
+
+    def test_a_differently_cased_theme_snaps_to_the_catalog_spelling(self, conn):
+        assert dbq.theme_as_catalogued(conn, "super heroes marvel") == \
+            "Super Heroes Marvel"
+        assert dbq.theme_as_catalogued(conn, "CITY") == "City"
+
+    def test_the_majority_spelling_wins(self, conn):
+        # 41 rows say "Super Heroes Marvel"; one stray row disagrees.
+        dbq.upsert_item(conn, "76999", name="Stray", item_type="S",
+                        theme="SUPER HEROES MARVEL")
+        conn.commit()
+        assert dbq.theme_as_catalogued(conn, "Super Heroes Marvel") == \
+            "Super Heroes Marvel"
+
+    def test_an_unknown_theme_is_left_exactly_as_given(self, conn):
+        assert dbq.theme_as_catalogued(conn, "Monkie Kid") == "Monkie Kid"
+
+    def test_no_theme_is_not_an_error(self, conn):
+        assert dbq.theme_as_catalogued(conn, None) is None
+        assert dbq.theme_as_catalogued(conn, "") == ""
