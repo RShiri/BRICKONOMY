@@ -854,6 +854,7 @@ def search_index(request: Request):
     static file too, so search keeps working on GitHub Pages."""
     conn = get_conn()
     try:
+        ccy = display_ccy(request)
         rows = conn.execute(
             "SELECT item_id, name, theme, year, parts, item_type FROM items ORDER BY item_id"
         ).fetchall()
@@ -862,17 +863,40 @@ def search_index(request: Request):
         # 23k pages). Everything else opens the client-rendered set page.
         priced = {r["item_id"] for r in conn.execute(
             "SELECT DISTINCT item_id FROM price_snapshots")}
+        # The values themselves, not just a "has been priced" flag. The
+        # exported catalog renders from this file, so without them no listing
+        # on the published site can show a price at all — which is exactly
+        # what the minifig tab looked like.
+        values = {}
+        for cond, ix in (("new", 0), ("used", 1)):
+            for r in conn.execute(
+                    """SELECT s.item_id, s.market_price, s.currency
+                       FROM price_snapshots s
+                       JOIN (SELECT item_id, MAX(scraped_at) ts
+                             FROM price_snapshots
+                             WHERE source='blended' AND condition=? AND kind='market'
+                             GROUP BY item_id) l
+                         ON l.item_id = s.item_id AND l.ts = s.scraped_at
+                       WHERE s.source='blended' AND s.condition=? AND s.kind='market'""",
+                    (cond, cond)):
+                if r["market_price"]:
+                    v = disp(conn, r["market_price"], r["currency"], ccy)
+                    values.setdefault(r["item_id"], [0, 0])[ix] = round(v or 0, 2)
         # Row arrays rather than objects: with a full catalog this file is
         # ~23k+ entries, and the compact form is roughly 40% smaller.
         themes = sorted({r["theme"] for r in rows if r["theme"]})
         theme_ix = {t: i for i, t in enumerate(themes)}
         return JSONResponse({
-            "fields": ["id", "name", "theme", "year", "parts", "type", "p"],
+            "fields": ["id", "name", "theme", "year", "parts", "type", "p",
+                       "vnew", "vused"],
+            "currency": ccy,
             "themes": themes,
             "rows": [
                 [r["item_id"], r["name"] or "", theme_ix.get(r["theme"], -1),
                  r["year"] or 0, r["parts"] or 0,
-                 r["item_type"] or "S", 1 if r["item_id"] in priced else 0]
+                 r["item_type"] or "S", 1 if r["item_id"] in priced else 0,
+                 values.get(r["item_id"], (0, 0))[0],
+                 values.get(r["item_id"], (0, 0))[1]]
                 for r in rows
             ],
         })

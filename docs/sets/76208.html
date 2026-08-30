@@ -30,6 +30,7 @@
     <a href="../minifigs.html" class="">Minifigs</a>
     <a href="../themes.html" class="">Themes</a>
     <a href="../deals.html" class="">Deals</a>
+    <a href="../partout.html" class="">Part-out</a>
     <a href="../portfolio.html" class="">Portfolio</a>
     
   </nav>
@@ -49,6 +50,8 @@
 
 
 
+
+
 <div class="sethead">
   <figure class="setimg" style="margin:0">
     <img src="https://img.bricklink.com/ItemImage/SN/0/76208-1.png" alt="The Goat Boat"
@@ -59,7 +62,8 @@
     <h1 style="font-size:26px">The Goat Boat <span style="color:var(--muted);font-weight:400">· 76208</span></h1>
     <p class="sub" style="margin-bottom:6px">
       Released 2022
-       · Retail ₪178
+       · Retail $59.99
+        <span class="soft" title="Converted at today's rate; the MSRP itself is USD">(₪178)</span>
     </p>
     <div class="facts">
       <span class="chip">🧱 564 parts</span>
@@ -88,22 +92,34 @@
     </div>
     <div class="phaselbl"><span style="flex:4">2022</span><span style="flex:2">2025</span><span style="flex:2">2026</span><span style="flex:3">2027 →</span></div>
     
+    <div style="color:var(--muted);font-size:11px;margin-top:4px">
+      Retirement 2025 is <b>estimated</b> — release year plus a flat
+      allowance, not a published date. Real runs vary from 18 months to eight years.
+    </div>
+    
+    
   </div>
 </div>
 
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
     <div class="label">Value — new / sealed</div>
-    <div class="value">₪118</div>
+    <div class="value" style="">₪118</div>
     <div class="delta">
       <span class="delta down">▼ 34%</span> vs retail
        · -9.9%/yr
     </div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--ok)"
+        title="28 BrickLink sales (31 units) in the last six months — sells about weekly.">
+    ⇄ 28 sold/6mo</span></div>
   </div>
   <div class="tile">
     <div class="label">Value — used</div>
-    <div class="value">₪75.76</div>
+    <div class="value" style="">₪75.76</div>
     <div class="delta"><span class="chip">● HIGH</span></div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></div>
   </div>
   <div class="tile">
     <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
@@ -151,7 +167,7 @@
     <div class="vsbars">
       <div class="vsrow"><span>Retail</span>
         <div class="track"><div class="fill retail" style="width:100.0%"></div></div>
-        <span class="num">₪178</span></div>
+        <span class="num" title="$59.99 at launch">₪178</span></div>
       <div class="vsrow"><span>Value new</span>
         <div class="track"><div class="fill" style="width:65.9%"></div></div>
         <span class="num">₪118</span></div>
@@ -235,7 +251,8 @@
 
 
 <div class="card">
-  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts</span></h3>
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
@@ -253,8 +270,11 @@
         <dd><b>₪224</b></dd>
       </dl>
       <div style="color:var(--muted);font-size:12px;margin-top:10px">
-        Slices are of the <b>part-out value</b> — what the set fetches broken up, at new-condition
-        prices. Minifigures are counted whole and the remainder is the loose parts.
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
         
         
       </div>
@@ -369,7 +389,7 @@
         <td class="num">—</td>
         <td class="num">11</td>
         <td>ILS</td>
-        <td><span class="chip">◐ LOW</span>
+        <td><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span>
             <span class="chip" style="color:var(--warn)">stale</span></td>
       </tr>
       

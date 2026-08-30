@@ -111,9 +111,13 @@ class TestExport:
         assert not (out / "sets" / "99999.html").exists()
 
         index = json.loads((out / "api" / "index.json").read_text(encoding="utf-8"))
-        by_id = {r[0]: r for r in index["rows"]}
-        assert by_id["99999"][-1] == 0       # not priced -> client-rendered page
-        assert by_id["75192"][-1] == 1
+        # By field name, not position: the row format grows (values were added
+        # so the published catalog can show prices) and [-1] silently moved.
+        fields = index["fields"]
+        by_id = {r[0]: dict(zip(fields, r)) for r in index["rows"]}
+        assert by_id["99999"]["p"] == 0      # not priced -> client-rendered page
+        assert by_id["75192"]["p"] == 1
+        assert by_id["75192"]["vnew"] > 0, "the catalog carries values, not just a flag"
 
     def test_dynamic_mode_restored_after_export(self, seeded_db, tmp_path):
         from brickonomy.web import app as webapp

@@ -23,6 +23,7 @@
     <option value="year-asc">Oldest first</option>
     <option value="id">Set number</option>
     <option value="parts">Most parts</option>
+    <option value="value">Most valuable</option>
   </select>
   <label class="chip"><input type="checkbox" id="catalogPriced" style="accent-color:var(--accent)"> priced only</label>
 </div>
@@ -30,9 +31,11 @@
 <div class="card">
   <div id="catalogCount" style="color:var(--muted);font-size:12.5px;margin-bottom:8px">Loading catalog…</div>
   <div class="table-scroll">
-  <table id="catalogTable">
+  <table id="catalogTable" data-kind="{{ kind }}">
     <thead>
-      <tr><th>{{ 'Minifig' if is_figs else 'Set' }}</th><th>Theme</th><th class="num">Year</th><th class="num">Parts</th><th>Prices</th></tr>
+      <tr><th>{{ 'Minifig' if is_figs else 'Set' }}</th><th>Theme</th><th class="num">Year</th>
+          <th class="num">Parts</th><th class="num">Value new</th><th class="num">Value used</th>
+          <th>Status</th></tr>
     </thead>
     <tbody></tbody>
   </table>

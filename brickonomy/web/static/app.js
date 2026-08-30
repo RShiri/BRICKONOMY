@@ -250,17 +250,23 @@
       catalogPromise = fetch(apiURL("/api/index"))
         .then((r) => r.json())
         .then((d) => {
-          // Compact wire format: rows of [id, name, themeIndex, year, parts, type, priced]
+          // Compact wire format: rows of
+          // [id, name, themeIndex, year, parts, type, priced, valueNew, valueUsed]
           const themes = d.themes || [];
+          catalogCurrency = d.currency || "ILS";
           return (d.rows || []).map((r) => ({
             id: r[0], name: r[1], theme: r[2] >= 0 ? themes[r[2]] : "",
             year: r[3] || null, parts: r[4] || null, type: r[5], p: r[6],
+            vnew: r[7] || 0, vused: r[8] || 0,
           }));
         })
         .catch(() => []);
     }
     return catalogPromise;
   };
+  // Set by loadCatalog from the index; the catalog table formats with it.
+  let catalogCurrency = "ILS";
+
   const itemURL = (i) =>
     i.p
       ? (IS_STATIC ? `${BASE}sets/${i.id}.html` : `/sets/${i.id}`)
@@ -283,6 +289,10 @@
     const countEl = document.getElementById("catalogCount");
     const moreBtn = document.getElementById("catalogMore");
     const body = catalogTable.querySelector("tbody");
+    const catalogKind = catalogTable.dataset.kind || "";
+    const SYM = { ILS: "₪", USD: "$", EUR: "€", GBP: "£" };
+    const catalogMoney = (v) => (SYM[catalogCurrency] || catalogCurrency + " ") +
+      v.toLocaleString(undefined, { maximumFractionDigits: v >= 100 ? 0 : 2 });
     const PAGE = 100;
     let all = [], shown = 0, matches = [];
 
@@ -291,6 +301,7 @@
       "year-asc": (a, b) => (a.year || 9999) - (b.year || 9999) || a.id.localeCompare(b.id),
       id: (a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }),
       parts: (a, b) => (b.parts || 0) - (a.parts || 0),
+      value: (a, b) => (b.vnew || 0) - (a.vnew || 0),
     };
 
     const rowHTML = (i) => `<tr>
@@ -300,6 +311,8 @@
       <td>${esc(i.theme) || "—"}</td>
       <td class="num">${i.year || "—"}</td>
       <td class="num">${i.parts ? i.parts.toLocaleString() : "—"}</td>
+      <td class="num"><b>${i.vnew ? catalogMoney(i.vnew) : "—"}</b></td>
+      <td class="num">${i.vused ? catalogMoney(i.vused) : "—"}</td>
       <td>${i.p ? '<span class="chip on">priced</span>'
                 : '<span class="chip" style="color:var(--muted)">not scanned</span>'}</td>
     </tr>`;
@@ -319,6 +332,9 @@
       const theme = themeEl.value;
       const pricedOnly = pricedEl.checked;
       matches = all.filter((i) => {
+        // The page declares which half of the catalog it is: without this the
+        // minifig tab listed sets too.
+        if (catalogKind && i.type !== catalogKind) return false;
         if (pricedOnly && !i.p) return false;
         if (theme && i.theme !== theme) return false;
         if (!q) return true;

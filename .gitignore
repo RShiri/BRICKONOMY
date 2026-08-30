@@ -31,3 +31,6 @@ debug_*.html
 
 # Nightly scan logs — machine-local noise.
 logs/
+
+# Scan mutex — machine-local, released on exit.
+.scan.lock

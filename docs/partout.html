@@ -1,0 +1,3265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Part-out</title>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="static/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body data-static="1" data-base="">
+<header class="app">
+  <a class="logo" href="index.html">
+    <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#4f8cff"/><stop offset="1" stop-color="#38d4e0"/>
+      </linearGradient></defs>
+      <rect x="4"  y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="15" y="0" width="7" height="4" rx="1.2" fill="url(#lg)"/>
+      <rect x="0" y="4" width="26" height="16" rx="2.5" fill="url(#lg)"/>
+    </svg>
+    Brick<b>onomy</b>
+  </a>
+  <nav class="tabs">
+    
+    <a href="index.html" class="">Dashboard</a>
+    <a href="sets/index.html" class="">Sets</a>
+    <a href="minifigs.html" class="">Minifigs</a>
+    <a href="themes.html" class="">Themes</a>
+    <a href="deals.html" class="">Deals</a>
+    <a href="partout.html" class="active">Part-out</a>
+    <a href="portfolio.html" class="">Portfolio</a>
+    
+  </nav>
+  <div class="spacer"></div>
+  <div class="sitesearch">
+    <input class="inp" id="siteSearch" type="search" autocomplete="off"
+           placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
+    <div class="sresults" id="siteSearchResults" hidden></div>
+  </div>
+  
+  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  
+</header>
+
+<main>
+
+
+<div class="eyebrow">Opportunities</div>
+<h1>Worth breaking up</h1>
+<p class="sub">
+  Not "what are this set's parts worth" — <b>which set buyable today makes the most money
+  broken up</b>. 235 of 366 sets clear their cost.
+</p>
+
+
+
+<div class="card">
+  <div class="table-scroll">
+  <table data-sortable>
+    <thead>
+      <tr>
+        <th>Set</th><th>Theme</th>
+        <th class="num" title="Cheapest believable live listing, delivered — foreign listings carry VAT and shipping">Landed cost</th>
+        <th>Where</th>
+        <th class="num" title="Part-out total, after 70% realisation and 10% selling fees">Realistic yield</th>
+        <th class="num">Profit</th>
+        <th class="num">Margin</th>
+        <th class="num" title="Margin discounted by how often the set actually sells">Adjusted</th>
+        <th class="num" title="Share of the part-out value sitting in minifigures — the half that sells quickly">Figs</th>
+        <th>Sells</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr class="hl">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76060-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76060.html">76060 Doctor Strange&#39;s Sanctum Sanctorum</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="33.63">₪33.63</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="176.29268832">₪176
+          <br><span class="soft" style="font-size:11px">of ₪280</span></td>
+        <td class="num" data-v="142.66268832"><b style="color:var(--ok)">₪143</b></td>
+        <td class="num" data-v="424.2125730597681">424%</td>
+        <td class="num" data-v="381.7913157537913"><b>382%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (15 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="hl">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/77905-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/77905.html">77905 Taskmaster&#39;s Ambush</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="60.08">₪60.08</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="271.2843504">₪271
+          <br><span class="soft" style="font-size:11px">of ₪431</span></td>
+        <td class="num" data-v="211.2043504"><b style="color:var(--ok)">₪211</b></td>
+        <td class="num" data-v="351.53853262316915">352%</td>
+        <td class="num" data-v="351.53853262316915"><b>352%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="30 BrickLink sales (37 units) in the last six months — sells about weekly.">
+    ⇄ 30 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="hl">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76310-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76310.html">76310 Iron Man Car &amp; Black Panther vs. R</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="23.7">₪23.70</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="116.84798495999999">₪117
+          <br><span class="soft" style="font-size:11px">of ₪185</span></td>
+        <td class="num" data-v="93.14798495999999"><b style="color:var(--ok)">₪93.15</b></td>
+        <td class="num" data-v="393.0294724050633">393%</td>
+        <td class="num" data-v="275.1206306835443"><b>275%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="2 BrickLink sales (2 units) in the last six months — a few sales in six months.">
+    ⇄ 2 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10782-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10782.html">10782 Hulk vs. Rhino Truck Showdown</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.0">₪12.00</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="47.40218783999999">₪47.40
+          <br><span class="soft" style="font-size:11px">of ₪75.24</span></td>
+        <td class="num" data-v="35.40218783999999"><b style="color:var(--ok)">₪35.40</b></td>
+        <td class="num" data-v="295.0182319999999">295%</td>
+        <td class="num" data-v="265.5164087999999"><b>266%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="17 BrickLink sales (21 units) in the last six months — sells about monthly.">
+    ⇄ 17 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76018-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76018.html">76018 Hulk Lab Smash</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="75.07">₪75.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="283.10212224">₪283
+          <br><span class="soft" style="font-size:11px">of ₪449</span></td>
+        <td class="num" data-v="208.03212224000004"><b style="color:var(--ok)">₪208</b></td>
+        <td class="num" data-v="277.1175199680299">277%</td>
+        <td class="num" data-v="249.40576797122694"><b>249%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (17 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76176-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76176.html">76176 Escape From The Ten Rings</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="25.47">₪25.47</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="87.96842207999998">₪87.97
+          <br><span class="soft" style="font-size:11px">of ₪140</span></td>
+        <td class="num" data-v="62.49842207999998"><b style="color:var(--ok)">₪62.50</b></td>
+        <td class="num" data-v="245.3805342756183">245%</td>
+        <td class="num" data-v="220.84248084805645"><b>221%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (11 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76214-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76214.html">76214 Black Panther: War on the Water</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="61.54">₪61.54</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="207.77553215999995">₪208
+          <br><span class="soft" style="font-size:11px">of ₪330</span></td>
+        <td class="num" data-v="146.23553215999996"><b style="color:var(--ok)">₪146</b></td>
+        <td class="num" data-v="237.6267990900227">238%</td>
+        <td class="num" data-v="213.86411918102044"><b>214%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (19 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76021-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76021.html">76021 The Milano Spaceship Rescue</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="138.67">₪139</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="440.85345695999996">₪441
+          <br><span class="soft" style="font-size:11px">of ₪700</span></td>
+        <td class="num" data-v="302.18345695999994"><b style="color:var(--ok)">₪302</b></td>
+        <td class="num" data-v="217.91552387682987">218%</td>
+        <td class="num" data-v="196.1239714891469"><b>196%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (11 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76153-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76153.html">76153 Avengers Helicarrier</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="104.0">₪104</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="329.26821984000003">₪329
+          <br><span class="soft" style="font-size:11px">of ₪523</span></td>
+        <td class="num" data-v="225.26821984000003"><b style="color:var(--ok)">₪225</b></td>
+        <td class="num" data-v="216.60405753846157">217%</td>
+        <td class="num" data-v="194.9436517846154"><b>195%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76059-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76059.html">76059 Spider-Man: Doc Ock&#39;s Tentacle Tra</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="69.33">₪69.33</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="217.13985215999998">₪217
+          <br><span class="soft" style="font-size:11px">of ₪345</span></td>
+        <td class="num" data-v="147.80985216"><b style="color:var(--ok)">₪148</b></td>
+        <td class="num" data-v="213.1975366508005">213%</td>
+        <td class="num" data-v="191.87778298572044"><b>192%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="18 BrickLink sales (20 units) in the last six months — sells about monthly.">
+    ⇄ 18 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76337-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76337.html">76337 Miles Morales Mech vs. Spider-Man </a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="15.74">₪15.74</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="58.7142864">₪58.71
+          <br><span class="soft" style="font-size:11px">of ₪93.20</span></td>
+        <td class="num" data-v="42.9742864"><b style="color:var(--ok)">₪42.97</b></td>
+        <td class="num" data-v="273.02596188055907">273%</td>
+        <td class="num" data-v="191.11817331639133"><b>191%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="3 BrickLink sales (3 units) in the last six months — a few sales in six months.">
+    ⇄ 3 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76154-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76154.html">76154 Deviant Ambush!</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="16.19">₪16.19</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="49.83691103999999">₪49.84
+          <br><span class="soft" style="font-size:11px">of ₪79.11</span></td>
+        <td class="num" data-v="33.64691103999999"><b style="color:var(--ok)">₪33.65</b></td>
+        <td class="num" data-v="207.8252689314391">208%</td>
+        <td class="num" data-v="187.0427420382952"><b>187%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="18 BrickLink sales (21 units) in the last six months — sells about monthly.">
+    ⇄ 18 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76336-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76336.html">76336 Spider-Man Car vs. Venomized Wolve</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="17.99">₪17.99</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="64.10813472">₪64.11
+          <br><span class="soft" style="font-size:11px">of ₪102</span></td>
+        <td class="num" data-v="46.11813472"><b style="color:var(--ok)">₪46.12</b></td>
+        <td class="num" data-v="256.3542785992218">256%</td>
+        <td class="num" data-v="179.44799501945525"><b>179%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10793-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10793.html">10793 Spidey vs. Green Goblin</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="17.33">₪17.33</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="49.424880959999996">₪49.42
+          <br><span class="soft" style="font-size:11px">of ₪78.45</span></td>
+        <td class="num" data-v="32.09488096"><b style="color:var(--ok)">₪32.09</b></td>
+        <td class="num" data-v="185.19838984420082">185%</td>
+        <td class="num" data-v="166.67855085978073"><b>167%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (13 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76211-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76211.html">76211 Shuri&#39;s Sunbird</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="36.02">₪36.02</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="101.07847007999999">₪101
+          <br><span class="soft" style="font-size:11px">of ₪160</span></td>
+        <td class="num" data-v="65.05847007999998"><b style="color:var(--ok)">₪65.06</b></td>
+        <td class="num" data-v="180.617629317046">181%</td>
+        <td class="num" data-v="162.5558663853414"><b>163%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="14 BrickLink sales (16 units) in the last six months — sells about monthly.">
+    ⇄ 14 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76349-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76349.html">76349 Spider-Man Prison Transport Chase</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="60.51">₪60.51</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="166.32905184">₪166
+          <br><span class="soft" style="font-size:11px">of ₪264</span></td>
+        <td class="num" data-v="105.81905184000001"><b style="color:var(--ok)">₪106</b></td>
+        <td class="num" data-v="174.87861814576107">175%</td>
+        <td class="num" data-v="157.39075633118497"><b>157%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (13 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76255-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76255.html">76255 The New Guardians&#39; Ship</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="105.14">₪105</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="265.44101471999994">₪265
+          <br><span class="soft" style="font-size:11px">of ₪421</span></td>
+        <td class="num" data-v="160.30101471999996"><b style="color:var(--ok)">₪160</b></td>
+        <td class="num" data-v="152.46434727030623">152%</td>
+        <td class="num" data-v="152.46434727030623"><b>152%</b></td>
+        <td class="num" data-v="28.680270108334526">29%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="39 BrickLink sales (42 units) in the last six months — sells about weekly.">
+    ⇄ 39 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76266-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76266.html">76266 Endgame Final Battle</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="87.12">₪87.12</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="233.02173887999996">₪233
+          <br><span class="soft" style="font-size:11px">of ₪370</span></td>
+        <td class="num" data-v="145.90173887999995"><b style="color:var(--ok)">₪146</b></td>
+        <td class="num" data-v="167.47215206611563">167%</td>
+        <td class="num" data-v="150.72493685950406"><b>151%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (20 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76257-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76257.html">76257 Wolverine Construction Figure</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="24.03">₪24.03</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="63.90211968">₪63.90
+          <br><span class="soft" style="font-size:11px">of ₪101</span></td>
+        <td class="num" data-v="39.87211968"><b style="color:var(--ok)">₪39.87</b></td>
+        <td class="num" data-v="165.92642397003743">166%</td>
+        <td class="num" data-v="149.3337815730337"><b>149%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="8 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 8 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40334-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/40334.html">40334 Avengers Tower</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="43.67">₪43.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="106.5659616">₪107
+          <br><span class="soft" style="font-size:11px">of ₪169</span></td>
+        <td class="num" data-v="62.89596159999999"><b style="color:var(--ok)">₪62.90</b></td>
+        <td class="num" data-v="144.02555896496446">144%</td>
+        <td class="num" data-v="144.02555896496446"><b>144%</b></td>
+        <td class="num" data-v="36.88391622414638">37%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="41 BrickLink sales (45 units) in the last six months — sells about weekly.">
+    ⇄ 41 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30450-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30450.html">30450 Royal Talon Fighter</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="6.96">₪6.96</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="17.960765759999997">₪17.96
+          <br><span class="soft" style="font-size:11px">of ₪28.51</span></td>
+        <td class="num" data-v="11.000765759999997"><b style="color:var(--ok)">₪11.00</b></td>
+        <td class="num" data-v="158.05697931034476">158%</td>
+        <td class="num" data-v="142.25128137931029"><b>142%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="7 BrickLink sales (8 units) in the last six months — sells about monthly.">
+    ⇄ 7 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76294-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76294.html">76294 The X-Mansion</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="510.67">₪511</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="1218.05455968">₪1,218
+          <br><span class="soft" style="font-size:11px">of ₪1,933</span></td>
+        <td class="num" data-v="707.3845596799999"><b style="color:var(--ok)">₪707</b></td>
+        <td class="num" data-v="138.52087643292143">139%</td>
+        <td class="num" data-v="138.52087643292143"><b>139%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="46 BrickLink sales (48 units) in the last six months — sells about weekly.">
+    ⇄ 46 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76325-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76325.html">76325 Avengers: Age of Ultron Quinjet</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="172.36">₪172</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="437.61340223999997">₪438
+          <br><span class="soft" style="font-size:11px">of ₪695</span></td>
+        <td class="num" data-v="265.25340223999996"><b style="color:var(--ok)">₪265</b></td>
+        <td class="num" data-v="153.89498853562307">154%</td>
+        <td class="num" data-v="138.50548968206076"><b>139%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10789-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10789.html">10789 Spider-Man&#39;s Car and Doc Ock</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="9.0">₪9.00</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="21.406835519999998">₪21.41
+          <br><span class="soft" style="font-size:11px">of ₪33.98</span></td>
+        <td class="num" data-v="12.406835519999998"><b style="color:var(--ok)">₪12.41</b></td>
+        <td class="num" data-v="137.853728">138%</td>
+        <td class="num" data-v="137.853728"><b>138%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="27 BrickLink sales (36 units) in the last six months — sells about weekly.">
+    ⇄ 27 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76031-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76031.html">76031 The Hulk Buster Smash</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="60.63">₪60.63</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="148.29337152">₪148
+          <br><span class="soft" style="font-size:11px">of ₪235</span></td>
+        <td class="num" data-v="87.66337152"><b style="color:var(--ok)">₪87.66</b></td>
+        <td class="num" data-v="144.58745096486888">145%</td>
+        <td class="num" data-v="130.12870586838199"><b>130%</b></td>
+        <td class="num" data-v="42.262441913357875">42%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="17 BrickLink sales (21 units) in the last six months — sells about monthly.">
+    ⇄ 17 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76127-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76127.html">76127 Captain Marvel and The Skrull Atta</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="45.26">₪45.26</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="110.42406143999999">₪110
+          <br><span class="soft" style="font-size:11px">of ₪175</span></td>
+        <td class="num" data-v="65.16406143999998"><b style="color:var(--ok)">₪65.16</b></td>
+        <td class="num" data-v="143.97715740167916">144%</td>
+        <td class="num" data-v="129.57944166151125"><b>130%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (14 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76155-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76155.html">76155 In Arishem&#39;s Shadow</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="51.97">₪51.97</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="118.85194943999998">₪119
+          <br><span class="soft" style="font-size:11px">of ₪189</span></td>
+        <td class="num" data-v="66.88194943999999"><b style="color:var(--ok)">₪66.88</b></td>
+        <td class="num" data-v="128.69337971906867">129%</td>
+        <td class="num" data-v="128.69337971906867"><b>129%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="30 BrickLink sales (31 units) in the last six months — sells about weekly.">
+    ⇄ 30 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/6868-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/6868.html">6868 Hulk&#39;s Helicarrier Breakout</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="105.14">₪105</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="254.20383071999998">₪254
+          <br><span class="soft" style="font-size:11px">of ₪403</span></td>
+        <td class="num" data-v="149.06383072"><b style="color:var(--ok)">₪149</b></td>
+        <td class="num" data-v="141.77651770972037">142%</td>
+        <td class="num" data-v="127.59886593874833"><b>128%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/11211-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/11211.html">11211 Loki vs. Team Iron Man</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="86.49242688">₪86.49<br><span class="soft" style="font-size:11px" title="₪10.32 listed in USD, plus ₪76.18 VAT and shipping">incl. import</span></td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay</td>
+        <td class="num" data-v="231.5796336">₪232
+          <br><span class="soft" style="font-size:11px">of ₪368</span></td>
+        <td class="num" data-v="145.08720671999998"><b style="color:var(--ok)">₪145</b></td>
+        <td class="num" data-v="167.74556103194408">168%</td>
+        <td class="num" data-v="125.80917077395806"><b>126%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76315-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76315.html">76315 Iron Man&#39;s Hall of Armor</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="67.27">₪67.27</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="157.02091776">₪157
+          <br><span class="soft" style="font-size:11px">of ₪249</span></td>
+        <td class="num" data-v="89.75091776000001"><b style="color:var(--ok)">₪89.75</b></td>
+        <td class="num" data-v="133.41893527575445">133%</td>
+        <td class="num" data-v="120.07704174817901"><b>120%</b></td>
+        <td class="num" data-v="51.61700820261464">52%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="8 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 8 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76334-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76334.html">76334 Epic Battle: Spider-Man vs. Sandma</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="42.03">₪42.03</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="98.06315903999997">₪98.06
+          <br><span class="soft" style="font-size:11px">of ₪156</span></td>
+        <td class="num" data-v="56.03315903999997"><b style="color:var(--ok)">₪56.03</b></td>
+        <td class="num" data-v="133.3170569593147">133%</td>
+        <td class="num" data-v="119.98535126338324"><b>120%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="8 BrickLink sales (10 units) in the last six months — sells about monthly.">
+    ⇄ 8 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76213-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76213.html">76213 King Namor&#39;s Throne Room</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="34.67">₪34.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="79.72782047999999">₪79.73
+          <br><span class="soft" style="font-size:11px">of ₪127</span></td>
+        <td class="num" data-v="45.05782047999999"><b style="color:var(--ok)">₪45.06</b></td>
+        <td class="num" data-v="129.96198580905678">130%</td>
+        <td class="num" data-v="116.96578722815111"><b>117%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="24 BrickLink sales (34 units) in the last six months — sells about monthly.">
+    ⇄ 24 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76065-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76065.html">76065 Mighty Micros: Captain America vs.</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="25.86">₪25.86</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="58.58318592">₪58.58
+          <br><span class="soft" style="font-size:11px">of ₪92.99</span></td>
+        <td class="num" data-v="32.72318592"><b style="color:var(--ok)">₪32.72</b></td>
+        <td class="num" data-v="126.53977540603248">127%</td>
+        <td class="num" data-v="113.88579786542923"><b>114%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="7 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 7 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76344-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76344.html">76344 Iron Man Mark 3 Collectors’ Editio</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="297.25">₪297</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="672.18961824">₪672
+          <br><span class="soft" style="font-size:11px">of ₪1,067</span></td>
+        <td class="num" data-v="374.93961823999996"><b style="color:var(--ok)">₪375</b></td>
+        <td class="num" data-v="126.13612051808241">126%</td>
+        <td class="num" data-v="113.52250846627418"><b>114%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (16 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76091-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76091.html">76091 Mighty Micros: Thor vs. Loki</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="14.99">₪14.99</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="38.861928">₪38.86
+          <br><span class="soft" style="font-size:11px">of ₪61.69</span></td>
+        <td class="num" data-v="23.871927999999997"><b style="color:var(--ok)">₪23.87</b></td>
+        <td class="num" data-v="159.25235490326884">159%</td>
+        <td class="num" data-v="111.47664843228819"><b>111%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="5 BrickLink sales (9 units) in the last six months — a few sales in six months.">
+    ⇄ 5 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76008-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76008.html">76008 Iron Man vs. The Mandarin: Ultimat</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="33.71">₪33.71</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="75.04566048">₪75.05
+          <br><span class="soft" style="font-size:11px">of ₪119</span></td>
+        <td class="num" data-v="41.335660479999994"><b style="color:var(--ok)">₪41.34</b></td>
+        <td class="num" data-v="122.62136007119547">123%</td>
+        <td class="num" data-v="110.35922406407592"><b>110%</b></td>
+        <td class="num" data-v="40.21991385903518">40%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (10 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76156-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76156.html">76156 Rise of the Domo</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="108.15">₪108</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="236.22433632">₪236
+          <br><span class="soft" style="font-size:11px">of ₪375</span></td>
+        <td class="num" data-v="128.07433632"><b style="color:var(--ok)">₪128</b></td>
+        <td class="num" data-v="118.42287223300968">118%</td>
+        <td class="num" data-v="106.58058500970871"><b>107%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="13 BrickLink sales (13 units) in the last six months — sells about monthly.">
+    ⇄ 13 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76342-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76342.html">76342 Spider-Man vs. Mysterio: The Daily</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="165.19">₪165</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="355.76924543999996">₪356
+          <br><span class="soft" style="font-size:11px">of ₪565</span></td>
+        <td class="num" data-v="190.57924543999997"><b style="color:var(--ok)">₪191</b></td>
+        <td class="num" data-v="115.36972300986741">115%</td>
+        <td class="num" data-v="103.83275070888068"><b>104%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="24 BrickLink sales (24 units) in the last six months — sells about monthly.">
+    ⇄ 24 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76287-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76287.html">76287 Iron Man with Bike and The Hulk</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="14.99">₪14.99</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="32.23198944">₪32.23
+          <br><span class="soft" style="font-size:11px">of ₪51.16</span></td>
+        <td class="num" data-v="17.241989439999998"><b style="color:var(--ok)">₪17.24</b></td>
+        <td class="num" data-v="115.02327845230151">115%</td>
+        <td class="num" data-v="103.52095060707136"><b>104%</b></td>
+        <td class="num" data-v="52.324105005663604">52%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="10 BrickLink sales (14 units) in the last six months — sells about monthly.">
+    ⇄ 10 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76354-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76354.html">76354 S.H.I.E.L.D. Helicarrier</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="524.35">₪524</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="1608.45306048">₪1,608
+          <br><span class="soft" style="font-size:11px">of ₪2,553</span></td>
+        <td class="num" data-v="1084.1030604799998"><b style="color:var(--ok)">₪1,084</b></td>
+        <td class="num" data-v="206.75179946219123">207%</td>
+        <td class="num" data-v="103.37589973109561"><b>103%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--down)"
+        title="1 BrickLink sale (1 unit) in the last six months — barely trades.">
+    ⇄ 1 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76245-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76245.html">76245 Ghost Rider Mech &amp; Bike</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="33.04">₪33.04</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="70.71934463999999">₪70.72
+          <br><span class="soft" style="font-size:11px">of ₪112</span></td>
+        <td class="num" data-v="37.67934463999999"><b style="color:var(--ok)">₪37.68</b></td>
+        <td class="num" data-v="114.04159999999996">114%</td>
+        <td class="num" data-v="102.63743999999997"><b>103%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="18 BrickLink sales (20 units) in the last six months — sells about monthly.">
+    ⇄ 18 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76327-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76327.html">76327 Iron Man MK4 Bust</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="75.44">₪75.44</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="183.50321472">₪184
+          <br><span class="soft" style="font-size:11px">of ₪291</span></td>
+        <td class="num" data-v="108.06321471999999"><b style="color:var(--ok)">₪108</b></td>
+        <td class="num" data-v="143.2439219512195">143%</td>
+        <td class="num" data-v="100.27074536585364"><b>100%</b></td>
+        <td class="num" data-v="29.261013264498303">29%</td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (4 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/682501-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/682501.html">682501 Venom</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="6.93">₪6.93</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="14.64579648">₪14.65
+          <br><span class="soft" style="font-size:11px">of ₪23.25</span></td>
+        <td class="num" data-v="7.71579648"><b style="color:var(--ok)">₪7.72</b></td>
+        <td class="num" data-v="111.33905454545454">111%</td>
+        <td class="num" data-v="100.20514909090909"><b>100%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="23 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 23 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76207-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76207.html">76207 Attack on New Asgard</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="22.53">₪22.53</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="44.986193279999995">₪44.99
+          <br><span class="soft" style="font-size:11px">of ₪71.41</span></td>
+        <td class="num" data-v="22.456193279999994"><b style="color:var(--ok)">₪22.46</b></td>
+        <td class="num" data-v="99.67240692410117">100%</td>
+        <td class="num" data-v="99.67240692410117"><b>100%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="30 BrickLink sales (32 units) in the last six months — sells about weekly.">
+    ⇄ 30 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10792-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10792.html">10792 Drill Spinner Vehicle</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="13.0">₪13.00</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="26.91305568">₪26.91
+          <br><span class="soft" style="font-size:11px">of ₪42.72</span></td>
+        <td class="num" data-v="13.91305568"><b style="color:var(--ok)">₪13.91</b></td>
+        <td class="num" data-v="107.02350523076922">107%</td>
+        <td class="num" data-v="96.3211547076923"><b>96%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76263-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76263.html">76263 Iron Man Hulkbuster vs. Thanos</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="15.99">₪15.99</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="33.09350688000001">₪33.09
+          <br><span class="soft" style="font-size:11px">of ₪52.53</span></td>
+        <td class="num" data-v="17.103506880000005"><b style="color:var(--ok)">₪17.10</b></td>
+        <td class="num" data-v="106.96377035647282">107%</td>
+        <td class="num" data-v="96.26739332082555"><b>96%</b></td>
+        <td class="num" data-v="68.3427117047802">68%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="10 BrickLink sales (10 units) in the last six months — sells about monthly.">
+    ⇄ 10 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76049-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76049.html">76049 Avenjet Space Mission</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="187.87085247999997">₪188<br><span class="soft" style="font-size:11px" title="₪96.23 listed in USD, plus ₪91.64 VAT and shipping">incl. import</span></td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay</td>
+        <td class="num" data-v="386.27819999999997">₪386
+          <br><span class="soft" style="font-size:11px">of ₪613</span></td>
+        <td class="num" data-v="198.40734752"><b style="color:var(--ok)">₪198</b></td>
+        <td class="num" data-v="105.60837133643268">106%</td>
+        <td class="num" data-v="95.04753420278942"><b>95%</b></td>
+        <td class="num" data-v="51.00955736047232">51%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (18 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76204-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76204.html">76204 Black Panther Mech Armor</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="14.27">₪14.27</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="27.812030399999998">₪27.81
+          <br><span class="soft" style="font-size:11px">of ₪44.15</span></td>
+        <td class="num" data-v="13.542030399999998"><b style="color:var(--ok)">₪13.54</b></td>
+        <td class="num" data-v="94.89860126138751">95%</td>
+        <td class="num" data-v="94.89860126138751"><b>95%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="29 BrickLink sales (36 units) in the last six months — sells about weekly.">
+    ⇄ 29 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76275-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76275.html">76275 Motorcycle Chase: Spider-Man vs. D</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.02">₪12.02</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="24.66561888">₪24.67
+          <br><span class="soft" style="font-size:11px">of ₪39.15</span></td>
+        <td class="num" data-v="12.64561888"><b style="color:var(--ok)">₪12.65</b></td>
+        <td class="num" data-v="105.20481597337772">105%</td>
+        <td class="num" data-v="94.68433437603996"><b>95%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="25 BrickLink sales (31 units) in the last six months — sells about monthly.">
+    ⇄ 25 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76174-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76174.html">76174 Spider-Man&#39;s Monster Truck vs. Mys</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="101.35">₪101</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="207.36350208">₪207
+          <br><span class="soft" style="font-size:11px">of ₪329</span></td>
+        <td class="num" data-v="106.01350208"><b style="color:var(--ok)">₪106</b></td>
+        <td class="num" data-v="104.6013834040454">105%</td>
+        <td class="num" data-v="94.14124506364085"><b>94%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (19 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10794-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10794.html">10794 Team Spidey Web Spinner Headquarte</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="63.73">₪63.73</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="129.9767616">₪130
+          <br><span class="soft" style="font-size:11px">of ₪206</span></td>
+        <td class="num" data-v="66.24676160000001"><b style="color:var(--ok)">₪66.25</b></td>
+        <td class="num" data-v="103.94910026675038">104%</td>
+        <td class="num" data-v="93.55419024007534"><b>94%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242402-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242402.html">242402 Star-Lord</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="6.43">₪6.43</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="12.342173759999998">₪12.34
+          <br><span class="soft" style="font-size:11px">of ₪19.59</span></td>
+        <td class="num" data-v="5.912173759999998"><b style="color:var(--ok)">₪5.91</b></td>
+        <td class="num" data-v="91.94671477449454">92%</td>
+        <td class="num" data-v="91.94671477449454"><b>92%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="31 BrickLink sales (40 units) in the last six months — sells about weekly.">
+    ⇄ 31 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76309-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76309.html">76309 Spider-Man vs. Venom Muscle Car</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="36.05">₪36.05</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="82.42474463999999">₪82.42
+          <br><span class="soft" style="font-size:11px">of ₪131</span></td>
+        <td class="num" data-v="46.37474463999999"><b style="color:var(--ok)">₪46.37</b></td>
+        <td class="num" data-v="128.64006834951454">129%</td>
+        <td class="num" data-v="90.04804784466018"><b>90%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76185-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76185.html">76185 Spider-Man at the Sanctum Workshop</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="54.07">₪54.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="107.27764991999999">₪107
+          <br><span class="soft" style="font-size:11px">of ₪170</span></td>
+        <td class="num" data-v="53.20764991999999"><b style="color:var(--ok)">₪53.21</b></td>
+        <td class="num" data-v="98.40512284076195">98%</td>
+        <td class="num" data-v="88.56461055668575"><b>89%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76192-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76192.html">76192 Avengers: Endgame Final Battle</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="114.12">₪114</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="214.25564160000002">₪214
+          <br><span class="soft" style="font-size:11px">of ₪340</span></td>
+        <td class="num" data-v="100.13564160000001"><b style="color:var(--ok)">₪100</b></td>
+        <td class="num" data-v="87.74591798107257">88%</td>
+        <td class="num" data-v="87.74591798107257"><b>88%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="29 BrickLink sales (32 units) in the last six months — sells about weekly.">
+    ⇄ 29 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242217-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242217.html">242217 Rescue</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="8.74">₪8.74</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="16.387559999999997">₪16.39
+          <br><span class="soft" style="font-size:11px">of ₪26.01</span></td>
+        <td class="num" data-v="7.647559999999997"><b style="color:var(--ok)">₪7.65</b></td>
+        <td class="num" data-v="87.5006864988558">88%</td>
+        <td class="num" data-v="87.5006864988558"><b>88%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="33 BrickLink sales (43 units) in the last six months — sells about weekly.">
+    ⇄ 33 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30707-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30707.html">30707 Venom&#39;s Museum Heist</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="8.58">₪8.58</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="16.06917312">₪16.07
+          <br><span class="soft" style="font-size:11px">of ₪25.51</span></td>
+        <td class="num" data-v="7.4891731199999985"><b style="color:var(--ok)">₪7.49</b></td>
+        <td class="num" data-v="87.28639999999999">87%</td>
+        <td class="num" data-v="87.28639999999999"><b>87%</b></td>
+        <td class="num" data-v="55.78942944389662">56%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="70 BrickLink sales (87 units) in the last six months — sells about weekly.">
+    ⇄ 70 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10781-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10781.html">10781 Spider-Man&#39;s Techno Trike</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.15">₪12.15</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="23.82283008">₪23.82
+          <br><span class="soft" style="font-size:11px">of ₪37.81</span></td>
+        <td class="num" data-v="11.672830079999999"><b style="color:var(--ok)">₪11.67</b></td>
+        <td class="num" data-v="96.07267555555555">96%</td>
+        <td class="num" data-v="86.465408"><b>86%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (22 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30725-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30725.html">30725 Spider-Man vs. Anti-Venom Heist</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="9.81">₪9.81</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="18.22296672">₪18.22
+          <br><span class="soft" style="font-size:11px">of ₪28.93</span></td>
+        <td class="num" data-v="8.412966719999998"><b style="color:var(--ok)">₪8.41</b></td>
+        <td class="num" data-v="85.75908990825685">86%</td>
+        <td class="num" data-v="85.75908990825685"><b>86%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="70 BrickLink sales (96 units) in the last six months — sells about weekly.">
+    ⇄ 70 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76129-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76129.html">76129 Hydro-Man Attack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="77.96">₪77.96</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="142.93698048">₪143
+          <br><span class="soft" style="font-size:11px">of ₪227</span></td>
+        <td class="num" data-v="64.97698048"><b style="color:var(--ok)">₪64.98</b></td>
+        <td class="num" data-v="83.34656295536172">83%</td>
+        <td class="num" data-v="83.34656295536172"><b>83%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="35 BrickLink sales (38 units) in the last six months — sells about weekly.">
+    ⇄ 35 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76317-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76317.html">76317 Peter Parker’s Apartment</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="87.19">₪87.19</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="167.58387072">₪168
+          <br><span class="soft" style="font-size:11px">of ₪266</span></td>
+        <td class="num" data-v="80.39387072"><b style="color:var(--ok)">₪80.39</b></td>
+        <td class="num" data-v="92.2053798830141">92%</td>
+        <td class="num" data-v="82.9848418947127"><b>83%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76212-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76212.html">76212 Shuri&#39;s Lab</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="11.99">₪11.99</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="21.59412192">₪21.59
+          <br><span class="soft" style="font-size:11px">of ₪34.28</span></td>
+        <td class="num" data-v="9.604121919999999"><b style="color:var(--ok)">₪9.60</b></td>
+        <td class="num" data-v="80.1011002502085">80%</td>
+        <td class="num" data-v="80.1011002502085"><b>80%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="28 BrickLink sales (28 units) in the last six months — sells about weekly.">
+    ⇄ 28 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76163-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76163.html">76163 Venom Crawler</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="56.93">₪56.93</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="107.07163487999999">₪107
+          <br><span class="soft" style="font-size:11px">of ₪170</span></td>
+        <td class="num" data-v="50.14163487999999"><b style="color:var(--ok)">₪50.14</b></td>
+        <td class="num" data-v="88.0759439311435">88%</td>
+        <td class="num" data-v="79.26834953802916"><b>79%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="7 BrickLink sales (7 units) in the last six months — sells about monthly.">
+    ⇄ 7 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76177-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76177.html">76177 Battle at the Ancient Village</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="57.02">₪57.02</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="106.69706208">₪107
+          <br><span class="soft" style="font-size:11px">of ₪169</span></td>
+        <td class="num" data-v="49.67706207999999"><b style="color:var(--ok)">₪49.68</b></td>
+        <td class="num" data-v="87.12217130831286">87%</td>
+        <td class="num" data-v="78.40995417748158"><b>78%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="20 BrickLink sales (22 units) in the last six months — sells about monthly.">
+    ⇄ 20 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76084-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76084.html">76084 The Ultimate Battle for Asgard</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="145.49537216">₪145<br><span class="soft" style="font-size:11px" title="₪60.32 listed in USD, plus ₪85.18 VAT and shipping">incl. import</span></td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay</td>
+        <td class="num" data-v="268.51251167999993">₪269
+          <br><span class="soft" style="font-size:11px">of ₪426</span></td>
+        <td class="num" data-v="123.01713951999994"><b style="color:var(--ok)">₪123</b></td>
+        <td class="num" data-v="84.55055146683227">85%</td>
+        <td class="num" data-v="76.09549632014905"><b>76%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="22 BrickLink sales (22 units) in the last six months — sells about monthly.">
+    ⇄ 22 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76350-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76350.html">76350 Spider-Man vs. Hulk Epic Clash</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="195.26">₪195</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="358.87819967999997">₪359
+          <br><span class="soft" style="font-size:11px">of ₪570</span></td>
+        <td class="num" data-v="163.61819967999998"><b style="color:var(--ok)">₪164</b></td>
+        <td class="num" data-v="83.79504234354194">84%</td>
+        <td class="num" data-v="75.41553810918775"><b>75%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76292-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76292.html">76292 Captain America vs. Red Hulk Battl</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="63.09">₪63.09</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="114.67546271999998">₪115
+          <br><span class="soft" style="font-size:11px">of ₪182</span></td>
+        <td class="num" data-v="51.58546271999998"><b style="color:var(--ok)">₪51.59</b></td>
+        <td class="num" data-v="81.76487988587728">82%</td>
+        <td class="num" data-v="73.58839189728955"><b>74%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="22 BrickLink sales (24 units) in the last six months — sells about monthly.">
+    ⇄ 22 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40774-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/40774.html">40774 Classic Animation Scenes</a>
+          
+          
+        </td>
+        <td>Disney</td>
+        <td class="num" data-v="52.1">₪52.10</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="90.2720448">₪90.27
+          <br><span class="soft" style="font-size:11px">of ₪143</span></td>
+        <td class="num" data-v="38.1720448"><b style="color:var(--ok)">₪38.17</b></td>
+        <td class="num" data-v="73.26688061420346">73%</td>
+        <td class="num" data-v="73.26688061420346"><b>73%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="128 BrickLink sales (147 units) in the last six months — sells about weekly.">
+    ⇄ 128 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10783-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/10783.html">10783 Spider-Man at Doc Ock&#39;s Lab</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="34.67">₪34.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="70.26985728">₪70.27
+          <br><span class="soft" style="font-size:11px">of ₪112</span></td>
+        <td class="num" data-v="35.599857279999995"><b style="color:var(--ok)">₪35.60</b></td>
+        <td class="num" data-v="102.68202272858377">103%</td>
+        <td class="num" data-v="71.87741591000864"><b>72%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="3 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 3 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76319-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76319.html">76319 Captain America vs. Thanos</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="34.67">₪34.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="67.87259136">₪67.87
+          <br><span class="soft" style="font-size:11px">of ₪108</span></td>
+        <td class="num" data-v="33.20259136"><b style="color:var(--ok)">₪33.20</b></td>
+        <td class="num" data-v="95.76749743293914">96%</td>
+        <td class="num" data-v="71.82562307470435"><b>72%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/11206-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/11206.html">11206 Spidey on his Motorcycle vs. Rhino</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="19.5">₪19.50</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="35.041285439999996">₪35.04
+          <br><span class="soft" style="font-size:11px">of ₪55.62</span></td>
+        <td class="num" data-v="15.541285439999996"><b style="color:var(--ok)">₪15.54</b></td>
+        <td class="num" data-v="79.69889969230766">80%</td>
+        <td class="num" data-v="71.7290097230769"><b>72%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76194-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76194.html">76194 Tony Stark&#39;s Sakaarian Iron Man</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="51.07">₪51.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="91.69542143999999">₪91.70
+          <br><span class="soft" style="font-size:11px">of ₪146</span></td>
+        <td class="num" data-v="40.62542143999999"><b style="color:var(--ok)">₪40.63</b></td>
+        <td class="num" data-v="79.54850487566084">80%</td>
+        <td class="num" data-v="71.59365438809476"><b>72%</b></td>
+        <td class="num" data-v="33.5421327662748">34%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76014-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76014.html">76014 Spider-Trike vs. Electro</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="27.01">₪27.01</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="47.81421792">₪47.81
+          <br><span class="soft" style="font-size:11px">of ₪75.90</span></td>
+        <td class="num" data-v="20.804217919999996"><b style="color:var(--ok)">₪20.80</b></td>
+        <td class="num" data-v="77.02413150684929">77%</td>
+        <td class="num" data-v="69.32171835616435"><b>69%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (14 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76316-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76316.html">76316 Fantastic Four vs. Galactus Constr</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="89.18">₪89.18</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="156.51524447999998">₪157
+          <br><span class="soft" style="font-size:11px">of ₪248</span></td>
+        <td class="num" data-v="67.33524447999997"><b style="color:var(--ok)">₪67.34</b></td>
+        <td class="num" data-v="75.50487158555727">76%</td>
+        <td class="num" data-v="67.95438442700154"><b>68%</b></td>
+        <td class="num" data-v="52.737738278617044">53%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (19 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76050-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76050.html">76050 Crossbones&#39; Hazard Heist</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="48.03">₪48.03</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="83.11770432">₪83.12
+          <br><span class="soft" style="font-size:11px">of ₪132</span></td>
+        <td class="num" data-v="35.08770432"><b style="color:var(--ok)">₪35.09</b></td>
+        <td class="num" data-v="73.05372542161149">73%</td>
+        <td class="num" data-v="65.74835287945034"><b>66%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (20 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76099-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76099.html">76099 Rhino Face-Off by the Mine</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="60.35">₪60.35</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="104.05632384">₪104
+          <br><span class="soft" style="font-size:11px">of ₪165</span></td>
+        <td class="num" data-v="43.70632384"><b style="color:var(--ok)">₪43.71</b></td>
+        <td class="num" data-v="72.42141481358742">72%</td>
+        <td class="num" data-v="65.17927333222868"><b>65%</b></td>
+        <td class="num" data-v="-1"><span class="soft" title="3 figures, none priced yet">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="10 BrickLink sales (11 units) in the last six months — sells about monthly.">
+    ⇄ 10 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76277-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76277.html">76277 War Machine Mech Armor</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="20.28">₪20.28</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="33.37443647999999">₪33.37
+          <br><span class="soft" style="font-size:11px">of ₪52.98</span></td>
+        <td class="num" data-v="13.094436479999992"><b style="color:var(--ok)">₪13.09</b></td>
+        <td class="num" data-v="64.56822721893487">65%</td>
+        <td class="num" data-v="64.56822721893487"><b>65%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="27 BrickLink sales (28 units) in the last six months — sells about weekly.">
+    ⇄ 27 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76103-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76103.html">76103 Corvus Glaive Thresher Attack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="129.32">₪129</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="221.84074079999996">₪222
+          <br><span class="soft" style="font-size:11px">of ₪352</span></td>
+        <td class="num" data-v="92.52074079999997"><b style="color:var(--ok)">₪92.52</b></td>
+        <td class="num" data-v="71.5440309310238">72%</td>
+        <td class="num" data-v="64.38962783792142"><b>64%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (10 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76189-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76189.html">76189 Captain America and Hydra Face-Off</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.02">₪12.02</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="20.470403519999998">₪20.47
+          <br><span class="soft" style="font-size:11px">of ₪32.49</span></td>
+        <td class="num" data-v="8.450403519999998"><b style="color:var(--ok)">₪8.45</b></td>
+        <td class="num" data-v="70.30285790349417">70%</td>
+        <td class="num" data-v="63.272572113144754"><b>63%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="20 BrickLink sales (31 units) in the last six months — sells about monthly.">
+    ⇄ 20 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76280-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76280.html">76280 Spider-Man vs. Sandman: Final Batt</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="72.83">₪72.83</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="118.72084896">₪119
+          <br><span class="soft" style="font-size:11px">of ₪188</span></td>
+        <td class="num" data-v="45.89084896"><b style="color:var(--ok)">₪45.89</b></td>
+        <td class="num" data-v="63.010914403405195">63%</td>
+        <td class="num" data-v="63.010914403405195"><b>63%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="57 BrickLink sales (58 units) in the last six months — sells about weekly.">
+    ⇄ 57 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76254-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76254.html">76254 Baby Rocket&#39;s Ship</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="40.55">₪40.55</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="68.84648064">₪68.85
+          <br><span class="soft" style="font-size:11px">of ₪109</span></td>
+        <td class="num" data-v="28.29648064"><b style="color:var(--ok)">₪28.30</b></td>
+        <td class="num" data-v="69.7817031812577">70%</td>
+        <td class="num" data-v="62.80353286313193"><b>63%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76195-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76195.html">76195 Spider-Man&#39;s Drone Duel</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="37.07">₪37.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="59.98783392">₪59.99
+          <br><span class="soft" style="font-size:11px">of ₪95.22</span></td>
+        <td class="num" data-v="22.91783392"><b style="color:var(--ok)">₪22.92</b></td>
+        <td class="num" data-v="61.82312899919072">62%</td>
+        <td class="num" data-v="61.82312899919072"><b>62%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="53 BrickLink sales (58 units) in the last six months — sells about weekly.">
+    ⇄ 53 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76216-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76216.html">76216 Iron Man Armoury</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="121.33">₪121</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="190.45154016">₪190
+          <br><span class="soft" style="font-size:11px">of ₪302</span></td>
+        <td class="num" data-v="69.12154016000001"><b style="color:var(--ok)">₪69.12</b></td>
+        <td class="num" data-v="56.96986743591857">57%</td>
+        <td class="num" data-v="56.96986743591857"><b>57%</b></td>
+        <td class="num" data-v="40.87937537002484">41%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="36 BrickLink sales (36 units) in the last six months — sells about weekly.">
+    ⇄ 36 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76145-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76145.html">76145 Eternals&#39; Aerial Assault</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="16.22">₪16.22</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="26.48229696">₪26.48
+          <br><span class="soft" style="font-size:11px">of ₪42.04</span></td>
+        <td class="num" data-v="10.26229696"><b style="color:var(--ok)">₪10.26</b></td>
+        <td class="num" data-v="63.26940172626387">63%</td>
+        <td class="num" data-v="56.942461553637486"><b>57%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="22 BrickLink sales (27 units) in the last six months — sells about monthly.">
+    ⇄ 22 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31166-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/31166.html">31166 Beautiful Horse</a>
+          
+          
+        </td>
+        <td>Creator</td>
+        <td class="num" data-v="106.38">₪106</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="187.0991136">₪187
+          <br><span class="soft" style="font-size:11px">of ₪297</span></td>
+        <td class="num" data-v="80.71911360000001"><b style="color:var(--ok)">₪80.72</b></td>
+        <td class="num" data-v="75.8780913705584">76%</td>
+        <td class="num" data-v="56.908568527918796"><b>57%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242107-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242107.html">242107 War Machine</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="13.87">₪13.87</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="21.74395104">₪21.74
+          <br><span class="soft" style="font-size:11px">of ₪34.51</span></td>
+        <td class="num" data-v="7.87395104"><b style="color:var(--ok)">₪7.87</b></td>
+        <td class="num" data-v="56.76965421773612">57%</td>
+        <td class="num" data-v="56.76965421773612"><b>57%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="28 BrickLink sales (32 units) in the last six months — sells about weekly.">
+    ⇄ 28 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40525-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/40525.html">40525 Endgame Battle Accessory Pack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="26.22">₪26.22</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="40.8284352">₪40.83
+          <br><span class="soft" style="font-size:11px">of ₪64.81</span></td>
+        <td class="num" data-v="14.608435200000002"><b style="color:var(--ok)">₪14.61</b></td>
+        <td class="num" data-v="55.714855835240286">56%</td>
+        <td class="num" data-v="55.714855835240286"><b>56%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="52 BrickLink sales (58 units) in the last six months — sells about weekly.">
+    ⇄ 52 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76152-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76152.html">76152 Avengers Wrath of Loki</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="86.67">₪86.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="152.69460191999997">₪153
+          <br><span class="soft" style="font-size:11px">of ₪242</span></td>
+        <td class="num" data-v="66.02460191999997"><b style="color:var(--ok)">₪66.02</b></td>
+        <td class="num" data-v="76.17930301142259">76%</td>
+        <td class="num" data-v="53.32551210799581"><b>53%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (4 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76115-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76115.html">76115 Spider Mech vs. Venom</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="84.26">₪84.26</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="134.02214783999997">₪134
+          <br><span class="soft" style="font-size:11px">of ₪213</span></td>
+        <td class="num" data-v="49.76214783999997"><b style="color:var(--ok)">₪49.76</b></td>
+        <td class="num" data-v="59.057854070733406">59%</td>
+        <td class="num" data-v="53.15206866366007"><b>53%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76282-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76282.html">76282 Rocket &amp; Baby Groot</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="89.97">₪89.97</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="142.76842272">₪143
+          <br><span class="soft" style="font-size:11px">of ₪227</span></td>
+        <td class="num" data-v="52.79842271999999"><b style="color:var(--ok)">₪52.80</b></td>
+        <td class="num" data-v="58.684475625208385">59%</td>
+        <td class="num" data-v="52.81602806268755"><b>53%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (10 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76109-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76109.html">76109 Quantum Realm Explorers</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="86.67">₪86.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="134.99603711999998">₪135
+          <br><span class="soft" style="font-size:11px">of ₪214</span></td>
+        <td class="num" data-v="48.32603711999998"><b style="color:var(--ok)">₪48.33</b></td>
+        <td class="num" data-v="55.75866749740393">56%</td>
+        <td class="num" data-v="50.182800747663535"><b>50%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (19 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76341-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76341.html">76341 Ravager Jumpsuit Groot</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="108.23">₪108</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="179.90731583999997">₪180
+          <br><span class="soft" style="font-size:11px">of ₪286</span></td>
+        <td class="num" data-v="71.67731583999996"><b style="color:var(--ok)">₪71.68</b></td>
+        <td class="num" data-v="66.22684638270346">66%</td>
+        <td class="num" data-v="49.67013478702759"><b>50%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/6873-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/6873.html">6873 Spider-Man&#39;s Doc Ock Ambush</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="120.16">₪120</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="186.40615392">₪186
+          <br><span class="soft" style="font-size:11px">of ₪296</span></td>
+        <td class="num" data-v="66.24615392000001"><b style="color:var(--ok)">₪66.25</b></td>
+        <td class="num" data-v="55.13161944074568">55%</td>
+        <td class="num" data-v="49.61845749667111"><b>50%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (17 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76186-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76186.html">76186 Black Panther Dragon Flyer</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="30.04">₪30.04</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="46.59685632">₪46.60
+          <br><span class="soft" style="font-size:11px">of ₪73.96</span></td>
+        <td class="num" data-v="16.55685632"><b style="color:var(--ok)">₪16.56</b></td>
+        <td class="num" data-v="55.11603302263649">55%</td>
+        <td class="num" data-v="49.60442972037284"><b>50%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (17 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76323-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76323.html">76323 Avengers: Endgame Final Battle</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="173.34">₪173</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="294.99480864">₪295
+          <br><span class="soft" style="font-size:11px">of ₪468</span></td>
+        <td class="num" data-v="121.65480863999997"><b style="color:var(--ok)">₪122</b></td>
+        <td class="num" data-v="70.18276718587745">70%</td>
+        <td class="num" data-v="49.12793703011421"><b>49%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="5 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 5 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76343-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76343.html">76343 Epic Battle: Hulkbuster vs. The Hu</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="107.77">₪108</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="165.67354944">₪166
+          <br><span class="soft" style="font-size:11px">of ₪263</span></td>
+        <td class="num" data-v="57.90354943999999"><b style="color:var(--ok)">₪57.90</b></td>
+        <td class="num" data-v="53.72882011691564">54%</td>
+        <td class="num" data-v="48.35593810522408"><b>48%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/682406-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/682406.html">682406 Venomized Green Goblin</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="15.32">₪15.32</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="22.717840320000004">₪22.72
+          <br><span class="soft" style="font-size:11px">of ₪36.06</span></td>
+        <td class="num" data-v="7.397840320000004"><b style="color:var(--ok)">₪7.40</b></td>
+        <td class="num" data-v="48.28877493472587">48%</td>
+        <td class="num" data-v="48.28877493472587"><b>48%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="32 BrickLink sales (38 units) in the last six months — sells about weekly.">
+    ⇄ 32 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76081-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76081.html">76081 The Milano vs. The Abilisk</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="172.43">₪172</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="263.75543711999995">₪264
+          <br><span class="soft" style="font-size:11px">of ₪419</span></td>
+        <td class="num" data-v="91.32543711999995"><b style="color:var(--ok)">₪91.33</b></td>
+        <td class="num" data-v="52.9637749347561">53%</td>
+        <td class="num" data-v="47.66739744128049"><b>48%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="10 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 10 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40418-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/40418.html">40418 Falcon &amp; Black Widow Team Up</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="28.75">₪28.75</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="41.93342496">₪41.93
+          <br><span class="soft" style="font-size:11px">of ₪66.56</span></td>
+        <td class="num" data-v="13.183424960000004"><b style="color:var(--ok)">₪13.18</b></td>
+        <td class="num" data-v="45.855391165217405">46%</td>
+        <td class="num" data-v="45.855391165217405"><b>46%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="32 BrickLink sales (35 units) in the last six months — sells about weekly.">
+    ⇄ 32 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76326-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76326.html">76326 Iron Spider-Man Bust</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="107.77">₪108</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="177.99699456000002">₪178
+          <br><span class="soft" style="font-size:11px">of ₪283</span></td>
+        <td class="num" data-v="70.22699456000002"><b style="color:var(--ok)">₪70.23</b></td>
+        <td class="num" data-v="65.16376965760418">65%</td>
+        <td class="num" data-v="45.61463876032292"><b>46%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="2 BrickLink sales (2 units) in the last six months — a few sales in six months.">
+    ⇄ 2 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76131-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76131.html">76131 Avengers Compound Battle</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="204.76">₪205</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="307.2433392">₪307
+          <br><span class="soft" style="font-size:11px">of ₪488</span></td>
+        <td class="num" data-v="102.48333919999999"><b style="color:var(--ok)">₪102</b></td>
+        <td class="num" data-v="50.05046845086931">50%</td>
+        <td class="num" data-v="45.04542160578238"><b>45%</b></td>
+        <td class="num" data-v="31.745716686313113">32%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="13 BrickLink sales (15 units) in the last six months — sells about monthly.">
+    ⇄ 13 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30452-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30452.html">30452 Iron Man and Dum-E</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="11.57">₪11.57</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="16.762132799999996">₪16.76
+          <br><span class="soft" style="font-size:11px">of ₪26.61</span></td>
+        <td class="num" data-v="5.192132799999996"><b style="color:var(--ok)">₪5.19</b></td>
+        <td class="num" data-v="44.875823681936005">45%</td>
+        <td class="num" data-v="44.875823681936005"><b>45%</b></td>
+        <td class="num" data-v="60.6617315428977">61%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="62 BrickLink sales (74 units) in the last six months — sells about weekly.">
+    ⇄ 62 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76171-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76171.html">76171 Miles Morales Mech Armor</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="17.33">₪17.33</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="25.92043776">₪25.92
+          <br><span class="soft" style="font-size:11px">of ₪41.14</span></td>
+        <td class="num" data-v="8.59043776"><b style="color:var(--ok)">₪8.59</b></td>
+        <td class="num" data-v="49.569750490478945">50%</td>
+        <td class="num" data-v="44.612775441431054"><b>45%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76346-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76346.html">76346 Spider-Man Hero Figure</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="247.0">₪247</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl</td>
+        <td class="num" data-v="392.00916384">₪392
+          <br><span class="soft" style="font-size:11px">of ₪622</span></td>
+        <td class="num" data-v="145.00916383999999"><b style="color:var(--ok)">₪145</b></td>
+        <td class="num" data-v="58.708163497975704">59%</td>
+        <td class="num" data-v="44.03112262348178"><b>44%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76232-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76232.html">76232 The Hoopty</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="130.92">₪131</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="193.82269535999995">₪194
+          <br><span class="soft" style="font-size:11px">of ₪308</span></td>
+        <td class="num" data-v="62.90269535999997"><b style="color:var(--ok)">₪62.90</b></td>
+        <td class="num" data-v="48.046666177818494">48%</td>
+        <td class="num" data-v="43.241999560036646"><b>43%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/6869-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/6869.html">6869 Quinjet Aerial Battle</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="206.18">₪206</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="304.75243008">₪305
+          <br><span class="soft" style="font-size:11px">of ₪484</span></td>
+        <td class="num" data-v="98.57243008"><b style="color:var(--ok)">₪98.57</b></td>
+        <td class="num" data-v="47.8089194296246">48%</td>
+        <td class="num" data-v="43.02802748666214"><b>43%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="17 BrickLink sales (17 units) in the last six months — sells about monthly.">
+    ⇄ 17 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76284-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76284.html">76284 Green Goblin Construction Figure</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="62.67">₪62.67</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="100.66643999999998">₪101
+          <br><span class="soft" style="font-size:11px">of ₪160</span></td>
+        <td class="num" data-v="37.99643999999998"><b style="color:var(--ok)">₪38.00</b></td>
+        <td class="num" data-v="60.629392053614126">61%</td>
+        <td class="num" data-v="42.44057443752988"><b>42%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="5 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 5 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31166-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/31166.html">31166 Beautiful Horse</a>
+          
+          
+        </td>
+        <td>Creator</td>
+        <td class="num" data-v="106.38">₪106</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="166.42269503999998">₪166
+          <br><span class="soft" style="font-size:11px">of ₪264</span></td>
+        <td class="num" data-v="60.042695039999984"><b style="color:var(--ok)">₪60.04</b></td>
+        <td class="num" data-v="56.44171370558374">56%</td>
+        <td class="num" data-v="42.3312852791878"><b>42%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76276-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76276.html">76276 Venom Mech Armor vs. Miles Morales</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="24.2">₪24.20</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="34.348325759999994">₪34.35
+          <br><span class="soft" style="font-size:11px">of ₪54.52</span></td>
+        <td class="num" data-v="10.148325759999995"><b style="color:var(--ok)">₪10.15</b></td>
+        <td class="num" data-v="41.935230413223124">42%</td>
+        <td class="num" data-v="41.935230413223124"><b>42%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="26 BrickLink sales (34 units) in the last six months — sells about weekly.">
+    ⇄ 26 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76338-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76338.html">76338 Mech Battle: Spider-Man vs. Doc Oc</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="67.59">₪67.59</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="107.74586591999999">₪108
+          <br><span class="soft" style="font-size:11px">of ₪171</span></td>
+        <td class="num" data-v="40.15586591999998"><b style="color:var(--ok)">₪40.16</b></td>
+        <td class="num" data-v="59.41095712383486">59%</td>
+        <td class="num" data-v="41.5876699866844"><b>42%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="2 BrickLink sales (3 units) in the last six months — a few sales in six months.">
+    ⇄ 2 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76322-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76322.html">76322 Avengers: Endgame Thor vs. Chitaur</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="104.0">₪104</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="150.82173792">₪151
+          <br><span class="soft" style="font-size:11px">of ₪239</span></td>
+        <td class="num" data-v="46.821737920000004"><b style="color:var(--ok)">₪46.82</b></td>
+        <td class="num" data-v="45.02090184615385">45%</td>
+        <td class="num" data-v="40.518811661538464"><b>41%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (14 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76335-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76335.html">76335 Spider-Man vs. Ghost Rider Motorcy</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="23.69">₪23.69</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="33.95502431999999">₪33.96
+          <br><span class="soft" style="font-size:11px">of ₪53.90</span></td>
+        <td class="num" data-v="10.265024319999991"><b style="color:var(--ok)">₪10.27</b></td>
+        <td class="num" data-v="43.330621865766105">43%</td>
+        <td class="num" data-v="38.99755967918949"><b>39%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (15 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76313-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76313.html">76313 MARVEL Logo</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="195.23">₪195</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="279.45003743999996">₪279
+          <br><span class="soft" style="font-size:11px">of ₪444</span></td>
+        <td class="num" data-v="84.22003743999997"><b style="color:var(--ok)">₪84.22</b></td>
+        <td class="num" data-v="43.13888103262817">43%</td>
+        <td class="num" data-v="38.82499292936535"><b>39%</b></td>
+        <td class="num" data-v="31.199029636458516">31%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (9 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76172-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76172.html">76172 Spider-Man and Sandman Showdown</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="15.02">₪15.02</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="23.2235136">₪23.22
+          <br><span class="soft" style="font-size:11px">of ₪36.86</span></td>
+        <td class="num" data-v="8.2035136"><b style="color:var(--ok)">₪8.20</b></td>
+        <td class="num" data-v="54.61726764314248">55%</td>
+        <td class="num" data-v="38.232087350199734"><b>38%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (4 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242003-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242003.html">242003 Captain Marvel</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="10.76">₪10.76</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="14.83308288">₪14.83
+          <br><span class="soft" style="font-size:11px">of ₪23.54</span></td>
+        <td class="num" data-v="4.073082879999999"><b style="color:var(--ok)">₪4.07</b></td>
+        <td class="num" data-v="37.85393011152416">38%</td>
+        <td class="num" data-v="37.85393011152416"><b>38%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="28 BrickLink sales (35 units) in the last six months — sells about weekly.">
+    ⇄ 28 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30453-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30453.html">30453 Captain Marvel and Nick Fury</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.91">₪12.91</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="17.77347936">₪17.77
+          <br><span class="soft" style="font-size:11px">of ₪28.21</span></td>
+        <td class="num" data-v="4.8634793599999995"><b style="color:var(--ok)">₪4.86</b></td>
+        <td class="num" data-v="37.67218714175058">38%</td>
+        <td class="num" data-v="37.67218714175058"><b>38%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="77 BrickLink sales (92 units) in the last six months — sells about weekly.">
+    ⇄ 77 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30443-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30443.html">30443 Spider-Man Bridge Battle</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="12.13">₪12.13</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="16.687218239999996">₪16.69
+          <br><span class="soft" style="font-size:11px">of ₪26.49</span></td>
+        <td class="num" data-v="4.557218239999996"><b style="color:var(--ok)">₪4.56</b></td>
+        <td class="num" data-v="37.56981236603459">38%</td>
+        <td class="num" data-v="37.56981236603459"><b>38%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="77 BrickLink sales (101 units) in the last six months — sells about weekly.">
+    ⇄ 77 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76133-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76133.html">76133 Spider-Man Car Chase</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="21.55">₪21.55</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="32.9624064">₪32.96
+          <br><span class="soft" style="font-size:11px">of ₪52.32</span></td>
+        <td class="num" data-v="11.412406399999998"><b style="color:var(--ok)">₪11.41</b></td>
+        <td class="num" data-v="52.95780232018561">53%</td>
+        <td class="num" data-v="37.07046162412992"><b>37%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (4 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76269-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76269.html">76269 Avengers Tower</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="1420.75">₪1,421</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="1934.72469792">₪1,935
+          <br><span class="soft" style="font-size:11px">of ₪3,071</span></td>
+        <td class="num" data-v="513.9746979199999"><b style="color:var(--ok)">₪514</b></td>
+        <td class="num" data-v="36.1762940644026">36%</td>
+        <td class="num" data-v="36.1762940644026"><b>36%</b></td>
+        <td class="num" data-v="26.940809747266307">27%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="47 BrickLink sales (48 units) in the last six months — sells about weekly.">
+    ⇄ 47 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/5002145-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/5002145.html">5002145 Rocket Raccoon</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="27.04">₪27.04</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="37.85058144">₪37.85
+          <br><span class="soft" style="font-size:11px">of ₪60.08</span></td>
+        <td class="num" data-v="10.81058144"><b style="color:var(--ok)">₪10.81</b></td>
+        <td class="num" data-v="39.979960946745564">40%</td>
+        <td class="num" data-v="35.98196485207101"><b>36%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="24 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 24 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242316-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242316.html">242316 Black Panther with Jet</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="7.68">₪7.68</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="10.731510720000001">₪10.73
+          <br><span class="soft" style="font-size:11px">of ₪17.03</span></td>
+        <td class="num" data-v="3.0515107200000013"><b style="color:var(--ok)">₪3.05</b></td>
+        <td class="num" data-v="39.73321250000002">40%</td>
+        <td class="num" data-v="35.759891250000024"><b>36%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="20 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 20 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76297-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76297.html">76297 Dancing Groot</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="75.07">₪75.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="104.84292672">₪105
+          <br><span class="soft" style="font-size:11px">of ₪166</span></td>
+        <td class="num" data-v="29.77292672"><b style="color:var(--ok)">₪29.77</b></td>
+        <td class="num" data-v="39.660219421872924">40%</td>
+        <td class="num" data-v="35.694197479685634"><b>36%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (8 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76248-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76248.html">76248 The Avengers Quinjet</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="182.49">₪182</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="254.29747391999996">₪254
+          <br><span class="soft" style="font-size:11px">of ₪404</span></td>
+        <td class="num" data-v="71.80747391999995"><b style="color:var(--ok)">₪71.81</b></td>
+        <td class="num" data-v="39.34871714614496">39%</td>
+        <td class="num" data-v="35.41384543153047"><b>35%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="21 BrickLink sales (24 units) in the last six months — sells about monthly.">
+    ⇄ 21 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30162-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30162.html">30162 Quinjet</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="6.48">₪6.48</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="8.97101856">₪8.97
+          <br><span class="soft" style="font-size:11px">of ₪14.24</span></td>
+        <td class="num" data-v="2.4910185599999988"><b style="color:var(--ok)">₪2.49</b></td>
+        <td class="num" data-v="38.44164444444442">38%</td>
+        <td class="num" data-v="34.59747999999998"><b>35%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (18 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76067-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76067.html">76067 Tanker Truck Takedown</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="147.2">₪147</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="219.23745983999999">₪219
+          <br><span class="soft" style="font-size:11px">of ₪348</span></td>
+        <td class="num" data-v="72.03745984"><b style="color:var(--ok)">₪72.04</b></td>
+        <td class="num" data-v="48.938491739130434">49%</td>
+        <td class="num" data-v="34.2569442173913"><b>34%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="4 BrickLink sales (4 units) in the last six months — a few sales in six months.">
+    ⇄ 4 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76311-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76311.html">76311 Miles Morales vs. the Spot</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="116.23">₪116</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl</td>
+        <td class="num" data-v="155.56008384">₪156
+          <br><span class="soft" style="font-size:11px">of ₪247</span></td>
+        <td class="num" data-v="39.33008384"><b style="color:var(--ok)">₪39.33</b></td>
+        <td class="num" data-v="33.83815180246064">34%</td>
+        <td class="num" data-v="33.83815180246064"><b>34%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="26 BrickLink sales (28 units) in the last six months — sells about weekly.">
+    ⇄ 26 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76150-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76150.html">76150 Spiderjet vs. Venom Mech</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="141.9">₪142</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="189.57129408">₪190
+          <br><span class="soft" style="font-size:11px">of ₪301</span></td>
+        <td class="num" data-v="47.671294079999996"><b style="color:var(--ok)">₪47.67</b></td>
+        <td class="num" data-v="33.59499230443974">34%</td>
+        <td class="num" data-v="33.59499230443974"><b>34%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="32 BrickLink sales (34 units) in the last six months — sells about weekly.">
+    ⇄ 32 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76262-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76262.html">76262 Captain America&#39;s Shield</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="417.32">₪417</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="572.1786806399999">₪572
+          <br><span class="soft" style="font-size:11px">of ₪908</span></td>
+        <td class="num" data-v="154.85868063999993"><b style="color:var(--ok)">₪155</b></td>
+        <td class="num" data-v="37.10789816927057">37%</td>
+        <td class="num" data-v="33.397108352343515"><b>33%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (20 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76278-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76278.html">76278 Rocket&#39;s Warbird vs. Ronan</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="69.33">₪69.33</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="94.80437567999998">₪94.80
+          <br><span class="soft" style="font-size:11px">of ₪150</span></td>
+        <td class="num" data-v="25.47437567999998"><b style="color:var(--ok)">₪25.47</b></td>
+        <td class="num" data-v="36.74365452185198">37%</td>
+        <td class="num" data-v="33.06928906966678"><b>33%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="8 BrickLink sales (8 units) in the last six months — sells about monthly.">
+    ⇄ 8 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30305-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/30305.html">30305 Spider-Man Super Jumper</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="9.76">₪9.76</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="13.297334399999997">₪13.30
+          <br><span class="soft" style="font-size:11px">of ₪21.11</span></td>
+        <td class="num" data-v="3.537334399999997"><b style="color:var(--ok)">₪3.54</b></td>
+        <td class="num" data-v="36.24318032786882">36%</td>
+        <td class="num" data-v="32.61886229508194"><b>33%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="19 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 19 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76101-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76101.html">76101 Outrider Dropship Attack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="36.05">₪36.05</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="49.012850879999995">₪49.01
+          <br><span class="soft" style="font-size:11px">of ₪77.80</span></td>
+        <td class="num" data-v="12.962850879999998"><b style="color:var(--ok)">₪12.96</b></td>
+        <td class="num" data-v="35.95797747572816">36%</td>
+        <td class="num" data-v="32.36217972815534"><b>32%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="24 BrickLink sales (28 units) in the last six months — sells about monthly.">
+    ⇄ 24 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76048-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76048.html">76048 Iron Skull Sub Attack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="120.16">₪120</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="162.92043935999996">₪163
+          <br><span class="soft" style="font-size:11px">of ₪259</span></td>
+        <td class="num" data-v="42.760439359999964"><b style="color:var(--ok)">₪42.76</b></td>
+        <td class="num" data-v="35.586251131824206">36%</td>
+        <td class="num" data-v="32.02762601864178"><b>32%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="20 BrickLink sales (25 units) in the last six months — sells about monthly.">
+    ⇄ 20 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242212-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242212.html">242212 Captain America</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="9.98">₪9.98</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl</td>
+        <td class="num" data-v="13.50334944">₪13.50
+          <br><span class="soft" style="font-size:11px">of ₪21.43</span></td>
+        <td class="num" data-v="3.5233494399999987"><b style="color:var(--ok)">₪3.52</b></td>
+        <td class="num" data-v="35.30410260521041">35%</td>
+        <td class="num" data-v="31.77369234468937"><b>32%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (19 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76078-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76078.html">76078 Hulk vs. Red Hulk</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="208.0">₪208</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="302.22406368">₪302
+          <br><span class="soft" style="font-size:11px">of ₪480</span></td>
+        <td class="num" data-v="94.22406367999997"><b style="color:var(--ok)">₪94.22</b></td>
+        <td class="num" data-v="45.3000306153846">45%</td>
+        <td class="num" data-v="31.710021430769217"><b>32%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="5 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 5 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76320-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76320.html">76320 Iron Man &amp; War Machine vs. Hammer </a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="43.09">₪43.09</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="57.927683519999995">₪57.93
+          <br><span class="soft" style="font-size:11px">of ₪91.95</span></td>
+        <td class="num" data-v="14.837683519999992"><b style="color:var(--ok)">₪14.84</b></td>
+        <td class="num" data-v="34.434169227198865">34%</td>
+        <td class="num" data-v="30.990752304478978"><b>31%</b></td>
+        <td class="num" data-v="63.7203108376601">64%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="9 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 9 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76208-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76208.html">76208 The Goat Boat</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="107.77">₪108</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="141.06411647999997">₪141
+          <br><span class="soft" style="font-size:11px">of ₪224</span></td>
+        <td class="num" data-v="33.29411647999997"><b style="color:var(--ok)">₪33.29</b></td>
+        <td class="num" data-v="30.893677721072628">31%</td>
+        <td class="num" data-v="30.893677721072628"><b>31%</b></td>
+        <td class="num" data-v="25.581558868740593">26%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="28 BrickLink sales (31 units) in the last six months — sells about weekly.">
+    ⇄ 28 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76049-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76049.html">76049 Avenjet Space Mission</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="187.87085247999997">₪188<br><span class="soft" style="font-size:11px" title="₪96.23 listed in USD, plus ₪91.64 VAT and shipping">incl. import</span></td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
+            eBay</td>
+        <td class="num" data-v="252.03130847999998">₪252
+          <br><span class="soft" style="font-size:11px">of ₪400</span></td>
+        <td class="num" data-v="64.16045600000001"><b style="color:var(--ok)">₪64.16</b></td>
+        <td class="num" data-v="34.151362573303004">34%</td>
+        <td class="num" data-v="30.736226315972704"><b>31%</b></td>
+        <td class="num" data-v="78.18028688115788">78%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="16 BrickLink sales (18 units) in the last six months — sells about monthly.">
+    ⇄ 16 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76016-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76016.html">76016 Spider-Helicopter Rescue</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="161.92">₪162</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="217.19603807999997">₪217
+          <br><span class="soft" style="font-size:11px">of ₪345</span></td>
+        <td class="num" data-v="55.27603807999998"><b style="color:var(--ok)">₪55.28</b></td>
+        <td class="num" data-v="34.13786936758893">34%</td>
+        <td class="num" data-v="30.724082430830034"><b>31%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (13 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76089-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76089.html">76089 Mighty Micros: Scarlet Spider vs. </a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="38.05">₪38.05</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="54.743814719999996">₪54.74
+          <br><span class="soft" style="font-size:11px">of ₪86.89</span></td>
+        <td class="num" data-v="16.69381472"><b style="color:var(--ok)">₪16.69</b></td>
+        <td class="num" data-v="43.87336325886991">44%</td>
+        <td class="num" data-v="30.711354281208934"><b>31%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="5 BrickLink sales (5 units) in the last six months — a few sales in six months.">
+    ⇄ 5 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/4597-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/4597.html">4597 Captain America</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="30.63">₪30.63</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="49.275051839999996">₪49.28
+          <br><span class="soft" style="font-size:11px">of ₪78.21</span></td>
+        <td class="num" data-v="18.645051839999997"><b style="color:var(--ok)">₪18.65</b></td>
+        <td class="num" data-v="60.87186366307541">61%</td>
+        <td class="num" data-v="30.435931831537705"><b>30%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--down)"
+        title="1 BrickLink sale (1 unit) in the last six months — barely trades.">
+    ⇄ 1 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76102-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76102.html">76102 Thor&#39;s Weapon Quest</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="58.2">₪58.20</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="75.85099199999999">₪75.85
+          <br><span class="soft" style="font-size:11px">of ₪120</span></td>
+        <td class="num" data-v="17.650991999999988"><b style="color:var(--ok)">₪17.65</b></td>
+        <td class="num" data-v="30.328164948453583">30%</td>
+        <td class="num" data-v="30.328164948453583"><b>30%</b></td>
+        <td class="num" data-v="29.418995601270453">29%</td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="27 BrickLink sales (30 units) in the last six months — sells about weekly.">
+    ⇄ 27 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242404-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/242404.html">242404 Rocket Raccoon</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="11.33">₪11.33</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
+            BrickOwl</td>
+        <td class="num" data-v="14.982911999999999">₪14.98
+          <br><span class="soft" style="font-size:11px">of ₪23.78</span></td>
+        <td class="num" data-v="3.652911999999999"><b style="color:var(--ok)">₪3.65</b></td>
+        <td class="num" data-v="32.241059135039706">32%</td>
+        <td class="num" data-v="29.016953221535736"><b>29%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="20 BrickLink sales (24 units) in the last six months — sells about monthly.">
+    ⇄ 20 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76281-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76281.html">76281 X-Men X-Jet</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="137.17">₪137</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="175.50608544">₪176
+          <br><span class="soft" style="font-size:11px">of ₪279</span></td>
+        <td class="num" data-v="38.336085440000005"><b style="color:var(--ok)">₪38.34</b></td>
+        <td class="num" data-v="27.947864285193564">28%</td>
+        <td class="num" data-v="27.947864285193564"><b>28%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="46 BrickLink sales (46 units) in the last six months — sells about weekly.">
+    ⇄ 46 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76244-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76244.html">76244 Miles Morales vs. Morbius</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="45.8">₪45.80</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="59.95037663999999">₪59.95
+          <br><span class="soft" style="font-size:11px">of ₪95.16</span></td>
+        <td class="num" data-v="14.15037663999999"><b style="color:var(--ok)">₪14.15</b></td>
+        <td class="num" data-v="30.8960188646288">31%</td>
+        <td class="num" data-v="27.80641697816592"><b>28%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="22 BrickLink sales (27 units) in the last six months — sells about monthly.">
+    ⇄ 22 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76142-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76142.html">76142 Avengers Speeder Bike Attack</a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="59.48">₪59.48</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="77.79877056">₪77.80
+          <br><span class="soft" style="font-size:11px">of ₪123</span></td>
+        <td class="num" data-v="18.318770559999997"><b style="color:var(--ok)">₪18.32</b></td>
+        <td class="num" data-v="30.798202017484865">31%</td>
+        <td class="num" data-v="27.71838181573638"><b>28%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="12 BrickLink sales (14 units) in the last six months — sells about monthly.">
+    ⇄ 12 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76261-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76261.html">76261 Spider-Man Final Battle</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="239.2">₪239</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="305.46411839999996">₪305
+          <br><span class="soft" style="font-size:11px">of ₪485</span></td>
+        <td class="num" data-v="66.26411839999997"><b style="color:var(--ok)">₪66.26</b></td>
+        <td class="num" data-v="27.702390635451497">28%</td>
+        <td class="num" data-v="27.702390635451497"><b>28%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ok)"
+        title="86 BrickLink sales (87 units) in the last six months — sells about weekly.">
+    ⇄ 86 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76279-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76279.html">76279 Spider-Man Race Car &amp; Venom Green </a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="55.32">₪55.32</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="71.8243344">₪71.82
+          <br><span class="soft" style="font-size:11px">of ₪114</span></td>
+        <td class="num" data-v="16.504334399999998"><b style="color:var(--ok)">₪16.50</b></td>
+        <td class="num" data-v="29.83429934924078">30%</td>
+        <td class="num" data-v="26.8508694143167"><b>27%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (15 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/11198-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/11198.html">11198 Spin and Electro Dinosaur Vehicle </a>
+          
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="30.6">₪30.60</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="42.28926911999999">₪42.29
+          <br><span class="soft" style="font-size:11px">of ₪67.13</span></td>
+        <td class="num" data-v="11.689269119999992"><b style="color:var(--ok)">₪11.69</b></td>
+        <td class="num" data-v="38.20022588235291">38%</td>
+        <td class="num" data-v="26.740158117647034"><b>27%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--warn)"
+        title="2 BrickLink sales (3 units) in the last six months — a few sales in six months.">
+    ⇄ 2 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76123-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76123.html">76123 Captain America: Outriders Attack</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="38.8">₪38.80</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="50.21148383999999">₪50.21
+          <br><span class="soft" style="font-size:11px">of ₪79.70</span></td>
+        <td class="num" data-v="11.411483839999995"><b style="color:var(--ok)">₪11.41</b></td>
+        <td class="num" data-v="29.41104082474226">29%</td>
+        <td class="num" data-v="26.469936742268033"><b>26%</b></td>
+        <td class="num" data-v="-1"><span class="soft">—</span></td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="11 BrickLink sales (11 units) in the last six months — sells about monthly.">
+    ⇄ 11 sold/6mo</span></td>
+      </tr>
+      
+      <tr class="">
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76307-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="sets/76307.html">76307 Iron Man Mech vs. Ultron</a>
+          <span class="chip" style="color:var(--warn)" title="This set sells for more whole than the part-out realistically yields. Flipping it intact is the better trade.">sell whole</span>
+          
+        </td>
+        <td>Super Heroes Marvel</td>
+        <td class="num" data-v="30.07">₪30.07</td>
+        <td style="white-space:nowrap"><span class="dot" style="background:var(--s2)"></span>
+            BrickLink</td>
+        <td class="num" data-v="38.59972704">₪38.60
+          <br><span class="soft" style="font-size:11px">of ₪61.27</span></td>
+        <td class="num" data-v="8.529727039999997"><b style="color:var(--ok)">₪8.53</b></td>
+        <td class="num" data-v="28.366235583638165">28%</td>
+        <td class="num" data-v="25.52961202527435"><b>26%</b></td>
+        <td class="num" data-v="63.35951540449029">63%</td>
+        <td><span class="chip" style="color:var(--ink-2)"
+        title="10 BrickLink sales (12 units) in the last six months — sells about monthly.">
+    ⇄ 10 sold/6mo</span></td>
+      </tr>
+      
+    </tbody>
+  </table>
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    Showing the top 150 of 366.
+  </div>
+  
+</div>
+
+<div class="card">
+  <h3>What these numbers assume</h3>
+  <div style="color:var(--ink-2);font-size:13px;line-height:1.7">
+    <p style="margin:0 0 10px">
+      A part-out total is a <b>theoretical maximum</b> — what a set is worth if every last brick
+      eventually finds a buyer. For the long tail of common parts that means years, or never. So
+      the yield here is the part-out value at <b>70% realisation</b>, less
+      <b>10% selling fees</b>, which is what plausibly reaches your pocket. BrickEconomy
+      quotes the maximum; this quotes the outcome.
+    </p>
+    <p style="margin:0 0 10px">
+      <b>Landed cost</b> means delivered. A listing priced in dollars carries VAT and shipping into
+      Israel, so a set that looks cheap abroad often is not — and the cheapest row here is chosen
+      after that, not before.
+    </p>
+    <p style="margin:0 0 10px">
+      <b>Adjusted margin</b> discounts the paper margin by how often the set actually sells. A fat
+      edge on something that trades twice a year ties your money up for months; a thinner one you
+      can turn over is usually the better trade.
+    </p>
+    <p style="margin:0">
+      Two honest caveats. Sets marked <b>sell whole</b> fetch more intact than broken up — the
+      part-out is the worse move there. And parting out is <i>work</i>: sorting, listing and
+      posting hundreds of lots. None of these numbers price your time.
+    </p>
+  </div>
+</div>
+
+
+</main>
+
+<footer class="note">
+  Brickonomy · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
+  · static snapshot — run <code>python -m brickonomy.export</code> to update
+  
+</footer>
+
+<script src="static/app.js"></script>
+</body>
+</html>
