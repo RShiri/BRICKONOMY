@@ -236,3 +236,37 @@ brickonomy/
 
 The existing root scripts (`runner.py`, `dashboard.py`, …) are untouched and
 keep working; Brickonomy only reads `bricklink_data.db`, never writes it.
+
+## Scanning on GitHub's runners
+
+Marketplace scraping is slow and polite on purpose — roughly a minute per
+item. A whole theme is hours. GitHub's runners have real network access and
+Chrome, so they can do the bulk work without leaving a laptop on.
+
+**1 · Pick a theme.** Ranked by what is worth the runner's time — themes you
+collect first, then by how much is left to scan, with older (retired) themes
+nudged up since those are the ones that move:
+
+```
+python -m brickonomy.merge --rank-themes
+```
+
+**2 · Run the scan.** Actions → *theme scan* → *Run workflow*, with that theme
+name and a limit. It restores the previously scanned database, scans, commits
+`data/brickonomy.db` back, and attaches it as a run artifact.
+
+**3 · Bring it home.** Download the artifact, then:
+
+```
+python -m brickonomy.merge downloaded/brickonomy.db --dry-run   # see what would land
+python -m brickonomy.merge downloaded/brickonomy.db             # backs up, then merges
+```
+
+Snapshots are append-only, so the merge is a union: it is deduped on
+`(item_id, source, condition, kind, scraped_at)` and safe to re-run. Catalog
+metadata only fills holes, and inventories are taken only for sets that have
+none locally, so a name or a repaired fig list here is never overwritten by a
+runner's copy.
+
+Your **portfolio and exchange rates are never merged**. The runner seeds its
+portfolio from the repo's CSV, which is not what you actually own or paid.

@@ -347,13 +347,35 @@ def select_targets(conn, scope="portfolio", item_id=None, theme=None):
     return targets
 
 
+def unpriced_figs_of(conn, set_id):
+    """Figures in a set that have never been priced, most-contained first.
+
+    A set scan discovers its inventory, but discovering a figure is not the
+    same as pricing it — that needs a scan of the figure's own page.
+    """
+    return [r["fig_id"] for r in conn.execute(
+        """SELECT sm.fig_id FROM set_minifigs sm
+           WHERE sm.set_id = ?
+             AND sm.fig_id NOT IN (SELECT DISTINCT item_id FROM price_snapshots)
+           ORDER BY sm.qty DESC, sm.fig_id""", (set_id,))]
+
+
 def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
-                limit=None, progress=None, log=print, inventory_only=False):
+                limit=None, progress=None, log=print, inventory_only=False,
+                with_figs=None):
     """Entry point shared by the CLI and the web background job.
+
+    with_figs: after scanning a set, price the figures it turns out to
+    contain, in the same run. Defaults on for the priority scope — a set's
+    inventory is only discovered *during* its scan, so without this every
+    newly-found figure waits for the next night, and a set scanned today
+    contributes nothing to the fig-value totals until tomorrow.
 
     progress: optional callback(done, total, current_item, errors: list).
     Returns {'done': n, 'errors': [(item, source, error), ...]}."""
     cfg = get_config()
+    if with_figs is None:
+        with_figs = scope == "priority" and not inventory_only
     conn = dbq.connect()
     try:
         targets = select_targets(conn, scope, item_id, theme)
@@ -366,8 +388,13 @@ def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
             targets = targets[:limit]
 
         errors = []
-        total = len(targets)
-        for i, (iid, itype) in enumerate(targets):
+        queued = {t[0] for t in targets}
+        i = 0
+        # `targets` grows as sets reveal their figures, so this walks an index
+        # rather than iterating a fixed list.
+        while i < len(targets):
+            iid, itype = targets[i][0], targets[i][1]
+            total = len(targets)
             log(f"[{i + 1}/{total}] {iid}")
             if progress:
                 progress(i, total, iid, errors)
@@ -376,11 +403,25 @@ def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
             for source, status in results.items():
                 if status not in ("ok", "fresh", "empty"):
                     errors.append((iid, source, status))
-            if i + 1 < total and not cfg.fixture_mode:
+
+            if with_figs and (itype or item_type_for(iid)) == "S":
+                fresh_figs = [f for f in unpriced_figs_of(conn, iid)
+                              if f not in queued]
+                # The limit is a budget for the whole night, figures included:
+                # a fig-heavy set must not silently triple the run.
+                if limit:
+                    fresh_figs = fresh_figs[:max(0, limit - len(targets))]
+                if fresh_figs:
+                    targets.extend((f, "M") for f in fresh_figs)
+                    queued.update(fresh_figs)
+                    log(f"  ⚙ +{len(fresh_figs)} unpriced fig(s) queued")
+
+            i += 1
+            if i < len(targets) and not cfg.fixture_mode:
                 polite_sleep()
         if progress:
-            progress(total, total, None, errors)
-        return {"done": total, "errors": errors}
+            progress(len(targets), len(targets), None, errors)
+        return {"done": len(targets), "errors": errors}
     finally:
         conn.close()
 
@@ -402,6 +443,13 @@ def main():
                     help="only fetch parts + minifig inventory, no price scrape")
     ap.add_argument("--dry-run", action="store_true",
                     help="list what would be scanned, in order, and stop")
+    figs = ap.add_mutually_exclusive_group()
+    figs.add_argument("--with-figs", dest="with_figs", action="store_true",
+                      default=None,
+                      help="price the figures a set turns out to contain, in "
+                           "the same run (default for --scope priority)")
+    figs.add_argument("--no-figs", dest="with_figs", action="store_false",
+                      help="scan only the listed targets")
     args = ap.parse_args()
 
     if args.theme and args.scope == "portfolio":
@@ -423,7 +471,8 @@ def main():
             raise SystemExit(3)
         summary = run_refresh(scope=args.scope, item_id=args.item,
                               force=args.force, theme=args.theme, limit=args.limit,
-                              inventory_only=args.inventory_only)
+                              inventory_only=args.inventory_only,
+                              with_figs=args.with_figs)
     print(f"\nRefreshed {summary['done']} item(s); {len(summary['errors'])} source error(s).")
     for iid, source, err in summary["errors"][:20]:
         print(f"  {iid} · {source}: {err}")

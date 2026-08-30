@@ -94,3 +94,46 @@ class TestScanLock:
                 raise RuntimeError("scraper blew up")
         with scan_lock(path) as again:
             assert again is True
+
+
+class TestFigExpansion:
+    """A set's inventory is only discovered while scanning it, so figures
+    found mid-run have to join the same run or they wait a whole night."""
+
+    def _run(self, conn, monkeypatch, tmp_path, **kw):
+        import brickonomy.refresh as rf
+        from brickonomy.config import get_config
+        monkeypatch.setattr(get_config(), "fixture_mode", True)   # no sleeps
+        monkeypatch.setattr(rf.dbq, "connect", lambda *a, **k: conn)
+        seen = []
+        monkeypatch.setattr(rf, "refresh_item",
+                            lambda c, iid, itype=None, **kwargs: (seen.append(iid), {})[1])
+        # run_refresh closes the connection it was handed; closing again in
+        # the fixture teardown is a no-op, so nothing needs patching out.
+        rf.run_refresh(log=lambda *a: None, **kw)
+        return seen
+
+    def test_figs_of_a_scanned_set_join_the_same_run(self, conn, monkeypatch, tmp_path):
+        seen = self._run(conn, monkeypatch, tmp_path, scope="priority")
+        assert "75192" in seen
+        assert "sw0879" in seen, "the fig inside the owned set gets priced too"
+        assert seen.index("75192") < seen.index("sw0879")
+
+    def test_no_figs_flag_scans_only_the_listed_targets(self, conn, monkeypatch, tmp_path):
+        seen = self._run(conn, monkeypatch, tmp_path, scope="portfolio",
+                         with_figs=False)
+        assert "75192" in seen and "sw0879" not in seen
+
+    def test_the_limit_is_a_budget_for_the_whole_run(self, conn, monkeypatch,
+                                                     tmp_path):
+        """A fig-heavy set must not silently triple a night's work."""
+        seen = self._run(conn, monkeypatch, tmp_path, scope="priority", limit=2)
+        assert len(seen) <= 2
+
+    def test_already_priced_figs_are_not_requeued(self, conn, monkeypatch, tmp_path):
+        from brickonomy.refresh import unpriced_figs_of
+        assert unpriced_figs_of(conn, "75192") == ["sw0879"]
+        dbq.insert_snapshot(conn, "sw0879", "bricklink", "new", "market", "ILS",
+                            market_price=50.0)
+        conn.commit()
+        assert unpriced_figs_of(conn, "75192") == []

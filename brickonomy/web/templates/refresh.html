@@ -146,7 +146,8 @@
     <thead>
       <tr><th>Theme</th><th class="num">Items</th><th class="num">Scanned</th>
           <th class="num">Fresh</th><th class="num">Stale</th><th class="num">Left</th>
-          <th>Progress</th><th>Last scan</th>{% if not static_mode %}<th></th>{% endif %}</tr>
+          <th>Progress</th><th class="num" title="Figures inside this theme's sets that have a price. They carry no theme of their own, so they are counted through the sets that contain them.">Figs priced</th>
+          <th>Last scan</th>{% if not static_mode %}<th></th>{% endif %}</tr>
     </thead>
     <tbody>
       {% for t in coverage %}
@@ -161,6 +162,10 @@
           <div class="progress" style="margin:0"><div style="width:{{ t.pct }}%"></div></div>
           <span style="color:var(--muted);font-size:11px">{{ t.pct }}%</span>
         </td>
+        <td class="num" data-v="{{ t.figs_pct if t.figs_pct is not none else -1 }}">
+          {%- if t.figs_total %}{{ "{:,}".format(t.figs_scanned) }}/{{ "{:,}".format(t.figs_total) }}
+            <span style="color:{{ 'var(--warn)' if t.figs_pct < 100 else 'var(--muted)' }};font-size:11px">{{ t.figs_pct }}%</span>
+          {%- else %}<span style="color:var(--muted)">no inventory</span>{% endif %}</td>
         <td data-v="{{ t.last_scan or '' }}" style="color:var(--ink-2)">{{ t.last_scan[:10] if t.last_scan else '—' }}</td>
         {% if not static_mode %}
         <td>

@@ -51,22 +51,35 @@ resolves to a literal flag) · ⏳ manual dispatch pending your trigger.
 ## Wave 1 — Coverage
 *Starts once A1's scheduler runs. B1 ∥ B2.*
 
-### [ ] B1 · Fig Crawler — 1 session — depends: A1
-- [ ] `with_figs` default for the priority scope
-- [ ] Lift the CLI queue cap (web cap of 25 stays)
-- [ ] Fig-coverage-per-theme readout on the Refresh page
+### [x] B1 · Fig Crawler — 1 session — depends: A1
+- [x] `with_figs` on by default for `--scope priority`; `--with-figs` / `--no-figs`
+      to override. A set's inventory is only discovered *while* scanning it, so
+      figures found mid-run now join the same run instead of waiting a night.
+- [x] No CLI queue cap — the `--limit` acts as one budget for the whole run,
+      figures included, so a fig-heavy set can't silently triple a night
+- [x] "Figs priced" column on the Refresh page, counted through the sets that
+      contain them (figures carry no theme of their own)
 
-**Accept:** after one week of nightly runs, 100% of figs in owned + wishlisted sets priced.
+**Accept:** ✅ 4 fig-expansion tests · ✅ column live (Marvel 162/168 = 96%, Icons 0/11) ·
+⏳ "100% of owned-set figs" pending a week of nightly runs.
 
-### [ ] B2 · Theme Fleet — 1 session + your triggers — depends: A2
-- [ ] Ranked theme list (holdings first, then retired value density)
-- [ ] `brickonomy/merge.py`: ATTACH + INSERT-merge of a downloaded `data/brickonomy.db`,
-      deduped on `(item_id, source, kind, scraped_at)`
-- [ ] Documented loop: trigger workflow → download DB artifact → merge
+### [x] B2 · Theme Fleet — 1 session + your triggers — depends: A2
+- [x] `python -m brickonomy.merge --rank-themes` — collected themes are a **tier**
+      above uncollected ones, not a weight, so no amount of size lets an unowned
+      theme jump the queue. Top now: City, Technic, Creator, Friends, Disney.
+- [x] `brickonomy/merge.py`: read-only ATTACH + INSERT-merge, deduped on
+      `(item_id, source, condition, kind, scraped_at)`. Portfolio and exchange
+      rates are **never** merged — the runner's portfolio comes from the repo CSV.
+- [x] Loop documented in `brickonomy/README.md`
 
-**Accept:** merge proven on fixture DBs (zero dupes, zero loss) · one real theme round-tripped.
+**Accept:** ✅ 14 merge/ranking tests — zero dupes, zero loss, idempotent re-run,
+portfolio untouched, incoming db unmodified · ⏳ one real theme round-trip pending
+your workflow trigger.
 
-### Wave 1 QA gate — [ ] suite · [ ] mobile · [ ] leak check · [ ] screenshots
+### [x] Wave 1 QA gate
+- [x] Full suite green — **136 passed** (was 118; +18)
+- [x] Mobile: `/refresh` zero overflow at 375px **and** 320px with the new column
+- [x] Portfolio leak check green
 
 ---
 
@@ -161,4 +174,5 @@ One aggregate query replaces the per-row N+1; sets-only aggregates.
 | Date | What happened |
 |---|---|
 | 2026-08-30 | Plan drawn; baseline recorded; nothing started |
+| 2026-08-31 | **Wave 1 complete.** B1: figures discovered mid-scan join the same run; `--limit` is one budget for the whole night; "Figs priced" column per theme. B2: `merge.py` with read-only ATTACH, dedupe and hard exclusions for portfolio/rates; `--rank-themes` puts collected themes in their own tier. Tests 118 → 136. |
 | 2026-08-31 | **Wave 0 complete.** A1: `--scope priority` with 5 tiers, `--dry-run`, cross-process scan lock, `scan_nightly.bat`. A2: all 4 workflows fixed — the Monday job that would have wiped the site is disabled and now restores the db first. Tests 111 → 118. Also fixed en route: catalog listings ordered priced-first, so `/minifigs` shows all 203 priced figs instead of 9. |

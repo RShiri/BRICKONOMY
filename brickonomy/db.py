@@ -101,7 +101,11 @@ MIGRATIONS = [
 
 def connect(db_path: str = None) -> sqlite3.Connection:
     path = db_path or get_config().db_path
-    conn = sqlite3.connect(path)
+    # uri=True so ATTACH can take a file: URI — brickonomy.merge attaches a
+    # downloaded database read-only, and SQLite only honours URI filenames
+    # when the connection was opened this way. Ordinary paths are unaffected:
+    # only a name beginning "file:" is parsed as a URI.
+    conn = sqlite3.connect(path, uri=True)
     conn.row_factory = sqlite3.Row
     # A scan holds a write transaction for as long as it takes to scrape an
     # item. Under the default rollback journal that blocks every page read,
@@ -322,14 +326,36 @@ def theme_coverage(conn, ttl_days: float = 30.0, limit: int = 400):
            LIMIT ?""",
         (cutoff, limit),
     ).fetchall()
+    # Figures are counted separately. They carry no theme of their own — the
+    # catalog files themes against sets — so they have to be reached through
+    # the set that contains them, and they are the half of the catalog that
+    # lags furthest behind.
+    figs = {r["theme"]: r for r in conn.execute(
+        """SELECT si.theme                                       AS theme,
+                  COUNT(DISTINCT sm.fig_id)                      AS total,
+                  COUNT(DISTINCT CASE WHEN s.item_id IS NOT NULL
+                                      THEN sm.fig_id END)        AS scanned
+           FROM set_minifigs sm
+           JOIN items si ON si.item_id = sm.set_id
+           LEFT JOIN (SELECT DISTINCT item_id FROM price_snapshots) s
+             ON s.item_id = sm.fig_id
+           WHERE si.theme IS NOT NULL AND si.theme != ''
+           GROUP BY si.theme""")}
+
     out = []
     for r in rows:
         total, scanned, fresh = r["total"], r["scanned"] or 0, r["fresh"] or 0
+        f = figs.get(r["theme"])
+        f_total = f["total"] if f else 0
+        f_scanned = (f["scanned"] or 0) if f else 0
         out.append({
             "theme": r["theme"], "total": total, "scanned": scanned,
             "fresh": fresh, "stale": scanned - fresh, "left": total - scanned,
             "pct": round(scanned / total * 100) if total else 0,
             "last_scan": r["last_scan"],
+            "figs_total": f_total, "figs_scanned": f_scanned,
+            "figs_left": f_total - f_scanned,
+            "figs_pct": round(f_scanned / f_total * 100) if f_total else None,
         })
     return out
 
