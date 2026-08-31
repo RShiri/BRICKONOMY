@@ -300,6 +300,24 @@ def select_targets(conn, scope="portfolio", item_id=None, theme=None):
                        WHERE si.theme = ?)
                ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""",
             (theme, theme))]
+    elif scope == "inventories":
+        # Sets whose minifig inventory was never stored. A set's fig list is
+        # fetched once and then skipped forever, so every set scanned while
+        # the inventory parser was broken kept an empty list and nothing
+        # would ever go back for it: 314 Marvel sets had a part-out value and
+        # no figures, the Daily Bugle's 25 among them. Pair with
+        # --inventory-only, which skips the price scrape and makes this one
+        # page fetch per set.
+        #
+        # Biggest sets first: those are the fig-heavy ones, and the fig share
+        # of value matters most where there are figures to share it.
+        targets = [(r["item_id"], "S") for r in conn.execute(
+            """SELECT i.item_id FROM items i
+               LEFT JOIN (SELECT DISTINCT set_id FROM set_minifigs) sm
+                 ON sm.set_id = i.item_id
+               WHERE i.item_type = 'S' AND sm.set_id IS NULL
+                 AND i.item_id IN (SELECT DISTINCT item_id FROM price_snapshots)
+               ORDER BY COALESCE(i.parts, 0) DESC""")]
     elif scope == "priority":
         # What an unattended nightly run should spend its budget on, in
         # the order it matters. `gaps` walks the catalog by id and would
@@ -437,9 +455,12 @@ def main():
     ap = argparse.ArgumentParser(description="Refresh prices across sources")
     ap.add_argument("--item", help="single item id, e.g. 75192 or sw0636")
     ap.add_argument("--scope", default="portfolio",
-                    choices=["portfolio", "priority", "stale", "theme", "gaps", "all"],
+                    choices=["portfolio", "priority", "stale", "theme", "gaps",
+                             "inventories", "all"],
                     help="priority = owned, wishlist, figs of owned sets, held "
-                         "themes, then everything else (for unattended runs)")
+                         "themes, then everything else (for unattended runs); "
+                         "inventories = scanned sets whose minifig list was "
+                         "never stored (pair with --inventory-only)")
     ap.add_argument("--theme", help="theme name for --scope theme, "
                                     "e.g. \"Super Heroes Marvel\"")
     ap.add_argument("--force", action="store_true",
