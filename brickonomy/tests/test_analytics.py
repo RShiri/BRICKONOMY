@@ -304,3 +304,51 @@ class TestThemeScanScope:
 
         assert seen == ["76031", "sh0167"]     # sets first, then their figs
         assert "10283" not in seen             # other themes untouched
+
+
+class TestGrowthNeedsARealSpan:
+    """Annualizing raises the observed span to the power of 365/span, so a
+    short window multiplies its own noise. A 5% drift between two scrapes a
+    fortnight apart came out as +249%/yr and topped the growth sort."""
+
+    def _series(self, conn, item_id, points):
+        dbq.upsert_item(conn, item_id, name="Set", item_type="S", year=2016)
+        for when, price in points:
+            dbq.insert_snapshot(conn, item_id, "blended", "new", "market",
+                                "ILS", market_price=price, scraped_at=when)
+        conn.commit()
+
+    def test_a_fortnight_is_not_enough_to_annualize(self, tmp_path):
+        conn = dbq.connect(db_path=str(tmp_path / "g.db"))
+        try:
+            # The real 76051 numbers: 5% over 15 days, which annualizes to
+            # roughly +249%.
+            self._series(conn, "76051", [("2026-08-12T00:00:00", 461.60),
+                                         ("2026-08-27T00:00:00", 485.94)])
+            assert growth_mod.observed_growth(conn, "76051", "new") is None
+        finally:
+            conn.close()
+
+    def test_a_full_quarter_is(self, tmp_path):
+        conn = dbq.connect(db_path=str(tmp_path / "g.db"))
+        try:
+            self._series(conn, "76051", [("2026-01-01T00:00:00", 400.0),
+                                         ("2026-07-01T00:00:00", 440.0)])
+            g = growth_mod.observed_growth(conn, "76051", "new")
+            assert g is not None and 18 < g < 22   # 10% over half a year
+        finally:
+            conn.close()
+
+    def test_a_short_span_falls_back_to_growth_against_retail(self, tmp_path):
+        conn = dbq.connect(db_path=str(tmp_path / "g.db"))
+        try:
+            self._series(conn, "76051", [("2026-08-12T00:00:00", 461.60),
+                                         ("2026-08-27T00:00:00", 485.94)])
+            dbq.upsert_item(conn, "76051", retail_price=100.0,
+                            retail_currency="ILS")
+            conn.commit()
+            value, basis = growth_mod.best_growth_estimate(conn, "76051")
+            assert basis == "retail-cagr", "not the fortnight's noise"
+            assert value is not None
+        finally:
+            conn.close()

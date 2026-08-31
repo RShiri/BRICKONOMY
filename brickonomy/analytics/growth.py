@@ -4,7 +4,18 @@ from datetime import datetime
 from .. import db as dbq
 from ..currency import convert
 
-MIN_SPAN_DAYS = 7   # snapshot-to-snapshot growth needs at least this span
+# Annualizing turns the observed span into a yearly rate by raising it to the
+# power of 365/span, so a short window multiplies its own noise. At 7 days that
+# factor is 52: set 76051 drifted from 461.60 to 485.94 over a fortnight — a
+# 5% wiggle between two scrapes — and came out as +249%/yr, which put it top of
+# the growth sort on the Sets page and made it its theme's best performer.
+#
+# 90 days is the usual floor for quoting an annualized rate. It costs four
+# items here, and those four are exactly the noisy ones (+249%, -47%, -31%,
+# +14%, all from spans under three weeks); every rate that survives is inside
+# ±100%/yr. An item below the floor falls back to growth against retail, which
+# is the sounder long-run measure anyway.
+MIN_SPAN_DAYS = 90
 
 
 def series(conn, item_id, condition="new", source="blended"):
