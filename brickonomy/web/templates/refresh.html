@@ -85,7 +85,10 @@
     </div>
     <div style="color:var(--muted);font-size:12px;margin-top:10px">
       Scanning is deliberately slow — a few seconds between requests, about half a minute per set.
-      Schedule it with cron: <code>0 6 * * * cd &lt;repo&gt; &amp;&amp; python -m brickonomy.refresh --scope stale</code>
+      To run it unattended, use the batch file rather than this button —
+      <code>scan_nightly.bat</code> logs each run and keeps a fortnight of logs.
+      On Windows: <code>schtasks /create /tn "Brickonomy nightly scan" /tr "&lt;repo&gt;\scan_nightly.bat" /sc daily /st 02:00</code>.
+      Elsewhere, cron: <code>0 2 * * * cd &lt;repo&gt; &amp;&amp; python -m brickonomy.refresh --scope priority --limit 150</code>
     </div>
 
     <h3 style="margin-top:18px">3 · Catalog &amp; publishing</h3>

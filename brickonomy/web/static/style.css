@@ -86,6 +86,11 @@ nav.tabs a:not(.active):hover { background: var(--surface-2); color: var(--ink);
 .btn-ghost:hover { border-color: var(--accent); color: #bcd4ff; }
 .btn-danger { color: var(--down); border-color: rgba(230,103,103,.4); }
 a.btn-ghost, a.btn-primary { line-height: 1.5; }
+/* A disabled button that still glows and shows a pointer reads as clickable.
+   The Start scan button is disabled whenever a scan is already running. */
+.btn-primary:disabled, .btn-ghost:disabled {
+  opacity: .45; cursor: not-allowed; box-shadow: none; filter: grayscale(.6);
+}
 :is(button, a, input, select):focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 
 main { max-width: 1100px; margin: 0 auto; padding: 22px 24px 60px; }
