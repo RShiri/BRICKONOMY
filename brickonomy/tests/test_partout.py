@@ -250,3 +250,65 @@ class TestLoneLowball:
     def test_it_never_empties_the_list(self):
         kept = drop_lone_lowball(self._offers([1.0, 2.0, 3.0, 4.0, 5.0]))
         assert kept, "something must survive"
+
+
+class TestFigShares:
+    """The app has always known which sets are worth more taken apart, and
+    only ever said so about sets on the market. A set already on the shelf is
+    the more useful case."""
+
+    def _seed(self, conn, set_id, set_value, figs):
+        dbq.upsert_item(conn, set_id, name="Set", item_type="S", year=2016)
+        dbq.insert_snapshot(conn, set_id, "blended", "used", "market", "ILS",
+                            market_price=set_value)
+        dbq.upsert_set_minifigs(conn, set_id,
+                                [{"id": f, "name": "Fig", "qty": q}
+                                 for f, q, _ in figs])
+        for fig_id, _qty, value in figs:
+            dbq.upsert_item(conn, fig_id, name="Fig", item_type="M")
+            if value:
+                dbq.insert_snapshot(conn, fig_id, "blended", "used", "market",
+                                    "ILS", market_price=value)
+        conn.commit()
+
+    def test_a_fig_heavy_set_is_flagged(self, conn):
+        # 100 of figures against a set that fetches 110: 91%.
+        self._seed(conn, "76049", 110.0, [("sh0001", 1, 60.0), ("sh0002", 1, 40.0)])
+        s = partout.fig_shares(conn, "used")["76049"]
+        assert round(s["pct"]) == 91 and s["part_out"] is True
+
+    def test_a_parts_heavy_set_is_not(self, conn):
+        self._seed(conn, "75192", 1000.0, [("sw0001", 1, 50.0)])
+        assert partout.fig_shares(conn, "used")["75192"]["part_out"] is False
+
+    def test_quantity_counts(self, conn):
+        # Four of the same figure, not one.
+        self._seed(conn, "76049", 100.0, [("sh0001", 4, 30.0)])
+        assert partout.fig_shares(conn, "used")["76049"]["pct"] == 120.0
+
+    def test_an_unpriced_figure_is_admitted_not_counted_as_zero(self, conn):
+        self._seed(conn, "76049", 100.0,
+                   [("sh0001", 1, 90.0), ("sh0002", 1, None)])
+        s = partout.fig_shares(conn, "used")["76049"]
+        assert s["priced"] == 1 and s["figs"] == 2
+        assert s["partial"] is True, "the real share is higher than reported"
+
+    def test_a_set_with_no_price_of_its_own_is_absent(self, conn):
+        dbq.upsert_item(conn, "76049", name="Set", item_type="S")
+        dbq.upsert_set_minifigs(conn, "76049",
+                                [{"id": "sh0001", "name": "F", "qty": 1}])
+        dbq.upsert_item(conn, "sh0001", name="F", item_type="M")
+        dbq.insert_snapshot(conn, "sh0001", "blended", "used", "market", "ILS",
+                            market_price=50.0)
+        conn.commit()
+        assert "76049" not in partout.fig_shares(conn, "used")
+
+    def test_the_conditions_are_kept_apart(self, conn):
+        self._seed(conn, "76049", 110.0, [("sh0001", 1, 100.0)])
+        dbq.insert_snapshot(conn, "76049", "blended", "new", "market", "ILS",
+                            market_price=1000.0)
+        dbq.insert_snapshot(conn, "sh0001", "blended", "new", "market", "ILS",
+                            market_price=100.0)
+        conn.commit()
+        assert partout.fig_shares(conn, "used")["76049"]["part_out"] is True
+        assert partout.fig_shares(conn, "new")["76049"]["part_out"] is False

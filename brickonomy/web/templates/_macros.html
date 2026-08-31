@@ -50,6 +50,16 @@
   {%- endif -%}
 {%- endmacro %}
 
+{# A set you already own that is worth more in pieces. /partout answers this
+   for sets on the market; nothing answered it for the shelf. #}
+{% macro part_out_chip(share, ccy) -%}
+  {%- if share and share.part_out -%}
+  <span class="chip" style="color:var(--ok);border-color:var(--ok)"
+        title="Its {{ share.figs }} minifigure{{ ' is' if share.figs == 1 else 's are' }} worth {{ share.value|money(ccy) }} — {{ '%.0f'|format(share.pct) }}% of what the set itself fetches.{% if share.partial %} Only {{ share.priced }} of {{ share.figs }} have been priced, so the real share is higher.{% endif %} Selling the figures separately would beat selling it whole.">
+    ✂ worth more in pieces</span>
+  {%- endif -%}
+{%- endmacro %}
+
 {% macro buy_window_chip(w) -%}
   {%- if w and w.fire -%}
   <span class="chip" style="color:var(--ok);border-color:var(--ok)"

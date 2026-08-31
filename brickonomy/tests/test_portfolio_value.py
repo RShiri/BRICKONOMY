@@ -87,18 +87,51 @@ class TestHistoryCoverage:
     so an early date measured how much of the collection had a price rather
     than what it was worth — a line that rose as the scanner caught up."""
 
-    def test_days_before_the_collection_is_covered_are_not_plotted(self, app):
+    def test_a_thin_early_day_is_declared_not_passed_off_as_a_total(self, app):
         client, path = app
-        # 75192 was scanned in January; 10283 only in August. A January point
-        # would show the portfolio at 400 and imply it tripled since.
+        # 75192 was scanned in January; 10283 only in August. Taken at face
+        # value the January point shows the portfolio at 400 and implies it
+        # tripled since — when all that happened is that the second set got
+        # a price.
         hold(path, "75192", "used", 1000.0, 400.0, when="2026-01-05T00:00:00")
         hold(path, "10283", "used", 2000.0, 800.0, when="2026-08-05T00:00:00")
         hold(path, "75192", "used", 1000.0, 400.0, when="2026-08-05T00:00:00")
 
         data = client.get("/api/portfolio/history").json()
         assert data["tracked"] == 2
-        assert [p["t"] for p in data["series"]] == ["2026-08-05"]
-        assert data["series"][0]["v"] == pytest.approx(1200.0)
+        # Too little history to trim any of it away — dropping days here would
+        # leave a chart of one point — so the January day is kept and its
+        # thinness reported instead.
+        assert data["thin_points"] == 1
+        assert data["min_covered"] == 1
+        assert data["series"][-1]["t"] == "2026-08-05"
+        assert data["series"][-1]["v"] == pytest.approx(1200.0)
+
+    def test_a_long_history_still_trims_its_leading_ramp(self, app):
+        client, path = app
+        # Long enough that the whole ramp can go and still leave a readable
+        # line: three thin days trimmed from eight leaves five.
+        for day in ("01", "02", "03", "04", "05", "06", "07", "08"):
+            hold(path, "75192", "used", 1000.0, 400.0,
+                 when=f"2026-08-{day}T00:00:00")
+        hold(path, "10283", "used", 2000.0, 800.0, when="2026-08-04T00:00:00")
+
+        data = client.get("/api/portfolio/history").json()
+        assert data["series"][0]["t"] == "2026-08-04", "the ramp is gone"
+        assert data["thin_points"] == 0
+
+    def test_the_floor_stops_the_trim_eating_the_whole_chart(self, app):
+        client, path = app
+        # Six days with a ramp of three: trimming all three would leave three
+        # points, so the floor keeps the last of them and declares it.
+        for day in ("01", "02", "03", "04", "05", "06"):
+            hold(path, "75192", "used", 1000.0, 400.0,
+                 when=f"2026-08-{day}T00:00:00")
+        hold(path, "10283", "used", 2000.0, 800.0, when="2026-08-04T00:00:00")
+
+        data = client.get("/api/portfolio/history").json()
+        assert len(data["series"]) == 4
+        assert data["thin_points"] == 1
 
     def test_the_last_point_equals_what_the_portfolio_is_worth_today(self, app):
         client, path = app
@@ -218,3 +251,56 @@ class TestDeltaMatchesTheCondition:
         movers = html[html.index("Top gainers"):html.index("Best deals right now")]
         assert "50.0%" in movers
         assert "100.0%" not in movers, "not the sealed series doubling"
+
+
+class TestHistoryKeepsAReadableLine:
+    """The trim threshold is a share of the coverage finally reached, and that
+    figure grows — a scan discovering four more sets pushed every earlier day
+    below it and collapsed 226 days of history to a single point, whose time
+    axis then spanned a millisecond."""
+
+    def _at(self, path, item_id, when, value):
+        c = dbq.connect(db_path=path)
+        dbq.upsert_item(c, item_id, name="Set", item_type="S")
+        dbq.upsert_portfolio(c, item_id, owned=1, condition="used")
+        dbq.insert_snapshot(c, item_id, "blended", "used", "market", "ILS",
+                            market_price=value, scraped_at=when)
+        c.commit()
+        c.close()
+
+    def test_a_late_arrival_does_not_erase_the_history(self, app):
+        client, path = app
+        for i, day in enumerate(("01", "02", "03", "04", "05"), start=1):
+            self._at(path, "75192", f"2026-08-{day}T00:00:00", 100.0 * i)
+        # A set discovered today, which moves the coverage bar for every
+        # earlier day.
+        self._at(path, "10283", "2026-08-05T00:00:00", 50.0)
+
+        data = client.get("/api/portfolio/history").json()
+        assert len(data["series"]) >= 4, "history must survive a new arrival"
+
+    def test_the_thin_days_are_declared_rather_than_hidden(self, app):
+        client, path = app
+        for i, day in enumerate(("01", "02", "03", "04", "05"), start=1):
+            self._at(path, "75192", f"2026-08-{day}T00:00:00", 100.0 * i)
+        self._at(path, "10283", "2026-08-05T00:00:00", 50.0)
+
+        data = client.get("/api/portfolio/history").json()
+        assert data["thin_points"] > 0
+        assert data["min_covered"] < data["tracked"]
+
+    def test_a_fully_covered_history_declares_nothing_thin(self, app):
+        client, path = app
+        for i, day in enumerate(("01", "02", "03", "04", "05"), start=1):
+            self._at(path, "75192", f"2026-08-{day}T00:00:00", 100.0 * i)
+        data = client.get("/api/portfolio/history").json()
+        assert data["thin_points"] == 0
+        assert len(data["series"]) == 5
+
+    def test_the_last_point_is_still_todays_total(self, app):
+        client, path = app
+        for i, day in enumerate(("01", "02", "03", "04", "05"), start=1):
+            self._at(path, "75192", f"2026-08-{day}T00:00:00", 100.0 * i)
+        self._at(path, "10283", "2026-08-05T00:00:00", 50.0)
+        series = client.get("/api/portfolio/history").json()["series"]
+        assert series[-1]["v"] == pytest.approx(550.0)   # 500 + 50

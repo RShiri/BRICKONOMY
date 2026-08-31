@@ -115,6 +115,9 @@ def display_ccy(request: Request) -> str:
 # plotting. Below this the total is dominated by which sets happen to have a
 # price yet rather than by what they are worth.
 PORTFOLIO_CHART_COVERAGE = 0.9
+# ...but never trim below this many days. A one-point chart is not a chart,
+# and its time axis degenerates to a millisecond.
+PORTFOLIO_CHART_MIN_POINTS = 4
 
 
 def img_url(item_id: str, item_type: str = "S") -> str:
@@ -1015,11 +1018,16 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
         ccy = display_ccy(request)
         rows = dbq.get_portfolio(conn)
         entries, total_value, total_paid, total_qty = [], 0.0, 0.0, 0
+        # Built once per condition actually present, not once per row.
+        fig_shares_by_condition = {}
         for row in rows:
             # Value each holding at the condition it is actually in. A used
             # set priced at sealed rates roughly doubles it, and most of a
             # real collection is used.
+            # (fig_shares_by_condition is built at most twice, not per row.)
             condition = "used" if (row["condition"] or "new") == "used" else "new"
+            fig_shares = fig_shares_by_condition.setdefault(
+                condition, partout_mod.fig_shares(conn, condition, ccy))
             val, _, _ = current_value(conn, row["item_id"], condition)
             v = disp(conn, val, "ILS", ccy)
             paid = disp(conn, row["purchase_price"], row["purchase_currency"] or "USD", ccy) \
@@ -1040,6 +1048,10 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
                                             condition=condition, days=30),
                 "signal": signals_mod.sell_signal(
                     conn, row["item_id"], paid=paid, condition=condition),
+                # The app knows which sets are worth more in pieces and only
+                # ever said so about sets on the market. It is a more useful
+                # thing to know about one already on your shelf.
+                "fig_share": fig_shares.get(row["item_id"]),
             })
             total_value += (v or 0) * qty
             total_paid += (paid or 0) * qty
@@ -1108,18 +1120,37 @@ def portfolio_history(request: Request):
         # as a portfolio appreciating when it is only a scanner catching up.
         # Start where the collection is substantially covered instead.
         total = len(per_item)
-        series, last_known = [], {}
+        full, last_known = [], {}
         for d in sorted(dates):
             for iid, daily in per_item.items():
                 if d in daily:
                     last_known[iid] = daily[d]
-            if total and len(last_known) < total * PORTFOLIO_CHART_COVERAGE:
-                continue
-            series.append({"t": d, "v": round(sum(last_known.values()), 2),
-                           "n": len(last_known)})
+            full.append({"t": d, "v": round(sum(last_known.values()), 2),
+                         "n": len(last_known)})
+
+        # Trim the leading ramp, where the total is low because sets had not
+        # been scanned rather than because they were worth less.
+        #
+        # The threshold is a share of the coverage finally reached, and that
+        # figure grows: a scan that discovers four more sets pushes every
+        # earlier day below it. Left unbounded this collapsed 226 days of
+        # history to a single point the first time coverage moved. So it keeps
+        # a floor of days whatever the coverage, and says when those early
+        # days are thin instead of hiding them.
+        cut = 0
+        while (cut < len(full) - PORTFOLIO_CHART_MIN_POINTS
+               and total and full[cut]["n"] < total * PORTFOLIO_CHART_COVERAGE):
+            cut += 1
+        series = full[cut:]
+        thin = [p for p in series if total and p["n"] < total * PORTFOLIO_CHART_COVERAGE]
         return JSONResponse({"currency": ccy, "series": series,
-                             "tracked": total, "covered_from": series[0]["t"]
-                             if series else None})
+                             "tracked": total,
+                             "covered_from": series[0]["t"] if series else None,
+                             # Days kept only to leave a readable line, whose
+                             # total covers fewer sets than today's.
+                             "thin_points": len(thin),
+                             "min_covered": min((p["n"] for p in series),
+                                                default=0)})
     finally:
         conn.close()
 

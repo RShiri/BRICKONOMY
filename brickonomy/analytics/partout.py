@@ -31,6 +31,11 @@ SELLER_FEE_RATE = 0.10        # BrickLink commission + payment handling
 REALISATION_RATE = 0.70       # share of the part-out total that ever sells
 STALE_POV_DAYS = 30
 
+# Figures at or above this share of the set's own price mean the set is worth
+# more taken apart than kept whole. The set page has used this number since it
+# was written; naming it here stops the portfolio disagreeing with it.
+FIG_PARTOUT_PCT = 80.0
+
 
 def opportunities(conn, ccy="ILS", limit=None, max_budget=None,
                   include_stale=True):
@@ -134,3 +139,47 @@ def opportunities(conn, ccy="ILS", limit=None, max_budget=None,
 
     out.sort(key=lambda r: r["adjusted_margin"], reverse=True)
     return out[:limit] if limit else out
+
+
+def fig_shares(conn, condition="used", ccy="ILS"):
+    """{set_id: {"pct", "figs", "priced", "value"}} for every set with a
+    figure list — what fraction of the set's own price sits in its minifigures.
+
+    The set page answers this one set at a time. The portfolio needs it for
+    every holding at once, and doing that per row would be a query per figure
+    per set; both values come from one batched lookup instead.
+
+    `priced` is reported alongside `pct` because an unscanned figure counts as
+    nothing, so a partial answer understates the share rather than admitting
+    it is incomplete.
+    """
+    from .. import db as dbq
+    from ..currency import convert
+
+    values = dbq.latest_values(conn, condition)
+    out = {}
+    for row in conn.execute(
+            "SELECT set_id, fig_id, qty FROM set_minifigs"):
+        e = out.setdefault(row["set_id"],
+                           {"total": 0.0, "figs": 0, "priced": 0})
+        e["figs"] += 1
+        v = values.get(row["fig_id"])
+        if v:
+            e["priced"] += 1
+            e["total"] += v * (row["qty"] or 1)
+
+    shares = {}
+    for set_id, e in out.items():
+        set_value = values.get(set_id)
+        if not set_value or not e["total"]:
+            continue
+        pct = e["total"] / set_value * 100.0
+        shares[set_id] = {
+            "pct": pct,
+            "figs": e["figs"],
+            "priced": e["priced"],
+            "value": convert(conn, e["total"], "ILS", ccy) or e["total"],
+            "partial": e["priced"] < e["figs"],
+            "part_out": pct >= FIG_PARTOUT_PCT,
+        }
+    return shares

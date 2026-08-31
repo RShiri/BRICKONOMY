@@ -93,7 +93,7 @@
     {% else %}
     <tr>
       <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<a href="{{ u('/sets/' ~ e.item_id) }}">{{ e.item_id }} {{ e.name }}</a>
-          {{ m.sell_chip(e.signal) }}</td>
+          {{ m.sell_chip(e.signal) }}{{ m.part_out_chip(e.fig_share, ccy) }}</td>
       <td>{{ e.theme or '—' }}</td>
       <td class="num" data-v="{{ e.qty }}">{{ e.qty }}</td>
       <td class="num" data-v="{{ e.paid or '' }}">{{ e.paid|money(ccy) if e.paid else '—' }}</td>
