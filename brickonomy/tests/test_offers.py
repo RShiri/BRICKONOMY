@@ -125,3 +125,61 @@ class TestInstructionListings:
     ])
     def test_a_whole_set_that_mentions_instructions_survives(self, text):
         assert looks_like_a_component(text) is False
+
+
+class TestOffersCountAsWork:
+    """An item whose prices are fresh still needs its whole-item listings, or
+    its cheapest-listing figure keeps coming from the price guide."""
+
+    def _seed(self, tmp_path, with_offers):
+        from brickonomy.config import get_config
+        path = str(tmp_path / "w.db")
+        c = dbq.connect(db_path=path)
+        dbq.upsert_item(c, "76049", name="Avenjet", item_type="S")
+        dbq.upsert_set_parts(c, "76049", [{"part_no": "3001",
+                                           "part_name": "Brick 2 x 4",
+                                           "color_id": 5, "color_name": "Red",
+                                           "qty": 1}])
+        for src in get_config().sources_enabled:
+            dbq.insert_snapshot(c, "76049", src, "new", "stock", "ILS",
+                                price_avg=10.0)
+        if with_offers:
+            dbq.insert_snapshot(c, "76049", "bricklink", "used", "offers",
+                                "ILS", raw=[{"price": 10.0, "complete": True}])
+        c.commit()
+        return c
+
+    def test_a_fresh_item_without_offers_still_needs_scanning(self, tmp_path):
+        from brickonomy.config import get_config
+        from brickonomy.refresh import _needs_work
+        c = self._seed(tmp_path, with_offers=False)
+        try:
+            assert _needs_work(c, get_config(), "76049", "S", False, False) is True
+        finally:
+            c.close()
+
+    def test_once_it_has_them_it_is_finished(self, tmp_path):
+        from brickonomy.config import get_config
+        from brickonomy.refresh import _needs_work
+        c = self._seed(tmp_path, with_offers=True)
+        try:
+            assert _needs_work(c, get_config(), "76049", "S", False, False) is False
+        finally:
+            c.close()
+
+    def test_the_offers_scope_finds_priced_items_that_lack_them(self, tmp_path):
+        from brickonomy.refresh import select_targets
+        c = dbq.connect(db_path=str(tmp_path / "s.db"))
+        try:
+            for iid in ("76049", "75192"):
+                dbq.upsert_item(c, iid, name="Set", item_type="S")
+                dbq.insert_snapshot(c, iid, "blended", "new", "market", "ILS",
+                                    market_price=100.0)
+            dbq.insert_snapshot(c, "75192", "bricklink", "used", "offers",
+                                "ILS", raw=[{"price": 10.0, "complete": True}])
+            # An unpriced item cannot show a buy signal, so it is not the point.
+            dbq.upsert_item(c, "10283", name="Unpriced", item_type="S")
+            c.commit()
+            assert [i for i, _ in select_targets(c, scope="offers")] == ["76049"]
+        finally:
+            c.close()

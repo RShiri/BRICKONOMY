@@ -299,6 +299,11 @@ class TestBudgetCountsWork:
                 for src in get_config().sources_enabled:
                     dbq.insert_snapshot(c, iid, src, "new", "stock", "ILS",
                                         price_avg=10.0)
+                # Fresh prices are not the whole of it: an item with no
+                # whole-item listings still has work to do, so seed those too
+                # or "fresh" here would not mean finished.
+                dbq.insert_snapshot(c, iid, "bricklink", "used", "offers", "ILS",
+                                    raw=[{"price": 10.0, "complete": True}])
         c.commit()
         c.close()
         real = dbq.connect
