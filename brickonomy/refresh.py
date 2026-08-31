@@ -240,8 +240,19 @@ def _refresh_minifigs(conn, set_id, force=False, log=print):
     figs, err = BrickLinkSource().fetch_minifig_inventory(set_id)
     if figs:
         dbq.upsert_set_minifigs(conn, set_id, figs)
+        # Rebrickable carries no year for most figures, and the year drives
+        # the lifecycle phase, the growth estimate and the retirement window.
+        # A figure's debut is the release year of the earliest set it appears
+        # in, which is exactly what has just been discovered — so date it here
+        # rather than leaving it for whenever someone runs the cleanup.
+        item = dbq.get_item(conn, set_id)
+        year = item["year"] if item else None
         for f in figs:  # figs become first-class items with their own pages
             dbq.upsert_item(conn, f["id"], item_type="M", name=f["name"] or None)
+            if year:
+                conn.execute(
+                    "UPDATE items SET year=? WHERE item_id=? "
+                    "AND (year IS NULL OR year=0 OR year>?)", (year, f["id"], year))
         log(f"  ⚙ minifig inventory: {len(figs)} figs")
     elif err:
         log(f"  ✘ minifig inventory: {err}")

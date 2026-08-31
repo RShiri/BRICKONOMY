@@ -87,3 +87,41 @@ class TestMinifigYears:
         self._seed(conn, "sh0177", [("76051", 2016)])
         backfill_minifig_years(conn, dry_run=True, log=lambda *a: None)
         assert not dbq.get_item(conn, "sh0177")["year"]
+
+
+class TestFigYearsAreSetWhenDiscovered:
+    """Dating figures should not wait for someone to remember to run the
+    cleanup — the year is known at the moment the inventory is fetched."""
+
+    def test_storing_an_inventory_dates_its_figures(self, conn, monkeypatch):
+        import brickonomy.refresh as rf
+        dbq.upsert_item(conn, "76051", name="Airport Battle", item_type="S",
+                        year=2016)
+        conn.commit()
+        monkeypatch.setattr(
+            rf, "BrickLinkSource", None, raising=False)
+
+        class _Fake:
+            def fetch_minifig_inventory(self, set_id):
+                return [{"id": "sh0254", "name": "Iron Man", "qty": 1}], None
+
+        import brickonomy.scrapers.bricklink as bl
+        monkeypatch.setattr(bl, "BrickLinkSource", lambda: _Fake())
+        rf._refresh_minifigs(conn, "76051", log=lambda *a: None)
+        assert dbq.get_item(conn, "sh0254")["year"] == 2016
+
+    def test_an_earlier_set_wins(self, conn, monkeypatch):
+        import brickonomy.refresh as rf
+        import brickonomy.scrapers.bricklink as bl
+        for set_id, year in (("76051", 2016), ("76049", 2015)):
+            dbq.upsert_item(conn, set_id, name="Set", item_type="S", year=year)
+        conn.commit()
+
+        class _Fake:
+            def fetch_minifig_inventory(self, set_id):
+                return [{"id": "sh0177", "name": "Cap", "qty": 1}], None
+
+        monkeypatch.setattr(bl, "BrickLinkSource", lambda: _Fake())
+        rf._refresh_minifigs(conn, "76051", log=lambda *a: None)
+        rf._refresh_minifigs(conn, "76049", force=True, log=lambda *a: None)
+        assert dbq.get_item(conn, "sh0177")["year"] == 2015, "the debut, not the latest"
