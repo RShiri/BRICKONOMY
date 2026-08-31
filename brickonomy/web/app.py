@@ -119,6 +119,10 @@ PORTFOLIO_CHART_COVERAGE = 0.9
 # and its time axis degenerates to a millisecond.
 PORTFOLIO_CHART_MIN_POINTS = 4
 
+# How many items /compare will hold. Four columns still read on a phone once
+# the table scrolls; more turns the comparison into a spreadsheet.
+COMPARE_MAX = 4
+
 
 def img_url(item_id: str, item_type: str = "S") -> str:
     if item_type == "M" or any(c.isalpha() for c in item_id):
@@ -984,6 +988,112 @@ def search_index(request: Request):
                  values.get(r["item_id"], (0, 0))[1]]
                 for r in rows
             ],
+        })
+    finally:
+        conn.close()
+
+
+@app.get("/compare")
+def compare_page(request: Request):
+    """Two to four items side by side.
+
+    Rendered entirely on the client from /api/index and the per-item facts and
+    history files, so the published site compares any pair exactly as the
+    local app does. A server-rendered version could not be exported: the
+    comparison is chosen at view time and there is no fixed set of pages to
+    write.
+    """
+    conn = get_conn()
+    try:
+        return templates.TemplateResponse(request, "compare.html", ctx(
+            request, conn, max_items=COMPARE_MAX))
+    finally:
+        conn.close()
+
+
+@app.get("/api/sets/{item_id}/facts")
+def facts_api(request: Request, item_id: str):
+    """The comparable numbers for one item, in the display currency.
+
+    /compare renders from this rather than from a server-built page, so the
+    published site can compare any two items exactly as the local app does —
+    the export writes one of these per scanned item, beside its history.
+    """
+    conn = get_conn()
+    try:
+        ccy = display_ccy(request)
+        item_id = normalize_item_id(item_id)
+        row = dbq.get_item(conn, item_id)
+        if not row:
+            return JSONResponse({"error": "unknown item"}, status_code=404)
+
+        values = {}
+        for condition in ("new", "used"):
+            val, conf, _ = current_value(conn, item_id, condition)
+            values[condition] = {
+                "value": disp(conn, val, "ILS", ccy),
+                "confidence": conf,
+                "velocity": velocity_mod.velocity(conn, item_id, condition),
+            }
+
+        growth, growth_basis = growth_mod.best_growth_estimate(conn, item_id)
+        _, vs_retail = growth_mod.growth_vs_retail(conn, item_id)
+        fc = forecast_mod.forecast(conn, item_id)
+        horizon = None
+        if fc and fc.get("horizons"):
+            far = max(fc["horizons"], key=lambda k: fc["horizons"][k]["year"])
+            h = fc["horizons"][far]
+            horizon = {"year": h["year"],
+                       "value": disp(conn, h["value"], "ILS", ccy)}
+
+        pov = {}
+        for condition in ("new", "used"):
+            po = dbq.get_part_out(conn, item_id, condition=condition)
+            pov[condition] = (disp(conn, po["pov_total"], po["currency"], ccy)
+                              if po and po["pov_total"] else None)
+
+        share = partout_mod.fig_shares(conn, "used", ccy).get(item_id)
+        cheapest = None
+        offers = (cheapest_stock(conn, item_id, "used")
+                  or cheapest_stock(conn, item_id, "new"))
+        if offers:
+            src, best = min(offers.items(), key=lambda kv: kv[1]["price"])
+            cheapest = {"source": src,
+                        "price": disp(conn, best["price"], best["currency"], ccy)}
+
+        parts = row["parts"] or 0
+        value_new = values["new"]["value"]
+        return JSONResponse({
+            "id": item_id,
+            "name": row["name"],
+            "theme": row["theme"],
+            "year": row["year"],
+            "parts": parts or None,
+            "minifigs": row["minifigs"] or None,
+            "item_type": row["item_type"],
+            "currency": ccy,
+            "retail_native": row["retail_price"],
+            "retail_ccy": row["retail_currency"] or "USD",
+            "retail": disp(conn, row["retail_price"],
+                           row["retail_currency"] or "USD", ccy)
+                      if row["retail_price"] else None,
+            "value_new": value_new,
+            "value_used": values["used"]["value"],
+            "confidence": values["new"]["confidence"] or values["used"]["confidence"],
+            "ppp": round(value_new / parts, 3) if value_new and parts else None,
+            "growth": growth,
+            "growth_basis": growth_basis,
+            "vs_retail": vs_retail,
+            "forecast": horizon,
+            "part_out_new": pov["new"],
+            "part_out_used": pov["used"],
+            "fig_share": share and {"pct": share["pct"], "figs": share["figs"],
+                                    "priced": share["priced"],
+                                    "part_out": share["part_out"]},
+            "sales_6mo": (values["used"]["velocity"] or {}).get("sales")
+                         or (values["new"]["velocity"] or {}).get("sales"),
+            "cheapest": cheapest,
+            "phase": lifecycle.phase(row["year"], row["theme"])["phase"],
         })
     finally:
         conn.close()

@@ -193,8 +193,12 @@ def _crawl(webapp, out_dir: str, quiet: bool):
         n_pages += save(f"/sets?theme={theme}", f"sets/theme-{webapp.slugify(theme)}.html")
     for iid in item_ids:
         n_pages += save(f"/sets/{iid}", f"sets/{iid}.html")
+    n_pages += save("/compare", "compare.html")  # client-rendered comparison
     for iid in snap_ids:
         n_json += save(f"/api/sets/{iid}/history", f"api/sets/{iid}/history.json")
+        # /compare reads these. Written for scanned items only — the rest have
+        # nothing to compare beyond what api/index.json already carries.
+        n_json += save(f"/api/sets/{iid}/facts", f"api/sets/{iid}/facts.json")
     # api/portfolio/history.json is NOT written: it is the portfolio's value
     # over time, and publishing it beside an encrypted page would give away
     # exactly what the encryption is protecting. When the page is protected

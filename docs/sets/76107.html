@@ -6,7 +6,7 @@
 <title>76107 Thanos Ultimate Battle · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788152676">
+<link rel="stylesheet" href="../static/style.css?v=1788193104">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -29,6 +29,7 @@
     <a href="../sets/index.html" class="active">Sets</a>
     <a href="../minifigs.html" class="">Minifigs</a>
     <a href="../themes.html" class="">Themes</a>
+    <a href="../compare.html" class="">Compare</a>
     <a href="../deals.html" class="">Deals</a>
     <a href="../partout.html" class="">Part-out</a>
     <a href="../portfolio.html" class="">Portfolio</a>
@@ -75,12 +76,12 @@
       <span class="chip">₪0.39 / part</span>
       
       <span class="chip" id="figPctChip"
-            data-used="106"
-            data-new="114"
+            data-used="100"
+            data-new="100"
             data-partial-used=""
             data-partial-new=""
             title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
-        🧍 106% of value in figs</span>
+        🧍 100% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -211,7 +212,7 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪3.54</div>
+        <div class="value" style="font-size:22px">₪3.52</div>
         <div class="delta up">
           −89% vs theme
         </div>
@@ -273,17 +274,17 @@
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
-              data-figs="301.71"
-              data-parts="74.32"
+              data-figs="264.02"
+              data-parts="112.01"
               data-ccy="ILS"></canvas>
     </div>
     <div style="flex:1;min-width:220px">
       <dl class="kv">
         
         <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
-        <dd>₪302 · 80% of part-out</dd>
+        <dd>₪264 · 70% of part-out</dd>
         <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
-        <dd>₪74.32 · 20% of part-out</dd>
+        <dd>₪112 · 30% of part-out</dd>
         <dt>Part-out total</dt>
         <dd><b>₪376</b></dd>
       </dl>
@@ -425,7 +426,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 5 in this set<span id="figsTotalLabel">, ₪188 together</span></span></h3>
+  <h3>Minifigures <span class="soft">— 5 in this set<span id="figsTotalLabel">, ₪178 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -439,8 +440,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used="₪188"
-         data-total-new="₪302">
+         data-total-used="₪178"
+         data-total-new="₪264">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -458,33 +459,13 @@
     
     
     
-    <a class="figtile" href="../sets/sh0504.html" title="Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet"
-       data-value="59.1" data-name="thanos - large figure, dark blue outfit, medium lavender arms, pearl gold helmet" data-qty="1"
-       data-v-used="59.1" data-v-new="72.54"
-       data-price-used="₪59.10"
-       data-price-new="₪72.54"
-       data-share-used="33.2% of set"
-       data-share-new="27.3% of set">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0504.png" alt="Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">sh0504</div>
-      <div class="figtile-name">Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet</div>
-      <div class="figtile-value">₪59.10</div>
-      <div class="figtile-share">33.2% of set</div>
-    </a>
-    
-    
-    
     <a class="figtile" href="../sets/sh0497as.html" title="Iron Man - Mark 50 Armor, Small Helmet Visor, Wings with Stickers"
-       data-value="54.27" data-name="iron man - mark 50 armor, small helmet visor, wings with stickers" data-qty="1"
-       data-v-used="54.27" data-v-new="81.53"
-       data-price-used="₪54.27"
-       data-price-new="₪81.53"
-       data-share-used="30.5% of set"
-       data-share-new="30.7% of set">
+       data-value="52.72" data-name="iron man - mark 50 armor, small helmet visor, wings with stickers" data-qty="1"
+       data-v-used="52.72" data-v-new="67.1"
+       data-price-used="₪52.72"
+       data-price-new="₪67.10"
+       data-share-used="29.6% of set"
+       data-share-new="25.3% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0497as.png" alt="Iron Man - Mark 50 Armor, Small Helmet Visor, Wings with Stickers" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -492,19 +473,39 @@
       </div>
       <div class="figtile-id">sh0497as</div>
       <div class="figtile-name">Iron Man - Mark 50 Armor, Small Helmet Visor, Wings with Stickers</div>
-      <div class="figtile-value">₪54.27</div>
-      <div class="figtile-share">30.5% of set</div>
+      <div class="figtile-value">₪52.72</div>
+      <div class="figtile-share">29.6% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0504.html" title="Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet"
+       data-value="50.7" data-name="thanos - large figure, dark blue outfit, medium lavender arms, pearl gold helmet" data-qty="1"
+       data-v-used="50.7" data-v-new="74.65"
+       data-price-used="₪50.70"
+       data-price-new="₪74.65"
+       data-share-used="28.5% of set"
+       data-share-new="28.1% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0504.png" alt="Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0504</div>
+      <div class="figtile-name">Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet</div>
+      <div class="figtile-value">₪50.70</div>
+      <div class="figtile-share">28.5% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0497a.html" title="Iron Man - Mark 50 Armor, Small Helmet Visor, Wings without Stickers"
-       data-value="36.16" data-name="iron man - mark 50 armor, small helmet visor, wings without stickers" data-qty="1"
-       data-v-used="36.16" data-v-new="83.33"
-       data-price-used="₪36.16"
-       data-price-new="₪83.33"
-       data-share-used="20.3% of set"
-       data-share-new="31.4% of set">
+       data-value="38.66" data-name="iron man - mark 50 armor, small helmet visor, wings without stickers" data-qty="1"
+       data-v-used="38.66" data-v-new="54.97"
+       data-price-used="₪38.66"
+       data-price-new="₪54.97"
+       data-share-used="21.7% of set"
+       data-share-new="20.7% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0497a.png" alt="Iron Man - Mark 50 Armor, Small Helmet Visor, Wings without Stickers" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -512,19 +513,19 @@
       </div>
       <div class="figtile-id">sh0497a</div>
       <div class="figtile-name">Iron Man - Mark 50 Armor, Small Helmet Visor, Wings without Stickers</div>
-      <div class="figtile-value">₪36.16</div>
-      <div class="figtile-share">20.3% of set</div>
+      <div class="figtile-value">₪38.66</div>
+      <div class="figtile-share">21.7% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0506.html" title="Gamora, Long Reddish Brown Coat"
-       data-value="25.91" data-name="gamora, long reddish brown coat" data-qty="1"
-       data-v-used="25.91" data-v-new="40.36"
-       data-price-used="₪25.91"
-       data-price-new="₪40.36"
-       data-share-used="14.6% of set"
-       data-share-new="15.2% of set">
+       data-value="23.85" data-name="gamora, long reddish brown coat" data-qty="1"
+       data-v-used="23.85" data-v-new="45.81"
+       data-price-used="₪23.85"
+       data-price-new="₪45.81"
+       data-share-used="13.4% of set"
+       data-share-new="17.3% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0506.png" alt="Gamora, Long Reddish Brown Coat" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -532,19 +533,19 @@
       </div>
       <div class="figtile-id">sh0506</div>
       <div class="figtile-name">Gamora, Long Reddish Brown Coat</div>
-      <div class="figtile-value">₪25.91</div>
-      <div class="figtile-share">14.6% of set</div>
+      <div class="figtile-value">₪23.85</div>
+      <div class="figtile-share">13.4% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0499.html" title="Star-Lord (Infinity War)"
-       data-value="12.57" data-name="star-lord (infinity war)" data-qty="1"
-       data-v-used="12.57" data-v-new="23.95"
-       data-price-used="₪12.57"
-       data-price-new="₪23.95"
-       data-share-used="7.1% of set"
-       data-share-new="9.0% of set">
+       data-value="12.2" data-name="star-lord (infinity war)" data-qty="1"
+       data-v-used="12.2" data-v-new="21.49"
+       data-price-used="₪12.20"
+       data-price-new="₪21.49"
+       data-share-used="6.9% of set"
+       data-share-new="8.1% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0499.png" alt="Star-Lord (Infinity War)" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -552,8 +553,8 @@
       </div>
       <div class="figtile-id">sh0499</div>
       <div class="figtile-name">Star-Lord (Infinity War)</div>
-      <div class="figtile-value">₪12.57</div>
-      <div class="figtile-share">7.1% of set</div>
+      <div class="figtile-value">₪12.20</div>
+      <div class="figtile-share">6.9% of set</div>
     </a>
     
   </div>
@@ -568,37 +569,37 @@
       
       
       <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0504.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/sh0504.html"><b>sh0504</b> Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet</a></td>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0497as.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0497as.html"><b>sh0497as</b> Iron Man - Mark 50 Armor, Small Helmet Visor, Wings with Stickers</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="59.1"
-            data-v-used="59.1" data-v-new="72.54"
-            data-price-used="₪59.10"
-            data-price-new="₪72.54"
-            >₪59.10</td>
-        <td class="num figcell-share" data-v="33.222778121310924"
-            data-v-used="33.222778121310924" data-v-new="27.339539441450274"
-            data-share-used="33.2%"
-            data-share-new="27.3%"
-            >33.2%</td>
+        <td class="num figcell-value" data-v="52.72"
+            data-v-used="52.72" data-v-new="67.1"
+            data-price-used="₪52.72"
+            data-price-new="₪67.10"
+            >₪52.72</td>
+        <td class="num figcell-share" data-v="29.6362920906178"
+            data-v-used="29.6362920906178" data-v-new="25.28926242791995"
+            data-share-used="29.6%"
+            data-share-new="25.3%"
+            >29.6%</td>
       </tr>
       
       
       
       <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0497as.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/sh0497as.html"><b>sh0497as</b> Iron Man - Mark 50 Armor, Small Helmet Visor, Wings with Stickers</a></td>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0504.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0504.html"><b>sh0504</b> Thanos - Large Figure, Dark Blue Outfit, Medium Lavender Arms, Pearl Gold Helmet</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="54.27"
-            data-v-used="54.27" data-v-new="81.53"
-            data-price-used="₪54.27"
-            data-price-new="₪81.53"
-            >₪54.27</td>
-        <td class="num figcell-share" data-v="30.507617066726635"
-            data-v-used="30.507617066726635" data-v-new="30.727772961971887"
-            data-share-used="30.5%"
-            data-share-new="30.7%"
-            >30.5%</td>
+        <td class="num figcell-value" data-v="50.7"
+            data-v-used="50.7" data-v-new="74.65"
+            data-price-used="₪50.70"
+            data-price-new="₪74.65"
+            >₪50.70</td>
+        <td class="num figcell-share" data-v="28.500758895946937"
+            data-v-used="28.500758895946937" data-v-new="28.13477556250707"
+            data-share-used="28.5%"
+            data-share-new="28.1%"
+            >28.5%</td>
       </tr>
       
       
@@ -607,16 +608,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0497a.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0497a.html"><b>sh0497a</b> Iron Man - Mark 50 Armor, Small Helmet Visor, Wings without Stickers</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="36.16"
-            data-v-used="36.16" data-v-new="83.33"
-            data-price-used="₪36.16"
-            data-price-new="₪83.33"
-            >₪36.16</td>
-        <td class="num figcell-share" data-v="20.32716847490022"
-            data-v-used="20.32716847490022" data-v-new="31.406173444390006"
-            data-share-used="20.3%"
-            data-share-new="31.4%"
-            >20.3%</td>
+        <td class="num figcell-value" data-v="38.66"
+            data-v-used="38.66" data-v-new="54.97"
+            data-price-used="₪38.66"
+            data-price-new="₪54.97"
+            >₪38.66</td>
+        <td class="num figcell-share" data-v="21.732531339591883"
+            data-v-used="21.732531339591883" data-v-new="20.717596954735612"
+            data-share-used="21.7%"
+            data-share-new="20.7%"
+            >21.7%</td>
       </tr>
       
       
@@ -625,16 +626,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0506.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0506.html"><b>sh0506</b> Gamora, Long Reddish Brown Coat</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="25.91"
-            data-v-used="25.91" data-v-new="40.36"
-            data-price-used="₪25.91"
-            data-price-new="₪40.36"
-            >₪25.91</td>
-        <td class="num figcell-share" data-v="14.565180729664402"
-            data-v-used="14.565180729664402" data-v-new="15.211246372441867"
-            data-share-used="14.6%"
-            data-share-new="15.2%"
-            >14.6%</td>
+        <td class="num figcell-value" data-v="23.85"
+            data-v-used="23.85" data-v-new="45.81"
+            data-price-used="₪23.85"
+            data-price-new="₪45.81"
+            >₪23.85</td>
+        <td class="num figcell-share" data-v="13.40716172915847"
+            data-v-used="13.40716172915847" data-v-new="17.265292277541178"
+            data-share-used="13.4%"
+            data-share-new="17.3%"
+            >13.4%</td>
       </tr>
       
       
@@ -643,16 +644,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0499.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0499.html"><b>sh0499</b> Star-Lord (Infinity War)</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="12.57"
-            data-v-used="12.57" data-v-new="23.95"
-            data-price-used="₪12.57"
-            data-price-new="₪23.95"
-            >₪12.57</td>
-        <td class="num figcell-share" data-v="7.066164483669684"
-            data-v-used="7.066164483669684" data-v-new="9.026495307729997"
-            data-share-used="7.1%"
-            data-share-new="9.0%"
-            >7.1%</td>
+        <td class="num figcell-value" data-v="12.2"
+            data-v-used="12.2" data-v-new="21.49"
+            data-price-used="₪12.20"
+            data-price-new="₪21.49"
+            >₪12.20</td>
+        <td class="num figcell-share" data-v="6.8581707796953175"
+            data-v-used="6.8581707796953175" data-v-new="8.099347981758564"
+            data-share-used="6.9%"
+            data-share-new="8.1%"
+            >6.9%</td>
       </tr>
       
     </tbody>
@@ -660,23 +661,23 @@
     <tfoot>
       <tr class="total"><td>Figs total</td><td class="num"></td>
           <td class="num" id="figFootValue"
-              data-price-used="₪188"
-              data-price-new="₪302"
-              >₪188</td>
+              data-price-used="₪178"
+              data-price-new="₪264"
+              >₪178</td>
           <td class="num" id="figFootShare"
-              data-share-used="106%"
-              data-share-new="114%"
-              >106%</td></tr>
+              data-share-used="100%"
+              data-share-new="100%"
+              >100%</td></tr>
     </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used="Figs are 106% of the used set price → strong part-out candidate."
-       data-note-new="Figs are 114% of the sealed set price → strong part-out candidate.">
+       data-note-used="Figs are 100% of the used set price → strong part-out candidate."
+       data-note-new="Figs are 100% of the sealed set price → strong part-out candidate.">
     
-      Figs are <b>106% of the used set price</b> → strong part-out candidate.
+      Figs are <b>100% of the used set price</b> → strong part-out candidate.
       
     
   </div>
@@ -1579,6 +1580,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788152676"></script>
+<script src="../static/app.js?v=1788193104"></script>
 </body>
 </html>

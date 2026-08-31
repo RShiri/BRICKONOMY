@@ -22,7 +22,11 @@ class Config:
     display_currency: str = "ILS"
     db_path: str = str(REPO_ROOT / "brickonomy.db")
     legacy_db_path: str = str(REPO_ROOT / "bricklink_data.db")
-    portfolio_csv: str = str(REPO_ROOT / "BrickEconomy-Sets(2).csv")
+    # The CSV a bare `python -m brickonomy.importer` reads. The file in the
+    # repo root is an old BrickEconomy export with no Paid column, so running
+    # the importer against it exercised the legacy path and never the current
+    # one. Point it at your own export instead.
+    portfolio_csv: str = str(REPO_ROOT / "portfolio.csv")
     scrape_ttl_days: float = 3.0
     # Opening a set page queues a scan when its newest snapshot is older than
     # this (or it has none at all). 0 disables the behaviour entirely.

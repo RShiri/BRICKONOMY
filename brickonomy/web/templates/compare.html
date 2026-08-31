@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Compare · Brickonomy{% endblock %}
+{% block content %}
+{# Everything below is filled in by app.js from /api/index, /api/sets/<id>/facts
+   and /api/sets/<id>/history. Rendering on the client rather than the server is
+   what lets this page work on the published site: the comparison is chosen at
+   view time, so there is no fixed set of pages an exporter could write. #}
+
+<div class="eyebrow">Side by side</div>
+<h1>Compare</h1>
+<p class="sub">Up to {{ max_items }} sets or minifigures against each other — value, growth,
+   what it costs per part, what its figures are worth, and how often it actually sells.
+   Their price histories share one axis. The better number in each row is marked;
+   rows where "better" has no meaning are left alone.</p>
+
+<div class="card">
+  <div class="searchrow">
+    <input class="inp" id="cmpSearch" type="search" autocomplete="off" style="flex:1 1 260px"
+           placeholder="Add a set or minifig… (e.g. 75192, Daily Bugle, sh0254)"
+           aria-label="Add an item to compare">
+    <button class="btn-ghost" id="cmpClear" type="button">Clear all</button>
+  </div>
+  <div id="cmpSuggest" class="sresults" hidden></div>
+  <div id="cmpChosen" class="searchrow" style="margin-top:10px"></div>
+  <div id="cmpHint" style="color:var(--muted);font-size:12.5px;margin-top:6px">
+    Pick at least two. Only scanned items carry prices — the rest show what the
+    catalog knows and dashes for the rest.
+  </div>
+</div>
+
+<div class="card" id="cmpChartCard" hidden>
+  <h3>Price history <span class="soft">— all on one axis, {{ ccy }}</span></h3>
+  <div class="chart-wrap"><canvas id="cmpChart"></canvas></div>
+  <div class="soft" style="font-size:11.5px;margin-top:8px">
+    Each line is that item's BrickLink sold average for the condition shown on its
+    own page. A line that starts late is one that was scanned late, not one that
+    was worth nothing before.
+  </div>
+</div>
+
+<div class="card" id="cmpTableCard" hidden>
+  <div class="table-scroll">
+    <table id="cmpTable"><tbody></tbody></table>
+  </div>
+</div>
+
+{% endblock %}

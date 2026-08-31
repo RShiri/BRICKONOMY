@@ -259,7 +259,7 @@
     const search = () => {
       const q = searchInput.value.trim().toLowerCase();
       if (q.length < 2) { searchResults.hidden = true; return; }
-      loadIndex().then((items) => {
+      loadCatalog().then((items) => {
         const starts = [], contains = [];
         for (const i of items) {
           const id = i.id.toLowerCase(), name = (i.name || "").toLowerCase();
@@ -851,5 +851,250 @@
         .catch(() => setTimeout(poll, 5000));
     };
     if (scanStatus.dataset.running === "1") setTimeout(poll, 2000);
+  }
+
+  // ── compare: two to four items side by side ─────────────────────────────
+  const cmpSearch = document.getElementById("cmpSearch");
+  if (cmpSearch) {
+    const MAX = 4;
+    const chosenEl = document.getElementById("cmpChosen");
+    const suggestEl = document.getElementById("cmpSuggest");
+    const tableCard = document.getElementById("cmpTableCard");
+    const chartCard = document.getElementById("cmpChartCard");
+    const hintEl = document.getElementById("cmpHint");
+    const factsCache = new Map();
+    const histCache = new Map();
+    let chosen = [];
+    let cmpChart = null;
+
+    // Deduped: add() refuses a repeat, but a hand-edited or shared URL comes
+    // in through here instead, and ?ids=76178,76178 drew the set against
+    // itself with every row a tie.
+    const idsFromURL = () =>
+      [...new Set((new URLSearchParams(location.search).get("ids") || "")
+        .split(",").map((s) => s.trim()).filter(Boolean))].slice(0, MAX);
+
+    // The comparison lives in the URL so it can be linked and reloaded. On the
+    // static site the path is a file, so only the query is rewritten.
+    const syncURL = () => {
+      const u = new URL(location.href);
+      if (chosen.length) u.searchParams.set("ids", chosen.join(","));
+      else u.searchParams.delete("ids");
+      history.replaceState(null, "", u);
+    };
+
+    const cached = (map, id, path) => {
+      if (!map.has(id)) {
+        map.set(id, fetch(apiURL(path))
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null));
+      }
+      return map.get(id);
+    };
+    const facts = (id) =>
+      cached(factsCache, id, `/api/sets/${encodeURIComponent(id)}/facts`);
+    const histOf = (id) =>
+      cached(histCache, id, `/api/sets/${encodeURIComponent(id)}/history`);
+
+    const sign = (ccy) => ({ ILS: "₪", USD: "$", EUR: "€", GBP: "£" }[ccy] || "");
+    const money = (v, ccy) =>
+      v == null ? "—" : `${sign(ccy)}${Math.round(v).toLocaleString()}`;
+    const pct = (v) => (v == null ? "—" : `${v > 0 ? "+" : ""}${v.toFixed(1)}%`);
+    const DASH = "—";
+
+    // Which way is "better" per row. null means the question does not apply — a
+    // set is not better for being older, and marking one would be noise.
+    const ROWS = [
+      { label: "Year", get: (f) => f.year, fmt: (v) => v || DASH, best: null },
+      { label: "Theme", get: (f) => f.theme, fmt: (v) => v || DASH, best: null },
+      { label: "Parts", get: (f) => f.parts,
+        fmt: (v) => (v ? v.toLocaleString() : DASH), best: "high" },
+      { label: "Minifigures", get: (f) => f.minifigs,
+        fmt: (v) => v || DASH, best: "high" },
+      // Shown in the currency LEGO priced it in: converting an MSRP invents a
+      // price that never existed on any shelf.
+      { label: "Retail", get: (f) => f.retail,
+        fmt: (v, f) => (f.retail_native == null ? DASH
+          : `${sign(f.retail_ccy)}${f.retail_native}`), best: null },
+      { label: "Value — new", get: (f) => f.value_new,
+        fmt: (v, f) => money(v, f.currency), best: "high" },
+      { label: "Value — used", get: (f) => f.value_used,
+        fmt: (v, f) => money(v, f.currency), best: "high" },
+      { label: "Per part", get: (f) => f.ppp,
+        fmt: (v, f) => (v == null ? DASH : `${sign(f.currency)}${v.toFixed(2)}`),
+        best: "low" },
+      { label: "Growth / yr", get: (f) => f.growth, fmt: pct, best: "high" },
+      { label: "vs retail / yr", get: (f) => f.vs_retail, fmt: pct, best: "high" },
+      { label: "Forecast", get: (f) => f.forecast && f.forecast.value,
+        fmt: (v, f) => (v == null ? DASH
+          : `${money(v, f.currency)} by ${f.forecast.year}`), best: "high" },
+      { label: "Part-out value", get: (f) => f.part_out_new,
+        fmt: (v, f) => money(v, f.currency), best: "high" },
+      { label: "Figures, % of set", get: (f) => f.fig_share && f.fig_share.pct,
+        fmt: (v, f) => (v == null ? DASH
+          : `${v.toFixed(0)}%${f.fig_share.priced < f.fig_share.figs
+              ? ` (${f.fig_share.priced}/${f.fig_share.figs} priced)` : ""}`),
+        best: "high" },
+      { label: "Sold / 6mo", get: (f) => f.sales_6mo,
+        fmt: (v) => (v == null ? DASH : v), best: "high" },
+      { label: "Cheapest now", get: (f) => f.cheapest && f.cheapest.price,
+        fmt: (v, f) => (v == null ? DASH
+          : `${money(v, f.currency)} · ${f.cheapest.source}`), best: "low" },
+      { label: "Status", get: (f) => f.phase,
+        fmt: (v) => (v ? v.replace(/_/g, " ").toLowerCase() : DASH), best: null },
+    ];
+
+    const itemHref = (id) => (IS_STATIC
+      ? `${BASE}set.html?id=${encodeURIComponent(id)}`
+      : `/sets/${encodeURIComponent(id)}`);
+
+    const renderChips = () => {
+      chosenEl.innerHTML = chosen.map((id) =>
+        `<span class="chip">${esc(id)}<a href="#" data-drop="${esc(id)}"
+           style="margin-left:6px;text-decoration:none"
+           aria-label="Remove ${esc(id)}">✕</a></span>`).join("");
+      chosenEl.querySelectorAll("[data-drop]").forEach((a) =>
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          chosen = chosen.filter((x) => x !== a.dataset.drop);
+          render();
+        }));
+    };
+
+    const renderTable = (all) => {
+      const head = `<tr><th></th>${all.map((f) =>
+        `<th><a href="${itemHref(f.id)}" title="${esc(f.id)} ${esc(f.name)}"><img
+             class="thumb" src="${setImg(f.id, f.item_type)}" alt="" loading="lazy"
+             onerror="this.style.visibility='hidden'"><b>${esc(f.id)}</b></a>
+           <div class="soft" style="font-weight:400">${esc((f.name || "").slice(0, 32))}</div>
+         </th>`).join("")}</tr>`;
+
+      const body = ROWS.map((row) => {
+        const vals = all.map((f) => row.get(f));
+        let winner = -1;
+        if (row.best) {
+          const nums = vals.map((v) => (typeof v === "number" ? v : null));
+          const real = nums.filter((v) => v != null);
+          // One number is not a comparison: nothing is better than a dash, and
+          // a tie has no winner to mark.
+          if (real.length > 1) {
+            const target = row.best === "high" ? Math.max(...real) : Math.min(...real);
+            if (real.filter((v) => v === target).length === 1) winner = nums.indexOf(target);
+          }
+        }
+        return `<tr><th style="text-align:left;white-space:nowrap">${row.label}</th>${
+          all.map((f, i) => `<td class="num"${i === winner
+            ? ' style="color:var(--ok);font-weight:600"' : ""}>${row.fmt(vals[i], f)}${
+            i === winner ? " ●" : ""}</td>`).join("")}</tr>`;
+      }).join("");
+
+      tableCard.querySelector("tbody").innerHTML = head + body;
+      tableCard.hidden = false;
+    };
+
+    const renderChart = (all, series) => {
+      if (cmpChart) { cmpChart.destroy(); cmpChart = null; }
+      if (!window.Chart) return;
+      const palette = ["--s1", "--s2", "--s3", "--s5"];
+      const sets = all.map((f, i) => {
+        const pts = ((series[i] || {}).series || {}).blended || [];
+        return pts.length ? {
+          // The scan count belongs beside the name: with a few months of
+          // history a line can be two points, and two points drawn as a line
+          // look like a trend.
+          label: `${f.id} ${(f.name || "").slice(0, 18)} · ${pts.length} scan${
+            pts.length === 1 ? "" : "s"}`,
+          data: pts.map((p) => ({ x: p.t, y: p.v })),
+          borderColor: css(palette[i]) || "#4f8cff",
+          backgroundColor: css(palette[i]) || "#4f8cff",
+          borderWidth: 2, pointRadius: pts.length < 15 ? 3 : 0,
+          tension: 0.25, spanGaps: true, fill: false,
+        } : null;
+      }).filter(Boolean);
+
+      if (!sets.length) { chartCard.hidden = true; return; }
+      chartCard.hidden = false;
+      cmpChart = new Chart(document.getElementById("cmpChart"), {
+        type: "line",
+        data: { datasets: sets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: "nearest", intersect: false },
+          scales: {
+            x: { type: "time", grid: { display: false },
+                 ticks: { autoSkip: true, maxTicksLimit: 8 } },
+            y: { ticks: { callback: (v) => v.toLocaleString() } },
+          },
+        },
+      });
+    };
+
+    const render = () => {
+      syncURL();
+      renderChips();
+      if (chosen.length < 2) {
+        tableCard.hidden = true;
+        chartCard.hidden = true;
+        if (cmpChart) { cmpChart.destroy(); cmpChart = null; }
+        hintEl.textContent = chosen.length
+          ? "One more to compare against."
+          : "Pick at least two. Only scanned items carry prices — the rest show what "
+            + "the catalog knows and dashes for the rest.";
+        return;
+      }
+      hintEl.textContent = "";
+      Promise.all(chosen.map(facts)).then((all) => {
+        const ok = all.filter(Boolean);
+        if (ok.length < 2) {
+          tableCard.hidden = true;
+          chartCard.hidden = true;
+          hintEl.textContent = "Those items are not in the catalog.";
+          return;
+        }
+        renderTable(ok);
+        Promise.all(ok.map((f) => histOf(f.id))).then((h) => renderChart(ok, h));
+      });
+    };
+
+    const add = (id) => {
+      if (chosen.includes(id) || chosen.length >= MAX) return;
+      chosen.push(id);
+      cmpSearch.value = "";
+      suggestEl.hidden = true;
+      render();
+    };
+
+    cmpSearch.addEventListener("input", () => {
+      const q = cmpSearch.value.trim().toLowerCase();
+      if (q.length < 2) { suggestEl.hidden = true; return; }
+      loadCatalog().then((items) => {
+        const hits = [];
+        for (const i of items) {
+          if (i.id.toLowerCase().includes(q)
+              || (i.name || "").toLowerCase().includes(q)) hits.push(i);
+          if (hits.length >= 8) break;
+        }
+        if (!hits.length) { suggestEl.hidden = true; return; }
+        suggestEl.innerHTML = hits.map((i) =>
+          `<a href="#" data-add="${esc(i.id)}"><b>${esc(i.id)}</b> ${esc(i.name)}
+             <span>${esc(i.theme || (i.type === "M" ? "minifig" : ""))}</span></a>`).join("");
+        suggestEl.hidden = false;
+        suggestEl.querySelectorAll("[data-add]").forEach((a) =>
+          a.addEventListener("click", (e) => { e.preventDefault(); add(a.dataset.add); }));
+      });
+    });
+    cmpSearch.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") suggestEl.hidden = true;
+    });
+    document.addEventListener("click", (e) => {
+      if (!suggestEl.contains(e.target) && e.target !== cmpSearch) suggestEl.hidden = true;
+    });
+    document.getElementById("cmpClear").addEventListener("click", () => {
+      chosen = [];
+      render();
+    });
+
+    chosen = idsFromURL();
+    render();
   }
 })();

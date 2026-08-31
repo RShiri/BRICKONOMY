@@ -9,9 +9,13 @@ repo and builds on its existing BrickLink scraper and `PriceAnalyzer`.
   all plain scraping.
 - **Real price history**: every scan appends snapshots to `brickonomy.db`
   instead of overwriting, so every set gets a price-over-time chart.
-- **Blended market value**: per-source PriceAnalyzer market prices are
-  currency-converted and combined with confidence weights (HIGH=3, MEDIUM=2,
-  LOW=1) into one blended series.
+- **One official value**: BrickLink's six-month *sold* average — completed
+  transactions, so it is what the set is actually worth. eBay and BrickOwl are
+  still scraped and shown side by side, and still power the "cheapest right
+  now" panel, but they do not move the valuation: eBay asks run 2–3× over what
+  the same set sells for and the gap does not close. A value not backed by
+  completed sales needs at least two sellers behind it — one ask is one
+  person's opinion, not a market.
 - **Growth & forecast**: growth vs retail, annualized CAGR, and a 2y/5y trend
   forecast with retirement-phase adjustment (±20% band — a trend estimate,
   not financial advice).
@@ -20,7 +24,7 @@ repo and builds on its existing BrickLink scraper and `PriceAnalyzer`.
 - **Portfolio & wishlist**: seeded from your BrickEconomy CSV export; import
   more via CSV / BrickLink wanted-list XML / plain set lists; edit rows inline.
   Wanted items get their own list with live "best offer" pricing.
-- **Deals**: every live listing priced under blended market value after fees,
+- **Deals**: every live listing priced under the BrickLink sold average after fees,
   rated (good / excellent / great invest) exactly like the analyzer's sniper.
 - **Themes**: per-theme totals, average growth per year and best performer.
 - **Instant search** in the header, over the whole catalog.
