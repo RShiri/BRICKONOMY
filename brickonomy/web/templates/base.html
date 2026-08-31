@@ -52,7 +52,11 @@
       {% endfor %}
     </select>
   </form>
-  {% if job.running %}
+  {% if job.blocked %}
+  {# A scan that never started is not a scan that found nothing. #}
+  <a class="btn-ghost" href="{{ u('/refresh') }}"
+     title="Another scan already holds the lock — the nightly task, or one started from a terminal. Only one scraper runs at a time.">⏸ scan waiting</a>
+  {% elif job.running %}
   <a class="btn-ghost" href="/refresh">⟳ Scanning {{ job.done }}/{{ job.total }}…</a>
   {% else %}
   <form method="post" action="/refresh">

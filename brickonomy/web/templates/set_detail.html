@@ -24,7 +24,16 @@
     </p>
     <div class="facts">
       {% if item.parts %}<span class="chip">🧱 {{ "{:,}".format(item.parts) }} parts</span>{% endif %}
-      {% if item.minifigs %}<span class="chip">🧍 {{ item.minifigs }} minifigs</span>{% endif %}
+      {# Two counts disagree here and the scraped one wins, because it is the
+         one the rest of the page adds up. The catalog's figure comes from
+         Rebrickable and includes items BrickLink files under minifigures that
+         are really printed parts — 76051's Ant-Man statuette is its seventh
+         "minifig". Showing 7 in the header above a list of 6 read as a bug. #}
+      {% if figs %}<span class="chip"
+            {%- if item.minifigs and item.minifigs != figs|length %}
+            title="BrickLink's inventory lists {{ figs|length }}. The catalog says {{ item.minifigs }}, counting printed parts — statuettes and trophies — that are filed under minifigures but are not ones."
+            {%- endif %}>🧍 {{ figs|length }} minifigs</span>
+      {% elif item.minifigs %}<span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 {{ item.minifigs }} minifigs</span>{% endif %}
       {% if item.weight_g %}<span class="chip">⚖️ {{ "{:,.0f}".format(item.weight_g) }} g</span>{% endif %}
       {% if item.parts and values.new.value %}<span class="chip">{{ (values.new.value / item.parts)|money(ccy) }} / part</span>{% endif %}
       {% if figs_pcts.used or figs_pcts.new %}
@@ -33,8 +42,8 @@
             data-new="{{ '%.0f'|format(figs_pcts.new) if figs_pcts.new else '' }}"
             data-partial-used="{{ '1' if figs_partial.used else '' }}"
             data-partial-new="{{ '1' if figs_partial.new else '' }}"
-            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price.">
-        🧍 {% if figs_pcts.used %}{{ "%.0f"|format(figs_pcts.used) }}% in figs{% if figs_partial.used %} (partial){% endif %}{% else %}figs not priced{% endif %}</span>
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 {% if figs_pcts.used %}{{ "%.0f"|format(figs_pcts.used) }}% of value in figs{% if figs_partial.used %} (partial){% endif %}{% else %}figs not priced{% endif %}</span>
       {% elif figs %}
       <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
       {% endif %}
@@ -243,10 +252,13 @@
     </div>
     <div style="flex:1;min-width:220px">
       <dl class="kv">
+        {# These percentages are of the part-out total, not of the set's own
+           price — the chip in the header is the latter, and the two differ.
+           Both denominators are named so neither reads as the other. #}
         <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
-        <dd>{{ split.figs|money(ccy) }} · {{ "%.0f"|format(split.figs_pct) }}%</dd>
+        <dd>{{ split.figs|money(ccy) }} · {{ "%.0f"|format(split.figs_pct) }}% of part-out</dd>
         <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
-        <dd>{{ split.parts|money(ccy) }} · {{ "%.0f"|format(100 - split.figs_pct) }}%</dd>
+        <dd>{{ split.parts|money(ccy) }} · {{ "%.0f"|format(100 - split.figs_pct) }}% of part-out</dd>
         <dt>Part-out total</dt>
         <dd><b>{{ split.total|money(ccy) }}</b></dd>
       </dl>

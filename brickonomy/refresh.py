@@ -416,7 +416,25 @@ def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
     contributes nothing to the fig-value totals until tomorrow.
 
     progress: optional callback(done, total, current_item, errors: list).
-    Returns {'done': n, 'errors': [(item, source, error), ...]}."""
+    Returns {'done': n, 'errors': [...]}, or {'blocked': True} when another
+    scan already holds the lock.
+
+    The lock is taken here rather than at the CLI entry point, because that is
+    not the only entry point: viewing a stale set queues a scan through the
+    web worker, which called this directly and so ran straight through a
+    nightly run — two processes interleaving writes to the same SQLite file
+    and hitting BrickLink twice as fast from one address, which is exactly
+    what the lock exists to prevent."""
+    with scan_lock() as acquired:
+        if not acquired:
+            log("Another scan already holds the lock — nothing done.")
+            return {"done": 0, "errors": [], "blocked": True}
+        return _run_refresh_locked(scope, item_id, force, theme, limit,
+                                   progress, log, inventory_only, with_figs)
+
+
+def _run_refresh_locked(scope, item_id, force, theme, limit, progress, log,
+                        inventory_only, with_figs):
     cfg = get_config()
     if with_figs is None:
         with_figs = scope == "priority" and not inventory_only
@@ -509,17 +527,15 @@ def main():
             print(f"{i:5}  {iid:14} {itype or '?':2}  {tier}")
         return
 
-    # One scraper at a time. Two concurrent runs would interleave writes to the
-    # same SQLite file and hammer the same sites from one IP; the web app's
-    # queue lock is in-process only and cannot see a CLI run at all.
-    with scan_lock() as acquired:
-        if not acquired:
-            print(f"Another scan is already running (see {LOCK_PATH}). Nothing done.")
-            raise SystemExit(3)
-        summary = run_refresh(scope=args.scope, item_id=args.item,
-                              force=args.force, theme=args.theme, limit=args.limit,
-                              inventory_only=args.inventory_only,
-                              with_figs=args.with_figs)
+    # One scraper at a time; run_refresh holds the lock for every caller now,
+    # so taking it again here would only deadlock against ourselves.
+    summary = run_refresh(scope=args.scope, item_id=args.item,
+                          force=args.force, theme=args.theme, limit=args.limit,
+                          inventory_only=args.inventory_only,
+                          with_figs=args.with_figs)
+    if summary.get("blocked"):
+        print(f"Another scan is already running (see {LOCK_PATH}). Nothing done.")
+        raise SystemExit(3)
     print(f"\nRefreshed {summary['done']} item(s); {len(summary['errors'])} source error(s).")
     for iid, source, err in summary["errors"][:20]:
         print(f"  {iid} · {source}: {err}")

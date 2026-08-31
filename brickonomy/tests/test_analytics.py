@@ -297,6 +297,9 @@ class TestThemeScanScope:
                                    inventory_only=False:
                             (seen.append(iid), {})[1])
         monkeypatch.setattr(refresh_mod, "polite_sleep", lambda: None)
+        # A lock of its own: run_refresh takes the scan lock for every caller,
+        # and the repo-root one belongs to whatever real scan is running.
+        monkeypatch.setattr(refresh_mod, "LOCK_PATH", tmp_path / "scan.lock")
         run_refresh(scope="theme", theme="Super Heroes Marvel", log=lambda *a: None)
 
         assert seen == ["76031", "sh0167"]     # sets first, then their figs

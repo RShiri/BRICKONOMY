@@ -105,6 +105,10 @@ class TestFigExpansion:
         from brickonomy.config import get_config
         monkeypatch.setattr(get_config(), "fixture_mode", True)   # no sleeps
         monkeypatch.setattr(rf.dbq, "connect", lambda *a, **k: conn)
+        # run_refresh now takes the scan lock for every caller, so without a
+        # lock of its own this test would fail whenever a real scan happened
+        # to be running on the machine.
+        monkeypatch.setattr(rf, "LOCK_PATH", tmp_path / "scan.lock")
         seen = []
         monkeypatch.setattr(rf, "refresh_item",
                             lambda c, iid, itype=None, **kwargs: (seen.append(iid), {})[1])
@@ -137,3 +141,62 @@ class TestFigExpansion:
                             market_price=50.0)
         conn.commit()
         assert unpriced_figs_of(conn, "75192") == []
+
+
+class TestOneScraperAtATime:
+    """The lock was taken at the CLI entry point only. Viewing a stale set
+    queues a scan through the web worker, which called run_refresh directly
+    and so ran straight through a nightly run — two processes interleaving
+    writes to the same SQLite file and hitting BrickLink twice as fast from
+    one address, which is what the lock exists to prevent."""
+
+    def _patched(self, monkeypatch, tmp_path, lock_path):
+        import brickonomy.refresh as rf
+        from brickonomy import db as dbq
+        from brickonomy.config import get_config
+        monkeypatch.setattr(get_config(), "fixture_mode", True)
+        path = str(tmp_path / "lock.db")
+        c = dbq.connect(db_path=path)
+        dbq.upsert_item(c, "75192", name="Falcon", item_type="S")
+        dbq.upsert_portfolio(c, "75192", owned=1)
+        c.commit()
+        c.close()
+        # Capture the real connect before patching: rf.dbq is this same
+        # module, so a lambda calling dbq.connect would call itself.
+        real_connect = dbq.connect
+        monkeypatch.setattr(rf.dbq, "connect",
+                            lambda *a, **k: real_connect(db_path=path))
+        monkeypatch.setattr(rf, "LOCK_PATH", lock_path)
+        seen = []
+        monkeypatch.setattr(rf, "refresh_item",
+                            lambda c, iid, itype=None, **kw: (seen.append(iid), {})[1])
+        return rf, seen
+
+    def test_a_second_scan_is_refused_while_one_holds_the_lock(
+            self, monkeypatch, tmp_path):
+        lock = tmp_path / "scan.lock"
+        rf, seen = self._patched(monkeypatch, tmp_path, lock)
+        with rf.scan_lock(lock) as held:
+            assert held
+            result = rf.run_refresh(scope="portfolio", log=lambda *a: None)
+        assert result["blocked"] is True
+        assert seen == [], "nothing may be scraped while another scan runs"
+
+    def test_it_runs_once_the_lock_is_free(self, monkeypatch, tmp_path):
+        lock = tmp_path / "scan.lock"
+        rf, seen = self._patched(monkeypatch, tmp_path, lock)
+        result = rf.run_refresh(scope="portfolio", log=lambda *a: None)
+        assert not result.get("blocked")
+        assert seen == ["75192"]
+
+    def test_the_lock_is_released_even_when_a_scan_raises(
+            self, monkeypatch, tmp_path):
+        lock = tmp_path / "scan.lock"
+        rf, _ = self._patched(monkeypatch, tmp_path, lock)
+        monkeypatch.setattr(rf, "select_targets",
+                            lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+        with pytest.raises(RuntimeError):
+            rf.run_refresh(scope="portfolio", log=lambda *a: None)
+        # A held lock here would block every later scan until a restart.
+        with rf.scan_lock(lock) as held:
+            assert held

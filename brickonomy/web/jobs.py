@@ -29,6 +29,8 @@ _state = {
     # truncated the start of a run before it could be read.
     "log": deque(maxlen=400),
     "finished_at": None,
+    # Set when a run was refused because another process holds the scan lock.
+    "blocked": False,
 }
 
 
@@ -79,7 +81,7 @@ def start(scope="portfolio", item_id=None, force=False, theme=None,
             _queue.append(("scope", {"scope": scope, "force": force,
                                      "theme": theme}))
         _state.update(scope=item_id or theme or scope, current_item=None,
-                      done=0, total=0, errors=[])
+                      done=0, total=0, errors=[], blocked=False)
         _state["log"].clear()
         _spawn_worker()
     return True
@@ -252,6 +254,20 @@ def _queue_figs_of(set_id, force=False):
                   f"rescan the set again to pick them up")
 
 
+def _blocked(what):
+    """A scan that never started should not read as one that found nothing.
+
+    The lock is held by another process — a nightly run, or a scan started
+    from a terminal. Without this the header showed "Scanning 0/0" and sat
+    there, which looks like a scraper that came back empty.
+    """
+    with _lock:
+        _state["blocked"] = True
+    _log_line(f"⏸ {what or 'scan'} skipped — another scan is already running "
+              "(the nightly task, or one started from a terminal). "
+              "It will be picked up next time.")
+
+
 def _drain():
     from ..refresh import run_refresh
 
@@ -263,15 +279,19 @@ def _drain():
             if task[0] == "item":
                 opts = dict(task[2])
                 with_figs = opts.pop("with_figs", False)
-                run_refresh(item_id=task[1], progress=_progress, log=_log_line,
-                            **opts)
-                if with_figs:
+                result = run_refresh(item_id=task[1], progress=_progress,
+                                     log=_log_line, **opts)
+                if result.get("blocked"):
+                    _blocked(task[1])
+                elif with_figs:
                     _queue_figs_of(task[1], force=opts.get("force", False))
             elif task[0] == "action":
                 _log_line(f"▶ {ACTIONS[task[1]][0]}…")
                 ACTIONS[task[1]][1](_log_line)
             else:
-                run_refresh(progress=_progress, log=_log_line, **task[1])
+                result = run_refresh(progress=_progress, log=_log_line, **task[1])
+                if result.get("blocked"):
+                    _blocked(task[1].get("scope"))
         except Exception as exc:
             _log_line(f"✘ refresh crashed: {type(exc).__name__}: {exc}")
 
@@ -282,5 +302,5 @@ def reset():
         _queue.clear()
         _queued_items.clear()
         _state.update(running=False, scope=None, current_item=None, done=0,
-                      total=0, errors=[], finished_at=None)
+                      total=0, errors=[], finished_at=None, blocked=False)
         _state["log"].clear()
