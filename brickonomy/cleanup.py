@@ -37,14 +37,26 @@ def find_bad_inventory_rows(conn):
 
 
 def find_bad_names(conn):
-    """Rows whose stored name is really an item id — the longest-anchor bug."""
+    """Rows whose stored name is really an item id — the longest-anchor bug.
+
+    The test used to be "no spaces", on the reasoning that a real name is
+    prose. Plenty of minifigures are named after one word: Sersi, Gambit,
+    Rogue, Daredevil, Spider-Ham. Fifteen such rows were queued for erasure,
+    every one a genuine name and none an id, and clearing them is not
+    recoverable by an ordinary rescan — upsert_set_minifigs coalesces an empty
+    incoming name onto the stored one, so only --force would bring them back.
+
+    What actually distinguishes an id is a digit. Every BrickLink item id has
+    one: sh0255, col334, 90398pb007, 75192. A character's name does not.
+    """
     out = []
     for r in conn.execute(
             """SELECT set_id, fig_id, fig_name FROM set_minifigs
                WHERE fig_name IS NOT NULL AND fig_name != ''"""):
         name = r["fig_name"].strip()
-        # A real fig name has spaces and prose; an id has neither.
-        if " " not in name and name != r["fig_id"]:
+        if " " in name or name == r["fig_id"]:
+            continue
+        if any(ch.isdigit() for ch in name):
             out.append(dict(r))
     return out
 
@@ -95,6 +107,45 @@ def clean(conn, dry_run=False, log=print):
     log(f"✔ removed {len(bad_rows)} row(s), cleared {len(bad_names)} name(s), "
         f"retyped {len(mistyped)} item(s)")
     return {"rows": len(bad_rows), "names": len(bad_names), "types": len(mistyped)}
+
+
+def derivable_minifig_years(conn):
+    """[(fig_id, year, sets)] for figures whose release year can be inferred.
+
+    Rebrickable's figure records mostly carry no year — 17,204 of them — and
+    the year is not decoration: it drives the lifecycle phase, the growth
+    estimate and the retirement window, all of which fall back to nothing
+    without it. But a figure's debut is the release year of the earliest set
+    it appears in, and the set inventories give exactly that.
+    """
+    return [(r["fig_id"], r["year"], r["sets"]) for r in conn.execute(
+        """SELECT sm.fig_id, MIN(s.year) AS year, COUNT(*) AS sets
+           FROM set_minifigs sm
+           JOIN items f ON f.item_id = sm.fig_id
+           JOIN items s ON s.item_id = sm.set_id
+           WHERE (f.year IS NULL OR f.year = 0) AND s.year > 0
+           GROUP BY sm.fig_id""")]
+
+
+def backfill_minifig_years(conn, dry_run=False, log=print):
+    """Give each yearless figure the release year of the earliest set holding
+    it. Idempotent: a figure that already has a year is never touched, so a
+    year corrected by hand or by a later catalog import stands."""
+    rows = derivable_minifig_years(conn)
+    log(f"  figures that can take a year from their earliest set: {len(rows)}")
+    for fig_id, year, sets in rows[:10]:
+        log(f"      {fig_id:12} -> {year}  (appears in {sets} set(s))")
+    if len(rows) > 10:
+        log(f"      … and {len(rows) - 10} more")
+    if dry_run:
+        log("  dry run — nothing written")
+        return 0
+    conn.executemany("UPDATE items SET year=? WHERE item_id=? AND "
+                     "(year IS NULL OR year=0)",
+                     [(year, fig_id) for fig_id, year, _ in rows])
+    conn.commit()
+    log(f"✔ dated {len(rows)} figure(s)")
+    return len(rows)
 
 
 def compactable_runs(conn):
@@ -185,6 +236,8 @@ def main():
     conn = dbq.connect()
     try:
         clean(conn, dry_run=args.dry_run)
+        print("Dating figures from the sets they appear in")
+        backfill_minifig_years(conn, dry_run=args.dry_run)
         if args.compact:
             print("Compacting the snapshot history")
             compact_snapshots(conn, dry_run=args.dry_run)
