@@ -915,8 +915,13 @@ def search_index(request: Request):
     conn = get_conn()
     try:
         ccy = display_ccy(request)
+        # Sets and figures only. A printed part shows on neither catalog tab,
+        # but the header search walks this index without filtering by type, so
+        # the eight statuettes typed 'P' were reachable from the search box
+        # and linked to a page nothing else in the app leads to.
         rows = conn.execute(
-            "SELECT item_id, name, theme, year, parts, item_type FROM items ORDER BY item_id"
+            "SELECT item_id, name, theme, year, parts, item_type FROM items "
+            "WHERE item_type IN ('S','M') ORDER BY item_id"
         ).fetchall()
         # `p` marks items that have their own page in the static export (only
         # price-scraped items get one — the catalog is far too big to render

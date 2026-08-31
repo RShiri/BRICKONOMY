@@ -204,3 +204,32 @@ class TestThemeAsCatalogued:
     def test_no_theme_is_not_an_error(self, conn):
         assert dbq.theme_as_catalogued(conn, None) is None
         assert dbq.theme_as_catalogued(conn, "") == ""
+
+
+class TestSearchIndex:
+    """The header search walks the catalog index without filtering by type,
+    so anything in that file is reachable from the search box."""
+
+    def _client(self, db_path, monkeypatch):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as app_mod
+        monkeypatch.setattr(app_mod, "get_conn",
+                            lambda: dbq.connect(db_path=db_path))
+        return TestClient(app_mod.app)
+
+    def test_printed_parts_are_not_searchable(self, db_path, monkeypatch):
+        c = dbq.connect(db_path=db_path)
+        dbq.upsert_item(c, "90398pb007", name="Ant-Man Statuette",
+                        item_type="P")
+        c.commit()
+        c.close()
+        data = self._client(db_path, monkeypatch).get("/api/index").json()
+        ids = {r[0] for r in data["rows"]}
+        assert "90398pb007" not in ids
+        assert not [r for r in data["rows"] if r[5] == "P"]
+
+    def test_sets_and_figures_are(self, db_path, monkeypatch):
+        data = self._client(db_path, monkeypatch).get("/api/index").json()
+        ids = {r[0] for r in data["rows"]}
+        assert "10075" in ids and "sh0007" in ids
