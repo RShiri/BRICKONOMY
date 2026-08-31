@@ -84,8 +84,14 @@
       {% if not is_figs %}<td class="num" data-v="{{ i.retail or '' }}"
           {%- if i.retail and i.retail_ccy != ccy %} title="{{ i.retail|money(ccy) }} at today's rate"{% endif %}>
         {{- i.retail_native|money(i.retail_ccy) if i.retail_native else '—' }}</td>{% endif %}
-      <td class="num"><b>{{ i.value_new|money(ccy) if i.value_new else '—' }}</b></td>
-      <td class="num">{{ i.value_used|money(ccy) if i.value_used else '—' }}</td>
+      {# Dimmed where the evidence is thin, the same as on the item's own
+         page: a value from one sale should not read like one from thirty. #}
+      <td class="num" style="{{ m.value_class(i.confidence) }}"
+          {%- if i.confidence == 'LOW' %} title="Thin evidence — fewer than three recorded sales, or a stale scan."{% endif %}>
+        <b>{{ i.value_new|money(ccy) if i.value_new else '—' }}</b></td>
+      <td class="num" style="{{ m.value_class(i.confidence_used) }}"
+          {%- if i.confidence_used == 'LOW' %} title="Thin evidence — fewer than three recorded sales, or a stale scan."{% endif %}>
+        {{ i.value_used|money(ccy) if i.value_used else '—' }}</td>
       <td class="num">{{ m.delta(i.growth) }}</td>
       <td>{% if i.spark %}<svg class="spark" width="72" height="20" viewBox="0 0 72 20" aria-label="trend"><polyline points="{{ i.spark }}"/></svg>{% else %}<span style="color:var(--muted)">—</span>{% endif %}</td>
       <td>{{ m.phase_chip(i.phase) }}</td>

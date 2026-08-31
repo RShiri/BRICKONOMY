@@ -326,3 +326,51 @@ class TestQueryNumbersAreHeldInRange:
         from brickonomy.web.app import clamp
         assert clamp("abc", 0.0, 100.0) == 0.0
         assert clamp(float("nan"), 0.0, 100.0) == 0.0
+
+
+class TestThinValuesAreDimmed:
+    """The row builder kept the new value's confidence and discarded the
+    used one, and the catalog tables applied neither — so a used value resting
+    on a single sale sat beside a new one resting on thirty-seven and looked
+    just as solid. That is how 40 items came to show used worth more than new
+    with nothing on screen to say why."""
+
+    def _client(self, db_path, monkeypatch):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as app_mod
+        monkeypatch.setattr(app_mod, "get_conn",
+                            lambda: dbq.connect(db_path=db_path))
+        return TestClient(app_mod.app)
+
+    def _priced(self, db_path, item_id, cond, value, sales):
+        c = dbq.connect(db_path=db_path)
+        dbq.insert_snapshot(c, item_id, "bricklink", cond, "sold", "ILS",
+                            price_avg=value, total_qty=sales)
+        dbq.insert_snapshot(c, item_id, "blended", cond, "market", "ILS",
+                            market_price=value,
+                            confidence="HIGH" if sales >= 10
+                            else "MEDIUM" if sales >= 3 else "LOW")
+        c.commit()
+        c.close()
+
+    def test_a_value_from_one_sale_is_dimmed(self, db_path, monkeypatch):
+        self._priced(db_path, "10075", "new", 500.0, 37)
+        self._priced(db_path, "10075", "used", 900.0, 1)
+        html = self._client(db_path, monkeypatch).get("/sets").text
+        row = html[html.index("10075"):]
+        row = row[:row.index("</tr>")]
+        assert row.count("opacity:.55") == 1, "only the used side is thin"
+
+    def test_a_well_evidenced_value_is_not(self, db_path, monkeypatch):
+        self._priced(db_path, "10075", "new", 500.0, 37)
+        self._priced(db_path, "10075", "used", 300.0, 22)
+        html = self._client(db_path, monkeypatch).get("/sets").text
+        row = html[html.index("10075"):]
+        row = row[:row.index("</tr>")]
+        assert "opacity:.55" not in row
+
+    def test_the_dimming_carries_its_reason(self, db_path, monkeypatch):
+        self._priced(db_path, "10075", "used", 900.0, 1)
+        html = self._client(db_path, monkeypatch).get("/sets").text
+        assert "Thin evidence" in html

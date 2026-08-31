@@ -196,7 +196,10 @@ def item_view(conn, row, ccy):
     """Common per-item view model for lists."""
     iid = row["item_id"]
     val_new, conf, _ = current_value(conn, iid, "new")
-    val_used, _, _ = current_value(conn, iid, "used")
+    # The used confidence was being thrown away, so a used value resting on a
+    # single sale sat beside a new one resting on thirty-seven and looked just
+    # as solid. That is how 40 items came to show used worth more than new.
+    val_used, conf_used, _ = current_value(conn, iid, "used")
     g, g_basis = growth_mod.best_growth_estimate(conn, iid)
     ph = lifecycle.phase(row["year"], row["theme"] if "theme" in row.keys() else None)
     return {
@@ -215,6 +218,7 @@ def item_view(conn, row, ccy):
         "value_new": disp(conn, val_new, "ILS", ccy),
         "value_used": disp(conn, val_used, "ILS", ccy),
         "confidence": conf,
+        "confidence_used": conf_used,
         "growth": g,
         "growth_basis": g_basis,
         "delta30": dbq.market_delta(conn, iid, days=30),
