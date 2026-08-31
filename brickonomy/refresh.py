@@ -419,6 +419,22 @@ def select_targets(conn, scope="portfolio", item_id=None, theme=None):
                        WHERE si.theme = ?)
                ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""",
             (theme, theme))]
+    elif scope == "offers":
+        # Priced items with no whole-item listing data. Those are exactly the
+        # ones that can show a buy signal, and until this is scraped the
+        # signal is priced off the cheapest lot of any kind — a backpack, a
+        # pair of boots, an instruction booklet. Portfolio first: those are
+        # the ones being acted on.
+        targets = [(r["item_id"], r["item_type"]) for r in conn.execute(
+            """SELECT i.item_id, i.item_type FROM items i
+               JOIN (SELECT DISTINCT item_id FROM price_snapshots
+                     WHERE source='blended') p ON p.item_id = i.item_id
+               LEFT JOIN (SELECT DISTINCT item_id FROM price_snapshots
+                          WHERE kind='offers') o ON o.item_id = i.item_id
+               LEFT JOIN portfolio pf ON pf.item_id = i.item_id
+               WHERE o.item_id IS NULL
+               ORDER BY COALESCE(pf.owned, 0) DESC, COALESCE(pf.wanted, 0) DESC,
+                        i.item_id""")]
     elif scope == "inventories":
         # Sets whose stored inventory is missing or unusable. Both halves are
         # fetched once and then skipped forever — a released set's parts and
@@ -544,6 +560,12 @@ def _needs_work(conn, cfg, item_id, item_type, force, inventory_only):
         summary = dbq.parts_summary(conn, item_id)
         if not summary["lots"] or not summary["named"]:
             return True
+    # ...or the offers that say which listings are for the whole item. Without
+    # them the cheapest-listing figure comes from the price guide, which
+    # cannot tell a set from one of its minifigures' backpacks.
+    if not dbq.latest_snapshot(conn, item_id, "bricklink", "used", kind="offers")             and not dbq.latest_snapshot(conn, item_id, "bricklink", "new",
+                                        kind="offers"):
+        return True
     return False
 
 
@@ -647,7 +669,7 @@ def main():
     ap.add_argument("--item", help="single item id, e.g. 75192 or sw0636")
     ap.add_argument("--scope", default="portfolio",
                     choices=["portfolio", "priority", "stale", "theme", "gaps",
-                             "inventories", "all"],
+                             "inventories", "offers", "all"],
                     help="priority = owned, wishlist, figs of owned sets, held "
                          "themes, then everything else (for unattended runs); "
                          "inventories = scanned sets whose minifig list was "
