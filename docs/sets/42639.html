@@ -6,7 +6,7 @@
 <title>42639 Andrea&#39;s Modern Mansion · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788138548">
+<link rel="stylesheet" href="../static/style.css?v=1788152676">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -66,11 +66,20 @@
         <span class="soft" title="Converted at today's rate; the MSRP itself is USD">(₪595)</span>
     </p>
     <div class="facts">
-      <span class="chip">🧱 2,275 parts</span>
+      <span class="chip">🧱 2,236 parts</span>
       
+      <span class="chip">🧍 10 minifigs</span>
       
+      <span class="chip">⚖️ 3,547 g</span>
+      <span class="chip">₪0.32 / part</span>
       
-      
+      <span class="chip" id="figPctChip"
+            data-used="11"
+            data-new="11"
+            data-partial-used="1"
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 11% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--warn)"></span>EOL watch</span>
       
@@ -97,27 +106,31 @@
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
     <div class="label">Value — new / sealed</div>
-    <div class="value" style="">—</div>
+    <div class="value" style="">₪726</div>
     <div class="delta">
-      
-      
+      <span class="delta up">▲ 22%</span> vs retail
+       · +10.5%/yr
     </div>
-    <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--ink-2)"
+        title="15 BrickLink sales (16 units) in the last six months — sells about monthly.">
+    ⇄ 15 sold/6mo</span></div>
   </div>
   <div class="tile">
     <div class="label">Value — used</div>
-    <div class="value" style="">—</div>
-    <div class="delta"><span class="chip" style="color:var(--muted)">—</span></div>
-    <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
+    <div class="value" style="opacity:.55">₪617</div>
+    <div class="delta"><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span></div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--down)"
+        title="1 BrickLink sale (1 unit) in the last six months — barely trades.">
+    ⇄ 1 sold/6mo</span></div>
   </div>
   <div class="tile">
-    <div class="label">Forecast  <span title="Trend estimate, not a guarantee">ⓘ</span></div>
-    <div class="value">—</div>
-    <div class="delta">needs price history</div>
+    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">₪974</div>
+    <div class="delta">trend estimate · ±20% band</div>
   </div>
   <div class="tile">
     <div class="label">Buy target</div>
-    <div class="value">—</div>
+    <div class="value">₪581</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
 </div>
@@ -156,26 +169,172 @@
     <h3>Value vs retail</h3>
     <div class="vsbars">
       <div class="vsrow"><span>Retail</span>
-        <div class="track"><div class="fill retail" style="width:100.0%"></div></div>
+        <div class="track"><div class="fill retail" style="width:81.9%"></div></div>
         <span class="num" title="$200 at launch">₪595</span></div>
       <div class="vsrow"><span>Value new</span>
-        <div class="track"><div class="fill" style="width:0.0%"></div></div>
-        <span class="num">—</span></div>
+        <div class="track"><div class="fill" style="width:100.0%"></div></div>
+        <span class="num">₪726</span></div>
       <div class="vsrow"><span>Value used</span>
-        <div class="track"><div class="fill used" style="width:0.0%"></div></div>
-        <span class="num">—</span></div>
+        <div class="track"><div class="fill used" style="width:85.0%"></div></div>
+        <span class="num">₪617</span></div>
+    </div>
+    
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is <span class="delta up">▲ 22%</span> today,
+      compounding at +10.5% a year.
     </div>
     
   </div>
   
   
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">₪0.32</div>
+        <div class="delta">2,236 parts</div>
+      </div>
+      
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">Friends average</div>
+        <div class="value" style="font-size:22px">₪1.89</div>
+        <div class="delta up">
+          −83% vs theme
+        </div>
+      </div>
+      
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  
 </div>
 
 
 
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to ILS</span></h3>
+  <div class="three-col">
+    
+      
+      
+      <div class="best">
+        <span class="tag">Best deal</span>
+        <div><span class="dot" style="background:var(--s2)"></span> <b>BrickLink</b></div>
+        <div class="price">₪801</div>
+        <div class="meta">₪801 native</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
+        <div class="price">₪2,769</div>
+        <div class="meta">$931 native<br>“LEGO Friends 42639 Andrea&#39;s Modern Mansion, New &amp; Sealed MINT CONDITION (500) Opens in a new window or tab”</div>
+      </div>
+      
+    
+      
+    
+  </div>
+</div>
 
 
 
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at used prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="69.50"
+              data-parts="738.54"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪69.50 · 9% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪739 · 91% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪808</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>used</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="card" id="importCard"
+     data-vat="18.0"
+     data-ship-usd="25.0"
+     data-ship-rate="2.9728"
+     data-ccy="ILS">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT 18%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr data-cond="new" data-base="725.65">
+        <td>New / sealed</td>
+        <td class="num">₪726</td>
+        <td class="num">₪131</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪931</b></td>
+      </tr>
+      
+      
+      
+      
+      <tr data-cond="used" data-base="616.77">
+        <td>Used</td>
+        <td class="num">₪617</td>
+        <td class="num">₪111</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪802</b></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="25"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
 
 
 
@@ -193,12 +352,12 @@
             BrickLink
             <span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
             </td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td>—</td>
-        <td><span class="chip" style="color:var(--muted)">—</span>
+        <td class="num">₪776</td>
+        <td class="num">₪617</td>
+        <td class="num">15</td>
+        <td class="num">14</td>
+        <td>ILS</td>
+        <td><span class="chip">● HIGH</span>
             </td>
       </tr>
       
@@ -207,12 +366,12 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
             eBay
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪2,769</td>
         <td class="num">—</td>
         <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td>—</td>
-        <td><span class="chip" style="color:var(--muted)">—</span>
+        <td class="num">1</td>
+        <td>USD</td>
+        <td><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span>
             </td>
       </tr>
       
@@ -244,16 +403,1287 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 10 in this set<span id="figsTotalLabel">, ₪69.50 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪69.50"
+         data-total-new="₪78.92">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0683.html" title="Friends Emma (Adult) - Dark Blue, Medium Lavender, Yellow, Green, and White Top, Coral Skirt Full Length Pleated"
+       data-value="12.45" data-name="friends emma (adult) - dark blue, medium lavender, yellow, green, and white top, coral skirt full length pleated" data-qty="1"
+       data-v-used="12.45" data-v-new="7.6"
+       data-price-used="₪12.45"
+       data-price-new="₪7.60"
+       data-share-used="2.0% of set"
+       data-share-new="1.0% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0683.png" alt="Friends Emma (Adult) - Dark Blue, Medium Lavender, Yellow, Green, and White Top, Coral Skirt Full Length Pleated" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0683</div>
+      <div class="figtile-name">Friends Emma (Adult) - Dark Blue, Medium Lavender, Yellow, Green, and White Top, Coral Skirt Full Length Pleated</div>
+      <div class="figtile-value">₪12.45</div>
+      <div class="figtile-share">2.0% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0681.html" title="Friends Mia (Adult) - Metallic Light Blue Halter Top, Orange Pants, Dark Turquoise Shoes"
+       data-value="11.56" data-name="friends mia (adult) - metallic light blue halter top, orange pants, dark turquoise shoes" data-qty="1"
+       data-v-used="11.56" data-v-new="8.87"
+       data-price-used="₪11.56"
+       data-price-new="₪8.87"
+       data-share-used="1.9% of set"
+       data-share-new="1.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0681.png" alt="Friends Mia (Adult) - Metallic Light Blue Halter Top, Orange Pants, Dark Turquoise Shoes" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0681</div>
+      <div class="figtile-name">Friends Mia (Adult) - Metallic Light Blue Halter Top, Orange Pants, Dark Turquoise Shoes</div>
+      <div class="figtile-value">₪11.56</div>
+      <div class="figtile-share">1.9% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0682.html" title="Friends Ji-Won"
+       data-value="8.98" data-name="friends ji-won" data-qty="1"
+       data-v-used="8.98" data-v-new="8.62"
+       data-price-used="₪8.98"
+       data-price-new="₪8.62"
+       data-share-used="1.5% of set"
+       data-share-new="1.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0682.png" alt="Friends Ji-Won" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0682</div>
+      <div class="figtile-name">Friends Ji-Won</div>
+      <div class="figtile-value">₪8.98</div>
+      <div class="figtile-share">1.5% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0679.html" title="Friends Olivia (Adult) - Bright Light Blue Dress, Black Sandals"
+       data-value="8.36" data-name="friends olivia (adult) - bright light blue dress, black sandals" data-qty="1"
+       data-v-used="8.36" data-v-new="8.39"
+       data-price-used="₪8.36"
+       data-price-new="₪8.39"
+       data-share-used="1.4% of set"
+       data-share-new="1.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0679.png" alt="Friends Olivia (Adult) - Bright Light Blue Dress, Black Sandals" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0679</div>
+      <div class="figtile-name">Friends Olivia (Adult) - Bright Light Blue Dress, Black Sandals</div>
+      <div class="figtile-value">₪8.36</div>
+      <div class="figtile-share">1.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0684.html" title="Friends Stephanie (Adult) - Medium Lavender Suit with Gold Shirt, Black Shoes with White Soles"
+       data-value="7.98" data-name="friends stephanie (adult) - medium lavender suit with gold shirt, black shoes with white soles" data-qty="1"
+       data-v-used="7.98" data-v-new="8.8"
+       data-price-used="₪7.98"
+       data-price-new="₪8.80"
+       data-share-used="1.3% of set"
+       data-share-new="1.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0684.png" alt="Friends Stephanie (Adult) - Medium Lavender Suit with Gold Shirt, Black Shoes with White Soles" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0684</div>
+      <div class="figtile-name">Friends Stephanie (Adult) - Medium Lavender Suit with Gold Shirt, Black Shoes with White Soles</div>
+      <div class="figtile-value">₪7.98</div>
+      <div class="figtile-share">1.3% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0678.html" title="Friends Paisley - Bright Light Yellow and Medium Lavender Tank Top, Light Aqua Trousers Bell-Bottoms, Dark Blue Shoes"
+       data-value="6.74" data-name="friends paisley - bright light yellow and medium lavender tank top, light aqua trousers bell-bottoms, dark blue shoes" data-qty="1"
+       data-v-used="6.74" data-v-new="7.07"
+       data-price-used="₪6.74"
+       data-price-new="₪7.07"
+       data-share-used="1.1% of set"
+       data-share-new="1.0% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0678.png" alt="Friends Paisley - Bright Light Yellow and Medium Lavender Tank Top, Light Aqua Trousers Bell-Bottoms, Dark Blue Shoes" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0678</div>
+      <div class="figtile-name">Friends Paisley - Bright Light Yellow and Medium Lavender Tank Top, Light Aqua Trousers Bell-Bottoms, Dark Blue Shoes</div>
+      <div class="figtile-value">₪6.74</div>
+      <div class="figtile-share">1.1% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0677.html" title="Friends Autumn - Dark Turquoise Vest over Dark Blue Shirt, Dark Tan Shorts, Metallic Light Blue Sandals"
+       data-value="6.01" data-name="friends autumn - dark turquoise vest over dark blue shirt, dark tan shorts, metallic light blue sandals" data-qty="1"
+       data-v-used="6.01" data-v-new="6.63"
+       data-price-used="₪6.01"
+       data-price-new="₪6.63"
+       data-share-used="1.0% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0677.png" alt="Friends Autumn - Dark Turquoise Vest over Dark Blue Shirt, Dark Tan Shorts, Metallic Light Blue Sandals" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0677</div>
+      <div class="figtile-name">Friends Autumn - Dark Turquoise Vest over Dark Blue Shirt, Dark Tan Shorts, Metallic Light Blue Sandals</div>
+      <div class="figtile-value">₪6.01</div>
+      <div class="figtile-share">1.0% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0587.html" title="Friends Leo - Dark Azure and Coral Hoodie, Yellow Cropped Trousers, Medium Azure Shoes"
+       data-value="4.06" data-name="friends leo - dark azure and coral hoodie, yellow cropped trousers, medium azure shoes" data-qty="1"
+       data-v-used="4.06" data-v-new="4.41"
+       data-price-used="₪4.06"
+       data-price-new="₪4.41"
+       data-share-used="0.7% of set"
+       data-share-new="0.6% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0587.png" alt="Friends Leo - Dark Azure and Coral Hoodie, Yellow Cropped Trousers, Medium Azure Shoes" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0587</div>
+      <div class="figtile-name">Friends Leo - Dark Azure and Coral Hoodie, Yellow Cropped Trousers, Medium Azure Shoes</div>
+      <div class="figtile-value">₪4.06</div>
+      <div class="figtile-share">0.7% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0680.html" title="Friends Imani - Micro Doll"
+       data-value="3.36" data-name="friends imani - micro doll" data-qty="1"
+       data-v-used="3.36" data-v-new="9.45"
+       data-price-used="₪3.36"
+       data-price-new="₪9.45"
+       data-share-used="0.5% of set"
+       data-share-new="1.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0680.png" alt="Friends Imani - Micro Doll" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0680</div>
+      <div class="figtile-name">Friends Imani - Micro Doll</div>
+      <div class="figtile-value">₪3.36</div>
+      <div class="figtile-share">0.5% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/frnd0676.html" title="Friends Andrea (Adult) - Blue Halter Dress with Silver Straps"
+       data-value="0" data-name="friends andrea (adult) - blue halter dress with silver straps" data-qty="1"
+       data-v-used="0" data-v-new="9.08"
+       data-price-used="not priced"
+       data-price-new="₪9.08"
+       data-share-used=""
+       data-share-new="1.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/frnd0676.png" alt="Friends Andrea (Adult) - Blue Halter Dress with Silver Straps" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">frnd0676</div>
+      <div class="figtile-name">Friends Andrea (Adult) - Blue Halter Dress with Silver Straps</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0683.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0683.html"><b>frnd0683</b> Friends Emma (Adult) - Dark Blue, Medium Lavender, Yellow, Green, and White Top, Coral Skirt Full Length Pleated</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="12.45"
+            data-v-used="12.45" data-v-new="7.6"
+            data-price-used="₪12.45"
+            data-price-new="₪7.60"
+            >₪12.45</td>
+        <td class="num figcell-share" data-v="2.0185806702660636"
+            data-v-used="2.0185806702660636" data-v-new="1.0473368703920622"
+            data-share-used="2.0%"
+            data-share-new="1.0%"
+            >2.0%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0681.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0681.html"><b>frnd0681</b> Friends Mia (Adult) - Metallic Light Blue Halter Top, Orange Pants, Dark Turquoise Shoes</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="11.56"
+            data-v-used="11.56" data-v-new="8.87"
+            data-price-used="₪11.56"
+            data-price-new="₪8.87"
+            >₪11.56</td>
+        <td class="num figcell-share" data-v="1.8742805259659194"
+            data-v-used="1.8742805259659194" data-v-new="1.2223523737338937"
+            data-share-used="1.9%"
+            data-share-new="1.2%"
+            >1.9%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0682.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0682.html"><b>frnd0682</b> Friends Ji-Won</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.98"
+            data-v-used="8.98" data-v-new="8.62"
+            data-price-used="₪8.98"
+            data-price-new="₪8.62"
+            >₪8.98</td>
+        <td class="num figcell-share" data-v="1.4559722424890964"
+            data-v-used="1.4559722424890964" data-v-new="1.1879005029973126"
+            data-share-used="1.5%"
+            data-share-new="1.2%"
+            >1.5%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0679.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0679.html"><b>frnd0679</b> Friends Olivia (Adult) - Bright Light Blue Dress, Black Sandals</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.36"
+            data-v-used="8.36" data-v-new="8.39"
+            data-price-used="₪8.36"
+            data-price-new="₪8.39"
+            >₪8.36</td>
+        <td class="num figcell-share" data-v="1.3554485464597823"
+            data-v-used="1.3554485464597823" data-v-new="1.1562047819196584"
+            data-share-used="1.4%"
+            data-share-new="1.2%"
+            >1.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0684.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0684.html"><b>frnd0684</b> Friends Stephanie (Adult) - Medium Lavender Suit with Gold Shirt, Black Shoes with White Soles</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="7.98"
+            data-v-used="7.98" data-v-new="8.8"
+            data-price-used="₪7.98"
+            data-price-new="₪8.80"
+            >₪7.98</td>
+        <td class="num figcell-share" data-v="1.2938372488934287"
+            data-v-used="1.2938372488934287" data-v-new="1.2127058499276513"
+            data-share-used="1.3%"
+            data-share-new="1.2%"
+            >1.3%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0678.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0678.html"><b>frnd0678</b> Friends Paisley - Bright Light Yellow and Medium Lavender Tank Top, Light Aqua Trousers Bell-Bottoms, Dark Blue Shoes</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.74"
+            data-v-used="6.74" data-v-new="7.07"
+            data-price-used="₪6.74"
+            data-price-new="₪7.07"
+            >₪6.74</td>
+        <td class="num figcell-share" data-v="1.0927898568348007"
+            data-v-used="1.0927898568348007" data-v-new="0.9742989044305107"
+            data-share-used="1.1%"
+            data-share-new="1.0%"
+            >1.1%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0677.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0677.html"><b>frnd0677</b> Friends Autumn - Dark Turquoise Vest over Dark Blue Shirt, Dark Tan Shorts, Metallic Light Blue Sandals</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.01"
+            data-v-used="6.01" data-v-new="6.63"
+            data-price-used="₪6.01"
+            data-price-new="₪6.63"
+            >₪6.01</td>
+        <td class="num figcell-share" data-v="0.9744313115099632"
+            data-v-used="0.9744313115099632" data-v-new="0.913663611934128"
+            data-share-used="1.0%"
+            data-share-new="0.9%"
+            >1.0%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0587.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0587.html"><b>frnd0587</b> Friends Leo - Dark Azure and Coral Hoodie, Yellow Cropped Trousers, Medium Azure Shoes</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="4.06"
+            data-v-used="4.06" data-v-new="4.41"
+            data-price-used="₪4.06"
+            data-price-new="₪4.41"
+            >₪4.06</td>
+        <td class="num figcell-share" data-v="0.658268073998411"
+            data-v-used="0.658268073998411" data-v-new="0.6077309997932888"
+            data-share-used="0.7%"
+            data-share-new="0.6%"
+            >0.7%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0680.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0680.html"><b>frnd0680</b> Friends Imani - Micro Doll</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="3.36"
+            data-v-used="3.36" data-v-new="9.45"
+            data-price-used="₪3.36"
+            data-price-new="₪9.45"
+            >₪3.36</td>
+        <td class="num figcell-share" data-v="0.5447735784814436"
+            data-v-used="0.5447735784814436" data-v-new="1.3022807138427617"
+            data-share-used="0.5%"
+            data-share-new="1.3%"
+            >0.5%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/frnd0676.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/frnd0676.html"><b>frnd0676</b> Friends Andrea (Adult) - Blue Halter Dress with Silver Straps</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new="9.08"
+            data-price-used="—"
+            data-price-new="₪9.08"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new="1.2512919451526219"
+            data-share-used="—"
+            data-share-new="1.3%"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪69.50"
+              data-price-new="₪78.92"
+              >₪69.50</td>
+          <td class="num" id="figFootShare"
+              data-share-used="11%"
+              data-share-new="11%"
+              >11%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 11% of the used set price → not a part-out candidate (flag raises at 80%). Only 9 of 10 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 11% of the sealed set price → not a part-out candidate (flag raises at 80%).">
+    
+      Figs are <b>11% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 9 of 10 figs have a used price, so the true share is higher.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">641 lots · 2,245 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪979</b>
+      &nbsp;· premium <span class="delta up">▲ 35%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Medium Nougat</td>
+      <td class="num">43</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>White</td>
+      <td class="num">39</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11211</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Studs on 1 Side">Brick, Modified 1 x 2 with Studs on 1 Side</td>
+      <td>Medium Nougat</td>
+      <td class="num">31</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>White</td>
+      <td class="num">31</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>White</td>
+      <td class="num">28</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4085d</td>
+      <td class="name" title="Plate, Modified 1 x 1 with Open O Clip Thick (Vertical Grip)">Plate, Modified 1 x 1 with Open O Clip Thick (Vertical Grip)</td>
+      <td>Black</td>
+      <td class="num">24</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32062</td>
+      <td class="name" title="Technic, Axle  2L Notched">Technic, Axle  2L Notched</td>
+      <td>Red</td>
+      <td class="num">22</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3009</td>
+      <td class="name" title="Brick 1 x 6">Brick 1 x 6</td>
+      <td>White</td>
+      <td class="num">21</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with 3 Layered Leaves">Plant Plate, Round 1 x 1 with 3 Layered Leaves</td>
+      <td>Olive Green</td>
+      <td class="num">20</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3001</td>
+      <td class="name" title="Brick 2 x 4">Brick 2 x 4</td>
+      <td>Medium Nougat</td>
+      <td class="num">19</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3010</td>
+      <td class="name" title="Brick 1 x 4">Brick 1 x 4</td>
+      <td>White</td>
+      <td class="num">19</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3065</td>
+      <td class="name" title="Brick 1 x 2 without Bottom Tube">Brick 1 x 2 without Bottom Tube</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">19</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6538c</td>
+      <td class="name" title="Technic, Axle Connector 2L (Smooth with x Hole + Orientation)">Technic, Axle Connector 2L (Smooth with x Hole + Orientation)</td>
+      <td>Reddish Brown</td>
+      <td class="num">19</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>Magenta</td>
+      <td class="num">18</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>Black</td>
+      <td class="num">17</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Black</td>
+      <td class="num">17</td>
+      
+    </tr>
+    
+    <tr>
+      <td>76959</td>
+      <td class="name" title="Slope, Inverted 45 2 x 2 with Hollow Round Bottom Tube">Slope, Inverted 45 2 x 2 with Hollow Round Bottom Tube</td>
+      <td>White</td>
+      <td class="num">17</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3065</td>
+      <td class="name" title="Brick 1 x 2 without Bottom Tube">Brick 1 x 2 without Bottom Tube</td>
+      <td>Trans-Clear</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>48092</td>
+      <td class="name" title="Brick, Round Corner 4 x 4 Macaroni with 3 Studs">Brick, Round Corner 4 x 4 Macaroni with 3 Studs</td>
+      <td>White</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32952</td>
+      <td class="name" title="Brick, Modified 1 x 1 x 1 2/3 with Studs on Side">Brick, Modified 1 x 1 x 1 2/3 with Studs on Side</td>
+      <td>White</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3941</td>
+      <td class="name" title="Brick, Round 2 x 2 with Axle Hole">Brick, Round 2 x 2 with Axle Hole</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2454</td>
+      <td class="name" title="Brick 1 x 2 x 5">Brick 1 x 2 x 5</td>
+      <td>White</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3040</td>
+      <td class="name" title="Slope 45 2 x 1">Slope 45 2 x 1</td>
+      <td>Medium Nougat</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3070</td>
+      <td class="name" title="Tile 1 x 1">Tile 1 x 1</td>
+      <td>Bright Light Orange</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Yellow</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>80015</td>
+      <td class="name" title="Plate, Round Corner 5 x 5 Macaroni">Plate, Round Corner 5 x 5 Macaroni</td>
+      <td>Black</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25269</td>
+      <td class="name" title="Tile, Round 1 x 1 Quarter">Tile, Round 1 x 1 Quarter</td>
+      <td>Light Nougat</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25269</td>
+      <td class="name" title="Tile, Round 1 x 1 Quarter">Tile, Round 1 x 1 Quarter</td>
+      <td>Light Aqua</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3070</td>
+      <td class="name" title="Tile 1 x 1">Tile 1 x 1</td>
+      <td>Bright Light Yellow</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with 3 Layered Leaves">Plant Plate, Round 1 x 1 with 3 Layered Leaves</td>
+      <td>Bright Light Blue</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>33909</td>
+      <td class="name" title="Tile, Modified 2 x 2 with Studs on Edge">Tile, Modified 2 x 2 with Studs on Edge</td>
+      <td>Black</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3460</td>
+      <td class="name" title="Plate 1 x 8">Plate 1 x 8</td>
+      <td>Black</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4070</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Headlight">Brick, Modified 1 x 1 with Headlight</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4304</td>
+      <td class="name" title="Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Hollow Bottom Tube">Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Hollow Bottom Tube</td>
+      <td>Dark Azure</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>5151</td>
+      <td class="name" title="Plant Plate, Round 1 x 2 with Curved, Upright Leaf">Plant Plate, Round 1 x 2 with Curved, Upright Leaf</td>
+      <td>Lime</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6060</td>
+      <td class="name" title="Arch 1 x 6 x 3 1/3 Curved Top">Arch 1 x 6 x 3 1/3 Curved Top</td>
+      <td>White</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>1126</td>
+      <td class="name" title="Tile, Round 1 x 2 Oval">Tile, Round 1 x 2 Oval</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24866</td>
+      <td class="name" title="Plate, Round 1 x 1 with Flower Edge (5 Petals)">Plate, Round 1 x 1 with Flower Edge (5 Petals)</td>
+      <td>Bright Light Blue</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3003</td>
+      <td class="name" title="Brick 2 x 2">Brick 2 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Dark Turquoise</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3024</td>
+      <td class="name" title="Plate 1 x 1">Plate 1 x 1</td>
+      <td>Black</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>Black</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3622</td>
+      <td class="name" title="Brick 1 x 3">Brick 1 x 3</td>
+      <td>White</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3622</td>
+      <td class="name" title="Brick 1 x 3">Brick 1 x 3</td>
+      <td>Dark Azure</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3749</td>
+      <td class="name" title="Technic, Axle  1L with Pin without Friction Ridges with Round Hole">Technic, Axle  1L with Pin without Friction Ridges with Round Hole</td>
+      <td>Tan</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24866</td>
+      <td class="name" title="Plate, Round 1 x 1 with Flower Edge (5 Petals)">Plate, Round 1 x 1 with Flower Edge (5 Petals)</td>
+      <td>Bright Pink</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25269</td>
+      <td class="name" title="Tile, Round 1 x 1 Quarter">Tile, Round 1 x 1 Quarter</td>
+      <td>Trans-Yellow</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25269</td>
+      <td class="name" title="Tile, Round 1 x 1 Quarter">Tile, Round 1 x 1 Quarter</td>
+      <td>Lime</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Dark Tan</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60596</td>
+      <td class="name" title="Door, Frame 1 x 4 x 6 with 2 Holes on Top and Bottom">Door, Frame 1 x 4 x 6 with 2 Holes on Top and Bottom</td>
+      <td>Black</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>Black</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3623</td>
+      <td class="name" title="Plate 1 x 3">Plate 1 x 3</td>
+      <td>White</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>White</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4216</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Channel">Brick, Modified 1 x 2 with Channel</td>
+      <td>Tan</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>69729</td>
+      <td class="name" title="Tile 2 x 6">Tile 2 x 6</td>
+      <td>Black</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87544</td>
+      <td class="name" title="Panel 1 x 2 x 3 with Side Supports - Hollow Studs">Panel 1 x 2 x 3 with Side Supports - Hollow Studs</td>
+      <td>Trans-Clear</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11458</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Pin Hole on Top">Plate, Modified 1 x 2 with Pin Hole on Top</td>
+      <td>Yellow</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15068</td>
+      <td class="name" title="Slope, Curved 2 x 2 x 2/3">Slope, Curved 2 x 2 x 2/3</td>
+      <td>Black</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2449</td>
+      <td class="name" title="Slope, Inverted 75 2 x 1 x 3">Slope, Inverted 75 2 x 1 x 3</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25269</td>
+      <td class="name" title="Tile, Round 1 x 1 Quarter">Tile, Round 1 x 1 Quarter</td>
+      <td>Dark Pink</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2682</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with Curved, Upright Leaf">Plant Plate, Round 1 x 1 with Curved, Upright Leaf</td>
+      <td>Lime</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Black</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Black</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3009</td>
+      <td class="name" title="Brick 1 x 6">Brick 1 x 6</td>
+      <td>Dark Azure</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3010</td>
+      <td class="name" title="Brick 1 x 4">Brick 1 x 4</td>
+      <td>Dark Tan</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Coral</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with 3 Layered Leaves">Plant Plate, Round 1 x 1 with 3 Layered Leaves</td>
+      <td>Medium Lavender</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3460</td>
+      <td class="name" title="Plate 1 x 8">Plate 1 x 8</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35480</td>
+      <td class="name" title="Plate, Round 1 x 2 with Open Studs">Plate, Round 1 x 2 with Open Studs</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3573</td>
+      <td class="name" title="Slope, Curved 4 x 1 x 1 2/3">Slope, Curved 4 x 1 x 1 2/3</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3665</td>
+      <td class="name" title="Slope, Inverted 45 2 x 1">Slope, Inverted 45 2 x 1</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Coral</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4286</td>
+      <td class="name" title="Slope 33 3 x 1">Slope 33 3 x 1</td>
+      <td>Dark Tan</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87552</td>
+      <td class="name" title="Panel 1 x 2 x 2 with Side Supports - Hollow Studs">Panel 1 x 2 x 2 with Side Supports - Hollow Studs</td>
+      <td>Trans-Clear</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)">Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24866</td>
+      <td class="name" title="Plate, Round 1 x 1 with Flower Edge (5 Petals)">Plate, Round 1 x 1 with Flower Edge (5 Petals)</td>
+      <td>Lavender</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Dark Azure</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>Bright Light Orange</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td class="name" title="Plate 1 x 6">Plate 1 x 6</td>
+      <td>Dark Azure</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60481</td>
+      <td class="name" title="Slope 65 2 x 1 x 2">Slope 65 2 x 1 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>63864</td>
+      <td class="name" title="Tile 1 x 3">Tile 1 x 3</td>
+      <td>Medium Nougat</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2357</td>
+      <td class="name" title="Brick 2 x 2 Corner">Brick 2 x 2 Corner</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Reddish Orange Plate 1 x 2">Reddish Orange Plate 1 x 2</td>
+      <td>—</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3024</td>
+      <td class="name" title="Plate 1 x 1">Plate 1 x 1</td>
+      <td>Dark Turquoise</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3024</td>
+      <td class="name" title="Plate 1 x 1">Plate 1 x 1</td>
+      <td>Medium Azure</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3039</td>
+      <td class="name" title="Slope 45 2 x 2">Slope 45 2 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3068</td>
+      <td class="name" title="Tile 2 x 2">Tile 2 x 2</td>
+      <td>Light Aqua</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>Bright Light Blue</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3070</td>
+      <td class="name" title="Tile 1 x 1">Tile 1 x 1</td>
+      <td>Dark Blue</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3070</td>
+      <td class="name" title="Tile 1 x 1">Tile 1 x 1</td>
+      <td>Medium Nougat</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3070</td>
+      <td class="name" title="Tile 1 x 1">Tile 1 x 1</td>
+      <td>Light Aqua</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>33909</td>
+      <td class="name" title="Tile, Modified 2 x 2 with Studs on Edge">Tile, Modified 2 x 2 with Studs on Edge</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3396</td>
+      <td class="name" title="Tile, Modified 2 x 2 with 2 1 x 1 Curved Cutouts (Double Arrow)">Tile, Modified 2 x 2 with 2 1 x 1 Curved Cutouts (Double Arrow)</td>
+      <td>Coral</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td class="name" title="Tile, Modified 2 x 2 Wedge Triangular">Tile, Modified 2 x 2 Wedge Triangular</td>
+      <td>Dark Turquoise</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td class="name" title="Tile, Modified 2 x 2 Wedge Triangular">Tile, Modified 2 x 2 Wedge Triangular</td>
+      <td>Lavender</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3623</td>
+      <td class="name" title="Plate 1 x 3">Plate 1 x 3</td>
+      <td>Bright Light Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td class="name" title="Plate 1 x 6">Plate 1 x 6</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">Showing 100 of 641 lots — use the filter to narrow.</div>
+  
   
 </div>
 
@@ -268,6 +1698,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788138548"></script>
+<script src="../static/app.js?v=1788152676"></script>
 </body>
 </html>

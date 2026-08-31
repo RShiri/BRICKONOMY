@@ -6,7 +6,7 @@
 <title>10303 Loop Coaster · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788138548">
+<link rel="stylesheet" href="../static/style.css?v=1788152676">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -73,7 +73,13 @@
       <span class="chip">⚖️ 5,870 g</span>
       <span class="chip">₪0.37 / part</span>
       
-      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
+      <span class="chip" id="figPctChip"
+            data-used="14"
+            data-new="13"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 14% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -192,9 +198,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Icons average</div>
-        <div class="value" style="font-size:22px">₪0.43</div>
+        <div class="value" style="font-size:22px">₪3.13</div>
         <div class="delta up">
-          −13% vs theme
+          −88% vs theme
         </div>
       </div>
       
@@ -246,6 +252,39 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="180.42"
+              data-parts="2173.92"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪180 · 8% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪2,174 · 92% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪2,354</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -372,7 +411,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 11 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 11 in this set<span id="figsTotalLabel">, ₪129 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -386,8 +425,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used=""
-         data-total-new="">
+         data-total-used="₪129"
+         data-total-new="₪180">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -405,222 +444,222 @@
     
     
     
-    <a class="figtile" href="../sets/twn432.html" title="Set twn432"
-       data-value="0" data-name="set twn432" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
+    <a class="figtile" href="../sets/twn432.html" title="Balloon Vendor"
+       data-value="17.97" data-name="balloon vendor" data-qty="1"
+       data-v-used="17.97" data-v-new="24.74"
+       data-price-used="₪17.97"
+       data-price-new="₪24.74"
+       data-share-used="2.0% of set"
+       data-share-new="1.8% of set">
       <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn432.png" alt="Set twn432" loading="lazy"
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn432.png" alt="Balloon Vendor" loading="lazy"
              onerror="this.style.visibility='hidden'">
         
       </div>
       <div class="figtile-id">twn432</div>
-      <div class="figtile-name">Set twn432</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
+      <div class="figtile-name">Balloon Vendor</div>
+      <div class="figtile-value">₪17.97</div>
+      <div class="figtile-share">2.0% of set</div>
     </a>
     
     
     
-    <a class="figtile" href="../sets/twn433.html" title="Set twn433"
-       data-value="0" data-name="set twn433" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
+    <a class="figtile" href="../sets/twn442.html" title="Woman, Medium Nougat Tank Top with Reddish Brown Ribbing and Should Bag, Sand Green Legs, Dark Brown Coiled Hair in High Bun"
+       data-value="14.36" data-name="woman, medium nougat tank top with reddish brown ribbing and should bag, sand green legs, dark brown coiled hair in high bun" data-qty="1"
+       data-v-used="14.36" data-v-new="15.29"
+       data-price-used="₪14.36"
+       data-price-new="₪15.29"
+       data-share-used="1.6% of set"
+       data-share-new="1.1% of set">
       <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="Set twn433" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn433</div>
-      <div class="figtile-name">Set twn433</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn434.html" title="Set twn434"
-       data-value="0" data-name="set twn434" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="Set twn434" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn434</div>
-      <div class="figtile-name">Set twn434</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn435.html" title="Set twn435"
-       data-value="0" data-name="set twn435" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="Set twn435" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn435</div>
-      <div class="figtile-name">Set twn435</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn436.html" title="Set twn436"
-       data-value="0" data-name="set twn436" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="Set twn436" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn436</div>
-      <div class="figtile-name">Set twn436</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn437.html" title="Set twn437"
-       data-value="0" data-name="set twn437" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="Set twn437" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn437</div>
-      <div class="figtile-name">Set twn437</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn438.html" title="Set twn438"
-       data-value="0" data-name="set twn438" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="Set twn438" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn438</div>
-      <div class="figtile-name">Set twn438</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn439.html" title="Set twn439"
-       data-value="0" data-name="set twn439" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="Set twn439" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn439</div>
-      <div class="figtile-name">Set twn439</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn440.html" title="Set twn440"
-       data-value="0" data-name="set twn440" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="Set twn440" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn440</div>
-      <div class="figtile-name">Set twn440</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn441.html" title="Set twn441"
-       data-value="0" data-name="set twn441" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="Set twn441" loading="lazy"
-             onerror="this.style.visibility='hidden'">
-        
-      </div>
-      <div class="figtile-id">twn441</div>
-      <div class="figtile-name">Set twn441</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
-    </a>
-    
-    
-    
-    <a class="figtile" href="../sets/twn442.html" title="Set twn442"
-       data-value="0" data-name="set twn442" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
-      <div class="figtile-img">
-        <img src="https://img.bricklink.com/ItemImage/MN/0/twn442.png" alt="Set twn442" loading="lazy"
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn442.png" alt="Woman, Medium Nougat Tank Top with Reddish Brown Ribbing and Should Bag, Sand Green Legs, Dark Brown Coiled Hair in High Bun" loading="lazy"
              onerror="this.style.visibility='hidden'">
         
       </div>
       <div class="figtile-id">twn442</div>
-      <div class="figtile-name">Set twn442</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
+      <div class="figtile-name">Woman, Medium Nougat Tank Top with Reddish Brown Ribbing and Should Bag, Sand Green Legs, Dark Brown Coiled Hair in High Bun</div>
+      <div class="figtile-value">₪14.36</div>
+      <div class="figtile-share">1.6% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn440.html" title="Woman, Bright Light Blue Denim Jacket, Bright Light Blue Legs, Red Spiked Hair"
+       data-value="13.21" data-name="woman, bright light blue denim jacket, bright light blue legs, red spiked hair" data-qty="1"
+       data-v-used="13.21" data-v-new="17.5"
+       data-price-used="₪13.21"
+       data-price-new="₪17.50"
+       data-share-used="1.5% of set"
+       data-share-new="1.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="Woman, Bright Light Blue Denim Jacket, Bright Light Blue Legs, Red Spiked Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn440</div>
+      <div class="figtile-name">Woman, Bright Light Blue Denim Jacket, Bright Light Blue Legs, Red Spiked Hair</div>
+      <div class="figtile-value">₪13.21</div>
+      <div class="figtile-share">1.5% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn436.html" title="Child - Boy, Blue Jacket with Yellow Stripe, Medium Blue Short Legs, Tan Tousled Hair, Freckles"
+       data-value="13.17" data-name="child - boy, blue jacket with yellow stripe, medium blue short legs, tan tousled hair, freckles" data-qty="1"
+       data-v-used="13.17" data-v-new="26.57"
+       data-price-used="₪13.17"
+       data-price-new="₪26.57"
+       data-share-used="1.5% of set"
+       data-share-new="1.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="Child - Boy, Blue Jacket with Yellow Stripe, Medium Blue Short Legs, Tan Tousled Hair, Freckles" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn436</div>
+      <div class="figtile-name">Child - Boy, Blue Jacket with Yellow Stripe, Medium Blue Short Legs, Tan Tousled Hair, Freckles</div>
+      <div class="figtile-value">₪13.17</div>
+      <div class="figtile-share">1.5% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn438.html" title="Woman, Bright Pink Shirt, Tan Legs, Dark Bluish Gray Swept Back Tousled Hair"
+       data-value="12.96" data-name="woman, bright pink shirt, tan legs, dark bluish gray swept back tousled hair" data-qty="1"
+       data-v-used="12.96" data-v-new="14.68"
+       data-price-used="₪12.96"
+       data-price-new="₪14.68"
+       data-share-used="1.4% of set"
+       data-share-new="1.1% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="Woman, Bright Pink Shirt, Tan Legs, Dark Bluish Gray Swept Back Tousled Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn438</div>
+      <div class="figtile-name">Woman, Bright Pink Shirt, Tan Legs, Dark Bluish Gray Swept Back Tousled Hair</div>
+      <div class="figtile-value">₪12.96</div>
+      <div class="figtile-share">1.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn433.html" title="Hot Dog Vendor"
+       data-value="12.5" data-name="hot dog vendor" data-qty="1"
+       data-v-used="12.5" data-v-new="16.56"
+       data-price-used="₪12.50"
+       data-price-new="₪16.56"
+       data-share-used="1.4% of set"
+       data-share-new="1.2% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="Hot Dog Vendor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn433</div>
+      <div class="figtile-name">Hot Dog Vendor</div>
+      <div class="figtile-value">₪12.50</div>
+      <div class="figtile-share">1.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn441.html" title="Man - Dark Green Hoodie, Dark Blue Legs, Medium Nougat Wavy Hair"
+       data-value="11.58" data-name="man - dark green hoodie, dark blue legs, medium nougat wavy hair" data-qty="1"
+       data-v-used="11.58" data-v-new="15.17"
+       data-price-used="₪11.58"
+       data-price-new="₪15.17"
+       data-share-used="1.3% of set"
+       data-share-new="1.1% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="Man - Dark Green Hoodie, Dark Blue Legs, Medium Nougat Wavy Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn441</div>
+      <div class="figtile-name">Man - Dark Green Hoodie, Dark Blue Legs, Medium Nougat Wavy Hair</div>
+      <div class="figtile-value">₪11.58</div>
+      <div class="figtile-share">1.3% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn437.html" title="Woman - Bright Light Blue Jacket over White Shirt with Coral Flowers, White Legs, Dark Azure Tousled Hair"
+       data-value="10.91" data-name="woman - bright light blue jacket over white shirt with coral flowers, white legs, dark azure tousled hair" data-qty="1"
+       data-v-used="10.91" data-v-new="14.33"
+       data-price-used="₪10.91"
+       data-price-new="₪14.33"
+       data-share-used="1.2% of set"
+       data-share-new="1.0% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="Woman - Bright Light Blue Jacket over White Shirt with Coral Flowers, White Legs, Dark Azure Tousled Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn437</div>
+      <div class="figtile-name">Woman - Bright Light Blue Jacket over White Shirt with Coral Flowers, White Legs, Dark Azure Tousled Hair</div>
+      <div class="figtile-value">₪10.91</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn439.html" title="Man, Dark Red Jacket with Bright Light Blue Shirt, Blue Legs, Black Widow&#39;s Peak Hair"
+       data-value="8.36" data-name="man, dark red jacket with bright light blue shirt, blue legs, black widow&#39;s peak hair" data-qty="1"
+       data-v-used="8.36" data-v-new="14.83"
+       data-price-used="₪8.36"
+       data-price-new="₪14.83"
+       data-share-used="0.9% of set"
+       data-share-new="1.1% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="Man, Dark Red Jacket with Bright Light Blue Shirt, Blue Legs, Black Widow&#39;s Peak Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn439</div>
+      <div class="figtile-name">Man, Dark Red Jacket with Bright Light Blue Shirt, Blue Legs, Black Widow&#39;s Peak Hair</div>
+      <div class="figtile-value">₪8.36</div>
+      <div class="figtile-share">0.9% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn434.html" title="Pretzel Vendor"
+       data-value="7.08" data-name="pretzel vendor" data-qty="1"
+       data-v-used="7.08" data-v-new="9.37"
+       data-price-used="₪7.08"
+       data-price-new="₪9.37"
+       data-share-used="0.8% of set"
+       data-share-new="0.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="Pretzel Vendor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn434</div>
+      <div class="figtile-name">Pretzel Vendor</div>
+      <div class="figtile-value">₪7.08</div>
+      <div class="figtile-share">0.8% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/twn435.html" title="Loop Coaster Ride Operator"
+       data-value="6.5" data-name="loop coaster ride operator" data-qty="1"
+       data-v-used="6.5" data-v-new="11.38"
+       data-price-used="₪6.50"
+       data-price-new="₪11.38"
+       data-share-used="0.7% of set"
+       data-share-new="0.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="Loop Coaster Ride Operator" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">twn435</div>
+      <div class="figtile-name">Loop Coaster Ride Operator</div>
+      <div class="figtile-value">₪6.50</div>
+      <div class="figtile-share">0.7% of set</div>
     </a>
     
   </div>
@@ -636,211 +675,223 @@
       
       <tr>
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn432.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn432.html"><b>twn432</b> Set twn432</a></td>
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn432.html"><b>twn432</b> Balloon Vendor</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn433.html"><b>twn433</b> Set twn433</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn434.html"><b>twn434</b> Set twn434</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn435.html"><b>twn435</b> Set twn435</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn436.html"><b>twn436</b> Set twn436</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn437.html"><b>twn437</b> Set twn437</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn438.html"><b>twn438</b> Set twn438</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn439.html"><b>twn439</b> Set twn439</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn440.html"><b>twn440</b> Set twn440</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
-      </tr>
-      
-      
-      
-      <tr>
-        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn441.html"><b>twn441</b> Set twn441</a></td>
-        <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
+        <td class="num figcell-value" data-v="17.97"
+            data-v-used="17.97" data-v-new="24.74"
+            data-price-used="₪17.97"
+            data-price-new="₪24.74"
+            >₪17.97</td>
+        <td class="num figcell-share" data-v="2.0040594191907926"
+            data-v-used="2.0040594191907926" data-v-new="1.777796940234692"
+            data-share-used="2.0%"
+            data-share-new="1.8%"
+            >2.0%</td>
       </tr>
       
       
       
       <tr>
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn442.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="../sets/twn442.html"><b>twn442</b> Set twn442</a></td>
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn442.html"><b>twn442</b> Woman, Medium Nougat Tank Top with Reddish Brown Ribbing and Should Bag, Sand Green Legs, Dark Brown Coiled Hair in High Bun</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
+        <td class="num figcell-value" data-v="14.36"
+            data-v-used="14.36" data-v-new="15.29"
+            data-price-used="₪14.36"
+            data-price-new="₪15.29"
+            >₪14.36</td>
+        <td class="num figcell-share" data-v="1.6014631752687691"
+            data-v-used="1.6014631752687691" data-v-new="1.0987273733301715"
+            data-share-used="1.6%"
+            data-share-new="1.1%"
+            >1.6%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn440.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn440.html"><b>twn440</b> Woman, Bright Light Blue Denim Jacket, Bright Light Blue Legs, Red Spiked Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="13.21"
+            data-v-used="13.21" data-v-new="17.5"
+            data-price-used="₪13.21"
+            data-price-new="₪17.50"
+            >₪13.21</td>
+        <td class="num figcell-share" data-v="1.473212294240978"
+            data-v-used="1.473212294240978" data-v-new="1.2575362350083716"
+            data-share-used="1.5%"
+            data-share-new="1.3%"
+            >1.5%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn436.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn436.html"><b>twn436</b> Child - Boy, Blue Jacket with Yellow Stripe, Medium Blue Short Legs, Tan Tousled Hair, Freckles</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="13.17"
+            data-v-used="13.17" data-v-new="26.57"
+            data-price-used="₪13.17"
+            data-price-new="₪26.57"
+            >₪13.17</td>
+        <td class="num figcell-share" data-v="1.4687513940313157"
+            data-v-used="1.4687513940313157" data-v-new="1.9092993008098536"
+            data-share-used="1.5%"
+            data-share-new="1.9%"
+            >1.5%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn438.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn438.html"><b>twn438</b> Woman, Bright Pink Shirt, Tan Legs, Dark Bluish Gray Swept Back Tousled Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="12.96"
+            data-v-used="12.96" data-v-new="14.68"
+            data-price-used="₪12.96"
+            data-price-new="₪14.68"
+            >₪12.96</td>
+        <td class="num figcell-share" data-v="1.4453316679305885"
+            data-v-used="1.4453316679305885" data-v-new="1.0548932531384512"
+            data-share-used="1.4%"
+            data-share-new="1.1%"
+            >1.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn433.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn433.html"><b>twn433</b> Hot Dog Vendor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="12.5"
+            data-v-used="12.5" data-v-new="16.56"
+            data-price-used="₪12.50"
+            data-price-new="₪16.56"
+            >₪12.50</td>
+        <td class="num figcell-share" data-v="1.394031315519472"
+            data-v-used="1.394031315519472" data-v-new="1.189988574385065"
+            data-share-used="1.4%"
+            data-share-new="1.2%"
+            >1.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn441.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn441.html"><b>twn441</b> Man - Dark Green Hoodie, Dark Blue Legs, Medium Nougat Wavy Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="11.58"
+            data-v-used="11.58" data-v-new="15.17"
+            data-price-used="₪11.58"
+            data-price-new="₪15.17"
+            >₪11.58</td>
+        <td class="num figcell-share" data-v="1.2914306106972389"
+            data-v-used="1.2914306106972389" data-v-new="1.0901042677186856"
+            data-share-used="1.3%"
+            data-share-new="1.1%"
+            >1.3%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn437.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn437.html"><b>twn437</b> Woman - Bright Light Blue Jacket over White Shirt with Coral Flowers, White Legs, Dark Azure Tousled Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="10.91"
+            data-v-used="10.91" data-v-new="14.33"
+            data-price-used="₪10.91"
+            data-price-new="₪14.33"
+            >₪10.91</td>
+        <td class="num figcell-share" data-v="1.216710532185395"
+            data-v-used="1.216710532185395" data-v-new="1.0297425284382837"
+            data-share-used="1.2%"
+            data-share-new="1.0%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn439.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn439.html"><b>twn439</b> Man, Dark Red Jacket with Bright Light Blue Shirt, Blue Legs, Black Widow&#39;s Peak Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.36"
+            data-v-used="8.36" data-v-new="14.83"
+            data-price-used="₪8.36"
+            data-price-new="₪14.83"
+            >₪8.36</td>
+        <td class="num figcell-share" data-v="0.9323281438194226"
+            data-v-used="0.9323281438194226" data-v-new="1.0656721351528087"
+            data-share-used="0.9%"
+            data-share-new="1.1%"
+            >0.9%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn434.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn434.html"><b>twn434</b> Pretzel Vendor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="7.08"
+            data-v-used="7.08" data-v-new="9.37"
+            data-price-used="₪7.08"
+            data-price-new="₪9.37"
+            >₪7.08</td>
+        <td class="num figcell-share" data-v="0.789579337110229"
+            data-v-used="0.789579337110229" data-v-new="0.6733208298301967"
+            data-share-used="0.8%"
+            data-share-new="0.7%"
+            >0.8%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/twn435.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/twn435.html"><b>twn435</b> Loop Coaster Ride Operator</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.5"
+            data-v-used="6.5" data-v-new="11.38"
+            data-price-used="₪6.50"
+            data-price-new="₪11.38"
+            >₪6.50</td>
+        <td class="num figcell-share" data-v="0.7248962840701254"
+            data-v-used="0.7248962840701254" data-v-new="0.817757848822587"
+            data-share-used="0.7%"
+            data-share-new="0.8%"
+            >0.7%</td>
       </tr>
       
     </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪129"
+              data-price-new="₪180"
+              >₪129</td>
+          <td class="num" id="figFootShare"
+              data-share-used="14%"
+              data-share-new="13%"
+              >14%</td></tr>
+    </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used=""
-       data-note-new="">
+       data-note-used="Figs are 14% of the used set price → not a part-out candidate (flag raises at 80%)."
+       data-note-new="Figs are 13% of the sealed set price → not a part-out candidate (flag raises at 80%).">
     
-      None of this set's 11 figs have been priced, so the figure share is unknown.
-      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+      Figs are <b>14% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      
     
   </div>
   
@@ -1721,6 +1772,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788138548"></script>
+<script src="../static/app.js?v=1788152676"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <title>60380 Downtown · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788138548">
+<link rel="stylesheet" href="../static/style.css?v=1788152676">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -68,9 +68,18 @@
     <div class="facts">
       <span class="chip">🧱 2,010 parts</span>
       
+      <span class="chip">🧍 14 minifigs</span>
       
+      <span class="chip">⚖️ 3,321 g</span>
+      <span class="chip">₪0.42 / part</span>
       
-      
+      <span class="chip" id="figPctChip"
+            data-used="25"
+            data-new="15"
+            data-partial-used="1"
+            data-partial-new="1"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 25% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -97,27 +106,31 @@
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
     <div class="label">Value — new / sealed</div>
-    <div class="value" style="">—</div>
+    <div class="value" style="">₪840</div>
     <div class="delta">
-      
-      
+      <span class="delta up">▲ 41%</span> vs retail
+       · +12.2%/yr
     </div>
-    <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--ink-2)"
+        title="6 BrickLink sales (6 units) in the last six months — sells about monthly.">
+    ⇄ 6 sold/6mo</span></div>
   </div>
   <div class="tile">
     <div class="label">Value — used</div>
-    <div class="value" style="">—</div>
-    <div class="delta"><span class="chip" style="color:var(--muted)">—</span></div>
-    <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
+    <div class="value" style="opacity:.55">₪506</div>
+    <div class="delta"><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span></div>
+    <div style="margin-top:6px"><span class="chip" style="color:var(--warn)"
+        title="2 BrickLink sales (2 units) in the last six months — a few sales in six months.">
+    ⇄ 2 sold/6mo</span></div>
   </div>
   <div class="tile">
-    <div class="label">Forecast  <span title="Trend estimate, not a guarantee">ⓘ</span></div>
-    <div class="value">—</div>
-    <div class="delta">needs price history</div>
+    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">₪1,176</div>
+    <div class="delta">trend estimate · ±20% band</div>
   </div>
   <div class="tile">
     <div class="label">Buy target</div>
-    <div class="value">—</div>
+    <div class="value">₪672</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
 </div>
@@ -156,26 +169,180 @@
     <h3>Value vs retail</h3>
     <div class="vsbars">
       <div class="vsrow"><span>Retail</span>
-        <div class="track"><div class="fill retail" style="width:100.0%"></div></div>
+        <div class="track"><div class="fill retail" style="width:70.8%"></div></div>
         <span class="num" title="$200 at launch">₪595</span></div>
       <div class="vsrow"><span>Value new</span>
-        <div class="track"><div class="fill" style="width:0.0%"></div></div>
-        <span class="num">—</span></div>
+        <div class="track"><div class="fill" style="width:100.0%"></div></div>
+        <span class="num">₪840</span></div>
       <div class="vsrow"><span>Value used</span>
-        <div class="track"><div class="fill used" style="width:0.0%"></div></div>
-        <span class="num">—</span></div>
+        <div class="track"><div class="fill used" style="width:60.2%"></div></div>
+        <span class="num">₪506</span></div>
+    </div>
+    
+    <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
+      A buyer at retail is <span class="delta up">▲ 41%</span> today,
+      compounding at +12.2% a year.
     </div>
     
   </div>
   
   
+  <div class="card">
+    <h3>Price per piece</h3>
+    <div class="tiles" style="grid-template-columns:1fr 1fr">
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">This set</div>
+        <div class="value" style="font-size:22px">₪0.42</div>
+        <div class="delta">2,010 parts</div>
+      </div>
+      
+      <div class="tile" style="background:transparent;border:0;padding:0">
+        <div class="label">City average</div>
+        <div class="value" style="font-size:22px">₪1.85</div>
+        <div class="delta up">
+          −77% vs theme
+        </div>
+      </div>
+      
+    </div>
+    <div style="color:var(--muted);font-size:12px;margin-top:8px">
+      Lower is better for part-out; higher usually means minifig- or licence-driven value.
+    </div>
+  </div>
+  
 </div>
 
 
 
+<div class="card">
+  <h3>Best live prices <span class="soft">— cheapest clean listing per marketplace, converted to ILS</span></h3>
+  <div class="three-col">
+    
+      
+      
+      <div class="best">
+        <span class="tag">Best deal</span>
+        <div><span class="dot" style="background:var(--s2)"></span> <b>BrickLink</b></div>
+        <div class="price">₪753</div>
+        <div class="meta">₪753 native</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
+        <div class="price">₪1,910</div>
+        <div class="meta">$642 native<br>“LEGO 60380 CITY: Downtown 8+ Block Toy New Opens in a new window or tab”</div>
+      </div>
+      
+    
+      
+      
+      <div class="offer">
+        
+        <div><span class="dot" style="background:var(--s4)"></span> <b>BrickOwl</b></div>
+        <div class="price">₪1,034</div>
+        <div class="meta">₪1,034 native<br>“New (Sealed) LEGO Downtown Set 60380 1 ILS 1,034.22 N/A Speciale (16) Request a Shipping Quote”</div>
+      </div>
+      
+    
+  </div>
+</div>
 
 
 
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at used prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="127.62"
+              data-parts="622.33"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪128 · 17% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪622 · 83% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪750</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>used</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="card" id="importCard"
+     data-vat="18.0"
+     data-ship-usd="25.0"
+     data-ship-rate="2.9728"
+     data-ccy="ILS">
+  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead>
+      <tr><th>Condition</th><th class="num">BrickLink average</th>
+          <th class="num">VAT 18%</th>
+          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr data-cond="new" data-base="840.06">
+        <td>New / sealed</td>
+        <td class="num">₪840</td>
+        <td class="num">₪151</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪1,066</b></td>
+      </tr>
+      
+      
+      
+      
+      <tr data-cond="used" data-base="505.81">
+        <td>Used</td>
+        <td class="num">₪506</td>
+        <td class="num">₪91.05</td>
+        <td class="num import-ship">₪74.32</td>
+        <td class="num import-total"><b>₪671</b></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+  </div>
+  <div class="searchrow" style="margin-top:12px">
+    <label class="chip" style="gap:8px">Shipping&nbsp;$
+      <input class="inp" type="number" id="importShip" min="0" step="1"
+             value="25"
+             style="border:0;background:transparent;padding:0;width:64px"
+             aria-label="Shipping cost in US dollars">
+    </label>
+    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
+  </div>
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">
+    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
+    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
+    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
+  </div>
+</div>
 
 
 
@@ -193,12 +360,12 @@
             BrickLink
             <span class="chip" style="color:var(--ok)" title="The official value is BrickLink's 6-month sold average">value</span>
             </td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td>—</td>
-        <td><span class="chip" style="color:var(--muted)">—</span>
+        <td class="num">₪849</td>
+        <td class="num">₪567</td>
+        <td class="num">6</td>
+        <td class="num">5</td>
+        <td>ILS</td>
+        <td><span class="chip">◑ MEDIUM</span>
             </td>
       </tr>
       
@@ -207,12 +374,12 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
             eBay
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪2,511</td>
+        <td class="num">₪2,471</td>
         <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td>—</td>
-        <td><span class="chip" style="color:var(--muted)">—</span>
+        <td class="num">12</td>
+        <td>USD</td>
+        <td><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span>
             </td>
       </tr>
       
@@ -221,12 +388,12 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s4)"></span>
             BrickOwl
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
+        <td class="num">₪1,034</td>
         <td class="num">—</td>
         <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td>—</td>
-        <td><span class="chip" style="color:var(--muted)">—</span>
+        <td class="num">1</td>
+        <td>ILS</td>
+        <td><span class="chip" style="color:var(--warn)" title="Thin evidence — few sales behind this number. Treat it as a guess.">◐ LOW</span>
             </td>
       </tr>
       
@@ -244,16 +411,1439 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 14 in this set<span id="figsTotalLabel">, ₪128 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪128"
+         data-total-new="₪125">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/cty1644.html" title="Comic Shop Guy - Male, Bright Light Orange Dragon Suit and Legs, Red Dragon Head, Dark Purple Shoulder Armor"
+       data-value="32.33" data-name="comic shop guy - male, bright light orange dragon suit and legs, red dragon head, dark purple shoulder armor" data-qty="1"
+       data-v-used="32.33" data-v-new="28.41"
+       data-price-used="₪32.33"
+       data-price-new="₪28.41"
+       data-share-used="6.4% of set"
+       data-share-new="3.4% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1644.png" alt="Comic Shop Guy - Male, Bright Light Orange Dragon Suit and Legs, Red Dragon Head, Dark Purple Shoulder Armor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1644</div>
+      <div class="figtile-name">Comic Shop Guy - Male, Bright Light Orange Dragon Suit and Legs, Red Dragon Head, Dark Purple Shoulder Armor</div>
+      <div class="figtile-value">₪32.33</div>
+      <div class="figtile-share">6.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1643.html" title="Child - Girl, White Top with Raccoon, Bright Pink Short Legs, Dark Orange Pigtails, Black Skirt and Cat Ears"
+       data-value="15.24" data-name="child - girl, white top with raccoon, bright pink short legs, dark orange pigtails, black skirt and cat ears" data-qty="1"
+       data-v-used="15.24" data-v-new="11.7"
+       data-price-used="₪15.24"
+       data-price-new="₪11.70"
+       data-share-used="3.0% of set"
+       data-share-new="1.4% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1643.png" alt="Child - Girl, White Top with Raccoon, Bright Pink Short Legs, Dark Orange Pigtails, Black Skirt and Cat Ears" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1643</div>
+      <div class="figtile-name">Child - Girl, White Top with Raccoon, Bright Pink Short Legs, Dark Orange Pigtails, Black Skirt and Cat Ears</div>
+      <div class="figtile-value">₪15.24</div>
+      <div class="figtile-share">3.0% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1653.html" title="DJ (Bytz) - Male, White Jacket, Black Legs, Lime Hair, Dark Turquoise Headphones"
+       data-value="10.77" data-name="dj (bytz) - male, white jacket, black legs, lime hair, dark turquoise headphones" data-qty="1"
+       data-v-used="10.77" data-v-new="11.15"
+       data-price-used="₪10.77"
+       data-price-new="₪11.15"
+       data-share-used="2.1% of set"
+       data-share-new="1.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1653.png" alt="DJ (Bytz) - Male, White Jacket, Black Legs, Lime Hair, Dark Turquoise Headphones" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1653</div>
+      <div class="figtile-name">DJ (Bytz) - Male, White Jacket, Black Legs, Lime Hair, Dark Turquoise Headphones</div>
+      <div class="figtile-value">₪10.77</div>
+      <div class="figtile-share">2.1% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1651.html" title="Sanitary Engineer - Male, Dark Turquoise Top, Dark Orange Overalls and Legs, Reddish Brown Flat Cap"
+       data-value="8.97" data-name="sanitary engineer - male, dark turquoise top, dark orange overalls and legs, reddish brown flat cap" data-qty="1"
+       data-v-used="8.97" data-v-new="7.72"
+       data-price-used="₪8.97"
+       data-price-new="₪7.72"
+       data-share-used="1.8% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1651.png" alt="Sanitary Engineer - Male, Dark Turquoise Top, Dark Orange Overalls and Legs, Reddish Brown Flat Cap" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1651</div>
+      <div class="figtile-name">Sanitary Engineer - Male, Dark Turquoise Top, Dark Orange Overalls and Legs, Reddish Brown Flat Cap</div>
+      <div class="figtile-value">₪8.97</div>
+      <div class="figtile-share">1.8% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1647.html" title="Barber - Male, Reddish Brown Apron, Sand Blue Legs, Dark Brown Hair, Stubble"
+       data-value="8.31" data-name="barber - male, reddish brown apron, sand blue legs, dark brown hair, stubble" data-qty="1"
+       data-v-used="8.31" data-v-new="7.88"
+       data-price-used="₪8.31"
+       data-price-new="₪7.88"
+       data-share-used="1.6% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1647.png" alt="Barber - Male, Reddish Brown Apron, Sand Blue Legs, Dark Brown Hair, Stubble" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1647</div>
+      <div class="figtile-name">Barber - Male, Reddish Brown Apron, Sand Blue Legs, Dark Brown Hair, Stubble</div>
+      <div class="figtile-value">₪8.31</div>
+      <div class="figtile-share">1.6% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1650.html" title="Electric Scooter Rider - Male, White Shirt with Bright Green Tie, Dark Green Legs, Reddish Brown Spiked Hair, Safety Glasses"
+       data-value="8.17" data-name="electric scooter rider - male, white shirt with bright green tie, dark green legs, reddish brown spiked hair, safety glasses" data-qty="1"
+       data-v-used="8.17" data-v-new="8.41"
+       data-price-used="₪8.17"
+       data-price-new="₪8.41"
+       data-share-used="1.6% of set"
+       data-share-new="1.0% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1650.png" alt="Electric Scooter Rider - Male, White Shirt with Bright Green Tie, Dark Green Legs, Reddish Brown Spiked Hair, Safety Glasses" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1650</div>
+      <div class="figtile-name">Electric Scooter Rider - Male, White Shirt with Bright Green Tie, Dark Green Legs, Reddish Brown Spiked Hair, Safety Glasses</div>
+      <div class="figtile-value">₪8.17</div>
+      <div class="figtile-share">1.6% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1648.html" title="Street Performer / Busker - Female, Medium Lavender Top, Medium Blue Overalls and Legs, Black Hair"
+       data-value="7.06" data-name="street performer / busker - female, medium lavender top, medium blue overalls and legs, black hair" data-qty="1"
+       data-v-used="7.06" data-v-new="9.23"
+       data-price-used="₪7.06"
+       data-price-new="₪9.23"
+       data-share-used="1.4% of set"
+       data-share-new="1.1% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1648.png" alt="Street Performer / Busker - Female, Medium Lavender Top, Medium Blue Overalls and Legs, Black Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1648</div>
+      <div class="figtile-name">Street Performer / Busker - Female, Medium Lavender Top, Medium Blue Overalls and Legs, Black Hair</div>
+      <div class="figtile-value">₪7.06</div>
+      <div class="figtile-share">1.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1645.html" title="Noodle Vendor - Male, Red Shirt, Dark Blue Legs, Black Hair, Sunglasses"
+       data-value="6.84" data-name="noodle vendor - male, red shirt, dark blue legs, black hair, sunglasses" data-qty="1"
+       data-v-used="6.84" data-v-new="7.58"
+       data-price-used="₪6.84"
+       data-price-new="₪7.58"
+       data-share-used="1.4% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1645.png" alt="Noodle Vendor - Male, Red Shirt, Dark Blue Legs, Black Hair, Sunglasses" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1645</div>
+      <div class="figtile-name">Noodle Vendor - Male, Red Shirt, Dark Blue Legs, Black Hair, Sunglasses</div>
+      <div class="figtile-value">₪6.84</div>
+      <div class="figtile-share">1.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1652.html" title="Hotel Receptionist - Female, Black Vest with Blue Striped Tie, Black Legs, Reddish Brown Hair"
+       data-value="6.12" data-name="hotel receptionist - female, black vest with blue striped tie, black legs, reddish brown hair" data-qty="1"
+       data-v-used="6.12" data-v-new="6.27"
+       data-price-used="₪6.12"
+       data-price-new="₪6.27"
+       data-share-used="1.2% of set"
+       data-share-new="0.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1652.png" alt="Hotel Receptionist - Female, Black Vest with Blue Striped Tie, Black Legs, Reddish Brown Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1652</div>
+      <div class="figtile-name">Hotel Receptionist - Female, Black Vest with Blue Striped Tie, Black Legs, Reddish Brown Hair</div>
+      <div class="figtile-value">₪6.12</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1642.html" title="Tuk Tuk Driver - Female, Bright Pink Hoodie with Medium Blue and White Diagonal Stripes, Bright Light Blue Legs, Tan Tousled Hair"
+       data-value="6.06" data-name="tuk tuk driver - female, bright pink hoodie with medium blue and white diagonal stripes, bright light blue legs, tan tousled hair" data-qty="1"
+       data-v-used="6.06" data-v-new="6.67"
+       data-price-used="₪6.06"
+       data-price-new="₪6.67"
+       data-share-used="1.2% of set"
+       data-share-new="0.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1642.png" alt="Tuk Tuk Driver - Female, Bright Pink Hoodie with Medium Blue and White Diagonal Stripes, Bright Light Blue Legs, Tan Tousled Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1642</div>
+      <div class="figtile-name">Tuk Tuk Driver - Female, Bright Pink Hoodie with Medium Blue and White Diagonal Stripes, Bright Light Blue Legs, Tan Tousled Hair</div>
+      <div class="figtile-value">₪6.06</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1646.html" title="Pizza Chef - Female, White Torso with 8 Buttons, Dark Blue Legs, Nougat Hair, Glasses"
+       data-value="5.99" data-name="pizza chef - female, white torso with 8 buttons, dark blue legs, nougat hair, glasses" data-qty="1"
+       data-v-used="5.99" data-v-new="6.13"
+       data-price-used="₪5.99"
+       data-price-new="₪6.13"
+       data-share-used="1.2% of set"
+       data-share-new="0.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1646.png" alt="Pizza Chef - Female, White Torso with 8 Buttons, Dark Blue Legs, Nougat Hair, Glasses" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1646</div>
+      <div class="figtile-name">Pizza Chef - Female, White Torso with 8 Buttons, Dark Blue Legs, Nougat Hair, Glasses</div>
+      <div class="figtile-value">₪5.99</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1654.html" title="Tourist / Food Critic - Female, Tan Jacket and Legs, Bright Light Yellow Hair over Shoulder, Glasses"
+       data-value="5.92" data-name="tourist / food critic - female, tan jacket and legs, bright light yellow hair over shoulder, glasses" data-qty="1"
+       data-v-used="5.92" data-v-new="7.76"
+       data-price-used="₪5.92"
+       data-price-new="₪7.76"
+       data-share-used="1.2% of set"
+       data-share-new="0.9% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1654.png" alt="Tourist / Food Critic - Female, Tan Jacket and Legs, Bright Light Yellow Hair over Shoulder, Glasses" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1654</div>
+      <div class="figtile-name">Tourist / Food Critic - Female, Tan Jacket and Legs, Bright Light Yellow Hair over Shoulder, Glasses</div>
+      <div class="figtile-value">₪5.92</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1649.html" title="Veterinarian - Male, Light Aqua Scrubs, Dark Turquoise Legs, Light Bluish Gray Hair"
+       data-value="5.84" data-name="veterinarian - male, light aqua scrubs, dark turquoise legs, light bluish gray hair" data-qty="1"
+       data-v-used="5.84" data-v-new="6.4"
+       data-price-used="₪5.84"
+       data-price-new="₪6.40"
+       data-share-used="1.2% of set"
+       data-share-new="0.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1649.png" alt="Veterinarian - Male, Light Aqua Scrubs, Dark Turquoise Legs, Light Bluish Gray Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1649</div>
+      <div class="figtile-name">Veterinarian - Male, Light Aqua Scrubs, Dark Turquoise Legs, Light Bluish Gray Hair</div>
+      <div class="figtile-value">₪5.84</div>
+      <div class="figtile-share">1.2% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/cty1655.html" title="Child - Boy, Medium Azure Top with Triangles, Dark Blue Short Legs, Black Hair"
+       data-value="0" data-name="child - boy, medium azure top with triangles, dark blue short legs, black hair" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/cty1655.png" alt="Child - Boy, Medium Azure Top with Triangles, Dark Blue Short Legs, Black Hair" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">cty1655</div>
+      <div class="figtile-name">Child - Boy, Medium Azure Top with Triangles, Dark Blue Short Legs, Black Hair</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1644.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1644.html"><b>cty1644</b> Comic Shop Guy - Male, Bright Light Orange Dragon Suit and Legs, Red Dragon Head, Dark Purple Shoulder Armor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="32.33"
+            data-v-used="32.33" data-v-new="28.41"
+            data-price-used="₪32.33"
+            data-price-new="₪28.41"
+            >₪32.33</td>
+        <td class="num figcell-share" data-v="6.391728119254266"
+            data-v-used="6.391728119254266" data-v-new="3.381901292764803"
+            data-share-used="6.4%"
+            data-share-new="3.4%"
+            >6.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1643.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1643.html"><b>cty1643</b> Child - Girl, White Top with Raccoon, Bright Pink Short Legs, Dark Orange Pigtails, Black Skirt and Cat Ears</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="15.24"
+            data-v-used="15.24" data-v-new="11.7"
+            data-price-used="₪15.24"
+            data-price-new="₪11.70"
+            >₪15.24</td>
+        <td class="num figcell-share" data-v="3.012989067040984"
+            data-v-used="3.012989067040984" data-v-new="1.392757660167131"
+            data-share-used="3.0%"
+            data-share-new="1.4%"
+            >3.0%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1653.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1653.html"><b>cty1653</b> DJ (Bytz) - Male, White Jacket, Black Legs, Lime Hair, Dark Turquoise Headphones</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="10.77"
+            data-v-used="10.77" data-v-new="11.15"
+            data-price-used="₪10.77"
+            data-price-new="₪11.15"
+            >₪10.77</td>
+        <td class="num figcell-share" data-v="2.129258021786837"
+            data-v-used="2.129258021786837" data-v-new="1.3272861462276506"
+            data-share-used="2.1%"
+            data-share-new="1.3%"
+            >2.1%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1651.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1651.html"><b>cty1651</b> Sanitary Engineer - Male, Dark Turquoise Top, Dark Orange Overalls and Legs, Reddish Brown Flat Cap</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.97"
+            data-v-used="8.97" data-v-new="7.72"
+            data-price-used="₪8.97"
+            data-price-new="₪7.72"
+            >₪8.97</td>
+        <td class="num figcell-share" data-v="1.7733931713489255"
+            data-v-used="1.7733931713489255" data-v-new="0.9189819774777992"
+            data-share-used="1.8%"
+            data-share-new="0.9%"
+            >1.8%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1647.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1647.html"><b>cty1647</b> Barber - Male, Reddish Brown Apron, Sand Blue Legs, Dark Brown Hair, Stubble</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.31"
+            data-v-used="8.31" data-v-new="7.88"
+            data-price-used="₪8.31"
+            data-price-new="₪7.88"
+            >₪8.31</td>
+        <td class="num figcell-share" data-v="1.6429093928550247"
+            data-v-used="1.6429093928550247" data-v-new="0.9380282360783754"
+            data-share-used="1.6%"
+            data-share-new="0.9%"
+            >1.6%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1650.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1650.html"><b>cty1650</b> Electric Scooter Rider - Male, White Shirt with Bright Green Tie, Dark Green Legs, Reddish Brown Spiked Hair, Safety Glasses</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.17"
+            data-v-used="8.17" data-v-new="8.41"
+            data-price-used="₪8.17"
+            data-price-new="₪8.41"
+            >₪8.17</td>
+        <td class="num figcell-share" data-v="1.6152310155987428"
+            data-v-used="1.6152310155987428" data-v-new="1.0011189676927839"
+            data-share-used="1.6%"
+            data-share-new="1.0%"
+            >1.6%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1648.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1648.html"><b>cty1648</b> Street Performer / Busker - Female, Medium Lavender Top, Medium Blue Overalls and Legs, Black Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="7.06"
+            data-v-used="7.06" data-v-new="9.23"
+            data-price-used="₪7.06"
+            data-price-new="₪9.23"
+            >₪7.06</td>
+        <td class="num figcell-share" data-v="1.395781024495364"
+            data-v-used="1.395781024495364" data-v-new="1.0987310430207369"
+            data-share-used="1.4%"
+            data-share-new="1.1%"
+            >1.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1645.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1645.html"><b>cty1645</b> Noodle Vendor - Male, Red Shirt, Dark Blue Legs, Black Hair, Sunglasses</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.84"
+            data-v-used="6.84" data-v-new="7.58"
+            data-price-used="₪6.84"
+            data-price-new="₪7.58"
+            >₪6.84</td>
+        <td class="num figcell-share" data-v="1.3522864316640635"
+            data-v-used="1.3522864316640635" data-v-new="0.9023165012022951"
+            data-share-used="1.4%"
+            data-share-new="0.9%"
+            >1.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1652.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1652.html"><b>cty1652</b> Hotel Receptionist - Female, Black Vest with Blue Striped Tie, Black Legs, Reddish Brown Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.12"
+            data-v-used="6.12" data-v-new="6.27"
+            data-price-used="₪6.12"
+            data-price-new="₪6.27"
+            >₪6.12</td>
+        <td class="num figcell-share" data-v="1.209940491488899"
+            data-v-used="1.209940491488899" data-v-new="0.7463752589100778"
+            data-share-used="1.2%"
+            data-share-new="0.7%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1642.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1642.html"><b>cty1642</b> Tuk Tuk Driver - Female, Bright Pink Hoodie with Medium Blue and White Diagonal Stripes, Bright Light Blue Legs, Tan Tousled Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="6.06"
+            data-v-used="6.06" data-v-new="6.67"
+            data-price-used="₪6.06"
+            data-price-new="₪6.67"
+            >₪6.06</td>
+        <td class="num figcell-share" data-v="1.1980783298076352"
+            data-v-used="1.1980783298076352" data-v-new="0.7939909054115183"
+            data-share-used="1.2%"
+            data-share-new="0.8%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1646.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1646.html"><b>cty1646</b> Pizza Chef - Female, White Torso with 8 Buttons, Dark Blue Legs, Nougat Hair, Glasses</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="5.99"
+            data-v-used="5.99" data-v-new="6.13"
+            data-price-used="₪5.99"
+            data-price-new="₪6.13"
+            >₪5.99</td>
+        <td class="num figcell-share" data-v="1.1842391411794944"
+            data-v-used="1.1842391411794944" data-v-new="0.7297097826345738"
+            data-share-used="1.2%"
+            data-share-new="0.7%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1654.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1654.html"><b>cty1654</b> Tourist / Food Critic - Female, Tan Jacket and Legs, Bright Light Yellow Hair over Shoulder, Glasses</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="5.92"
+            data-v-used="5.92" data-v-new="7.76"
+            data-price-used="₪5.92"
+            data-price-new="₪7.76"
+            >₪5.92</td>
+        <td class="num figcell-share" data-v="1.1703999525513533"
+            data-v-used="1.1703999525513533" data-v-new="0.9237435421279432"
+            data-share-used="1.2%"
+            data-share-new="0.9%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1649.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1649.html"><b>cty1649</b> Veterinarian - Male, Light Aqua Scrubs, Dark Turquoise Legs, Light Bluish Gray Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="5.84"
+            data-v-used="5.84" data-v-new="6.4"
+            data-price-used="₪5.84"
+            data-price-new="₪6.40"
+            >₪5.84</td>
+        <td class="num figcell-share" data-v="1.154583736976335"
+            data-v-used="1.154583736976335" data-v-new="0.7618503440230461"
+            data-share-used="1.2%"
+            data-share-new="0.8%"
+            >1.2%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/cty1655.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/cty1655.html"><b>cty1655</b> Child - Boy, Medium Azure Top with Triangles, Dark Blue Short Legs, Black Hair</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪128"
+              data-price-new="₪125"
+              >₪128</td>
+          <td class="num" id="figFootShare"
+              data-share-used="25%"
+              data-share-new="15%"
+              >25%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 25% of the used set price → not a part-out candidate (flag raises at 80%). Only 13 of 14 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 15% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 13 of 14 figs have a new price, so the true share is higher.">
+    
+      Figs are <b>25% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 13 of 14 figs have a used price, so the true share is higher.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">655 lots · 1,983 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪903</b>
+      &nbsp;· premium <span class="delta up">▲ 7%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">54</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Dark Orange</td>
+      <td class="num">31</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">30</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)">Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">23</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Flat Silver</td>
+      <td class="num">20</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with 3 Layered Leaves">Plant Plate, Round 1 x 1 with 3 Layered Leaves</td>
+      <td>Lime</td>
+      <td class="num">19</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15712</td>
+      <td class="name" title="Tile, Modified 1 x 1 with Open O Clip">Tile, Modified 1 x 1 with Open O Clip</td>
+      <td>Black</td>
+      <td class="num">17</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>White</td>
+      <td class="num">16</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3941</td>
+      <td class="name" title="Brick, Round 2 x 2 with Axle Hole">Brick, Round 2 x 2 with Axle Hole</td>
+      <td>Tan</td>
+      <td class="num">16</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41740</td>
+      <td class="name" title="Plate, Modified 1 x 4 with 2 Studs with Groove">Plate, Modified 1 x 4 with 2 Studs with Groove</td>
+      <td>Black</td>
+      <td class="num">16</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2780</td>
+      <td class="name" title="Technic, Pin with Short Friction Ridges">Technic, Pin with Short Friction Ridges</td>
+      <td>Black</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99563</td>
+      <td class="name" title="Minifigure, Utensil Ingot 1 x 2">Minifigure, Utensil Ingot 1 x 2</td>
+      <td>Dark Turquoise</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>White</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41740</td>
+      <td class="name" title="Plate, Modified 1 x 4 with 2 Studs with Groove">Plate, Modified 1 x 4 with 2 Studs with Groove</td>
+      <td>White</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98283</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Masonry Profile">Brick, Modified 1 x 2 with Masonry Profile</td>
+      <td>Dark Orange</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>26047</td>
+      <td class="name" title="Plate, Round 1 x 1 with Bar Handle">Plate, Round 1 x 1 with Bar Handle</td>
+      <td>Black</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>White</td>
+      <td class="num">13</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2877</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Grille / Fluted Profile">Brick, Modified 1 x 2 with Grille / Fluted Profile</td>
+      <td>Black</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>86996</td>
+      <td class="name" title="Brick, Modified 1 x 1 x 2/3 with Open Stud">Brick, Modified 1 x 1 x 2/3 with Open Stud</td>
+      <td>Black</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87552</td>
+      <td class="name" title="Panel 1 x 2 x 2 with Side Supports - Hollow Studs">Panel 1 x 2 x 2 with Side Supports - Hollow Studs</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14719</td>
+      <td class="name" title="Tile 2 x 2 Corner">Tile 2 x 2 Corner</td>
+      <td>White</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15573</td>
+      <td class="name" title="Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)">Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)</td>
+      <td>Black</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60594</td>
+      <td class="name" title="Window 1 x 4 x 3 - No Shutter Tabs">Window 1 x 4 x 3 - No Shutter Tabs</td>
+      <td>White</td>
+      <td class="num">11</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14719</td>
+      <td class="name" title="Tile 2 x 2 Corner">Tile 2 x 2 Corner</td>
+      <td>Black</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>1748</td>
+      <td class="name" title="Tile, Round 1 x 2 Half">Tile, Round 1 x 2 Half</td>
+      <td>Medium Azure</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Black</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>White</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2454</td>
+      <td class="name" title="Brick 1 x 2 x 5">Brick 1 x 2 x 5</td>
+      <td>White</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24866</td>
+      <td class="name" title="Plate, Round 1 x 1 with Flower Edge (5 Petals)">Plate, Round 1 x 1 with Flower Edge (5 Petals)</td>
+      <td>Bright Green</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Medium Nougat</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32607</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with 3 Layered Leaves">Plant Plate, Round 1 x 1 with 3 Layered Leaves</td>
+      <td>Bright Green</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td class="name" title="Tile, Modified 2 x 2 Wedge Triangular">Tile, Modified 2 x 2 Wedge Triangular</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60603</td>
+      <td class="name" title="Glass for Window 1 x 4 x 3 - Opening">Glass for Window 1 x 4 x 3 - Opening</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>86996</td>
+      <td class="name" title="Brick, Modified 1 x 1 x 2/3 with Open Stud">Brick, Modified 1 x 1 x 2/3 with Open Stud</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98283</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Masonry Profile">Brick, Modified 1 x 2 with Masonry Profile</td>
+      <td>Medium Nougat</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24866</td>
+      <td class="name" title="Plate, Round 1 x 1 with Flower Edge (5 Petals)">Plate, Round 1 x 1 with Flower Edge (5 Petals)</td>
+      <td>Yellow</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Black</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Black</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3010</td>
+      <td class="name" title="Brick 1 x 4">Brick 1 x 4</td>
+      <td>Dark Orange</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Dark Pink</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6636</td>
+      <td class="name" title="Tile 1 x 6">Tile 1 x 6</td>
+      <td>White</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85984</td>
+      <td class="name" title="Slope 30 1 x 2 x 2/3">Slope 30 1 x 2 x 2/3</td>
+      <td>Black</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2357</td>
+      <td class="name" title="Brick 2 x 2 Corner">Brick 2 x 2 Corner</td>
+      <td>Dark Orange</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2571</td>
+      <td class="name" title="Panel 3 x 4 x 6 Curved Top">Panel 3 x 4 x 6 Curved Top</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3005</td>
+      <td class="name" title="Brick 1 x 1">Brick 1 x 1</td>
+      <td>Medium Azure</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3701</td>
+      <td class="name" title="Technic, Brick 1 x 4 with Holes">Technic, Brick 1 x 4 with Holes</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Bright Green</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>50950</td>
+      <td class="name" title="Slope, Curved 3 x 1">Slope, Curved 3 x 1</td>
+      <td>Magenta</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60592</td>
+      <td class="name" title="Window 1 x 2 x 2 Flat Front">Window 1 x 2 x 2 Flat Front</td>
+      <td>Black</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>Dark Azure</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)">Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)</td>
+      <td>Blue</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Blue</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>20482</td>
+      <td class="name" title="Tile, Round 1 x 1 with Bar and Small Pin Hole">Tile, Round 1 x 1 with Bar and Small Pin Hole</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2629</td>
+      <td class="name" title="Brick, Modified 8 x 16 x 2/3 with 1 x 4 Indentations">Brick, Modified 8 x 16 x 2/3 with 1 x 4 Indentations</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2682</td>
+      <td class="name" title="Plant Plate, Round 1 x 1 with Curved, Upright Leaf">Plant Plate, Round 1 x 1 with Curved, Upright Leaf</td>
+      <td>Green</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3009</td>
+      <td class="name" title="Brick 1 x 6">Brick 1 x 6</td>
+      <td>White</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87087</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Stud on Side">Brick, Modified 1 x 1 with Stud on Side</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14719</td>
+      <td class="name" title="Tile 2 x 2 Corner">Tile 2 x 2 Corner</td>
+      <td>Dark Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>18674</td>
+      <td class="name" title="Tile, Round 2 x 2 with Open Stud">Tile, Round 2 x 2 with Open Stud</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2357</td>
+      <td class="name" title="Brick 2 x 2 Corner">Brick 2 x 2 Corner</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2420</td>
+      <td class="name" title="Plate 2 x 2 Corner">Plate 2 x 2 Corner</td>
+      <td>Dark Tan</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Red</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td class="name" title="Plate 2 x 4">Plate 2 x 4</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3224</td>
+      <td class="name" title="Fence 1 x 2 x 1 2/3 with Diagonal Bar">Fence 1 x 2 x 1 2/3 with Diagonal Bar</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td class="name" title="Tile, Modified 2 x 2 Wedge Triangular">Tile, Modified 2 x 2 Wedge Triangular</td>
+      <td>Dark Azure</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Lime</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3795</td>
+      <td class="name" title="Plate 2 x 6">Plate 2 x 6</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Dark Turquoise</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4460b</td>
+      <td class="name" title="Slope 75 2 x 1 x 3 - Hollow Stud">Slope 75 2 x 1 x 3 - Hollow Stud</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60592c01</td>
+      <td class="name" title="Window 1 x 2 x 2 Flat Front with Trans-Clear Glass (60592 / 60601)">Window 1 x 2 x 2 Flat Front with Trans-Clear Glass (60592 / 60601)</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60593</td>
+      <td class="name" title="Window 1 x 2 x 3 Flat Front">Window 1 x 2 x 3 Flat Front</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60601</td>
+      <td class="name" title="Glass for Window 1 x 2 x 2 Flat Front">Glass for Window 1 x 2 x 2 Flat Front</td>
+      <td>Trans-Clear</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60602</td>
+      <td class="name" title="Glass for Window 1 x 2 x 3 Flat Front">Glass for Window 1 x 2 x 3 Flat Front</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>68013</td>
+      <td class="name" title="Cylinder Half 1 x 2 x 1">Cylinder Half 1 x 2 x 1</td>
+      <td>Tan</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>71771</td>
+      <td class="name" title="Slope, Curved 5 x 8 x 2/3">Slope, Curved 5 x 8 x 2/3</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>73825</td>
+      <td class="name" title="Bracket 1 x 1 - 1 x 2 Inverted">Bracket 1 x 1 - 1 x 2 Inverted</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>77844</td>
+      <td class="name" title="Plate 3 x 3 Corner">Plate 3 x 3 Corner</td>
+      <td>White</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)">Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)</td>
+      <td>Tan</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99207</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2 Inverted">Bracket 1 x 2 - 2 x 2 Inverted</td>
+      <td>Bright Light Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14716</td>
+      <td class="name" title="Brick 1 x 1 x 3">Brick 1 x 1 x 3</td>
+      <td>Dark Orange</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14769</td>
+      <td class="name" title="Tile, Round 2 x 2 with Bottom Stud Holder">Tile, Round 2 x 2 with Bottom Stud Holder</td>
+      <td>Tan</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2357</td>
+      <td class="name" title="Brick 2 x 2 Corner">Brick 2 x 2 Corner</td>
+      <td>White</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>Medium Nougat</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2628</td>
+      <td class="name" title="Brick, Modified 8 x 8 x 2/3 with 1 x 4 Indentations">Brick, Modified 8 x 8 x 2/3 with 1 x 4 Indentations</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Yellow</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td class="name" title="Plate, Round 2 x 2 with Axle Hole">Plate, Round 2 x 2 with Axle Hole</td>
+      <td>Black</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Black</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44302</td>
+      <td class="name" title="Hinge Plate 1 x 2 Locking with 2 Fingers on End">Hinge Plate 1 x 2 Locking with 2 Fingers on End</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44728</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2">Bracket 1 x 2 - 2 x 2</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4865b</td>
+      <td class="name" title="Panel 1 x 2 x 1 with Rounded Corners">Panel 1 x 2 x 1 with Rounded Corners</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60594</td>
+      <td class="name" title="Window 1 x 4 x 3 - No Shutter Tabs">Window 1 x 4 x 3 - No Shutter Tabs</td>
+      <td>Black</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6636</td>
+      <td class="name" title="Tile 1 x 6">Tile 1 x 6</td>
+      <td>Black</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87580</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)">Plate, Modified 2 x 2 with Groove and 1 Stud in Center (Jumper)</td>
+      <td>Trans-Orange</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11212</td>
+      <td class="name" title="Plate 3 x 3">Plate 3 x 3</td>
+      <td>White</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11215</td>
+      <td class="name" title="Bracket 5 x 2 x 1 1/3 with 2 Holes and Bottom Tube">Bracket 5 x 2 x 1 1/3 with 2 Holes and Bottom Tube</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">Showing 100 of 655 lots — use the filter to narrow.</div>
+  
   
 </div>
 
@@ -265,8 +1855,15 @@
     <a class="relcard" href="../sets/60445.html">
       <img src="https://img.bricklink.com/ItemImage/SN/0/60445-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
       <div class="relname"><b>60445</b> F1 Truck with RB20 &amp; AMR24 F1 Cars</div>
-      <div class="relmeta">2025 · ₪212
-        · <span class="delta down">▼ 29%</span></div>
+      <div class="relmeta">2025 · ₪245
+        · <span class="delta up">▲ 26%</span></div>
+    </a>
+    
+    <a class="relcard" href="../sets/60304.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/60304-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>60304</b> Road Plates</div>
+      <div class="relmeta">2021 · ₪48.07
+        · <span class="delta down">▼ 4%</span></div>
     </a>
     
   </div>
@@ -282,6 +1879,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788138548"></script>
+<script src="../static/app.js?v=1788152676"></script>
 </body>
 </html>

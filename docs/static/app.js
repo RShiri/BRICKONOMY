@@ -197,12 +197,19 @@
         // three-point chart look broken.
         const note = document.getElementById("portfolioChartNote");
         if (note && data.tracked) {
-          note.textContent = pts.length < 8
-            ? `${pts.length} scan${pts.length === 1 ? "" : "s"} since `
-              + `${data.covered_from}, the first day most of the ${data.tracked} `
-              + "tracked sets had a price. Earlier days would measure how much "
-              + "of the collection had been scanned, not what it was worth."
-            : `${data.tracked} tracked sets, from ${data.covered_from}.`;
+          const parts = [`${pts.length} scans of ${data.tracked} tracked sets, `
+                         + `from ${data.covered_from}.`];
+          // A day whose total covers fewer sets is low partly because the rest
+          // had not been scanned, not because they were worth less. Saying so
+          // is the difference between a portfolio that grew and a scanner that
+          // caught up.
+          if (data.thin_points) {
+            parts.push(`The earliest ${data.thin_points === 1 ? "point covers"
+                        : `${data.thin_points} points cover`} as few as `
+                       + `${data.min_covered} of them, so some of the rise is `
+                       + "the scanner catching up rather than prices moving.");
+          }
+          note.textContent = parts.join(" ");
         }
         new Chart(pfCanvas, {
           type: "line",

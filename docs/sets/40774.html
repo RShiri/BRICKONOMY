@@ -6,7 +6,7 @@
 <title>40774 Classic Animation Scenes · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788138548">
+<link rel="stylesheet" href="../static/style.css?v=1788152676">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -72,7 +72,13 @@
       <span class="chip">⚖️ 396 g</span>
       <span class="chip">₪0.26 / part</span>
       
-      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
+      <span class="chip" id="figPctChip"
+            data-used="26"
+            data-new="23"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 26% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--s3)"></span>Available</span>
       
@@ -182,9 +188,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Disney average</div>
-        <div class="value" style="font-size:22px">₪0.27</div>
+        <div class="value" style="font-size:22px">₪1.48</div>
         <div class="delta up">
-          −2% vs theme
+          −82% vs theme
         </div>
       </div>
       
@@ -236,6 +242,39 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="16.10"
+              data-parts="127.19"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪16.10 · 11% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪127 · 89% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪143</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -362,7 +401,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel">, ₪15.24 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -376,8 +415,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used=""
-         data-total-new="">
+         data-total-used="₪15.24"
+         data-total-new="₪16.10">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -396,12 +435,12 @@
     
     
     <a class="figtile" href="../sets/dis189.html" title="Woody - Plain Legs, Medium Nougat Chin Dimple, Sheriff Star Badge"
-       data-value="0" data-name="woody - plain legs, medium nougat chin dimple, sheriff star badge" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
+       data-value="15.24" data-name="woody - plain legs, medium nougat chin dimple, sheriff star badge" data-qty="1"
+       data-v-used="15.24" data-v-new="16.1"
+       data-price-used="₪15.24"
+       data-price-new="₪16.10"
+       data-share-used="26.4% of set"
+       data-share-new="22.7% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/dis189.png" alt="Woody - Plain Legs, Medium Nougat Chin Dimple, Sheriff Star Badge" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -409,8 +448,8 @@
       </div>
       <div class="figtile-id">dis189</div>
       <div class="figtile-name">Woody - Plain Legs, Medium Nougat Chin Dimple, Sheriff Star Badge</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
+      <div class="figtile-value">₪15.24</div>
+      <div class="figtile-share">26.4% of set</div>
     </a>
     
   </div>
@@ -428,29 +467,41 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/dis189.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/dis189.html"><b>dis189</b> Woody - Plain Legs, Medium Nougat Chin Dimple, Sheriff Star Badge</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
+        <td class="num figcell-value" data-v="15.24"
+            data-v-used="15.24" data-v-new="16.1"
+            data-price-used="₪15.24"
+            data-price-new="₪16.10"
+            >₪15.24</td>
+        <td class="num figcell-share" data-v="26.430801248699275"
+            data-v-used="26.430801248699275" data-v-new="22.749752720079133"
+            data-share-used="26.4%"
+            data-share-new="22.7%"
+            >26.4%</td>
       </tr>
       
     </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪15.24"
+              data-price-new="₪16.10"
+              >₪15.24</td>
+          <td class="num" id="figFootShare"
+              data-share-used="26%"
+              data-share-new="23%"
+              >26%</td></tr>
+    </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used=""
-       data-note-new="">
+       data-note-used="Figs are 26% of the used set price → not a part-out candidate (flag raises at 80%)."
+       data-note-new="Figs are 23% of the sealed set price → not a part-out candidate (flag raises at 80%).">
     
-      None of this set's 1 figs have been priced, so the figure share is unknown.
-      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+      Figs are <b>26% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      
     
   </div>
   
@@ -1300,8 +1351,8 @@
     <a class="relcard" href="../sets/43269.html">
       <img src="https://img.bricklink.com/ItemImage/SN/0/43269-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
       <div class="relname"><b>43269</b> 101 Dalmatians Puppy</div>
-      <div class="relmeta">2025 · ₪468
-        · <span class="delta up">▲ 5%</span></div>
+      <div class="relmeta">2025 · ₪289
+        · <span class="delta down">▼ 54%</span></div>
     </a>
     
   </div>
@@ -1317,6 +1368,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788138548"></script>
+<script src="../static/app.js?v=1788152676"></script>
 </body>
 </html>

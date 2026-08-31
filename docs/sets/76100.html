@@ -6,7 +6,7 @@
 <title>76100 Royal Talon Fighter Attack · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788138548">
+<link rel="stylesheet" href="../static/style.css?v=1788152676">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -72,7 +72,13 @@
       <span class="chip">⚖️ 570 g</span>
       <span class="chip">₪0.44 / part</span>
       
-      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
+      <span class="chip" id="figPctChip"
+            data-used="13"
+            data-new="13"
+            data-partial-used="1"
+            data-partial-new="1"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 13% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -182,9 +188,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪3.05</div>
+        <div class="value" style="font-size:22px">₪3.54</div>
         <div class="delta up">
-          −86% vs theme
+          −88% vs theme
         </div>
       </div>
       
@@ -228,6 +234,40 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="20.06"
+              data-parts="218.66"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪20.06 · 8% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪219 · 92% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪239</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -354,7 +394,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 4 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 4 in this set<span id="figsTotalLabel">, ₪10.28 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -368,8 +408,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used=""
-         data-total-new="">
+         data-total-used="₪10.28"
+         data-total-new="₪20.06">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -388,12 +428,12 @@
     
     
     <a class="figtile" href="../sets/sh0466.html" title="Black Panther - Reddish Brown Eyes"
-       data-value="0" data-name="black panther - reddish brown eyes" data-qty="1"
-       data-v-used="0" data-v-new="0"
-       data-price-used="not priced"
-       data-price-new="not priced"
-       data-share-used=""
-       data-share-new="">
+       data-value="10.28" data-name="black panther - reddish brown eyes" data-qty="1"
+       data-v-used="10.28" data-v-new="20.06"
+       data-price-used="₪10.28"
+       data-price-new="₪20.06"
+       data-share-used="12.8% of set"
+       data-share-new="13.3% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0466.png" alt="Black Panther - Reddish Brown Eyes" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -401,8 +441,8 @@
       </div>
       <div class="figtile-id">sh0466</div>
       <div class="figtile-name">Black Panther - Reddish Brown Eyes</div>
-      <div class="figtile-value">not priced</div>
-      <div class="figtile-share"></div>
+      <div class="figtile-value">₪10.28</div>
+      <div class="figtile-share">12.8% of set</div>
     </a>
     
     
@@ -480,16 +520,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0466.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0466.html"><b>sh0466</b> Black Panther - Reddish Brown Eyes</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v=""
-            data-v-used="" data-v-new=""
-            data-price-used="—"
-            data-price-new="—"
-            >—</td>
-        <td class="num figcell-share" data-v=""
-            data-v-used="" data-v-new=""
-            data-share-used="—"
-            data-share-new="—"
-            >—</td>
+        <td class="num figcell-value" data-v="10.28"
+            data-v-used="10.28" data-v-new="20.06"
+            data-price-used="₪10.28"
+            data-price-new="₪20.06"
+            >₪10.28</td>
+        <td class="num figcell-share" data-v="12.76225946617008"
+            data-v-used="12.76225946617008" data-v-new="13.31474844019647"
+            data-share-used="12.8%"
+            data-share-new="13.3%"
+            >12.8%</td>
       </tr>
       
       
@@ -548,15 +588,27 @@
       
     </tbody>
     
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪10.28"
+              data-price-new="₪20.06"
+              >₪10.28</td>
+          <td class="num" id="figFootShare"
+              data-share-used="13%"
+              data-share-new="13%"
+              >13%</td></tr>
+    </tfoot>
+    
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used=""
-       data-note-new="">
+       data-note-used="Figs are 13% of the used set price → not a part-out candidate (flag raises at 80%). Only 1 of 4 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 13% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 1 of 4 figs have a new price, so the true share is higher.">
     
-      None of this set's 4 figs have been priced, so the figure share is unknown.
-      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+      Figs are <b>13% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 1 of 4 figs have a used price, so the true share is higher.
     
   </div>
   
@@ -1413,14 +1465,14 @@
     <a class="relcard" href="../sets/76108.html">
       <img src="https://img.bricklink.com/ItemImage/SN/0/76108-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
       <div class="relname"><b>76108</b> Sanctum Sanctorum Showdown</div>
-      <div class="relmeta">2018 · ₪568
+      <div class="relmeta">2018 · ₪569
         · <span class="delta up">▲ 8%</span></div>
     </a>
     
     <a class="relcard" href="../sets/76105.html">
       <img src="https://img.bricklink.com/ItemImage/SN/0/76105-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
       <div class="relname"><b>76105</b> The Hulkbuster Ultron Edition</div>
-      <div class="relmeta">2018 · ₪486
+      <div class="relmeta">2018 · ₪482
         · <span class="delta down">▼ 14%</span></div>
     </a>
     
@@ -1434,15 +1486,15 @@
     <a class="relcard" href="../sets/76107.html">
       <img src="https://img.bricklink.com/ItemImage/SN/0/76107-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
       <div class="relname"><b>76107</b> Thanos Ultimate Battle</div>
-      <div class="relmeta">2018 · ₪245
-        · <span class="delta down">▼ 15%</span></div>
+      <div class="relmeta">2018 · ₪265
+        · <span class="delta down">▼ 2%</span></div>
     </a>
     
-    <a class="relcard" href="../sets/76104.html">
-      <img src="https://img.bricklink.com/ItemImage/SN/0/76104-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
-      <div class="relname"><b>76104</b> The Hulkbuster Smash-Up</div>
-      <div class="relmeta">2018 · ₪152
-        · <span class="delta down">▼ 1%</span></div>
+    <a class="relcard" href="../sets/5005256.html">
+      <img src="https://img.bricklink.com/ItemImage/SN/0/5005256-1.png" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
+      <div class="relname"><b>5005256</b> Marvel Super Heroes Minifigure Col</div>
+      <div class="relmeta">2018 · ₪246
+        · <span class="delta up">▲ 34%</span></div>
     </a>
     
   </div>
@@ -1458,6 +1510,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788138548"></script>
+<script src="../static/app.js?v=1788152676"></script>
 </body>
 </html>
