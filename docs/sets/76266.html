@@ -6,7 +6,7 @@
 <title>76266 Endgame Final Battle · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788134816">
+<link rel="stylesheet" href="../static/style.css?v=1788138548">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -66,9 +66,20 @@
     </p>
     <div class="facts">
       <span class="chip">🧱 794 parts</span>
-      <span class="chip">🧍 7 minifigs</span>
+      
+      <span class="chip"
+            title="BrickLink's inventory lists 6. The catalog says 7, counting printed parts — statuettes and trophies — that are filed under minifigures but are not ones.">🧍 6 minifigs</span>
+      
       <span class="chip">⚖️ 1,293 g</span>
       <span class="chip">₪0.21 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="21"
+            data-new="16"
+            data-partial-used="1"
+            data-partial-new="1"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 21% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -233,6 +244,40 @@
 
 
 
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="26.20"
+              data-parts="343.68"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪26.20 · 7% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪344 · 93% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪370</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="card" id="importCard"
@@ -358,16 +403,1135 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 6 in this set<span id="figsTotalLabel">, ₪25.91 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪25.91"
+         data-total-new="₪26.20">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0897.html" title="The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair, Dark Red Cloth Skirt"
+       data-value="17.74" data-name="the scarlet witch (wanda maximoff) - plain legs, medium nougat hair, dark red cloth skirt" data-qty="1"
+       data-v-used="17.74" data-v-new="17.55"
+       data-price-used="₪17.74"
+       data-price-new="₪17.55"
+       data-share-used="14.4% of set"
+       data-share-new="10.7% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0897.png" alt="The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair, Dark Red Cloth Skirt" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0897</div>
+      <div class="figtile-name">The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair, Dark Red Cloth Skirt</div>
+      <div class="figtile-value">₪17.74</div>
+      <div class="figtile-share">14.4% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0870.html" title="Okoye - Red Top, Shoulder Armor"
+       data-value="8.17" data-name="okoye - red top, shoulder armor" data-qty="1"
+       data-v-used="8.17" data-v-new="8.65"
+       data-price-used="₪8.17"
+       data-price-new="₪8.65"
+       data-share-used="6.6% of set"
+       data-share-new="5.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0870.png" alt="Okoye - Red Top, Shoulder Armor" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0870</div>
+      <div class="figtile-name">Okoye - Red Top, Shoulder Armor</div>
+      <div class="figtile-value">₪8.17</div>
+      <div class="figtile-share">6.6% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0735.html" title="Shuri - Dark Blue Top"
+       data-value="0" data-name="shuri - dark blue top" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0735.png" alt="Shuri - Dark Blue Top" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0735</div>
+      <div class="figtile-name">Shuri - Dark Blue Top</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0772.html" title="Captain Marvel (Carol Danvers) - Tan Hair Swept Back"
+       data-value="0" data-name="captain marvel (carol danvers) - tan hair swept back" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0772.png" alt="Captain Marvel (Carol Danvers) - Tan Hair Swept Back" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0772</div>
+      <div class="figtile-name">Captain Marvel (Carol Danvers) - Tan Hair Swept Back</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0896.html" title="Thanos - Large Figure, Dark Bluish Gray Outfit with Gold Armor, Printed Legs, Angry"
+       data-value="0" data-name="thanos - large figure, dark bluish gray outfit with gold armor, printed legs, angry" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0896.png" alt="Thanos - Large Figure, Dark Bluish Gray Outfit with Gold Armor, Printed Legs, Angry" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0896</div>
+      <div class="figtile-name">Thanos - Large Figure, Dark Bluish Gray Outfit with Gold Armor, Printed Legs, Angry</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0898.html" title="Valkyrie - Light Bluish Gray Suit"
+       data-value="0" data-name="valkyrie - light bluish gray suit" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0898.png" alt="Valkyrie - Light Bluish Gray Suit" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0898</div>
+      <div class="figtile-name">Valkyrie - Light Bluish Gray Suit</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0897.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0897.html"><b>sh0897</b> The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair, Dark Red Cloth Skirt</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="17.74"
+            data-v-used="17.74" data-v-new="17.55"
+            data-price-used="₪17.74"
+            data-price-new="₪17.55"
+            >₪17.74</td>
+        <td class="num figcell-share" data-v="14.426282833211351"
+            data-v-used="14.426282833211351" data-v-new="10.687534254917484"
+            data-share-used="14.4%"
+            data-share-new="10.7%"
+            >14.4%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0870.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0870.html"><b>sh0870</b> Okoye - Red Top, Shoulder Armor</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="8.17"
+            data-v-used="8.17" data-v-new="8.65"
+            data-price-used="₪8.17"
+            data-price-new="₪8.65"
+            >₪8.17</td>
+        <td class="num figcell-share" data-v="6.643896885419208"
+            data-v-used="6.643896885419208" data-v-new="5.267645088606053"
+            data-share-used="6.6%"
+            data-share-new="5.3%"
+            >6.6%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0735.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0735.html"><b>sh0735</b> Shuri - Dark Blue Top</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0772.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0772.html"><b>sh0772</b> Captain Marvel (Carol Danvers) - Tan Hair Swept Back</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0896.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0896.html"><b>sh0896</b> Thanos - Large Figure, Dark Bluish Gray Outfit with Gold Armor, Printed Legs, Angry</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0898.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0898.html"><b>sh0898</b> Valkyrie - Light Bluish Gray Suit</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪25.91"
+              data-price-new="₪26.20"
+              >₪25.91</td>
+          <td class="num" id="figFootShare"
+              data-share-used="21%"
+              data-share-new="16%"
+              >21%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 21% of the used set price → not a part-out candidate (flag raises at 80%). Only 2 of 6 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 16% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 2 of 6 figs have a new price, so the true share is higher.">
+    
+      Figs are <b>21% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 2 of 6 figs have a used price, so the true share is higher.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">259 lots · 777 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪370</b>
+      &nbsp;· premium <span class="delta up">▲ 125%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>26604</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Studs on 2 Sides, Adjacent">Brick, Modified 1 x 1 with Studs on 2 Sides, Adjacent</td>
+      <td>Tan</td>
+      <td class="num">25</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98283</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Masonry Profile">Brick, Modified 1 x 2 with Masonry Profile</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">24</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11211</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Studs on 1 Side">Brick, Modified 1 x 2 with Studs on 1 Side</td>
+      <td>Reddish Brown</td>
+      <td class="num">23</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3623</td>
+      <td class="name" title="Plate 1 x 3">Plate 1 x 3</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">20</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35480</td>
+      <td class="name" title="Plate, Round 1 x 2 with Open Studs">Plate, Round 1 x 2 with Open Studs</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">16</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4286</td>
+      <td class="name" title="Slope 33 3 x 1">Slope 33 3 x 1</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>White</td>
+      <td class="num">15</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3040</td>
+      <td class="name" title="Slope 45 2 x 1">Slope 45 2 x 1</td>
+      <td>Dark Tan</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3062</td>
+      <td class="name" title="Brick, Round  1 x 1">Brick, Round  1 x 1</td>
+      <td>Dark Orange</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85861</td>
+      <td class="name" title="Plate, Round 1 x 1 with Open Stud">Plate, Round 1 x 1 with Open Stud</td>
+      <td>Trans-Orange</td>
+      <td class="num">14</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11212</td>
+      <td class="name" title="Plate 3 x 3">Plate 3 x 3</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3622</td>
+      <td class="name" title="Brick 1 x 3">Brick 1 x 3</td>
+      <td>Black</td>
+      <td class="num">12</td>
+      
+    </tr>
+    
+    <tr>
+      <td>26603</td>
+      <td class="name" title="Tile 2 x 3">Tile 2 x 3</td>
+      <td>White</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>64799</td>
+      <td class="name" title="Plate, Modified 4 x 4 with 2 x 2 Open Center">Plate, Modified 4 x 4 with 2 x 2 Open Center</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">10</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11211</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Studs on 1 Side">Brick, Modified 1 x 2 with Studs on 1 Side</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35480</td>
+      <td class="name" title="Plate, Round 1 x 2 with Open Studs">Plate, Round 1 x 2 with Open Studs</td>
+      <td>Dark Orange</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>54200</td>
+      <td class="name" title="Slope 30 1 x 1 x 2/3">Slope 30 1 x 1 x 2/3</td>
+      <td>Trans-Orange</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>54200</td>
+      <td class="name" title="Slope 30 1 x 1 x 2/3">Slope 30 1 x 1 x 2/3</td>
+      <td>Medium Nougat</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11477</td>
+      <td class="name" title="Slope, Curved 2 x 1 x 2/3">Slope, Curved 2 x 1 x 2/3</td>
+      <td>Dark Tan</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>26604</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Studs on 2 Sides, Adjacent">Brick, Modified 1 x 1 with Studs on 2 Sides, Adjacent</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3068</td>
+      <td class="name" title="Tile 2 x 2">Tile 2 x 2</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35787</td>
+      <td class="name" title="Tile, Modified 2 x 2 Wedge Triangular">Tile, Modified 2 x 2 Wedge Triangular</td>
+      <td>White</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87552</td>
+      <td class="name" title="Panel 1 x 2 x 2 with Side Supports - Hollow Studs">Panel 1 x 2 x 2 with Side Supports - Hollow Studs</td>
+      <td>Dark Orange</td>
+      <td class="num">8</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14413</td>
+      <td class="name" title="Brick, Modified Facet 4 x 4">Brick, Modified Facet 4 x 4</td>
+      <td>Black</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2357</td>
+      <td class="name" title="Brick 2 x 2 Corner">Brick 2 x 2 Corner</td>
+      <td>Black</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2420</td>
+      <td class="name" title="Plate 2 x 2 Corner">Plate 2 x 2 Corner</td>
+      <td>Dark Tan</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85861</td>
+      <td class="name" title="Plate, Round 1 x 1 with Open Stud">Plate, Round 1 x 1 with Open Stud</td>
+      <td>Trans-Clear</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85861</td>
+      <td class="name" title="Plate, Round 1 x 1 with Open Stud">Plate, Round 1 x 1 with Open Stud</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">7</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3665</td>
+      <td class="name" title="Slope, Inverted 45 2 x 1">Slope, Inverted 45 2 x 1</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td class="name" title="Plate, Round 2 x 2 with Axle Hole">Plate, Round 2 x 2 with Axle Hole</td>
+      <td>Dark Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4070</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Headlight">Brick, Modified 1 x 1 with Headlight</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>90258</td>
+      <td class="name" title="Brick, Modified 2 x 2 with Channels and Axle Hole">Brick, Modified 2 x 2 with Channels and Axle Hole</td>
+      <td>Dark Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32064</td>
+      <td class="name" title="Technic, Brick 1 x 2 with Axle Hole">Technic, Brick 1 x 2 with Axle Hole</td>
+      <td>Black</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>43093</td>
+      <td class="name" title="Technic, Axle  1L with Pin with Friction Ridges">Technic, Axle  1L with Pin with Friction Ridges</td>
+      <td>Blue</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15533</td>
+      <td class="name" title="Brick, Modified 1 x 4 with Masonry Profile">Brick, Modified 1 x 4 with Masonry Profile</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>White</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2450</td>
+      <td class="name" title="Wedge, Plate 3 x 3 Cut Corner">Wedge, Plate 3 x 3 Cut Corner</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2456</td>
+      <td class="name" title="Brick 2 x 6">Brick 2 x 6</td>
+      <td>White</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27263</td>
+      <td class="name" title="Tile, Modified Facet 2 x 2">Tile, Modified Facet 2 x 2</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27507</td>
+      <td class="name" title="Tile, Round Corner 4 x 4 Macaroni">Tile, Round Corner 4 x 4 Macaroni</td>
+      <td>Dark Blue</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27507</td>
+      <td class="name" title="Tile, Round Corner 4 x 4 Macaroni">Tile, Round Corner 4 x 4 Macaroni</td>
+      <td>Trans-Orange</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3002</td>
+      <td class="name" title="Brick 2 x 3">Brick 2 x 3</td>
+      <td>Yellow</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3024</td>
+      <td class="name" title="Plate 1 x 1">Plate 1 x 1</td>
+      <td>Reddish Brown</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>33909</td>
+      <td class="name" title="Tile, Modified 2 x 2 with Studs on Edge">Tile, Modified 2 x 2 with Studs on Edge</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3705</td>
+      <td class="name" title="Technic, Axle  4L">Technic, Axle  4L</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td class="name" title="Plate, Round 2 x 2 with Axle Hole">Plate, Round 2 x 2 with Axle Hole</td>
+      <td>White</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>58846</td>
+      <td class="name" title="Brick, Round Corner 10 x 10 with Slope 33 Edge, Axle Hole, Facet Cutout">Brick, Round Corner 10 x 10 with Slope 33 Edge, Axle Hole, Facet Cutout</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>65578</td>
+      <td class="name" title="Bar   1L with Angled Hollow Stud">Bar   1L with Angled Hollow Stud</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6636</td>
+      <td class="name" title="Tile 1 x 6">Tile 1 x 6</td>
+      <td>White</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>70681</td>
+      <td class="name" title="Arch 1 x 3 Inverted">Arch 1 x 3 Inverted</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Clear</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15706</td>
+      <td class="name" title="Wedge, Plate A-Shape with 2 Rows of 4 Studs">Wedge, Plate A-Shape with 2 Rows of 4 Studs</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>22961</td>
+      <td class="name" title="Technic, Axle and Pin Connector Hub with 1L Axle">Technic, Axle and Pin Connector Hub with 1L Axle</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24299</td>
+      <td class="name" title="Wedge, Plate 2 x 2  Left">Wedge, Plate 2 x 2  Left</td>
+      <td>Medium Nougat</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27263</td>
+      <td class="name" title="Tile, Modified Facet 2 x 2">Tile, Modified Facet 2 x 2</td>
+      <td>White</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3008</td>
+      <td class="name" title="Brick 1 x 8">Brick 1 x 8</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td class="name" title="Plate 2 x 4">Plate 2 x 4</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3021</td>
+      <td class="name" title="Plate 2 x 3">Plate 2 x 3</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Medium Nougat</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3030</td>
+      <td class="name" title="Plate 4 x 10">Plate 4 x 10</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3040</td>
+      <td class="name" title="Slope 45 2 x 1">Slope 45 2 x 1</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3040</td>
+      <td class="name" title="Slope 45 2 x 1">Slope 45 2 x 1</td>
+      <td>Trans-Orange</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3709</td>
+      <td class="name" title="Technic, Plate 2 x 4 with 3 Holes">Technic, Plate 2 x 4 with 3 Holes</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Reddish Brown</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>39789</td>
+      <td class="name" title="Technic, Brick 2 x 4 with 3 Axle Holes">Technic, Brick 2 x 4 with 3 Axle Holes</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41770</td>
+      <td class="name" title="Wedge, Plate 4 x 2 Left">Wedge, Plate 4 x 2 Left</td>
+      <td>Sand Blue</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>43711</td>
+      <td class="name" title="Wedge 4 x 2 Triple Right">Wedge 4 x 2 Triple Right</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44728</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2">Bracket 1 x 2 - 2 x 2</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4519</td>
+      <td class="name" title="Technic, Axle  3L">Technic, Axle  3L</td>
+      <td>Yellow</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>78329</td>
+      <td class="name" title="Plate 1 x 5">Plate 1 x 5</td>
+      <td>White</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87994</td>
+      <td class="name" title="Bar   3L (Bar Arrow)">Bar   3L (Bar Arrow)</td>
+      <td>Dark Brown</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>95347</td>
+      <td class="name" title="Support 2 x 2 x 10 Girder Triangular Vertical - Type 4 - 3 Posts, 3 Sections">Support 2 x 2 x 10 Girder Triangular Vertical - Type 4 - 3 Posts, 3 Sections</td>
+      <td>Pearl Dark Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>13548</td>
+      <td class="name" title="Wedge 2 x 2 (Slope 45 Corner)">Wedge 2 x 2 (Slope 45 Corner)</td>
+      <td>Dark Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15407</td>
+      <td class="name" title="Minifigure Hand Armor">Minifigure Hand Armor</td>
+      <td>Pearl Dark Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15533</td>
+      <td class="name" title="Brick, Modified 1 x 4 with Masonry Profile">Brick, Modified 1 x 4 with Masonry Profile</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15573</td>
+      <td class="name" title="Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)">Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)</td>
+      <td>White</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15706</td>
+      <td class="name" title="Wedge, Plate A-Shape with 2 Rows of 4 Studs">Wedge, Plate A-Shape with 2 Rows of 4 Studs</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15712</td>
+      <td class="name" title="Tile, Modified 1 x 1 with Open O Clip">Tile, Modified 1 x 1 with Open O Clip</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>18980</td>
+      <td class="name" title="Plate, Round Corner 2 x 6 Double">Plate, Round Corner 2 x 6 Double</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2429c01</td>
+      <td class="name" title="Hinge Plate 1 x 4 Swivel (2429 / 2430)">Hinge Plate 1 x 4 Swivel (2429 / 2430)</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2450</td>
+      <td class="name" title="Wedge, Plate 3 x 3 Cut Corner">Wedge, Plate 3 x 3 Cut Corner</td>
+      <td>Dark Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2456</td>
+      <td class="name" title="Brick 2 x 6">Brick 2 x 6</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>25214</td>
+      <td class="name" title="Brick, Round Tube 1 x 1 d. 90 degrees Elbow Macaroni - No Stud - Type 2 - Axle Hole">Brick, Round Tube 1 x 1 d. 90 degrees Elbow Macaroni - No Stud - Type 2 - Axle Hole</td>
+      <td>Pearl Dark Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2654</td>
+      <td class="name" title="Plate, Round 2 x 2 with Rounded Bottom (Boat Stud)">Plate, Round 2 x 2 with Rounded Bottom (Boat Stud)</td>
+      <td>White</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>26601</td>
+      <td class="name" title="Wedge, Plate 2 x 2  Cut Corner">Wedge, Plate 2 x 2  Cut Corner</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27393</td>
+      <td class="name" title="Wave Rounded Energy with Bar Handle (Power Blast)">Wave Rounded Energy with Bar Handle (Power Blast)</td>
+      <td>Trans-Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2780</td>
+      <td class="name" title="Technic, Pin with Short Friction Ridges">Technic, Pin with Short Friction Ridges</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>28192</td>
+      <td class="name" title="Slope 45 2 x 1 with Cutout without Stud">Slope 45 2 x 1 with Cutout without Stud</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3002</td>
+      <td class="name" title="Brick 2 x 3">Brick 2 x 3</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3002</td>
+      <td class="name" title="Brick 2 x 3">Brick 2 x 3</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3009</td>
+      <td class="name" title="Brick 1 x 6">Brick 1 x 6</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3010</td>
+      <td class="name" title="Brick 1 x 4">Brick 1 x 4</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td class="name" title="Plate 2 x 4">Plate 2 x 4</td>
+      <td>White</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30237b</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Open O Clip Thick (Vertical Grip)">Brick, Modified 1 x 2 with Open O Clip Thick (Vertical Grip)</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:8px">Showing 100 of 259 lots — use the filter to narrow.</div>
+  
   
 </div>
 
@@ -431,6 +1595,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788134816"></script>
+<script src="../static/app.js?v=1788138548"></script>
 </body>
 </html>

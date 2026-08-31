@@ -86,6 +86,11 @@ nav.tabs a:not(.active):hover { background: var(--surface-2); color: var(--ink);
 .btn-ghost:hover { border-color: var(--accent); color: #bcd4ff; }
 .btn-danger { color: var(--down); border-color: rgba(230,103,103,.4); }
 a.btn-ghost, a.btn-primary { line-height: 1.5; }
+/* A disabled button that still glows and shows a pointer reads as clickable.
+   The Start scan button is disabled whenever a scan is already running. */
+.btn-primary:disabled, .btn-ghost:disabled {
+  opacity: .45; cursor: not-allowed; box-shadow: none; filter: grayscale(.6);
+}
 :is(button, a, input, select):focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
 
 main { max-width: 1100px; margin: 0 auto; padding: 22px 24px 60px; }
@@ -272,7 +277,12 @@ svg.spark polyline { fill: none; stroke: var(--s1); stroke-width: 2; }
 .sitesearch .inp:focus { border-color: rgba(79,140,255,.55); outline: none;
                          box-shadow: 0 0 12px rgba(79,140,255,.2); }
 .sresults {
-  position: absolute; top: calc(100% + 6px); right: 0; width: 330px; z-index: 20;
+  /* Anchored left, not right. The panel is wider than the 230px search box,
+     and right:0 resolved that to left:-100px — with the box sitting 24px from
+     the edge of the page, every result had its set number cut off the screen.
+     The cap keeps a narrow window from pushing it off the other side. */
+  position: absolute; top: calc(100% + 6px); left: 0; right: auto;
+  width: min(330px, calc(100vw - 48px)); z-index: 20;
   background: rgba(13,19,35,0.97); backdrop-filter: blur(14px);
   border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
   box-shadow: 0 12px 30px rgba(0,0,0,.5);
