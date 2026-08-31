@@ -137,9 +137,11 @@
 <div class="card">
   <h3>Price history &amp; forecast <span class="soft">({{ ccy }}, BrickLink average · new/sealed)</span>
     <span class="rangebtns" role="group" aria-label="Chart range">
+      {# 3Y by default. "All" runs to the end of the forecast horizon, which
+         is years past the last scan, and opening on it hid the real data. #}
       <button class="rangebtn" data-range="365">1Y</button>
-      <button class="rangebtn" data-range="1095">3Y</button>
-      <button class="rangebtn active" data-range="0">All</button>
+      <button class="rangebtn active" data-range="1095">3Y</button>
+      <button class="rangebtn" data-range="0">All</button>
     </span>
   </h3>
   <div class="legend">

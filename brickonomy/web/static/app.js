@@ -120,28 +120,57 @@
               },
             },
             scales: {
-              x: { type: "time", time: { unit: "month" }, grid: { display: false } },
+              // Let Chart.js pick the tick unit. Pinning it to "month" put a
+              // label on every month, and the forecast runs years out — sixty
+              // rotated labels that read as a smear.
+              x: { type: "time", grid: { display: false },
+                   ticks: { autoSkip: true, maxTicksLimit: 10 } },
               y: { ticks: { callback: (v) => v.toLocaleString() } },
             },
           },
         });
 
-        // Range buttons (1Y / 3Y / All) clamp the x axis.
+        // Range buttons clamp both ends of the x axis. Clamping only the
+        // start left the forecast stretching the axis to 2031, so eight
+        // months of actual scans were squeezed into the far left edge.
+        // The earliest actual scan across every observed series. A range that
+        // reaches back past it just adds empty axis: 3Y on a set first scanned
+        // eight months ago drew two and a half years of nothing and bunched
+        // the real points against the right edge.
+        const firstScan = datasets
+          .filter((d) => !d.label.startsWith("Forecast"))
+          .flatMap((d) => d.data.map((p) => p.x))
+          .sort()[0];
+
+        const clamp = (btn) => {
+          const days = Number(btn.dataset.range);
+          const x = chart.options.scales.x;
+          if (!days) {
+            delete x.min;
+            delete x.max;
+          } else {
+            const from = new Date();
+            from.setDate(from.getDate() - days);
+            let start = from.toISOString().slice(0, 10);
+            if (firstScan && firstScan > start) start = firstScan;
+            x.min = start;
+            // A year of forecast beyond today: enough to see where the trend
+            // is pointing without the horizon dominating the history.
+            const to = new Date();
+            to.setDate(to.getDate() + 365);
+            x.max = to.toISOString().slice(0, 10);
+          }
+        };
         document.querySelectorAll(".rangebtn").forEach((btn) => {
+          if (btn.classList.contains("active")) clamp(btn);
           btn.addEventListener("click", () => {
             document.querySelectorAll(".rangebtn").forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            const days = Number(btn.dataset.range);
-            if (!days) {
-              delete chart.options.scales.x.min;
-            } else {
-              const from = new Date();
-              from.setDate(from.getDate() - days);
-              chart.options.scales.x.min = from.toISOString().slice(0, 10);
-            }
+            clamp(btn);
             chart.update();
           });
         });
+        chart.update();
       })
       .catch(() => { historyCanvas.parentElement.textContent = "Could not load price history."; });
   }
@@ -193,7 +222,8 @@
                 ` ${item.parsed.y.toLocaleString()} ${data.currency}` } },
             },
             scales: {
-              x: { type: "time", time: { unit: "month" }, grid: { display: false } },
+              x: { type: "time", grid: { display: false },
+                   ticks: { autoSkip: true, maxTicksLimit: 8 } },
               y: { ticks: { callback: (v) => v.toLocaleString() } },
             },
           },
