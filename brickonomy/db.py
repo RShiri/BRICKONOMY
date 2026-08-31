@@ -101,6 +101,10 @@ MIGRATIONS = [
     # values against a new part-out total mixes two bases — the same mistake
     # that made the figure-share look half its real size on set pages.
     "ALTER TABLE part_out ADD COLUMN condition TEXT NOT NULL DEFAULT 'new'",
+    # BrickLink's internal numeric id for the item. Its offers API is keyed on
+    # that rather than the set number, and looking it up costs a page fetch —
+    # so it is cached here and looked up once per item, not once per scan.
+    "ALTER TABLE items ADD COLUMN bricklink_id INTEGER",
 ]
 
 
@@ -142,7 +146,8 @@ def now_iso() -> str:
 
 ITEM_META_COLS = ("name", "theme", "subtheme", "year", "parts", "minifigs",
                   "weight_g", "retail_price", "retail_currency",
-                  "brickowl_boid", "ebay_query", "item_type", "category_id")
+                  "brickowl_boid", "ebay_query", "item_type", "category_id",
+                  "bricklink_id")
 
 
 # Each source names themes its own way — Rebrickable says "Super Heroes

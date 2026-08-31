@@ -223,6 +223,10 @@ def refresh_item(conn, item_id, item_type=None, force=False, log=print,
     if blended:
         log(f"  ≈ blended: " + ", ".join(f"{c} {v:,.0f}" for c, v in blended.items()))
 
+    if "bricklink" in cfg.sources_enabled and not cfg.fixture_mode and not inventory_only:
+        # Whole-item listings, which the price guide cannot distinguish from
+        # listings for a piece of one. Figures need this as much as sets.
+        _refresh_offers(conn, item_id, item_type, force=force, log=log)
     if item_type == "S" and "bricklink" in cfg.sources_enabled and not cfg.fixture_mode:
         _refresh_parts(conn, item_id, force=force, log=log)
         _refresh_minifigs(conn, item_id, force=force, log=log)
@@ -268,6 +272,60 @@ def _refresh_minifigs(conn, set_id, force=False, log=print):
         log(f"  ⚙ minifig inventory: {len(figs)} figs")
     elif err:
         log(f"  ✘ minifig inventory: {err}")
+
+
+def _refresh_offers(conn, item_id, item_type="S", force=False, log=print):
+    """Store the current listings, with completeness, as kind='offers'.
+
+    The price guide that refresh_item reads reports asks without saying
+    whether each one is for the whole item. Set 76049's cheapest "listing" was
+    ILS 11.88 for Captain America's backpack, and the buy signal quoted it as
+    53% under market; the cheapest listing that is actually the set is ILS
+    327.65. This reads the endpoint the site's own Items For Sale tab uses,
+    which answers with a completeness code per lot.
+
+    Returns True if a request was made.
+    """
+    from .scrapers.bricklink import BrickLinkSource
+
+    src = BrickLinkSource()
+    row = dbq.get_item(conn, item_id)
+    internal = row["bricklink_id"] if row and "bricklink_id" in row.keys() else None
+    if not internal:
+        internal, err = src.find_internal_id(item_id, item_type or "S")
+        if not internal:
+            log(f"  ✘ offers: {err}")
+            return True
+        # Cached on the item: the id never changes, and looking it up is a
+        # page fetch that would otherwise double the cost of every scan.
+        dbq.upsert_item(conn, item_id, bricklink_id=internal)
+        conn.commit()
+
+    offers, err = src.fetch_offers(item_id, internal)
+    if err:
+        log(f"  ✘ offers: {err}")
+        return True
+
+    for condition in ("new", "used"):
+        rows = [o for o in offers if o["condition"] == condition]
+        if not rows:
+            continue
+        whole = [o for o in rows if o["complete"]]
+        prices = sorted(o["price"] for o in whole)
+        ccy = next((o["currency"] for o in rows if o["currency"]), "ILS")
+        dbq.insert_snapshot(
+            conn, item_id, "bricklink", condition, "offers", ccy,
+            price_min=prices[0] if prices else None,
+            price_avg=(sum(prices) / len(prices)) if prices else None,
+            price_max=prices[-1] if prices else None,
+            listing_count=len(whole),
+            total_qty=sum(o["qty"] for o in whole),
+            raw=rows,
+        )
+    conn.commit()
+    kept = sum(1 for o in offers if o["complete"])
+    log(f"  ⚙ offers: {kept} whole of {len(offers)} listings")
+    return True
 
 
 def _refresh_parts(conn, set_id, force=False, log=print):

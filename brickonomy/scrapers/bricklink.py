@@ -9,7 +9,11 @@ Additions over the root scraper:
     here with viewItemType=P).
   - fetch_part_out_value(): the set's part-out total from catalogPOV.asp,
     one request per set instead of per-part price lookups.
+  - fetch_offers(): the current listings from the site's own Items For Sale
+    endpoint, which unlike the price guide says whether each lot is the whole
+    item or a piece of it.
 """
+import json
 import re
 
 import requests
@@ -391,6 +395,90 @@ class BrickLinkSource(BaseScraper):
         return [], 0, error
 
     # ── minifig inventory of a set ───────────────────────────────────────
+
+
+    # ── current offers ───────────────────────────────────────────────────
+    # BrickLink's price guide, which is what fetch() reads, reports the asks
+    # for an item without saying whether each one is for the whole thing. For
+    # set 76049 that meant the cheapest "listing" was ILS 11.88 for Captain
+    # America's backpack, and the buy signal quoted it as 53% under market.
+    # The cheapest listing that is actually the set is ILS 327.65.
+    #
+    # This endpoint is what the site's own Items For Sale tab calls, and it
+    # answers in JSON with the fields the price guide never had: whether the
+    # lot is complete, the seller's own description, and their country. It is
+    # keyed on BrickLink's internal item id rather than the set number.
+    IFS_URL = "https://www.bricklink.com/ajax/clone/catalogifs.ajax"
+
+    # codeComplete: B is a part of the item, C the whole thing, S still sealed.
+    _INCOMPLETE_CODE = "B"
+
+    @staticmethod
+    def find_internal_id(item_id: str, item_type: str = "S"):
+        """BrickLink's numeric id for an item, or None.
+
+        Costs a page fetch, so callers cache it on the item — the id never
+        changes, and the offers endpoint needs it on every call.
+        """
+        suffix = item_id if "-" in item_id or item_type == "M" else f"{item_id}-1"
+        html, error = BrickLinkSource._get(
+            f"{BrickLinkSource.BASE_URL}?{item_type}={suffix}#T=S")
+        if not html:
+            return None, error
+        m = re.search(r"idItem['\"]?\s*[:=]\s*['\"]?(\d+)", html)
+        if not m:
+            return None, "no idItem on the catalog page"
+        return int(m.group(1)), None
+
+    @staticmethod
+    def parse_offers(payload):
+        """[{price, currency, condition, complete, description, qty, country}]
+        from the offers endpoint's JSON."""
+        try:
+            rows = json.loads(payload).get("list") or []
+        except (ValueError, AttributeError):
+            return []
+        out = []
+        for r in rows:
+            shown = r.get("mDisplaySalePrice") or ""
+            m = re.search(r"([A-Z]{2,3})?\s*\$?\s*([\d,]+\.?\d*)", shown)
+            if not m:
+                continue
+            try:
+                price = float(m.group(2).replace(",", ""))
+            except ValueError:
+                continue
+            if price <= 0:
+                continue
+            code = (r.get("codeComplete") or "").upper()
+            out.append({
+                "price": price,
+                "currency": (m.group(1) or "").upper() or None,
+                "condition": "new" if (r.get("codeNew") or "").upper() == "N" else "used",
+                # Sealed and complete both mean the whole item; B does not.
+                "complete": code != BrickLinkSource._INCOMPLETE_CODE,
+                "sealed": code == "S",
+                "description": (r.get("strDesc") or "").strip(),
+                "qty": int(r.get("n4Qty") or 1),
+                "country": (r.get("strSellerCountryCode") or "").upper() or None,
+            })
+        return out
+
+    def fetch_offers(self, item_id: str, internal_id: int, per_page: int = 200):
+        """(offers, error) — every current listing for the item.
+
+        `internal_id` comes from find_internal_id and is expected to be cached
+        by the caller; this method never looks it up, so a scan costs one
+        request per item rather than two.
+        """
+        html, error = self._get(
+            f"{self.IFS_URL}?itemid={internal_id}&rpp={per_page}&pi=1&ci=0")
+        if not html:
+            return [], error
+        offers = self.parse_offers(html)
+        if not offers:
+            return [], "no offers parsed"
+        return offers, None
 
     def parse_minifig_inventory(self, html: str):
         """[{id, name, qty}, ...] from catalogItemInv.asp?...&viewItemType=M.

@@ -56,13 +56,21 @@ DIMENSION_MARKERS = ("ø", " x 1.", " x 2.", " x 9.9")
 MINIFIG_ID_IN_TEXT = re.compile(r"\b(?:sh|sw|cty|col|spd|hp|njo|tlm)\d{3,4}[a-z]?\b")
 
 
+INSTRUCTIONS_ONLY = re.compile(
+    r"instructions?\s*/|[-–]\s*instructions?\b|instructions?\s*only|"
+    r"^\s*lego\s*®?\s*instructions?|instruction\s+book|manual\s*only|"
+    r"booklet\s*only", re.I)
+CLAIMS_WHOLE = re.compile(r"\bcomplete\b|\ball\s+minifig", re.I)
+
+
 def looks_like_a_component(description, item_type="S"):
     """True when the listing describes a part or figure, not the item priced.
 
     Only meaningful for sources whose listings are free text — eBay searches
     anything, and BrickOwl matches numbers across item types. BrickLink pins
-    its request to `catalogitem.page?S=<id>`, so its listings are the set by
-    construction, which is why it stores no description and needs none.
+    its request to the item's own page, so its listings are that item; whether
+    each one is the *whole* item is a separate question its offers endpoint
+    answers with a completeness code, not something to be read out of prose.
     """
     text = (description or "").lower()
     if not text:
@@ -70,6 +78,15 @@ def looks_like_a_component(description, item_type="S"):
     if any(m in text for m in COMPONENT_MARKERS):
         return True
     if any(m in text for m in DIMENSION_MARKERS):
+        return True
+    # A listing whose subject is the instruction booklet. "Complete with
+    # instructions" is a whole set and must survive, so the giveaway is the
+    # word appearing as the thing being sold — eBay's own category echo,
+    # "76049 - Avengers Avenger - Instructions / Instruction" — with no claim
+    # of completeness anywhere. Measured over all 16,739 described listings:
+    # 11 rejected, every one an instruction sale, and the 5 that say
+    # "complete" all kept.
+    if INSTRUCTIONS_ONLY.search(text) and not CLAIMS_WHOLE.search(text):
         return True
     # Only when pricing a set: on a minifig's own page such an id is correct.
     return item_type == "S" and bool(MINIFIG_ID_IN_TEXT.search(text))
@@ -125,7 +142,17 @@ def cheapest_stock(conn, item_id, condition="new", item_type=None):
     item_type = item_type or item_type_for(item_id)
     out = {}
     for source in ("bricklink", "ebay", "brickowl"):
-        row = dbq.latest_snapshot(conn, item_id, source, condition, kind="stock")
+        # BrickLink's offers carry a completeness code per lot; its price
+        # guide does not, and reports a listing for one minifigure's backpack
+        # beside one for the whole set. Prefer the offers where a scan has
+        # stored them, and fall back to the guide where it has not.
+        row = None
+        if source == "bricklink":
+            row = dbq.latest_snapshot(conn, item_id, source, condition,
+                                      kind="offers")
+        if not row:
+            row = dbq.latest_snapshot(conn, item_id, source, condition,
+                                      kind="stock")
         if not row or not row["raw_json"]:
             continue
         try:
@@ -134,6 +161,10 @@ def cheapest_stock(conn, item_id, condition="new", item_type=None):
             continue
         clean = [l for l in listings
                  if l.get("price", 0) > 0
+                 # Absent means the source cannot say, which is how every row
+                 # that predates the offers endpoint reads; only an explicit
+                 # False is a listing known to be a piece of the item.
+                 and l.get("complete", True)
                  and not looks_like_a_component(l.get("description"), item_type)]
         clean = drop_lone_lowball(clean)
         if not clean:
