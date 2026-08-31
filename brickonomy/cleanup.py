@@ -109,6 +109,47 @@ def clean(conn, dry_run=False, log=print):
     return {"rows": len(bad_rows), "names": len(bad_names), "types": len(mistyped)}
 
 
+def derivable_minifig_themes(conn):
+    """[(fig_id, theme)] for figures whose theme can be inferred.
+
+    A figure carries no theme of its own — eight of 17,465 have one — which
+    left the theme filter on the Minifigures tab offering two entries of four
+    items each. The theme of the earliest set a figure appears in is its
+    theme, by the same reasoning that dates it: that set is its debut. Only
+    one figure in this catalog appears under two themes, a generic skeleton,
+    and taking the debut resolves it the same way.
+    """
+    return [(r["fig_id"], r["theme"]) for r in conn.execute(
+        """SELECT sm.fig_id, s.theme
+           FROM set_minifigs sm
+           JOIN items f ON f.item_id = sm.fig_id
+           JOIN items s ON s.item_id = sm.set_id
+           WHERE (f.theme IS NULL OR f.theme = '')
+             AND s.theme IS NOT NULL AND s.theme != ''
+           GROUP BY sm.fig_id
+           HAVING s.year = MIN(s.year) OR MIN(s.year) IS NULL""")]
+
+
+def backfill_minifig_themes(conn, dry_run=False, log=print):
+    """Give each themeless figure the theme of the earliest set holding it."""
+    rows = derivable_minifig_themes(conn)
+    log(f"  figures that can take a theme from their earliest set: {len(rows)}")
+    for fig_id, theme in rows[:6]:
+        log(f"      {fig_id:12} -> {theme}")
+    if len(rows) > 6:
+        log(f"      … and {len(rows) - 6} more")
+    if dry_run:
+        log("  dry run — nothing written")
+        return 0
+    conn.executemany("UPDATE items SET theme=? WHERE item_id=? AND "
+                     "(theme IS NULL OR theme='')",
+                     [(dbq.canonical_theme(theme), fig_id)
+                      for fig_id, theme in rows])
+    conn.commit()
+    log(f"✔ themed {len(rows)} figure(s)")
+    return len(rows)
+
+
 def derivable_minifig_years(conn):
     """[(fig_id, year, sets)] for figures whose release year can be inferred.
 
@@ -238,6 +279,8 @@ def main():
         clean(conn, dry_run=args.dry_run)
         print("Dating figures from the sets they appear in")
         backfill_minifig_years(conn, dry_run=args.dry_run)
+        print("Theming figures from the sets they appear in")
+        backfill_minifig_themes(conn, dry_run=args.dry_run)
         if args.compact:
             print("Compacting the snapshot history")
             compact_snapshots(conn, dry_run=args.dry_run)

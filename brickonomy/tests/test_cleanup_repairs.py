@@ -3,7 +3,8 @@ wrong screen, it is data destroyed."""
 import pytest
 
 from brickonomy import db as dbq
-from brickonomy.cleanup import (backfill_minifig_years, derivable_minifig_years,
+from brickonomy.cleanup import (backfill_minifig_themes, backfill_minifig_years,
+                                derivable_minifig_themes, derivable_minifig_years,
                                 find_bad_names)
 
 
@@ -125,3 +126,54 @@ class TestFigYearsAreSetWhenDiscovered:
         rf._refresh_minifigs(conn, "76051", log=lambda *a: None)
         rf._refresh_minifigs(conn, "76049", force=True, log=lambda *a: None)
         assert dbq.get_item(conn, "sh0177")["year"] == 2015, "the debut, not the latest"
+
+
+class TestMinifigThemes:
+    """A figure carries no theme of its own — eight of 17,465 have one — so
+    the theme filter on the Minifigures tab offered two entries of four items
+    each. Its set's theme is its theme."""
+
+    def _seed(self, conn, fig_id, sets):
+        dbq.upsert_item(conn, fig_id, name="Fig", item_type="M")
+        for set_id, year, theme in sets:
+            dbq.upsert_item(conn, set_id, name="Set", item_type="S",
+                            year=year, theme=theme)
+            dbq.upsert_set_minifigs(conn, set_id,
+                                    [{"id": fig_id, "name": "Fig", "qty": 1}])
+        conn.commit()
+
+    def test_a_figure_takes_its_sets_theme(self, conn):
+        self._seed(conn, "sh0177", [("76051", 2016, "Super Heroes Marvel")])
+        backfill_minifig_themes(conn, log=lambda *a: None)
+        assert dbq.get_item(conn, "sh0177")["theme"] == "Super Heroes Marvel"
+
+    def test_the_earliest_set_wins_when_a_figure_spans_themes(self, conn):
+        # gen047, a generic skeleton, appears under two themes.
+        self._seed(conn, "gen047", [("21000", 2020, "LEGO Ideas and CUUSOO"),
+                                    ("76000", 2024, "Super Heroes Marvel")])
+        backfill_minifig_themes(conn, log=lambda *a: None)
+        assert dbq.get_item(conn, "gen047")["theme"] == "LEGO Ideas and CUUSOO"
+
+    def test_a_figure_that_has_a_theme_keeps_it(self, conn):
+        dbq.upsert_item(conn, "sh0177", name="Fig", item_type="M",
+                        theme="Collectible Minifigures")
+        self._seed(conn, "sh0177", [("76051", 2016, "Super Heroes Marvel")])
+        backfill_minifig_themes(conn, log=lambda *a: None)
+        assert dbq.get_item(conn, "sh0177")["theme"] == "Collectible Minifigures"
+
+    def test_a_themeless_set_gives_nothing(self, conn):
+        self._seed(conn, "sh0177", [("76051", 2016, None)])
+        assert derivable_minifig_themes(conn) == []
+
+    def test_it_is_idempotent(self, conn):
+        self._seed(conn, "sh0177", [("76051", 2016, "Super Heroes Marvel")])
+        assert backfill_minifig_themes(conn, log=lambda *a: None) == 1
+        assert backfill_minifig_themes(conn, log=lambda *a: None) == 0
+
+    def test_an_aliased_set_theme_is_folded_before_it_spreads(self, conn):
+        """The UPDATE bypasses upsert_item, which is where alias folding
+        normally happens — a set filed under "Marvel Super Heroes" would hand
+        that spelling to every figure in it and split the theme again."""
+        self._seed(conn, "sh0177", [("76051", 2016, "Marvel Super Heroes")])
+        backfill_minifig_themes(conn, log=lambda *a: None)
+        assert dbq.get_item(conn, "sh0177")["theme"] == "Super Heroes Marvel"

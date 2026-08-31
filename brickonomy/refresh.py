@@ -247,12 +247,24 @@ def _refresh_minifigs(conn, set_id, force=False, log=print):
         # rather than leaving it for whenever someone runs the cleanup.
         item = dbq.get_item(conn, set_id)
         year = item["year"] if item else None
+        # Through canonical_theme, because the UPDATE below bypasses
+        # upsert_item, which is where that folding normally happens — a set
+        # filed under "Marvel Super Heroes" would otherwise hand that spelling
+        # to every figure in it and split the theme again.
+        theme = dbq.canonical_theme(item["theme"]) if item else None
         for f in figs:  # figs become first-class items with their own pages
             dbq.upsert_item(conn, f["id"], item_type="M", name=f["name"] or None)
             if year:
                 conn.execute(
                     "UPDATE items SET year=? WHERE item_id=? "
                     "AND (year IS NULL OR year=0 OR year>?)", (year, f["id"], year))
+            # A figure carries no theme of its own, which left the theme
+            # filter on the Minifigures tab offering two entries. Its set's
+            # theme is its theme.
+            if theme:
+                conn.execute(
+                    "UPDATE items SET theme=? WHERE item_id=? "
+                    "AND (theme IS NULL OR theme='')", (theme, f["id"]))
         log(f"  ⚙ minifig inventory: {len(figs)} figs")
     elif err:
         log(f"  ✘ minifig inventory: {err}")
