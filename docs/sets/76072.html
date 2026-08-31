@@ -67,9 +67,18 @@
     <div class="facts">
       <span class="chip">🧱 94 parts</span>
       
-      <span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 2 minifigs</span>
+      <span class="chip">🧍 2 minifigs</span>
+      
       <span class="chip">⚖️ 87 g</span>
       <span class="chip">₪0.50 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="68"
+            data-new="82"
+            data-partial-used="1"
+            data-partial-new="1"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 68% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -167,9 +176,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪1.17</div>
+        <div class="value" style="font-size:22px">₪3.05</div>
         <div class="delta up">
-          −57% vs theme
+          −84% vs theme
         </div>
       </div>
       
@@ -221,6 +230,40 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="38.94"
+              data-parts="40.29"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪38.94 · 49% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪40.29 · 51% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪79.23</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -347,16 +390,525 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 2 in this set<span id="figsTotalLabel">, ₪21.80 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪21.80"
+         data-total-new="₪38.94">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0362.html" title="Iron Man - Short Legs"
+       data-value="21.8" data-name="iron man - short legs" data-qty="1"
+       data-v-used="21.8" data-v-new="38.94"
+       data-price-used="₪21.80"
+       data-price-new="₪38.94"
+       data-share-used="67.9% of set"
+       data-share-new="82.3% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0362.png" alt="Iron Man - Short Legs" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0362</div>
+      <div class="figtile-name">Iron Man - Short Legs</div>
+      <div class="figtile-value">₪21.80</div>
+      <div class="figtile-share">67.9% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0363.html" title="Thanos - Minifigure, Blue Outfit"
+       data-value="0" data-name="thanos - minifigure, blue outfit" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0363.png" alt="Thanos - Minifigure, Blue Outfit" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0363</div>
+      <div class="figtile-name">Thanos - Minifigure, Blue Outfit</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0362.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0362.html"><b>sh0362</b> Iron Man - Short Legs</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="21.8"
+            data-v-used="21.8" data-v-new="38.94"
+            data-price-used="₪21.80"
+            data-price-new="₪38.94"
+            >₪21.80</td>
+        <td class="num figcell-share" data-v="67.9339358055469"
+            data-v-used="67.9339358055469" data-v-new="82.29078613693997"
+            data-share-used="67.9%"
+            data-share-new="82.3%"
+            >67.9%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0363.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0363.html"><b>sh0363</b> Thanos - Minifigure, Blue Outfit</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪21.80"
+              data-price-new="₪38.94"
+              >₪21.80</td>
+          <td class="num" id="figFootShare"
+              data-share-used="68%"
+              data-share-new="82%"
+              >68%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 68% of the used set price → not a part-out candidate (flag raises at 80%). Only 1 of 2 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 82% of the sealed set price → strong part-out candidate. Only 1 of 2 figs have a new price, so the true share is higher.">
+    
+      Figs are <b>68% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 1 of 2 figs have a used price, so the true share is higher.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">43 lots · 92 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪79.23</b>
+      &nbsp;· premium <span class="delta up">▲ 67%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>30028</td>
+      <td class="name" title="Tire 14mm D. x 9mm Smooth Small Wide Slick">Tire 14mm D. x 9mm Smooth Small Wide Slick</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>54200</td>
+      <td class="name" title="Slope 30 1 x 1 x 2/3">Slope 30 1 x 1 x 2/3</td>
+      <td>Metallic Gold</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>74967</td>
+      <td class="name" title="Wheel  8mm D. x 9mm for Slicks, Hole Notched for Wheels Holder Pin, Reinforced Back">Wheel  8mm D. x 9mm for Slicks, Hole Notched for Wheels Holder Pin, Reinforced Back</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>74967c01</td>
+      <td class="name" title="Wheel  8mm D. x 9mm for Slicks, Hole Notched for Wheels Holder Pin, Reinforced Back with Black Tire 14mm D. x 9mm Smooth Small Wide Slick (74967 / 30028)">Wheel  8mm D. x 9mm for Slicks, Hole Notched for Wheels Holder Pin, Reinforced Back with Black Tire 14mm D. x 9mm Smooth Small Wide Slick (74967 / 30028)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98313</td>
+      <td class="name" title="Arm Mechanical, Exo-Force / Bionicle, Thick Support">Arm Mechanical, Exo-Force / Bionicle, Thick Support</td>
+      <td>Pearl Gold</td>
+      <td class="num">5</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15070</td>
+      <td class="name" title="Plate, Modified 1 x 1 with Tooth Vertical">Plate, Modified 1 x 1 with Tooth Vertical</td>
+      <td>Yellow</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15712</td>
+      <td class="name" title="Tile, Modified 1 x 1 with Open O Clip">Tile, Modified 1 x 1 with Open O Clip</td>
+      <td>Red</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27925</td>
+      <td class="name" title="Tile, Round Corner 2 x 2 Macaroni">Tile, Round Corner 2 x 2 Macaroni</td>
+      <td>Pearl Gold</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60478</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handle on End">Plate, Modified 1 x 2 with Bar Handle on End</td>
+      <td>Dark Tan</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24326</td>
+      <td class="name" title="Vehicle, Base 3 x 4 x 2/3">Vehicle, Base 3 x 4 x 2/3</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3022</td>
+      <td class="name" title="Plate 2 x 2">Plate 2 x 2</td>
+      <td>Dark Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3829c01</td>
+      <td class="name" title="Vehicle, Steering Stand 1 x 2 with Black Steering Wheel">Vehicle, Steering Stand 1 x 2 with Black Steering Wheel</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4624</td>
+      <td class="name" title="Wheel  8mm D. x 6mm">Wheel  8mm D. x 6mm</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4624c05</td>
+      <td class="name" title="Wheel 8mm D. x 6mm with Black Tire 14mm D. x 4mm Smooth Small Single with Number Embossed on Side (4624 / 59895)">Wheel 8mm D. x 6mm with Black Tire 14mm D. x 4mm Smooth Small Single with Number Embossed on Side (4624 / 59895)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>54200</td>
+      <td class="name" title="Slope 30 1 x 1 x 2/3">Slope 30 1 x 1 x 2/3</td>
+      <td>Trans-Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>59895</td>
+      <td class="name" title="Tire 14mm D. x 4mm Smooth Small Single with Number Embossed on Side">Tire 14mm D. x 4mm Smooth Small Single with Number Embossed on Side</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11092</td>
+      <td class="name" title="Hand Gorilla Fist (fits Minifigure Hand)">Hand Gorilla Fist (fits Minifigure Hand)</td>
+      <td>Pearl Gold</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11476</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Clip on Side (Horizontal Grip)">Plate, Modified 1 x 2 with Clip on Side (Horizontal Grip)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15573</td>
+      <td class="name" title="Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)">Plate, Modified 1 x 2 with 1 Stud with Groove and Bottom Stud Holder (Jumper)</td>
+      <td>Pearl Gold</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>23186</td>
+      <td class="name" title="Minifigure, Hair Swept Left Tousled with Slight Widow&#39;s Peak and Short Sideburns">Minifigure, Hair Swept Left Tousled with Slight Widow&#39;s Peak and Short Sideburns</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24151</td>
+      <td class="name" title="Vehicle, Mudguard 4 x 4 x 1 1/3 Double">Vehicle, Mudguard 4 x 4 x 1 1/3 Double</td>
+      <td>Dark Tan</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2432</td>
+      <td class="name" title="Tile, Modified 1 x 2 with Bar Handle">Tile, Modified 1 x 2 with Bar Handle</td>
+      <td>Reddish Brown</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2540</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handle on Side - Free Ends">Plate, Modified 1 x 2 with Bar Handle on Side - Free Ends</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3003</td>
+      <td class="name" title="Brick 2 x 2">Brick 2 x 2</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30043</td>
+      <td class="name" title="Plate, Modified 1 x 4 with Bar Arm Down">Plate, Modified 1 x 4 with Bar Arm Down</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3022</td>
+      <td class="name" title="Plate 2 x 2">Plate 2 x 2</td>
+      <td>Red</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3062</td>
+      <td class="name" title="Brick, Round  1 x 1">Brick, Round  1 x 1</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Tan</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3839b</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handles - Flat Ends, Low Attachment">Plate, Modified 1 x 2 with Bar Handles - Flat Ends, Low Attachment</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4006</td>
+      <td class="name" title="Minifigure, Utensil Tool Spanner Wrench / Screwdriver">Minifigure, Utensil Tool Spanner Wrench / Screwdriver</td>
+      <td>Flat Silver</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>47755</td>
+      <td class="name" title="Wedge 4 x 3 Open with Cutout and 4 Studs">Wedge 4 x 3 Open with Cutout and 4 Studs</td>
+      <td>Red</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60474</td>
+      <td class="name" title="Plate, Round 4 x 4 with Hole">Plate, Round 4 x 4 with Hole</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85984</td>
+      <td class="name" title="Slope 30 1 x 2 x 2/3">Slope 30 1 x 2 x 2/3</td>
+      <td>Yellow</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Yellow</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Green</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Dark Pink</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Orange</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98397</td>
+      <td class="name" title="Minifigure, Utensil Handlebars with Angular Handles">Minifigure, Utensil Handlebars with Angular Handles</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99207</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2 Inverted">Bracket 1 x 2 - 2 x 2 Inverted</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99780</td>
+      <td class="name" title="Bracket 1 x 2 - 1 x 2 Inverted">Bracket 1 x 2 - 1 x 2 Inverted</td>
+      <td>Red</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
   
 </div>
 

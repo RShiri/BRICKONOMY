@@ -67,9 +67,18 @@
     <div class="facts">
       <span class="chip">🧱 6 parts</span>
       
-      <span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 1 minifigs</span>
+      <span class="chip">🧍 1 minifigs</span>
+      
       
       <span class="chip">₪2.20 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used=""
+            data-new="110"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 figs not priced</span>
       
       <span class="chip"><span class="dot" style="background:var(--s3)"></span>Available</span>
       
@@ -165,9 +174,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪1.17</div>
-        <div class="delta down">
-          87% vs theme
+        <div class="value" style="font-size:22px">₪3.05</div>
+        <div class="delta up">
+          −28% vs theme
         </div>
       </div>
       
@@ -219,6 +228,39 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="14.49"
+              data-parts="1.89"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪14.49 · 88% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪1.89 · 12% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪16.38</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -337,16 +379,151 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel">, ₪12.58 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪12.58"
+         data-total-new="₪14.49">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0922.html" title="Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms"
+       data-value="12.58" data-name="black widow - black jumpsuit, dark orange short hair, printed legs, printed arms" data-qty="1"
+       data-v-used="12.58" data-v-new="14.49"
+       data-price-used="₪12.58"
+       data-price-new="₪14.49"
+       data-share-used=""
+       data-share-new="109.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0922.png" alt="Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0922</div>
+      <div class="figtile-name">Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms</div>
+      <div class="figtile-value">₪12.58</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0922.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0922.html"><b>sh0922</b> Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="12.58"
+            data-v-used="12.58" data-v-new="14.49"
+            data-price-used="₪12.58"
+            data-price-new="₪14.49"
+            >₪12.58</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new="109.7727272727273"
+            data-share-used="—"
+            data-share-new="109.8%"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪12.58"
+              data-price-new="₪14.49"
+              >₪12.58</td>
+          <td class="num" id="figFootShare"
+              data-share-used="—"
+              data-share-new="110%"
+              >—</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used=""
+       data-note-new="Figs are 110% of the sealed set price → strong part-out candidate.">
+    
+      None of this set's 1 figs have been priced, so the figure share is unknown.
+      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">1 lots · 2 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪16.38</b>
+      &nbsp;· premium <span class="delta up">▲ 24%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>6018</td>
+      <td class="name" title="Minifigure, Weapon Gun, Two Barrel Pistol - 8-Rib Top Barrel">Minifigure, Weapon Gun, Two Barrel Pistol - 8-Rib Top Barrel</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
   
 </div>
 

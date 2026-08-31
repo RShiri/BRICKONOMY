@@ -67,9 +67,12 @@
     <div class="facts">
       <span class="chip">🧱 58 parts</span>
       
-      <span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 2 minifigs</span>
+      <span class="chip">🧍 2 minifigs</span>
+      
       <span class="chip">⚖️ 85 g</span>
       <span class="chip">₪7.33 / part</span>
+      
+      <span class="chip" title="This set's minifigs have never been priced. Rescan to fetch them.">🧍 figs not priced yet</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -167,9 +170,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪1.17</div>
+        <div class="value" style="font-size:22px">₪3.05</div>
         <div class="delta down">
-          525% vs theme
+          140% vs theme
         </div>
       </div>
       
@@ -347,16 +350,417 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 2 in this set<span id="figsTotalLabel"></span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used=""
+         data-total-new="">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/spd004.html" title="Mary Jane 1"
+       data-value="0" data-name="mary jane 1" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/spd004.png" alt="Mary Jane 1" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">spd004</div>
+      <div class="figtile-name">Mary Jane 1</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/spd005a.html" title="Green Goblin with Neck Bracket"
+       data-value="0" data-name="green goblin with neck bracket" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/spd005a.png" alt="Green Goblin with Neck Bracket" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">spd005a</div>
+      <div class="figtile-name">Green Goblin with Neck Bracket</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/spd004.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/spd004.html"><b>spd004</b> Mary Jane 1</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/spd005a.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/spd005a.html"><b>spd005a</b> Green Goblin with Neck Bracket</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used=""
+       data-note-new="">
+    
+      None of this set's 2 figs have been priced, so the figure share is unknown.
+      Hit <b>↻ Rescan prices</b> above — it prices the set and every fig in it.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">31 lots · 48 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪323</b>
+      &nbsp;· premium <span class="delta down">▼ 24%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3626</td>
+      <td class="name" title="Minifigure, Head (Plain)">Minifigure, Head (Plain)</td>
+      <td>Trans-Neon Orange</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2566</td>
+      <td class="name" title="Bar 1.2L with Top Stud and 4 Bar Arms Up (Palm Tree Top)">Bar 1.2L with Top Stud and 4 Bar Arms Up (Palm Tree Top)</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3022</td>
+      <td class="name" title="Plate 2 x 2">Plate 2 x 2</td>
+      <td>Light Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3062</td>
+      <td class="name" title="Brick, Round  1 x 1">Brick, Round  1 x 1</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3062</td>
+      <td class="name" title="Brick, Round  1 x 1">Brick, Round  1 x 1</td>
+      <td>Trans-Neon Green</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3794a</td>
+      <td class="name" title="Plate, Modified 1 x 2 with 1 Stud without Groove (Jumper)">Plate, Modified 1 x 2 with 1 Stud without Groove (Jumper)</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td class="name" title="Plate, Round 2 x 2 with Axle Hole">Plate, Round 2 x 2 with Axle Hole</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4032</td>
+      <td class="name" title="Plate, Round 2 x 2 with Axle Hole">Plate, Round 2 x 2 with Axle Hole</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4081b</td>
+      <td class="name" title="Plate, Modified 1 x 1 with Light Attachment - Thick Ring">Plate, Modified 1 x 1 with Light Attachment - Thick Ring</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4589</td>
+      <td class="name" title="Cone 1 x 1">Cone 1 x 1</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4589</td>
+      <td class="name" title="Cone 1 x 1">Cone 1 x 1</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4740</td>
+      <td class="name" title="Dish 2 x 2 Inverted (Radar)">Dish 2 x 2 Inverted (Radar)</td>
+      <td>Tan</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6126</td>
+      <td class="name" title="Wave Rounded Straight with Bar End and Small Pins (Castle Dragon Flame / Seaweed / Water)">Wave Rounded Straight with Bar End and Small Pins (Castle Dragon Flame / Seaweed / Water)</td>
+      <td>Trans-Neon Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2431</td>
+      <td class="name" title="Tile 1 x 4">Tile 1 x 4</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30364</td>
+      <td class="name" title="Hinge Brick 1 x 2 Locking with 1 Finger Vertical End">Hinge Brick 1 x 2 Locking with 1 Finger Vertical End</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30365</td>
+      <td class="name" title="Hinge Brick 1 x 2 Locking with 2 Fingers Vertical End">Hinge Brick 1 x 2 Locking with 2 Fingers Vertical End</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30386</td>
+      <td class="name" title="Hinge Brick 1 x 2 Locking with 1 Finger Vertical End and 2 Fingers Vertical End">Hinge Brick 1 x 2 Locking with 1 Finger Vertical End and 2 Fingers Vertical End</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069px15</td>
+      <td class="name" title="Tile 1 x 2 with White Diagonal Partial Stripes Pattern">Tile 1 x 2 with White Diagonal Partial Stripes Pattern</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3298</td>
+      <td class="name" title="Slope 33 3 x 2">Slope 33 3 x 2</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td class="name" title="Plate 1 x 6">Plate 1 x 6</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Dark Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3795</td>
+      <td class="name" title="Plate 2 x 6">Plate 2 x 6</td>
+      <td>Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Dark Blue</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41747px1</td>
+      <td class="name" title="Wedge 6 x 2 Right with Purple Wing Pattern">Wedge 6 x 2 Right with Purple Wing Pattern</td>
+      <td>Pearl Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41748px1</td>
+      <td class="name" title="Wedge 6 x 2 Left with Purple Wing Pattern">Wedge 6 x 2 Left with Purple Wing Pattern</td>
+      <td>Pearl Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>41854pb14</td>
+      <td class="name" title="Vehicle, Mudguard 2 x 4 with Flared Wings with Orange Dots and Dark Gray Lines Pattern">Vehicle, Mudguard 2 x 4 with Flared Wings with Orange Dots and Dark Gray Lines Pattern</td>
+      <td>Pearl Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>42445</td>
+      <td class="name" title="Bar  12L with 1 x 2 Plate End Solid Studs and 1 x 1 Round Plate End">Bar  12L with 1 x 2 Plate End Solid Studs and 1 x 1 Round Plate End</td>
+      <td>Trans-Clear</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4589</td>
+      <td class="name" title="Cone 1 x 1">Cone 1 x 1</td>
+      <td>Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4595</td>
+      <td class="name" title="Brick, Modified 1 x 2 x 2/3 with Studs on Sides and Extended Stud Receptacle">Brick, Modified 1 x 2 x 2/3 with Studs on Sides and Extended Stud Receptacle</td>
+      <td>Light Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>57467</td>
+      <td class="name" title="Minifigure, Weapon Harpoons, 2 on Sprue">Minifigure, Weapon Harpoons, 2 on Sprue</td>
+      <td>Chrome Silver</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
   
 </div>
 

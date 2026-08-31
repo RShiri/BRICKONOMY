@@ -67,9 +67,18 @@
     <div class="facts">
       <span class="chip">🧱 179 parts</span>
       
-      <span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 3 minifigs</span>
+      <span class="chip">🧍 3 minifigs</span>
+      
       <span class="chip">⚖️ 326 g</span>
       <span class="chip">₪0.58 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="16"
+            data-new="23"
+            data-partial-used="1"
+            data-partial-new="1"
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 16% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -179,9 +188,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪1.17</div>
+        <div class="value" style="font-size:22px">₪3.05</div>
         <div class="delta up">
-          −51% vs theme
+          −81% vs theme
         </div>
       </div>
       
@@ -225,6 +234,40 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="23.53"
+              data-parts="108.40"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪23.53 · 18% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪108 · 82% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪132</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        <br>Not every figure has a price yet, so the minifig slice is a floor —
+        rescan to fill it in.
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -351,16 +394,979 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 3 in this set<span id="figsTotalLabel">, ₪10.07 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪10.07"
+         data-total-new="₪23.53">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0186.html" title="Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Dark Azure Trim"
+       data-value="10.07" data-name="black widow - black jumpsuit, dark orange short hair, printed legs, dark azure trim" data-qty="1"
+       data-v-used="10.07" data-v-new="23.53"
+       data-price-used="₪10.07"
+       data-price-new="₪23.53"
+       data-share-used="16.3% of set"
+       data-share-new="22.8% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0186.png" alt="Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Dark Azure Trim" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0186</div>
+      <div class="figtile-name">Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Dark Azure Trim</div>
+      <div class="figtile-value">₪10.07</div>
+      <div class="figtile-share">16.3% of set</div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0261.html" title="Falcon - Light Bluish Gray and Dark Red Wings"
+       data-value="0" data-name="falcon - light bluish gray and dark red wings" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0261.png" alt="Falcon - Light Bluish Gray and Dark Red Wings" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0261</div>
+      <div class="figtile-name">Falcon - Light Bluish Gray and Dark Red Wings</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+    
+    
+    <a class="figtile" href="../sets/sh0262.html" title="Crossbones"
+       data-value="0" data-name="crossbones" data-qty="1"
+       data-v-used="0" data-v-new="0"
+       data-price-used="not priced"
+       data-price-new="not priced"
+       data-share-used=""
+       data-share-new="">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0262.png" alt="Crossbones" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0262</div>
+      <div class="figtile-name">Crossbones</div>
+      <div class="figtile-value">not priced</div>
+      <div class="figtile-share"></div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0186.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0186.html"><b>sh0186</b> Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Dark Azure Trim</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="10.07"
+            data-v-used="10.07" data-v-new="23.53"
+            data-price-used="₪10.07"
+            data-price-new="₪23.53"
+            >₪10.07</td>
+        <td class="num figcell-share" data-v="16.318262842327012"
+            data-v-used="16.318262842327012" data-v-new="22.787139260120085"
+            data-share-used="16.3%"
+            data-share-new="22.8%"
+            >16.3%</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0261.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0261.html"><b>sh0261</b> Falcon - Light Bluish Gray and Dark Red Wings</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0262.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0262.html"><b>sh0262</b> Crossbones</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v=""
+            data-v-used="" data-v-new=""
+            data-price-used="—"
+            data-price-new="—"
+            >—</td>
+        <td class="num figcell-share" data-v=""
+            data-v-used="" data-v-new=""
+            data-share-used="—"
+            data-share-new="—"
+            >—</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪10.07"
+              data-price-new="₪23.53"
+              >₪10.07</td>
+          <td class="num" id="figFootShare"
+              data-share-used="16%"
+              data-share-new="23%"
+              >16%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 16% of the used set price → not a part-out candidate (flag raises at 80%). Only 1 of 3 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 23% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 1 of 3 figs have a new price, so the true share is higher.">
+    
+      Figs are <b>16% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Only 1 of 3 figs have a used price, so the true share is higher.
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">95 lots · 186 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪132</b>
+      &nbsp;· premium <span class="delta up">▲ 28%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>3004</td>
+      <td class="name" title="Brick 1 x 2">Brick 1 x 2</td>
+      <td>Dark Orange</td>
+      <td class="num">9</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2412b</td>
+      <td class="name" title="Tile, Modified 1 x 2 Grille with Bottom Groove">Tile, Modified 1 x 2 Grille with Bottom Groove</td>
+      <td>Reddish Brown</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3665</td>
+      <td class="name" title="Slope, Inverted 45 2 x 1">Slope, Inverted 45 2 x 1</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Orange</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>92593</td>
+      <td class="name" title="Plate, Modified 1 x 4 with 2 Studs without Groove">Plate, Modified 1 x 4 with 2 Studs without Groove</td>
+      <td>Black</td>
+      <td class="num">6</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11476</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Clip on Side (Horizontal Grip)">Plate, Modified 1 x 2 with Clip on Side (Horizontal Grip)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32028</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Door Rail">Plate, Modified 1 x 2 with Door Rail</td>
+      <td>Reddish Brown</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Red</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>56891</td>
+      <td class="name" title="Tire 37 x 18R">Tire 37 x 18R</td>
+      <td>Black</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11211</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Studs on 1 Side">Brick, Modified 1 x 2 with Studs on 1 Side</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3666</td>
+      <td class="name" title="Plate 1 x 6">Plate 1 x 6</td>
+      <td>Black</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4085d</td>
+      <td class="name" title="Plate, Modified 1 x 1 with Open O Clip Thick (Vertical Grip)">Plate, Modified 1 x 1 with Open O Clip Thick (Vertical Grip)</td>
+      <td>Red</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Clear</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15068</td>
+      <td class="name" title="Slope, Curved 2 x 2 x 2/3">Slope, Curved 2 x 2 x 2/3</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15210</td>
+      <td class="name" title="Road Sign 2 x 2 Square with Open O Clip">Road Sign 2 x 2 Square with Open O Clip</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15391</td>
+      <td class="name" title="Minifigure, Weapon Gun, Mini Blaster / Shooter">Minifigure, Weapon Gun, Mini Blaster / Shooter</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15391c01</td>
+      <td class="name" title="Minifigure, Weapon Gun, Mini Blaster / Shooter with Dark Bluish Gray Trigger (15391 / 15392)">Minifigure, Weapon Gun, Mini Blaster / Shooter with Dark Bluish Gray Trigger (15391 / 15392)</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15392</td>
+      <td class="name" title="Projectile Launcher Part, Trigger for Gun, Mini Blaster / Shooter">Projectile Launcher Part, Trigger for Gun, Mini Blaster / Shooter</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2877</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Grille / Fluted Profile">Brick, Modified 1 x 2 with Grille / Fluted Profile</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30031</td>
+      <td class="name" title="Minifigure, Utensil Handlebars">Minifigure, Utensil Handlebars</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30157</td>
+      <td class="name" title="Plate, Modified 2 x 4 with Pins and Thin Angled Supports">Plate, Modified 2 x 4 with Pins and Thin Angled Supports</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3031</td>
+      <td class="name" title="Plate 4 x 4">Plate 4 x 4</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30374</td>
+      <td class="name" title="Bar   4L (Lightsaber Blade / Wand)">Bar   4L (Lightsaber Blade / Wand)</td>
+      <td>Trans-Light Blue</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3040</td>
+      <td class="name" title="Slope 45 2 x 1">Slope 45 2 x 1</td>
+      <td>Dark Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>30663</td>
+      <td class="name" title="Vehicle, Steering Wheel Small, 2 Studs Diameter">Vehicle, Steering Wheel Small, 2 Studs Diameter</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3069</td>
+      <td class="name" title="Tile 1 x 2">Tile 1 x 2</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3673</td>
+      <td class="name" title="Technic, Pin without Friction Ridges">Technic, Pin without Friction Ridges</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3710</td>
+      <td class="name" title="Plate 1 x 4">Plate 1 x 4</td>
+      <td>Dark Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3747b</td>
+      <td class="name" title="Slope, Inverted 33 3 x 2 with Flat Bottom Pin and Connections between Studs">Slope, Inverted 33 3 x 2 with Flat Bottom Pin and Connections between Studs</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Trans-Red</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44676</td>
+      <td class="name" title="Flag 2 x 2 Trapezoid with Flat Edge">Flag 2 x 2 Trapezoid with Flat Edge</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4532b</td>
+      <td class="name" title="Container, Cupboard 2 x 3 x 2 - Hollow Studs">Container, Cupboard 2 x 3 x 2 - Hollow Studs</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4589b</td>
+      <td class="name" title="Cone 1 x 1 with Top Groove">Cone 1 x 1 with Top Groove</td>
+      <td>Trans-Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>48336</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handle on Side - Closed Ends">Plate, Modified 1 x 2 with Bar Handle on Side - Closed Ends</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>50861</td>
+      <td class="name" title="Tire 21mm D. x 6mm City Motorcycle">Tire 21mm D. x 6mm City Motorcycle</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>50862</td>
+      <td class="name" title="Wheel 15mm D. x 6mm City Motorcycle">Wheel 15mm D. x 6mm City Motorcycle</td>
+      <td>Red</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>50862c01</td>
+      <td class="name" title="Wheel 15mm D. x 6mm City Motorcycle with Black Tire 21mm D. x 6mm City Motorcycle (50862 / 50861)">Wheel 15mm D. x 6mm City Motorcycle with Black Tire 21mm D. x 6mm City Motorcycle (50862 / 50861)</td>
+      <td>Red</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>553</td>
+      <td class="name" title="Brick, Round 2 x 2 Dome Top">Brick, Round 2 x 2 Dome Top</td>
+      <td>Trans-Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>55981</td>
+      <td class="name" title="Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes">Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>55981</td>
+      <td class="name" title="Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes">Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>55981c04</td>
+      <td class="name" title="Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes with Black Tire 37 x 18R (55981 / 56891)">Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes with Black Tire 37 x 18R (55981 / 56891)</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>55981c04</td>
+      <td class="name" title="Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes with Black Tire 37 x 18R (55981 / 56891)">Wheel 18mm D. x 14mm with Pin Hole, Fake Bolts and Shallow Spokes with Black Tire 37 x 18R (55981 / 56891)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60478</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handle on End">Plate, Modified 1 x 2 with Bar Handle on End</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60478</td>
+      <td class="name" title="Plate, Modified 1 x 2 with Bar Handle on End">Plate, Modified 1 x 2 with Bar Handle on End</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60481</td>
+      <td class="name" title="Slope 65 2 x 1 x 2">Slope 65 2 x 1 x 2</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60592</td>
+      <td class="name" title="Window 1 x 2 x 2 Flat Front">Window 1 x 2 x 2 Flat Front</td>
+      <td>Reddish Brown</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60594</td>
+      <td class="name" title="Window 1 x 4 x 3 - No Shutter Tabs">Window 1 x 4 x 3 - No Shutter Tabs</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6112</td>
+      <td class="name" title="Brick 1 x 12">Brick 1 x 12</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>61184</td>
+      <td class="name" title="Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)">Technic, Pin 1/2 with 2L Bar Extension (Flick Missile)</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>64567</td>
+      <td class="name" title="Minifigure, Weapon Lightsaber Hilt Straight">Minifigure, Weapon Lightsaber Hilt Straight</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6541</td>
+      <td class="name" title="Technic, Brick 1 x 1 with Hole">Technic, Brick 1 x 1 with Hole</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87087</td>
+      <td class="name" title="Brick, Modified 1 x 1 with Stud on Side">Brick, Modified 1 x 1 with Stud on Side</td>
+      <td>Dark Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>92593</td>
+      <td class="name" title="Plate, Modified 1 x 4 with 2 Studs without Groove">Plate, Modified 1 x 4 with 2 Studs without Groove</td>
+      <td>Olive Green</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>95199</td>
+      <td class="name" title="Minifigure, Weapon Gun, Two Barrel Pistol - 10-Rib Top Barrel">Minifigure, Weapon Gun, Two Barrel Pistol - 10-Rib Top Barrel</td>
+      <td>Black</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98138</td>
+      <td class="name" title="Tile, Round 1 x 1">Tile, Round 1 x 1</td>
+      <td>Trans-Orange</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11477</td>
+      <td class="name" title="Slope, Curved 2 x 1 x 2/3">Slope, Curved 2 x 1 x 2/3</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>14769</td>
+      <td class="name" title="Tile, Round 2 x 2 with Bottom Stud Holder">Tile, Round 2 x 2 with Bottom Stud Holder</td>
+      <td>Tan</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15068</td>
+      <td class="name" title="Slope, Curved 2 x 2 x 2/3">Slope, Curved 2 x 2 x 2/3</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15068pb061</td>
+      <td class="name" title="Slope, Curved 2 x 2 x 2/3 with Black Lines, &#39;MK 82&#39; and Gold Arrow Pattern (Sticker) - Set 76050">Slope, Curved 2 x 2 x 2/3 with Black Lines, &#39;MK 82&#39; and Gold Arrow Pattern (Sticker) - Set 76050</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15210pb017</td>
+      <td class="name" title="Road Sign 2 x 2 Square with Open O Clip with Black and Silver Scratches and Screw Heads Pattern 1 (Sticker) - Set 76050">Road Sign 2 x 2 Square with Open O Clip with Black and Silver Scratches and Screw Heads Pattern 1 (Sticker) - Set 76050</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15210pb018</td>
+      <td class="name" title="Road Sign 2 x 2 Square with Open O Clip with Black and Silver Scratches and Screw Heads Pattern 2 (Sticker) - Set 76050">Road Sign 2 x 2 Square with Open O Clip with Black and Silver Scratches and Screw Heads Pattern 2 (Sticker) - Set 76050</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15332</td>
+      <td class="name" title="Fence 1 x 4 x 2 Spindled with 4 Studs">Fence 1 x 4 x 2 Spindled with 4 Studs</td>
+      <td>Reddish Brown</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15445</td>
+      <td class="name" title="Minifigure, Weapon Gun, Blaster with Clip">Minifigure, Weapon Gun, Blaster with Clip</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>15571</td>
+      <td class="name" title="Slope 45 2 x 1 Triple with Bottom Stud Holder">Slope 45 2 x 1 Triple with Bottom Stud Holder</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>18895</td>
+      <td class="name" title="Motorcycle Fairing, Racing (Sport) Bike">Motorcycle Fairing, Racing (Sport) Bike</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>18895pb05</td>
+      <td class="name" title="Motorcycle Fairing, Racing (Sport) Bike with Silver Vents, Dark Azure Lines and White Avengers Logo Pattern on Both Sides (Stickers) - Set 76050">Motorcycle Fairing, Racing (Sport) Bike with Silver Vents, Dark Azure Lines and White Avengers Logo Pattern on Both Sides (Stickers) - Set 76050</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>18896</td>
+      <td class="name" title="Motorcycle Chassis, Clip for Handle">Motorcycle Chassis, Clip for Handle</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24135</td>
+      <td class="name" title="Minifigure Breathing Apparatus, Scuba Regulator">Minifigure Breathing Apparatus, Scuba Regulator</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>24144</td>
+      <td class="name" title="Minifigure, Weapon Gun, Blaster with Hollow Studs on Sides and Inside Axle Holder">Minifigure, Weapon Gun, Blaster with Hollow Studs on Sides and Inside Axle Holder</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>2817</td>
+      <td class="name" title="Plate, Modified 2 x 2 with Pin Holes">Plate, Modified 2 x 2 with Pin Holes</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3001</td>
+      <td class="name" title="Brick 2 x 4">Brick 2 x 4</td>
+      <td>Tan</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3020</td>
+      <td class="name" title="Plate 2 x 4">Plate 2 x 4</td>
+      <td>Olive Green</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3068</td>
+      <td class="name" title="Tile 2 x 2">Tile 2 x 2</td>
+      <td>Dark Red</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3829c01</td>
+      <td class="name" title="Vehicle, Steering Stand 1 x 2 with Black Steering Wheel">Vehicle, Steering Stand 1 x 2 with Black Steering Wheel</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3958</td>
+      <td class="name" title="Plate 6 x 6">Plate 6 x 6</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4449</td>
+      <td class="name" title="Minifigure, Utensil Briefcase / Suitcase">Minifigure, Utensil Briefcase / Suitcase</td>
+      <td>Green</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4449pb05</td>
+      <td class="name" title="Minifigure, Utensil Briefcase with Black Lines and White Skull and Crossbones in Orange Triangle Pattern (Sticker) - Set 76050">Minifigure, Utensil Briefcase with Black Lines and White Skull and Crossbones in Orange Triangle Pattern (Sticker) - Set 76050</td>
+      <td>Green</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4532bpb02L</td>
+      <td class="name" title="Container, Cupboard 2 x 3 x 2 - Hollow Studs with White Skull and Crossbones in Orange Triangle and Black &#39;DANGER&#39; Pattern Left Side (Sticker) - Set 76050">Container, Cupboard 2 x 3 x 2 - Hollow Studs with White Skull and Crossbones in Orange Triangle and Black &#39;DANGER&#39; Pattern Left Side (Sticker) - Set 76050</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4532bpb02R</td>
+      <td class="name" title="Container, Cupboard 2 x 3 x 2 - Hollow Studs with White Skull and Crossbones in Orange Triangle and Black &#39;DANGER&#39; Pattern Right Side (Sticker) - Set 76050">Container, Cupboard 2 x 3 x 2 - Hollow Studs with White Skull and Crossbones in Orange Triangle and Black &#39;DANGER&#39; Pattern Right Side (Sticker) - Set 76050</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60481pb004</td>
+      <td class="name" title="Slope 65 2 x 1 x 2 with Black and Silver Metal Scratches Pattern (Sticker) - Set 76050">Slope 65 2 x 1 x 2 with Black and Silver Metal Scratches Pattern (Sticker) - Set 76050</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>6126b</td>
+      <td class="name" title="Wave Rounded Straight with Bar End (Castle Dragon Flame / Seaweed / Water)">Wave Rounded Straight with Bar End (Castle Dragon Flame / Seaweed / Water)</td>
+      <td>Trans-Neon Orange</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>76050stk01a</td>
+      <td class="name" title="Sticker Sheet for Set 76050 - International Version - (26149/6145911)">Sticker Sheet for Set 76050 - International Version - (26149/6145911)</td>
+      <td>—</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>76050stk01b</td>
+      <td class="name" title="Sticker Sheet for Set 76050 - North American Version - (26150/6145913)">Sticker Sheet for Set 76050 - North American Version - (26150/6145913)</td>
+      <td>—</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079</td>
+      <td class="name" title="Tile 2 x 4">Tile 2 x 4</td>
+      <td>Dark Orange</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079pb0281</td>
+      <td class="name" title="Tile 2 x 4 with Black and Silver Scratches Pattern (Sticker) - Set 76050">Tile 2 x 4 with Black and Silver Scratches Pattern (Sticker) - Set 76050</td>
+      <td>Dark Orange</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87079pb0282</td>
+      <td class="name" title="Tile 2 x 4 with White Crossbones Pattern (Sticker) - Set 76050">Tile 2 x 4 with White Crossbones Pattern (Sticker) - Set 76050</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>87552</td>
+      <td class="name" title="Panel 1 x 2 x 2 with Side Supports - Hollow Studs">Panel 1 x 2 x 2 with Side Supports - Hollow Studs</td>
+      <td>Trans-Brown</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98281</td>
+      <td class="name" title="Wedge 6 x 4 x 2/3 Quad Curved">Wedge 6 x 4 x 2/3 Quad Curved</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>98281pb008</td>
+      <td class="name" title="Wedge 6 x 4 x 2/3 Quad Curved with Black and Silver Metal Scratches Pattern (Sticker) - Set 76050">Wedge 6 x 4 x 2/3 Quad Curved with Black and Silver Metal Scratches Pattern (Sticker) - Set 76050</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99206</td>
+      <td class="name" title="Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Solid Bottom Tube">Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Solid Bottom Tube</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99207</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2 Inverted">Bracket 1 x 2 - 2 x 2 Inverted</td>
+      <td>Black</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
   
 </div>
 

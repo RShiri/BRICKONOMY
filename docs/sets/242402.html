@@ -67,9 +67,18 @@
     <div class="facts">
       <span class="chip">🧱 49 parts</span>
       
-      <span class="chip" title="From the catalog; this set's inventory has not been fetched from BrickLink yet.">🧍 1 minifigs</span>
+      <span class="chip">🧍 1 minifigs</span>
+      
       <span class="chip">⚖️ 29 g</span>
       <span class="chip">₪0.25 / part</span>
+      
+      <span class="chip" id="figPctChip"
+            data-used="41"
+            data-new="74"
+            data-partial-used=""
+            data-partial-new=""
+            title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
+        🧍 41% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--warn)"></span>EOL watch</span>
       
@@ -177,9 +186,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪1.17</div>
+        <div class="value" style="font-size:22px">₪3.05</div>
         <div class="delta up">
-          −79% vs theme
+          −92% vs theme
         </div>
       </div>
       
@@ -231,6 +240,39 @@
 </div>
 
 
+
+<div class="card">
+  <h3>Where the value sits <span class="soft">— minifigures vs the rest of the parts,
+      at new prices</span></h3>
+  <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+    <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
+      <canvas id="splitChart"
+              data-figs="9.11"
+              data-parts="10.48"
+              data-ccy="ILS"></canvas>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <dl class="kv">
+        
+        <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
+        <dd>₪9.11 · 47% of part-out</dd>
+        <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
+        <dd>₪10.48 · 53% of part-out</dd>
+        <dt>Part-out total</dt>
+        <dd><b>₪19.59</b></dd>
+      </dl>
+      <div style="color:var(--muted);font-size:12px;margin-top:10px">
+        Slices are of the <b>part-out value</b> — what the set fetches broken up, at
+        <b>new</b> prices on both sides. A figure pulled out of a set is a used
+        figure, so used is the honest comparison; minifigures are counted whole and the remainder
+        is the loose parts. No used part-out value has been scraped for this set
+        yet, so this is the sealed break-up.
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -357,16 +399,327 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 0 in this set<span id="figsTotalLabel"></span></span></h3>
+  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel">, ₪7.24 together</span></span></h3>
   
-  <div style="color:var(--muted)">No minifig inventory scanned yet — run a BrickLink scan for this set.</div>
+  <div class="searchrow" style="margin-bottom:12px">
+    <label class="chip" style="gap:8px">Sort
+      <select id="figSort" class="inp" style="border:0;background:transparent;padding:0;min-width:0">
+        <option value="value-desc">Most valuable</option>
+        <option value="value-asc">Least valuable</option>
+        <option value="name-asc">Name</option>
+        <option value="qty-desc">Quantity</option>
+      </select>
+    </label>
+    <!-- Used leads: a figure pulled from a set is a used figure, and the
+         sealed-new price is roughly double what a part-out actually gets. -->
+    <div class="toggle" id="figCond"
+         data-total-used="₪7.24"
+         data-total-new="₪9.11">
+      <button type="button" class="chip on" data-cond="used"
+              title="What the figures fetch loose — the realistic part-out price">Used</button>
+      <button type="button" class="chip" data-cond="new"
+              title="Sealed/new figure prices, against the sealed set price">New</button>
+    </div>
+    <span class="spacer"></span>
+    <div class="toggle" id="figView">
+      <button type="button" class="chip on" data-view="grid">▦ Grid</button>
+      <button type="button" class="chip" data-view="table">☰ Table</button>
+    </div>
+  </div>
+
+  
+  <div class="figgrid" id="figGrid">
+    
+    
+    
+    <a class="figtile" href="../sets/sh0873.html" title="Star-Lord - Dark Blue Suit"
+       data-value="7.24" data-name="star-lord - dark blue suit" data-qty="1"
+       data-v-used="7.24" data-v-new="9.11"
+       data-price-used="₪7.24"
+       data-price-new="₪9.11"
+       data-share-used="40.5% of set"
+       data-share-new="74.4% of set">
+      <div class="figtile-img">
+        <img src="https://img.bricklink.com/ItemImage/MN/0/sh0873.png" alt="Star-Lord - Dark Blue Suit" loading="lazy"
+             onerror="this.style.visibility='hidden'">
+        
+      </div>
+      <div class="figtile-id">sh0873</div>
+      <div class="figtile-name">Star-Lord - Dark Blue Suit</div>
+      <div class="figtile-value">₪7.24</div>
+      <div class="figtile-share">40.5% of set</div>
+    </a>
+    
+  </div>
+
+  <div class="table-scroll" id="figTable" hidden>
+  <table data-sortable>
+    <thead>
+      <tr><th>Minifig</th><th class="num">Qty</th><th class="num" id="figColValue">Value (used)</th><th class="num">% of set</th></tr>
+    </thead>
+    <tbody>
+      
+      
+      
+      <tr>
+        <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0873.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'"><a href="../sets/sh0873.html"><b>sh0873</b> Star-Lord - Dark Blue Suit</a></td>
+        <td class="num" data-v="1">1</td>
+        <td class="num figcell-value" data-v="7.24"
+            data-v-used="7.24" data-v-new="9.11"
+            data-price-used="₪7.24"
+            data-price-new="₪9.11"
+            >₪7.24</td>
+        <td class="num figcell-share" data-v="40.51482932288752"
+            data-v-used="40.51482932288752" data-v-new="74.42810457516339"
+            data-share-used="40.5%"
+            data-share-new="74.4%"
+            >40.5%</td>
+      </tr>
+      
+    </tbody>
+    
+    <tfoot>
+      <tr class="total"><td>Figs total</td><td class="num"></td>
+          <td class="num" id="figFootValue"
+              data-price-used="₪7.24"
+              data-price-new="₪9.11"
+              >₪7.24</td>
+          <td class="num" id="figFootShare"
+              data-share-used="41%"
+              data-share-new="74%"
+              >41%</td></tr>
+    </tfoot>
+    
+  </table>
+  </div>
+
+  <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
+       data-note-used="Figs are 41% of the used set price → not a part-out candidate (flag raises at 80%)."
+       data-note-new="Figs are 74% of the sealed set price → not a part-out candidate (flag raises at 80%).">
+    
+      Figs are <b>41% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      
+    
+  </div>
+  
+  <div style="color:var(--muted);font-size:12px;margin-top:6px">
+    Showing <b>used</b> figure prices — a figure pulled out of a set is a used figure, and each
+    condition is compared against the matching set price. Switch to <b>New</b> for sealed values.
+  </div>
+  
   
 </div>
 
 <div class="card">
   <h3>Parts inventory <span class="soft">— exact list from the BrickLink set page</span></h3>
   
-  <div style="color:var(--muted)">Parts inventory not scanned yet — it is fetched from BrickLink on the set's next refresh.</div>
+  
+  <div class="searchrow" style="margin-bottom:8px">
+    <span class="chip on">23 lots · 49 parts</span>
+    
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪19.59</b>
+      &nbsp;· premium <span class="delta up">▲ 60%</span> vs set</span>
+    
+    <span class="spacer"></span>
+    <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
+  </div>
+  
+  <div class="table-scroll">
+  
+  
+  
+  <table id="partsTable">
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      </tr>
+    
+    <tr>
+      <td>27925</td>
+      <td class="name" title="Tile, Round Corner 2 x 2 Macaroni">Tile, Round Corner 2 x 2 Macaroni</td>
+      <td>Dark Turquoise</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>27925</td>
+      <td class="name" title="Tile, Round Corner 2 x 2 Macaroni">Tile, Round Corner 2 x 2 Macaroni</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32828</td>
+      <td class="name" title="Bar   1L with 1 x 1 Round Plate with Hollow Stud">Bar   1L with 1 x 1 Round Plate with Hollow Stud</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4073</td>
+      <td class="name" title="Plate, Round 1 x 1">Plate, Round 1 x 1</td>
+      <td>Magenta</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4740</td>
+      <td class="name" title="Dish 2 x 2 Inverted (Radar)">Dish 2 x 2 Inverted (Radar)</td>
+      <td>Trans-Dark Pink</td>
+      <td class="num">4</td>
+      
+    </tr>
+    
+    <tr>
+      <td>35480</td>
+      <td class="name" title="Plate, Round 1 x 2 with Open Studs">Plate, Round 1 x 2 with Open Studs</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">3</td>
+      
+    </tr>
+    
+    <tr>
+      <td>11833</td>
+      <td class="name" title="Plate, Round 4 x 4 with 2 x 2 Round Open Center">Plate, Round 4 x 4 with 2 x 2 Round Open Center</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>17010</td>
+      <td class="name" title="Minifigure, Weapon Gun, Space Blaster">Minifigure, Weapon Gun, Space Blaster</td>
+      <td>Flat Silver</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>28192</td>
+      <td class="name" title="Slope 45 2 x 1 with Cutout without Stud">Slope 45 2 x 1 with Cutout without Stud</td>
+      <td>Dark Turquoise</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3023</td>
+      <td class="name" title="Plate 1 x 2">Plate 1 x 2</td>
+      <td>Magenta</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>36841</td>
+      <td class="name" title="Bracket 1 x 1 - 1 x 1">Bracket 1 x 1 - 1 x 1</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44567b</td>
+      <td class="name" title="Hinge Plate 1 x 2 Locking with 1 Finger on Side without Bottom Groove">Hinge Plate 1 x 2 Locking with 1 Finger on Side without Bottom Groove</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>54200</td>
+      <td class="name" title="Slope 30 1 x 1 x 2/3">Slope 30 1 x 1 x 2/3</td>
+      <td>Trans-Red</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>60471</td>
+      <td class="name" title="Hinge Plate 1 x 2 Locking with 2 Fingers on Side">Hinge Plate 1 x 2 Locking with 2 Fingers on Side</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>78666</td>
+      <td class="name" title="Arch 1 x 2 Inverted">Arch 1 x 2 Inverted</td>
+      <td>Dark Turquoise</td>
+      <td class="num">2</td>
+      
+    </tr>
+    
+    <tr>
+      <td>32802</td>
+      <td class="name" title="Slope, Inverted 45 4 x 1 Double">Slope, Inverted 45 4 x 1 Double</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>3747b</td>
+      <td class="name" title="Slope, Inverted 33 3 x 2 with Flat Bottom Pin and Connections between Studs">Slope, Inverted 33 3 x 2 with Flat Bottom Pin and Connections between Studs</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4304</td>
+      <td class="name" title="Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Hollow Bottom Tube">Plate, Modified 2 x 2 x 2/3 with 2 Studs on Side - Hollow Bottom Tube</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>44865</td>
+      <td class="name" title="Brick, Modified 1 x 2 with Pin and Bottom Stud Holder">Brick, Modified 1 x 2 with Pin and Bottom Stud Holder</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>4871</td>
+      <td class="name" title="Slope, Inverted 45 4 x 2 Double with 2 x 2 Cutout">Slope, Inverted 45 4 x 2 Double with 2 x 2 Cutout</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>85984</td>
+      <td class="name" title="Slope 30 1 x 2 x 2/3">Slope 30 1 x 2 x 2/3</td>
+      <td>Dark Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>93273</td>
+      <td class="name" title="Slope, Curved 4 x 1 x 2/3 Double">Slope, Curved 4 x 1 x 2/3 Double</td>
+      <td>Dark Turquoise</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+    <tr>
+      <td>99207</td>
+      <td class="name" title="Bracket 1 x 2 - 2 x 2 Inverted">Bracket 1 x 2 - 2 x 2 Inverted</td>
+      <td>Light Bluish Gray</td>
+      <td class="num">1</td>
+      
+    </tr>
+    
+  </table>
+  </div>
+  
   
 </div>
 
