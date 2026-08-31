@@ -495,16 +495,26 @@
   </form>
   {% endif %}
   <div class="table-scroll">
+  {# Per-part prices would be one request per lot — 360 for this set alone —
+     so they are not scraped, and the two money columns were 360 rows of
+     dashes. They appear only if a price ever lands in the table. #}
+  {# selectattr does not work here: these are sqlite3.Row objects, which
+     index but do not expose attributes. parts_summary already sums the
+     priced total, so a zero there means no lot carries a price. #}
+  {% set any_priced = parts_summary.priced_total and parts_summary.priced_total > 0 %}
   <table id="partsTable">
-    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th><th class="num">Avg each</th><th class="num">Lot value</th></tr>
+    <tr><th>Part</th><th>Name</th><th>Color</th><th class="num">Qty</th>
+      {% if any_priced %}<th class="num">Avg each</th><th class="num">Lot value</th>{% endif %}</tr>
     {% for p in parts %}
     <tr>
       <td>{{ p.part_no }}</td>
-      <td>{{ p.part_name }}</td>
+      <td class="name" title="{{ p.part_name }}">{{ p.part_name }}</td>
       <td>{{ p.color_name or '—' }}</td>
       <td class="num">{{ p.qty }}</td>
+      {% if any_priced %}
       <td class="num">{{ p.avg_price|money(p.price_currency) if p.avg_price else '—' }}</td>
       <td class="num">{{ (p.avg_price * p.qty)|money(p.price_currency) if p.avg_price else '—' }}</td>
+      {% endif %}
     </tr>
     {% endfor %}
   </table>

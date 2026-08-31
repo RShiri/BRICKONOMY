@@ -228,11 +228,18 @@ def _refresh_parts(conn, set_id, force=False, log=print):
             pov_fresh = datetime.fromisoformat(pov["scraped_at"]) >= stale_cutoff
         except (TypeError, ValueError):
             pass
-    if not force and summary["lots"] > 0 and pov_fresh:
+    # An inventory where nothing is named came from the old parser, which
+    # stored each part's number as its name and so never found a colour
+    # either. It is not a usable inventory, and because the refresh skips any
+    # set that already has lots, it would have stayed that way forever.
+    unnamed = summary["lots"] > 0 and not summary["named"]
+    if not force and summary["lots"] > 0 and pov_fresh and not unnamed:
         return
 
     src = BrickLinkSource()
-    if summary["lots"] == 0 or force:
+    if summary["lots"] == 0 or unnamed or force:
+        if unnamed:
+            log(f"  ↻ parts inventory has no names — refetching")
         parts, err = src.fetch_parts_inventory(set_id)
         if parts:
             dbq.upsert_set_parts(conn, set_id, parts)
@@ -301,21 +308,33 @@ def select_targets(conn, scope="portfolio", item_id=None, theme=None):
                ORDER BY i.item_type DESC, s.ts IS NOT NULL, s.ts""",
             (theme, theme))]
     elif scope == "inventories":
-        # Sets whose minifig inventory was never stored. A set's fig list is
-        # fetched once and then skipped forever, so every set scanned while
-        # the inventory parser was broken kept an empty list and nothing
-        # would ever go back for it: 314 Marvel sets had a part-out value and
-        # no figures, the Daily Bugle's 25 among them. Pair with
-        # --inventory-only, which skips the price scrape and makes this one
-        # page fetch per set.
+        # Sets whose stored inventory is missing or unusable. Both halves are
+        # fetched once and then skipped forever — a released set's parts and
+        # figure lists do not change — so a set scanned while either parser
+        # was broken kept the damage permanently and nothing would go back
+        # for it.
         #
-        # Biggest sets first: those are the fig-heavy ones, and the fig share
-        # of value matters most where there are figures to share it.
+        #   no fig list      314 Marvel sets had a part-out value and no
+        #                    figures, the Daily Bugle's 25 among them
+        #   unnamed parts    every part stored under its own number as its
+        #                    name, which also left every colour empty
+        #
+        # Pair with --inventory-only to skip the price scrape.
+        # Biggest sets first: those are the fig-heavy ones, and the figure
+        # share of value matters most where there are figures to share it.
         targets = [(r["item_id"], "S") for r in conn.execute(
             """SELECT i.item_id FROM items i
                LEFT JOIN (SELECT DISTINCT set_id FROM set_minifigs) sm
                  ON sm.set_id = i.item_id
-               WHERE i.item_type = 'S' AND sm.set_id IS NULL
+               LEFT JOIN (SELECT set_id,
+                                 SUM(CASE WHEN part_name IS NOT NULL
+                                           AND part_name != ''
+                                           AND part_name != part_no
+                                          THEN 1 ELSE 0 END) AS named
+                          FROM set_parts GROUP BY set_id) sp
+                 ON sp.set_id = i.item_id
+               WHERE i.item_type = 'S'
+                 AND (sm.set_id IS NULL OR COALESCE(sp.named, 0) = 0)
                  AND i.item_id IN (SELECT DISTINCT item_id FROM price_snapshots)
                ORDER BY COALESCE(i.parts, 0) DESC""")]
     elif scope == "priority":

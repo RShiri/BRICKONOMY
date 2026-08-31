@@ -21,6 +21,14 @@ from .snapshots import write_snapshots
 
 MINIFIG_ID_RE = re.compile(r"^[a-z]{2,4}\d+", re.IGNORECASE)
 
+# A printed part: digits, "pb", digits — BrickLink's convention for a part
+# with a printed pattern, optionally with a mould-variant suffix. These are
+# neither sets nor minifigures, but the id starts with a digit so everything
+# that was not a minifig fell through to "set". Eight Ant-Man and Captain
+# America statuettes were sitting in the catalog as sets, each scanned a
+# dozen times as if it were one.
+PRINTED_PART_RE = re.compile(r"^\d+pb\d+", re.IGNORECASE)
+
 
 def _as_int(raw, default=0):
     """Quantity cell -> int. Exports occasionally carry '', '1 (x2)' or a
@@ -41,7 +49,17 @@ def normalize_item_id(raw: str) -> str:
 
 
 def item_type_for(item_id: str) -> str:
-    return "M" if MINIFIG_ID_RE.match(item_id) and not item_id[0].isdigit() else "S"
+    """'S' set, 'M' minifigure, 'P' printed part.
+
+    'P' items are excluded from both catalog tabs, which filter on 'S' and
+    'M', so they stop appearing as sets without needing to be deleted — the
+    price history already scraped for them stays intact.
+    """
+    if MINIFIG_ID_RE.match(item_id) and not item_id[0].isdigit():
+        return "M"
+    if PRINTED_PART_RE.match(item_id):
+        return "P"
+    return "S"
 
 
 def parse_money(raw: str):

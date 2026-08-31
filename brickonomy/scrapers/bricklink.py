@@ -27,6 +27,11 @@ TREE_URL = "https://www.bricklink.com/catalogTree.asp"
 LIST_URL = "https://www.bricklink.com/catalogList.asp"
 
 
+# Header and footer text that sits in the same table as the part rows and
+# would otherwise be stored as a part.
+_NOT_A_PART = {"Item No", "Item  No", "Qty", "Description", "Image", "Color"}
+
+
 class BrickLinkSource(BaseScraper):
     source = "bricklink"
     currency = "ILS"          # default; the real one is detected per scrape
@@ -125,22 +130,39 @@ class BrickLinkSource(BaseScraper):
 
     # Common BrickLink colour names, longest-first, for splitting the
     # "ColorName PartName" description text the inventory page renders.
+    # Longest first, so "Dark Bluish Gray" is matched before "Dark" and
+    # "Trans-Light Blue" before "Trans-Light". A description whose colour is
+    # not listed keeps its full text as the part name rather than losing it.
     _COLOR_NAMES = sorted([
         "Light Bluish Gray", "Dark Bluish Gray", "Reddish Brown", "Dark Red",
         "Dark Blue", "Dark Green", "Dark Tan", "Light Gray", "Dark Gray",
-        "Sand Blue", "Sand Green", "Medium Blue", "Medium Azure", "Dark Azure",
-        "Bright Light Orange", "Bright Light Yellow", "Bright Green",
-        "Olive Green", "Dark Brown", "Medium Nougat", "Light Nougat",
-        "Pearl Gold", "Pearl Dark Gray", "Flat Silver", "Metallic Silver",
+        "Sand Blue", "Sand Green", "Sand Red", "Sand Purple",
+        "Medium Blue", "Medium Azure", "Dark Azure", "Medium Lavender",
+        "Bright Light Orange", "Bright Light Yellow", "Bright Light Blue",
+        "Bright Green", "Bright Pink", "Dark Pink", "Light Pink",
+        "Olive Green", "Dark Orange", "Medium Orange", "Neon Orange",
+        "Dark Brown", "Medium Nougat", "Light Nougat", "Dark Nougat",
+        "Dark Purple", "Medium Green", "Light Aqua", "Dark Turquoise",
+        "Very Light Bluish Gray", "Very Light Gray", "Light Yellow",
+        "Pearl Gold", "Pearl Dark Gray", "Pearl Light Gray", "Pearl White",
+        "Flat Silver", "Metallic Silver", "Metallic Gold", "Chrome Silver",
+        "Chrome Gold", "Satin Trans-Clear", "Glow In Dark Opaque",
         "Trans-Clear", "Trans-Red", "Trans-Light Blue", "Trans-Orange",
+        "Trans-Neon Green", "Trans-Neon Orange", "Trans-Dark Blue",
+        "Trans-Black", "Trans-Purple", "Trans-Yellow", "Trans-Green",
+        "Trans-Bright Green", "Trans-Medium Blue", "Trans-Pink",
+        "Trans-Brown", "Trans-Dark Pink", "Trans-Light Green",
+        "Nougat", "Aqua", "Salmon", "Sand Yellow", "Dark Yellow",
         "White", "Black", "Red", "Blue", "Yellow", "Green", "Tan", "Orange",
         "Brown", "Lime", "Purple", "Magenta", "Coral", "Lavender", "Azure",
+        "Pink", "Gold", "Silver", "Copper",
     ], key=len, reverse=True)
 
     def parse_parts_inventory(self, html: str):
         """Rows: {part_no, part_name, color_id, color_name, qty}."""
         soup = BeautifulSoup(html, "html.parser")
         parts = []
+        by_lot = {}
         for tr in soup.find_all("tr"):
             links = tr.find_all("a", href=re.compile(r"\?P="))
             if not links:
@@ -160,9 +182,27 @@ class BrickLinkSource(BaseScraper):
             if qty is None:
                 continue
 
-            # The description link is the longest-text ?P= link in the row
-            # (the item-number link's text is just the part number itself).
-            desc = max((l.get_text(" ", strip=True) for l in links), key=len)
+            # The description is the <b> in the fourth cell — "Black Arch 1 x
+            # 5 x 4 - Continuous Bow", with the Catalog:Parts:Arch breadcrumb
+            # in a sibling <font> that must not come along. The old heuristic
+            # took the longest ?P= link text in the row, but a row has only
+            # two such links: the image, whose text is empty, and the item
+            # number, whose text is the number. So every part in the database
+            # was stored with its own part number as its name, and the colour
+            # split below never matched, leaving colour empty on all 4,100
+            # rows. This is the same mistake the minifig parser made.
+            desc = ""
+            if len(tds) > 3:
+                bold = tds[3].find("b")
+                if bold:
+                    desc = bold.get_text(" ", strip=True)
+            # No <b> description means this is not a part row. The table's own
+            # header matches everything above it — it has cells, a digit, and
+            # sits under the same links — and used to be stored as a part
+            # named "Item No".
+            desc = desc.replace(" ", " ").strip()
+            if not desc or desc == part_no or desc in _NOT_A_PART:
+                continue
             color_name, part_name = None, desc
             for cname in self._COLOR_NAMES:
                 if desc.startswith(cname + " "):
@@ -175,14 +215,20 @@ class BrickLinkSource(BaseScraper):
             if cid:
                 color_id = int(cid.group(1))
 
-            parts.append({
-                "part_no": part_no,
-                "part_name": part_name,
-                "color_id": color_id,
-                "color_name": color_name,
-                "qty": qty,
-            })
-        return parts
+            # One lot per part and colour. The page repeats a row inside its
+            # own wrapper, which produced three rows for 76051's sticker
+            # sheet; keep the one carrying the fullest description.
+            key = (part_no, color_id)
+            existing = by_lot.get(key)
+            if existing is None:
+                by_lot[key] = {
+                    "part_no": part_no, "part_name": part_name,
+                    "color_id": color_id, "color_name": color_name,
+                    "qty": qty,
+                }
+            elif len(part_name) > len(existing["part_name"]):
+                existing.update(part_name=part_name, color_name=color_name)
+        return list(by_lot.values())
 
     def fetch_parts_inventory(self, set_id: str):
         """Returns (parts, error). Uses plain HTTP first (server-rendered page),

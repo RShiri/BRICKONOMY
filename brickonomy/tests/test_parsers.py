@@ -54,6 +54,58 @@ class TestBrickLinkPartsAndPOV:
         assert by_no["3023"]["color_name"] == "Light Bluish Gray"
         assert by_no["2412b"]["qty"] == 2
 
+    def test_parts_inventory_on_a_real_page(self):
+        """The hand-written fixture above passes on broken code, because it
+        puts the description in an anchor. A real BrickLink inventory row
+        carries only two ?P= links — the image, whose text is empty, and the
+        item number — and the description sits in a <b> in the fourth cell.
+        Taking the longest link text therefore stored every part's own number
+        as its name, on all 4,100 rows in the database, and the colour split
+        that depends on that text never matched once."""
+        parts = BrickLinkSource().parse_parts_inventory(
+            read("bricklink_inv_parts_76051.html"))
+        by_no = {p["part_no"]: p for p in parts}
+
+        assert by_no["2339"]["part_name"] == "Arch 1 x 5 x 4 - Continuous Bow"
+        assert by_no["2339"]["color_name"] == "Black"
+        assert by_no["2339"]["color_id"] == 11
+        assert by_no["2339"]["qty"] == 2
+
+    def test_no_part_is_named_after_itself(self, ):
+        parts = BrickLinkSource().parse_parts_inventory(
+            read("bricklink_inv_parts_76051.html"))
+        assert parts, "fixture parsed nothing"
+        assert not [p for p in parts if p["part_name"] == p["part_no"]]
+
+    def test_the_table_header_is_not_stored_as_a_part(self):
+        """The header row has cells, a digit and the same enclosing links, so
+        it matched every test the parser applied and was stored as a part
+        named "Item No"."""
+        parts = BrickLinkSource().parse_parts_inventory(
+            read("bricklink_inv_parts_76051.html"))
+        names = {p["part_name"] for p in parts}
+        assert "Item No" not in names
+        assert not [n for n in names if n.strip() in ("Qty", "Description", "Image")]
+
+    def test_a_lot_appears_once_even_though_the_page_repeats_its_row(self):
+        """76051's sticker sheet is one lot; the page nests its row inside a
+        wrapper and the parser saw it three times."""
+        parts = BrickLinkSource().parse_parts_inventory(
+            read("bricklink_inv_parts_76051.html"))
+        keys = [(p["part_no"], p["color_id"]) for p in parts]
+        assert len(keys) == len(set(keys))
+
+    def test_an_unlisted_colour_keeps_the_whole_description_as_the_name(self):
+        """A sticker sheet has no colour. Losing the colour must not also lose
+        the name."""
+        source = BrickLinkSource()
+        html = ('<table><tr><td>*</td><td>1</td>'
+                '<td><a href="?P=zzz1">zzz1</a></td>'
+                '<td><b>Ultraviolet Widget 2 x 4</b></td><td></td></tr></table>')
+        parts = source.parse_parts_inventory(html)
+        assert parts[0]["part_name"] == "Ultraviolet Widget 2 x 4"
+        assert parts[0]["color_name"] is None
+
     def test_part_out_value(self):
         pov, ccy = BrickLinkSource().parse_part_out_value(read("bricklink_pov_76031.html"))
         assert pov == 612.34

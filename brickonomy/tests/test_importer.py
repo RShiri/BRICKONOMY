@@ -204,3 +204,42 @@ class TestMissingFile:
         # Same keys as a real run, so callers can read them unguarded.
         assert summary["sold"] == [] and summary["removed"] == 0
         assert summary["duplicates"] == 0
+
+
+class TestPrintedParts:
+    """A printed part is neither a set nor a minifigure, but its id starts
+    with a digit, so everything that was not a minifig fell through to "set".
+    Eight Ant-Man and Captain America statuettes sat in the catalog as sets,
+    each scanned a dozen times as if it were one."""
+
+    def test_a_printed_part_is_not_a_set(self):
+        from brickonomy.importer import item_type_for
+        assert item_type_for("90398pb007") == "P"
+        assert item_type_for("90398pb004c01") == "P", "mould-variant suffix"
+
+    def test_real_sets_with_letters_in_the_id_stay_sets(self):
+        from brickonomy.importer import item_type_for
+        # These are genuine sets: BrickLink splits a boxed pair into 4679a
+        # and 4679b, and the Christmas ornaments into 4169306a/b/c.
+        for set_id in ("4679a", "4169306a", "5370b", "75192", "10283"):
+            assert item_type_for(set_id) == "S", set_id
+
+    def test_minifigs_are_untouched(self):
+        from brickonomy.importer import item_type_for
+        for fig in ("sh0254", "col334", "cty1837"):
+            assert item_type_for(fig) == "M", fig
+
+    def test_printed_parts_do_not_appear_on_either_catalog_tab(self, tmp_path):
+        from brickonomy import db as dbq
+        path = str(tmp_path / "pp.db")
+        c = dbq.connect(db_path=path)
+        dbq.upsert_item(c, "90398pb007", name="Ant-Man Statuette",
+                        item_type="P")
+        dbq.upsert_item(c, "75192", name="Falcon", item_type="S")
+        dbq.upsert_item(c, "sh0254", name="Iron Man", item_type="M")
+        c.commit()
+        sets = {r["item_id"] for r in dbq.list_items(c, item_type="S")}
+        figs = {r["item_id"] for r in dbq.list_items(c, item_type="M")}
+        c.close()
+        assert "90398pb007" not in sets and "90398pb007" not in figs
+        assert sets == {"75192"} and figs == {"sh0254"}

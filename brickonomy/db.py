@@ -545,9 +545,19 @@ def get_set_parts(conn, set_id, search="", limit=200):
 
 
 def parts_summary(conn, set_id):
+    """Lot and piece counts, plus how much of the inventory is unusable.
+
+    `named` distinguishes a real inventory from one stored by the parser that
+    took the longest link text as the description and so wrote every part's
+    own number as its name. Those rows carry no name and no colour, and
+    nothing would have gone back for them: the refresh skips any set that
+    already has lots.
+    """
     return conn.execute(
         """SELECT COUNT(*) AS lots, COALESCE(SUM(qty),0) AS pieces,
-                  COALESCE(SUM(qty * avg_price),0) AS priced_total
+                  COALESCE(SUM(qty * avg_price),0) AS priced_total,
+                  SUM(CASE WHEN part_name IS NOT NULL AND part_name != ''
+                            AND part_name != part_no THEN 1 ELSE 0 END) AS named
            FROM set_parts WHERE set_id=?""",
         (set_id,),
     ).fetchone()
