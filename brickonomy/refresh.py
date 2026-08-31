@@ -465,6 +465,30 @@ def unpriced_figs_of(conn, set_id):
            ORDER BY sm.qty DESC, sm.fig_id""", (set_id,))]
 
 
+def _needs_work(conn, cfg, item_id, item_type, force, inventory_only):
+    """Would scanning this item actually fetch anything?
+
+    The priority order puts the whole portfolio first whether or not it is
+    fresh, so a nightly run spent most of its budget re-visiting items scraped
+    hours earlier — 95 of 150 on one measured night — each costing a polite
+    pause and reaching nothing new.
+    """
+    if force or inventory_only:
+        return True
+    item_id = normalize_item_id(item_id)
+    for source_name in cfg.sources_enabled:
+        if source_name in SOURCES and not dbq.is_fresh(
+                conn, item_id, source_name, cfg.scrape_ttl_days):
+            return True
+    # A set whose prices are fresh may still be missing the inventory that
+    # the figure values and the part-out share are built from.
+    if (item_type or item_type_for(item_id)) == "S":
+        summary = dbq.parts_summary(conn, item_id)
+        if not summary["lots"] or not summary["named"]:
+            return True
+    return False
+
+
 def run_refresh(scope="portfolio", item_id=None, force=False, theme=None,
                 limit=None, progress=None, log=print, inventory_only=False,
                 with_figs=None):
@@ -503,45 +527,56 @@ def _run_refresh_locked(scope, item_id, force, theme, limit, progress, log,
     try:
         targets = select_targets(conn, scope, item_id, theme)
 
-        if limit and len(targets) > limit:
-            # Targets are ordered never-scanned first, so a limited run always
-            # takes the most useful slice. Say what was left out.
-            log(f"… {len(targets)} items match; scanning the first {limit}, "
-                f"{len(targets) - limit} left for the next run")
-            targets = targets[:limit]
+        if limit:
+            log(f"… {len(targets):,} items match; scanning until {limit} of "
+                f"them have needed work")
 
         errors = []
         queued = {t[0] for t in targets}
-        i = 0
+        i = scraped = 0
         # `targets` grows as sets reveal their figures, so this walks an index
         # rather than iterating a fixed list.
-        while i < len(targets):
+        #
+        # The limit is a budget for *scraping*, not for iterating. It used to
+        # cap the target list up front, and the priority order puts the whole
+        # portfolio first whether or not it is fresh — so 95 of a 150-item
+        # night were spent re-visiting items whose sources had all been
+        # scraped hours earlier, doing no work and sleeping politely between
+        # each one. Only the remaining 55 reached anything new.
+        while i < len(targets) and (not limit or scraped < limit):
             iid, itype = targets[i][0], targets[i][1]
-            total = len(targets)
-            log(f"[{i + 1}/{total}] {iid}")
-            if progress:
-                progress(i, total, iid, errors)
-            results = refresh_item(conn, iid, itype, force=force, log=log,
-                                   inventory_only=inventory_only)
-            for source, status in results.items():
-                if status not in ("ok", "fresh", "empty"):
-                    errors.append((iid, source, status))
+            # Decide before scraping, not after, so a skipped item costs
+            # nothing: no log line, no budget, and no polite pause — there is
+            # nobody to be polite to when no request is made.
+            worked = _needs_work(conn, cfg, iid, itype, force, inventory_only)
+            if worked:
+                scraped += 1
+                log(f"[{scraped}{'/' + str(limit) if limit else ''}] {iid}")
+                if progress:
+                    progress(scraped, limit or len(targets), iid, errors)
+                results = refresh_item(conn, iid, itype, force=force, log=log,
+                                       inventory_only=inventory_only)
+                for source, status in results.items():
+                    if status not in ("ok", "fresh", "empty"):
+                        errors.append((iid, source, status))
 
             if with_figs and (itype or item_type_for(iid)) == "S":
                 fresh_figs = [f for f in unpriced_figs_of(conn, iid)
                               if f not in queued]
-                # The limit is a budget for the whole night, figures included:
-                # a fig-heavy set must not silently triple the run.
+                # Figures come out of the same budget: a fig-heavy set must
+                # not silently triple the run.
                 if limit:
-                    fresh_figs = fresh_figs[:max(0, limit - len(targets))]
+                    fresh_figs = fresh_figs[:max(0, limit - scraped)]
                 if fresh_figs:
                     targets.extend((f, "M") for f in fresh_figs)
                     queued.update(fresh_figs)
                     log(f"  ⚙ +{len(fresh_figs)} unpriced fig(s) queued")
 
             i += 1
-            if i < len(targets) and not cfg.fixture_mode:
+            if worked and i < len(targets) and not cfg.fixture_mode:
                 polite_sleep()
+        if limit and scraped >= limit:
+            log(f"… budget of {limit} reached after walking {i:,} items")
         if progress:
             progress(len(targets), len(targets), None, errors)
         return {"done": len(targets), "errors": errors}

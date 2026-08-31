@@ -270,3 +270,63 @@ class TestScanLockHousekeeping:
             for _ in range(3):
                 assert rf.scan_in_progress(lock) is True
             assert lock.exists()
+
+
+class TestBudgetCountsWork:
+    """--limit is a budget for scraping, not for iterating. It used to cap the
+    target list up front, and the priority order puts the whole portfolio
+    first whether or not it is fresh — so 95 of a measured 150-item night went
+    on items scraped hours earlier, each costing a polite pause and reaching
+    nothing new."""
+
+    def _setup(self, monkeypatch, tmp_path, fresh_ids=(), n=6):
+        import brickonomy.refresh as rf
+        from brickonomy.config import get_config
+
+        monkeypatch.setattr(get_config(), "fixture_mode", True)
+        path = str(tmp_path / "b.db")
+        c = dbq.connect(db_path=path)
+        for i in range(n):
+            iid = f"{70000 + i}"
+            dbq.upsert_item(c, iid, name="Set", item_type="S")
+            dbq.upsert_portfolio(c, iid, owned=1)
+            # A stored, named inventory, so _needs_work does not demand one.
+            dbq.upsert_set_parts(c, iid, [{"part_no": "3001",
+                                           "part_name": "Brick 2 x 4",
+                                           "color_id": 5, "color_name": "Red",
+                                           "qty": 1}])
+            if iid in fresh_ids:
+                for src in get_config().sources_enabled:
+                    dbq.insert_snapshot(c, iid, src, "new", "stock", "ILS",
+                                        price_avg=10.0)
+        c.commit()
+        c.close()
+        real = dbq.connect
+        monkeypatch.setattr(rf.dbq, "connect",
+                            lambda *a, **k: real(db_path=path))
+        monkeypatch.setattr(rf, "LOCK_PATH", tmp_path / "scan.lock")
+        seen = []
+        monkeypatch.setattr(rf, "refresh_item",
+                            lambda c_, iid, itype=None, **kw:
+                            (seen.append(iid), {"bricklink": "ok"})[1])
+        return rf, seen
+
+    def test_fresh_items_do_not_spend_the_budget(self, monkeypatch, tmp_path):
+        fresh = {"70000", "70001", "70002"}
+        rf, seen = self._setup(monkeypatch, tmp_path, fresh_ids=fresh, n=6)
+        rf.run_refresh(scope="portfolio", limit=3, log=lambda *a: None,
+                       with_figs=False)
+        assert set(seen).isdisjoint(fresh), "a fresh item must not be scraped"
+        assert len(seen) == 3, "the budget buys three items that need work"
+
+    def test_the_budget_still_caps_real_work(self, monkeypatch, tmp_path):
+        rf, seen = self._setup(monkeypatch, tmp_path, n=10)
+        rf.run_refresh(scope="portfolio", limit=4, log=lambda *a: None,
+                       with_figs=False)
+        assert len(seen) == 4
+
+    def test_no_limit_scans_everything_that_needs_it(self, monkeypatch, tmp_path):
+        rf, seen = self._setup(monkeypatch, tmp_path,
+                               fresh_ids={"70000"}, n=5)
+        rf.run_refresh(scope="portfolio", log=lambda *a: None, with_figs=False)
+        assert len(seen) == 4 and "70000" not in seen
