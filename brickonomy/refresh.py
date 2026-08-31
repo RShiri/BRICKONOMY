@@ -79,8 +79,10 @@ def scan_lock(path=None):
     """
     path = Path(path or LOCK_PATH)
     handle = open(path, "a+", encoding="utf-8")
+    acquired = False
     try:
-        if not _try_lock(handle):
+        acquired = _try_lock(handle)
+        if not acquired:
             yield False
             return
         # Informational only — the lock is the OS's, not this line's.
@@ -90,9 +92,38 @@ def scan_lock(path=None):
         yield True
     finally:
         handle.close()
-        # Best-effort tidy-up; the lock itself was released by closing.
-        with contextlib.suppress(OSError):
-            path.unlink()
+        # Only the holder tidies up. Unlinking after a *failed* acquisition
+        # removes the file another process is still locked on: harmless on
+        # Windows, which refuses to unlink an open file, but on POSIX the
+        # holder keeps its flock on the fd while the path disappears, so the
+        # next run creates a fresh file and locks that instead — two
+        # scrapers at once, the one thing this exists to stop.
+        if acquired:
+            with contextlib.suppress(OSError):
+                path.unlink()
+
+
+def scan_in_progress(path=None):
+    """True if some process is scanning right now.
+
+    The web app's own job state is in-process, so it cannot see the nightly
+    task or a run started from a terminal — the Refresh page said "No scan
+    running" and offered an enabled button while a scan was underway. The lock
+    is the one thing that knows.
+    """
+    path = Path(path or LOCK_PATH)
+    if not path.exists():
+        return False
+    try:
+        handle = open(path, "a+", encoding="utf-8")
+    except OSError:
+        return False
+    try:
+        # Taking it means nobody held it. Closing releases it immediately, and
+        # the file is left alone: this process holds nothing worth tidying.
+        return not _try_lock(handle)
+    finally:
+        handle.close()
 
 
 def plan_targets(scope="portfolio", item_id=None, theme=None, limit=None):

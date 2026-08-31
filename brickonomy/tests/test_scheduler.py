@@ -230,3 +230,43 @@ class TestPrintedPartsAreNotScanned:
             assert select_targets(c, item_id="90398pb007") == [("90398pb007", None)]
         finally:
             c.close()
+
+
+class TestScanLockHousekeeping:
+    def test_a_failed_probe_leaves_the_holders_file_alone(self, tmp_path):
+        """The finally block unlinked the lock file unconditionally, so a
+        process that failed to acquire deleted the file the holder was locked
+        on. Windows refuses to unlink an open file so it was invisible here,
+        but on POSIX the holder keeps its flock on the fd while the path
+        disappears — the next run creates a fresh file, locks that, and two
+        scrapers run at once."""
+        import brickonomy.refresh as rf
+        lock = tmp_path / "scan.lock"
+        with rf.scan_lock(lock) as held:
+            assert held
+            with rf.scan_lock(lock) as second:
+                assert second is False
+            assert lock.exists(), "the holder's lock file must survive"
+
+    def test_the_holder_tidies_up_after_itself(self, tmp_path):
+        import brickonomy.refresh as rf
+        lock = tmp_path / "scan.lock"
+        with rf.scan_lock(lock) as held:
+            assert held
+        assert not lock.exists()
+
+    def test_the_probe_sees_a_scan_in_another_process(self, tmp_path):
+        import brickonomy.refresh as rf
+        lock = tmp_path / "scan.lock"
+        assert rf.scan_in_progress(lock) is False
+        with rf.scan_lock(lock):
+            assert rf.scan_in_progress(lock) is True
+        assert rf.scan_in_progress(lock) is False
+
+    def test_probing_does_not_disturb_the_holder(self, tmp_path):
+        import brickonomy.refresh as rf
+        lock = tmp_path / "scan.lock"
+        with rf.scan_lock(lock):
+            for _ in range(3):
+                assert rf.scan_in_progress(lock) is True
+            assert lock.exists()

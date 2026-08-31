@@ -60,14 +60,24 @@
       </select>
       <input class="inp" type="text" name="item_id" placeholder="…or a single set, e.g. 75192" style="width:190px">
       <label class="chip"><input type="checkbox" name="force" value="true" style="accent-color:var(--accent)"> force</label>
-      <button class="btn-primary" type="submit" {{ 'disabled' if job.running }}>▶ Start scan</button>
+      <button class="btn-primary" type="submit" {{ 'disabled' if job.running or scan_elsewhere }}
+        {%- if scan_elsewhere %} title="A scan is already running in another process — the nightly task, or one started from a terminal. Only one scraper runs at a time."{% endif %}>▶ Start scan</button>
     </form>
     <div id="scanStatus" data-running="{{ 1 if job.running else 0 }}">
       {% if job.running %}
       <div style="color:var(--ink-2)">Scanning <span id="scanDone">{{ job.done }}</span> / <span id="scanTotal">{{ job.total }}</span>
         <span id="scanCurrent">{% if job.current_item %}— currently: <b>{{ job.current_item }}</b>{% endif %}</span></div>
       {% else %}
+      {# scan_elsewhere comes from the lock file. This process's job state
+         only knows about scans it started itself, so the page claimed
+         nothing was running while the nightly task was mid-run. #}
+      {% if scan_elsewhere %}
+      <div style="color:var(--warn)">⏸ A scan is running in another process — the nightly
+        task, or one started from a terminal. Its progress is in
+        <code>logs\scan-&lt;date&gt;.log</code>, not here.</div>
+      {% else %}
       <div style="color:var(--ink-2)">No scan running.{% if job.finished_at %} Last finished {{ job.finished_at[:16].replace('T',' ') }}.{% endif %}</div>
+      {% endif %}
       {% endif %}
       <div class="progress"><div id="scanBar" style="width:{{ (job.done / job.total * 100)|round if job.total else 0 }}%"></div></div>
       <div class="log" id="scanLog" style="margin-top:12px">{% for line in job.log %}{{ line }}

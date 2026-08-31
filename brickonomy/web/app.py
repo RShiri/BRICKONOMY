@@ -33,6 +33,7 @@ from ..config import SUPPORTED_CURRENCIES, get_config
 from ..currency import CURRENCY_SYMBOLS, convert, money, rates_status
 from ..importer import (item_type_for, normalize_item_id, parse_condition,
                         parse_money, sold_off)
+from .. import refresh as refresh_mod
 from . import jobs
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -1353,6 +1354,11 @@ def refresh_page(request: Request):
             n_portfolio=n_portfolio, n_items=n_items, coverage=coverage,
             covered=covered, fresh=fresh,
             ebay_signed_in=bool(EbaySource.signed_in_profile()),
+            # From the lock, not from this process's job state: the nightly
+            # task and any run started from a terminal are invisible to the
+            # latter, and the page was offering an enabled Start scan button
+            # while a scan was underway.
+            scan_elsewhere=refresh_mod.scan_in_progress() and not jobs.status()["running"],
         ))
     finally:
         conn.close()
