@@ -124,6 +124,23 @@ PORTFOLIO_CHART_MIN_POINTS = 4
 COMPARE_MAX = 4
 
 
+def clamp(value, low, high, default=0.0):
+    """A number from a query string, held inside the range the form offers.
+
+    FastAPI will happily parse "1e400" into inf and "nan" into a NaN, and both
+    then travel into the page: inf reached Jinja's |int filter and raised
+    OverflowError, a 500 from a hand-typed URL, and NaN compares false against
+    everything so it silently disabled the filter it was meant to apply.
+    """
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return default
+    if value != value:                      # NaN, which loses every comparison
+        return default
+    return max(low, min(high, value))
+
+
 def img_url(item_id: str, item_type: str = "S") -> str:
     if item_type == "M" or any(c.isalpha() for c in item_id):
         return f"https://img.bricklink.com/ItemImage/MN/0/{item_id}.png"
@@ -495,6 +512,9 @@ def partout_page(request: Request, budget: float = 0.0, sort: str = "adjusted",
     """
     conn = get_conn()
     try:
+        # A negative budget filters nothing and an infinite one is not a
+        # budget; the input offers a plain number, so hold it to one.
+        budget = clamp(budget, 0.0, 1_000_000.0)
         ccy = display_ccy(request)
         rows = partout_mod.opportunities(
             conn, ccy=ccy, max_budget=budget or None,
@@ -523,6 +543,8 @@ def deals_page(request: Request, min_margin: float = 0.0, rating: str = ""):
     """Bargain finder: live listings priced under their blended market value."""
     conn = get_conn()
     try:
+        # The form offers 0-100; the URL is not obliged to.
+        min_margin = clamp(min_margin, 0.0, 100.0)
         ccy = display_ccy(request)
         deals = []
         # Only items with a live listing can be a deal, and a listing exists

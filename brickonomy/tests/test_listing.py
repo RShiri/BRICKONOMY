@@ -285,3 +285,44 @@ class TestPagesDoNotWalkTheCatalog:
         c.close()
         client, _ = self._counted(db_path, monkeypatch)
         assert "10075" in client.get("/deals").text
+
+
+class TestQueryNumbersAreHeldInRange:
+    """FastAPI parses "1e400" into inf and "nan" into a NaN, and both then
+    travel into the page. inf reached Jinja's |int and raised OverflowError —
+    a 500 from a hand-typed URL. NaN loses every comparison, so it silently
+    disabled the filter it was meant to apply."""
+
+    def _client(self, db_path, monkeypatch):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as app_mod
+        monkeypatch.setattr(app_mod, "get_conn",
+                            lambda: dbq.connect(db_path=db_path))
+        return TestClient(app_mod.app)
+
+    @pytest.mark.parametrize("value", ["1e400", "-1e400", "nan", "-99999",
+                                       "99999", "abc"])
+    def test_deals_survives_any_min_margin(self, db_path, monkeypatch, value):
+        r = self._client(db_path, monkeypatch).get(f"/deals?min_margin={value}")
+        assert r.status_code < 500, f"min_margin={value} gave {r.status_code}"
+
+    @pytest.mark.parametrize("value", ["1e400", "nan", "-5", "abc"])
+    def test_partout_survives_any_budget(self, db_path, monkeypatch, value):
+        r = self._client(db_path, monkeypatch).get(f"/partout?budget={value}")
+        assert r.status_code < 500, f"budget={value} gave {r.status_code}"
+
+    def test_clamping_keeps_a_sane_value_untouched(self):
+        from brickonomy.web.app import clamp
+        assert clamp(35.0, 0.0, 100.0) == 35.0
+        assert clamp("35", 0.0, 100.0) == 35.0
+
+    def test_out_of_range_lands_on_the_edge(self):
+        from brickonomy.web.app import clamp
+        assert clamp(1e400, 0.0, 100.0) == 100.0
+        assert clamp(-50, 0.0, 100.0) == 0.0
+
+    def test_a_non_number_falls_back(self):
+        from brickonomy.web.app import clamp
+        assert clamp("abc", 0.0, 100.0) == 0.0
+        assert clamp(float("nan"), 0.0, 100.0) == 0.0
