@@ -200,3 +200,33 @@ class TestOneScraperAtATime:
         # A held lock here would block every later scan until a restart.
         with rf.scan_lock(lock) as held:
             assert held
+
+
+class TestPrintedPartsAreNotScanned:
+    """A printed part appears on neither catalog tab, so scraping one spends
+    requests on a page nobody can reach."""
+
+    def _conn(self, tmp_path):
+        c = dbq.connect(db_path=str(tmp_path / "pp.db"))
+        dbq.upsert_item(c, "75192", name="Falcon", item_type="S")
+        dbq.upsert_item(c, "sh0254", name="Iron Man", item_type="M")
+        dbq.upsert_item(c, "90398pb007", name="Ant-Man Statuette", item_type="P")
+        c.commit()
+        return c
+
+    def test_a_broad_scope_skips_them(self, tmp_path):
+        from brickonomy.refresh import select_targets
+        c = self._conn(tmp_path)
+        try:
+            ids = {i for i, _ in select_targets(c, scope="all")}
+            assert ids == {"75192", "sh0254"}
+        finally:
+            c.close()
+
+    def test_asking_for_one_by_id_still_scans_it(self, tmp_path):
+        from brickonomy.refresh import select_targets
+        c = self._conn(tmp_path)
+        try:
+            assert select_targets(c, item_id="90398pb007") == [("90398pb007", None)]
+        finally:
+            c.close()

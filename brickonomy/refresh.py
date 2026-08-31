@@ -388,6 +388,13 @@ def select_targets(conn, scope="portfolio", item_id=None, theme=None):
                    for r in conn.execute("SELECT item_id, item_type FROM items")]
     else:
         raise ValueError(f"unknown scope {scope!r}")
+
+    # Printed parts are not sets and not figures — they show on neither
+    # catalog tab — so scraping them spends requests on pages nobody can
+    # reach. An explicit --item still scans one, for the rare case of
+    # checking what a statuette is worth.
+    if not item_id:
+        targets = [(iid, ity) for iid, ity in targets if ity != "P"]
     return targets
 
 
