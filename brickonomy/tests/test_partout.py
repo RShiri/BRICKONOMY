@@ -9,7 +9,7 @@ import pytest
 
 from brickonomy import db as dbq
 from brickonomy.analytics import partout
-from brickonomy.analytics.listings import (landed_cost,
+from brickonomy.analytics.listings import (drop_lone_lowball, landed_cost,
                                            looks_like_a_component)
 
 
@@ -207,3 +207,46 @@ class TestUnderMarketListingsAreWholeSets:
         it stores no description and needs none."""
         assert not looks_like_a_component("", "S")
         assert not looks_like_a_component(None, "S")
+
+
+class TestLoneLowball:
+    """BrickLink's guide for 76060 carried 60 asks with a ₪150 median and a
+    lowest of ₪33.63 — 22% of the median, 41% under the next one up. That row
+    put the set top of the part-out leaderboard at a 424% margin."""
+
+    def _offers(self, prices):
+        return [{"price": p, "description": ""} for p in prices]
+
+    def test_an_isolated_lowball_is_dropped(self):
+        # The real 76060 shape.
+        kept = drop_lone_lowball(self._offers(
+            [33.63, 57.43, 93.87, 105.06, 114.86, 150.0, 150.0, 195.26]))
+        assert min(o["price"] for o in kept) == 57.43
+
+    def test_two_sellers_at_the_same_low_price_are_a_market(self):
+        # 10782: two independent asks at ₪12 against a ₪67 median. Thin, but
+        # real — and exactly the bargain the app exists to surface.
+        prices = [12.0, 12.0, 60.0, 67.65, 70.0, 90.0, 110.0]
+        kept = drop_lone_lowball(self._offers(prices))
+        assert min(o["price"] for o in kept) == 12.0
+
+    def test_a_merely_cheap_ask_is_kept(self):
+        # 60% of the median, with company just above it: a discount, not an
+        # error.
+        kept = drop_lone_lowball(self._offers([60.0, 70.0, 95.0, 100.0, 105.0, 110.0]))
+        assert min(o["price"] for o in kept) == 60.0
+
+    def test_two_bad_rows_in_a_row_both_go(self):
+        kept = drop_lone_lowball(self._offers(
+            [1.0, 2.0, 100.0, 105.0, 110.0, 115.0, 120.0]))
+        assert min(o["price"] for o in kept) == 100.0
+
+    def test_too_few_asks_to_have_an_opinion(self):
+        # With three asks there is no median worth trusting, so nothing is
+        # second-guessed.
+        kept = drop_lone_lowball(self._offers([5.0, 100.0, 110.0]))
+        assert min(o["price"] for o in kept) == 5.0
+
+    def test_it_never_empties_the_list(self):
+        kept = drop_lone_lowball(self._offers([1.0, 2.0, 3.0, 4.0, 5.0]))
+        assert kept, "something must survive"

@@ -6,6 +6,7 @@ lives in analytics rather than the web layer because the web layer is a view
 over this, not the other way round.
 """
 import json
+import statistics
 import re
 
 # A live ask below this fraction of the item's value is a mismatched listing,
@@ -74,6 +75,47 @@ def looks_like_a_component(description, item_type="S"):
     return item_type == "S" and bool(MINIFIG_ID_IN_TEXT.search(text))
 
 
+# A cheapest ask that no other seller comes near. BrickLink's price guide for
+# set 76060 carried 60 asks with a median of ₪150, and the lowest was ₪33.63 —
+# 22% of the median, and 41% below the next one up at ₪57.43. Nobody sells a
+# ₪150 set for ₪33; it is a mis-filed part, a wrong currency, or a listing for
+# something other than the set. That one row put 76060 top of the part-out
+# leaderboard at a 424% margin.
+#
+# The test is isolation rather than cheapness. Where two sellers independently
+# sit at ₪12 against a ₪67 median, that is a market — thin, but real, and
+# exactly the bargain this app exists to surface. Where one sits alone at ₪26
+# with the next at ₪96, it is an error. Same principle as the rule that a
+# value not backed by completed sales needs more than one seller behind it.
+LONE_ASK_VS_MEDIAN = 0.5        # must also be under half the median
+LONE_ASK_VS_NEXT = 0.6          # ...and under 60% of the next cheapest
+LONE_ASK_MIN_SAMPLE = 5         # below this there is no median worth trusting
+
+
+def drop_lone_lowball(listings):
+    """`listings` sorted by price, minus any isolated cheapest asks.
+
+    Applied repeatedly: two bad rows in a row are rare but not impossible, and
+    dropping only the first would leave the second as the new "cheapest".
+    Never empties the list — the last survivor stands whatever it looks like.
+    """
+    prices = sorted(l["price"] for l in listings)
+    if len(prices) < LONE_ASK_MIN_SAMPLE:
+        return listings
+    cut = 0
+    while len(prices) - cut >= LONE_ASK_MIN_SAMPLE:
+        rest = prices[cut:]
+        median = statistics.median(rest)
+        if not (rest[0] < median * LONE_ASK_VS_MEDIAN
+                and rest[0] < rest[1] * LONE_ASK_VS_NEXT):
+            break
+        cut += 1
+    if not cut:
+        return listings
+    floor = prices[cut]
+    return [l for l in listings if l["price"] >= floor]
+
+
 def cheapest_stock(conn, item_id, condition="new", item_type=None):
     """{source: {price, currency, description, scraped_at}} from the latest
     stock snapshot's retained raw listings."""
@@ -93,6 +135,7 @@ def cheapest_stock(conn, item_id, condition="new", item_type=None):
         clean = [l for l in listings
                  if l.get("price", 0) > 0
                  and not looks_like_a_component(l.get("description"), item_type)]
+        clean = drop_lone_lowball(clean)
         if not clean:
             continue
         best = min(clean, key=lambda l: l["price"])
