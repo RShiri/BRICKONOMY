@@ -120,28 +120,57 @@
               },
             },
             scales: {
-              x: { type: "time", time: { unit: "month" }, grid: { display: false } },
+              // Let Chart.js pick the tick unit. Pinning it to "month" put a
+              // label on every month, and the forecast runs years out — sixty
+              // rotated labels that read as a smear.
+              x: { type: "time", grid: { display: false },
+                   ticks: { autoSkip: true, maxTicksLimit: 10 } },
               y: { ticks: { callback: (v) => v.toLocaleString() } },
             },
           },
         });
 
-        // Range buttons (1Y / 3Y / All) clamp the x axis.
+        // Range buttons clamp both ends of the x axis. Clamping only the
+        // start left the forecast stretching the axis to 2031, so eight
+        // months of actual scans were squeezed into the far left edge.
+        // The earliest actual scan across every observed series. A range that
+        // reaches back past it just adds empty axis: 3Y on a set first scanned
+        // eight months ago drew two and a half years of nothing and bunched
+        // the real points against the right edge.
+        const firstScan = datasets
+          .filter((d) => !d.label.startsWith("Forecast"))
+          .flatMap((d) => d.data.map((p) => p.x))
+          .sort()[0];
+
+        const clamp = (btn) => {
+          const days = Number(btn.dataset.range);
+          const x = chart.options.scales.x;
+          if (!days) {
+            delete x.min;
+            delete x.max;
+          } else {
+            const from = new Date();
+            from.setDate(from.getDate() - days);
+            let start = from.toISOString().slice(0, 10);
+            if (firstScan && firstScan > start) start = firstScan;
+            x.min = start;
+            // A year of forecast beyond today: enough to see where the trend
+            // is pointing without the horizon dominating the history.
+            const to = new Date();
+            to.setDate(to.getDate() + 365);
+            x.max = to.toISOString().slice(0, 10);
+          }
+        };
         document.querySelectorAll(".rangebtn").forEach((btn) => {
+          if (btn.classList.contains("active")) clamp(btn);
           btn.addEventListener("click", () => {
             document.querySelectorAll(".rangebtn").forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            const days = Number(btn.dataset.range);
-            if (!days) {
-              delete chart.options.scales.x.min;
-            } else {
-              const from = new Date();
-              from.setDate(from.getDate() - days);
-              chart.options.scales.x.min = from.toISOString().slice(0, 10);
-            }
+            clamp(btn);
             chart.update();
           });
         });
+        chart.update();
       })
       .catch(() => { historyCanvas.parentElement.textContent = "Could not load price history."; });
   }
@@ -162,6 +191,19 @@
           pfCanvas.parentElement.textContent = "No history yet — run a scan to record the first snapshot.";
           return;
         }
+        // The series starts where most of the collection had been scanned.
+        // Before that its rise is the scanner catching up rather than the sets
+        // gaining value, so say where it starts and why rather than let a
+        // three-point chart look broken.
+        const note = document.getElementById("portfolioChartNote");
+        if (note && data.tracked) {
+          note.textContent = pts.length < 8
+            ? `${pts.length} scan${pts.length === 1 ? "" : "s"} since `
+              + `${data.covered_from}, the first day most of the ${data.tracked} `
+              + "tracked sets had a price. Earlier days would measure how much "
+              + "of the collection had been scanned, not what it was worth."
+            : `${data.tracked} tracked sets, from ${data.covered_from}.`;
+        }
         new Chart(pfCanvas, {
           type: "line",
           data: {
@@ -180,7 +222,8 @@
                 ` ${item.parsed.y.toLocaleString()} ${data.currency}` } },
             },
             scales: {
-              x: { type: "time", time: { unit: "month" }, grid: { display: false } },
+              x: { type: "time", grid: { display: false },
+                   ticks: { autoSkip: true, maxTicksLimit: 8 } },
               y: { ticks: { callback: (v) => v.toLocaleString() } },
             },
           },
@@ -304,16 +347,23 @@
       value: (a, b) => (b.vnew || 0) - (a.vnew || 0),
     };
 
+    // Same treatment as the server-rendered tables: clip the name rather than
+    // wrap it, and drop the "(minifig)" tag on a page where every row is one.
     const rowHTML = (i) => `<tr>
-      <td><img class="thumb" src="${setImg(i.id, i.type)}" alt="" loading="lazy"
-               onerror="this.style.visibility='hidden'"><a href="${itemURL(i)}"><b>${esc(i.id)}</b> ${esc(i.name)}</a>
-          ${i.type === "M" ? '<span style="color:var(--muted)"> (minifig)</span>' : ""}</td>
-      <td>${esc(i.theme) || "—"}</td>
+      <td class="name"><a href="${itemURL(i)}" title="${esc(i.id)} ${esc(i.name)}"><img
+               class="thumb" src="${setImg(i.id, i.type)}" alt="" loading="lazy"
+               onerror="this.style.visibility='hidden'"><b>${esc(i.id)}</b> ${esc(i.name)}</a>${
+          i.type === "M" && catalogKind !== "M"
+            ? '<span style="color:var(--muted)"> (minifig)</span>' : ""}</td>
+      <td class="theme" title="${esc(i.theme)}">${esc(i.theme) || "—"}</td>
       <td class="num">${i.year || "—"}</td>
       <td class="num">${i.parts ? i.parts.toLocaleString() : "—"}</td>
       <td class="num"><b>${i.vnew ? catalogMoney(i.vnew) : "—"}</b></td>
       <td class="num">${i.vused ? catalogMoney(i.vused) : "—"}</td>
-      <td>${i.p ? '<span class="chip on">priced</span>'
+      <td>${(i.vnew || i.vused)
+              ? '<span class="chip on">priced</span>'
+              : i.p
+                ? '<span class="chip" style="color:var(--muted)" title="Scanned, but BrickLink had no sold history and too few asks to price it from.">no price yet</span>'
                 : '<span class="chip" style="color:var(--muted)">not scanned</span>'}</td>
     </tr>`;
 
@@ -335,7 +385,10 @@
         // The page declares which half of the catalog it is: without this the
         // minifig tab listed sets too.
         if (catalogKind && i.type !== catalogKind) return false;
-        if (pricedOnly && !i.p) return false;
+        // A price, not a page. `p` means the item has its own exported page,
+        // which a scan yields even when it finds nothing usable: ten sets
+        // were flagged priced while showing "—" in both value columns.
+        if (pricedOnly && !(i.vnew || i.vused)) return false;
         if (theme && i.theme !== theme) return false;
         if (!q) return true;
         return i.id.toLowerCase().includes(q) || (i.name || "").toLowerCase().includes(q);
@@ -400,7 +453,7 @@
         <a class="relcard" href="${itemURL(i)}">
           <img src="${setImg(i.id, i.type)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
           <div class="relname"><b>${esc(i.id)}</b> ${esc((i.name || "").slice(0, 34))}</div>
-          <div class="relmeta">${i.year || ""}${i.p ? " · priced" : ""}</div>
+          <div class="relmeta">${i.year || ""}${(i.vnew || i.vused) ? " · priced" : ""}</div>
         </a>`).join("");
     });
   }

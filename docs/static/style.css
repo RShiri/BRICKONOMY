@@ -128,7 +128,22 @@ th { text-align: left; color: var(--ink-2); font-weight: 600; font-size: 11px; t
      border-bottom: 1px solid var(--grid); padding: 6px 8px; white-space: nowrap; }
 td { padding: 6px 8px; border-bottom: 1px solid var(--grid); }
 tr:last-child td { border-bottom: 0; }
-td.num, th.num { text-align: right; }
+/* Numbers take exactly the width they need — the 1%/nowrap pair is how a
+   table column is told to shrink-to-fit — so the name column beside them gets
+   every remaining pixel instead of wrapping "76247 The Hulkbuster: The Battle
+   of Wakanda" over three lines while the value column sits half empty. */
+td.num, th.num { text-align: right; white-space: nowrap; width: 1%; }
+/* A name cell clips rather than wraps: minifig names run to a full sentence
+   of costume detail and would otherwise give every row three lines. The full
+   name is on the link's title. */
+td.name { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Theme names are short but repetitive — "Super Heroes Marvel" stacked three
+   lines high in every row of the Deals table. */
+td.theme { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* For a cell that has to keep something after the name — a warning chip —
+   clip the link itself rather than the cell. */
+a.name-clip { display: inline-block; max-width: 260px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
 tr.total td { font-weight: 700; border-top: 1px solid var(--baseline); }
 tr.hl td { background: rgba(79,140,255,0.07); }
 /* Long tables: keep the column names visible and give the eye a line to
@@ -136,7 +151,11 @@ tr.hl td { background: rgba(79,140,255,0.07); }
 thead th { position: sticky; top: 0; z-index: 1; background: #101728; }
 tbody tr:nth-child(even) td { background: rgba(124,160,255,0.035); }
 tbody tr:hover td { background: rgba(79,140,255,0.10); }
-table td:first-child { width: 38%; }
+/* Let the browser size text columns by their content. A fixed share here
+   starved whichever column was not first: at 38% the dashboard wrapped set
+   names over three lines, and at 100% the Sets table squeezed "Super Heroes
+   Marvel" into three. The num rule above is what actually frees the space. */
+table td:first-child { width: auto; }
 table.narrow-first td:first-child { width: auto; }
 .table-scroll { overflow-x: auto; }
 

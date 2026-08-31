@@ -6,7 +6,7 @@
 <title>Portfolio · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/style.css?v=1788134816">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -58,6 +58,7 @@
   <div class="card">
     <h3>Portfolio value over time <span class="soft">(ILS)</span></h3>
     <div class="chart-wrap"><canvas id="portfolioChart"></canvas></div>
+    <div id="portfolioChartNote" class="soft" style="font-size:11.5px;margin-top:8px"></div>
   </div>
   
 </div>
@@ -166,8 +167,8 @@
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="14.834272">₪14.83</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="69.3"><b>₪69.30</b></td>
-      <td class="num" data-v="367.16144883955207"><span class="delta up">▲ 367%</span></td>
+      <td class="num" data-v=""><b>—</b></td>
+      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -290,7 +291,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40554-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/40554.html">40554 Jake Sully &amp; his Avatar</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="59.42627199999999">₪59.43</td>
       <td data-v="used"><span class="chip">Used</span></td>
@@ -306,7 +307,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40669-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/40669.html">40669 Iron Man MK5</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="37.16">₪37.16</td>
       <td data-v="used"><span class="chip">Used</span></td>
@@ -322,7 +323,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40760-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/40760.html">40760 Adventure Peely &amp; Cuddle Team Leader</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="59.42627199999999">₪59.43</td>
       <td data-v="new"><span class="chip">New</span></td>
@@ -358,7 +359,7 @@
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
+      <td class="num" data-v="45.08"><b>₪45.08</b></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
@@ -370,7 +371,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41590-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/41590.html">41590 Iron Man</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="44.592">₪44.59</td>
       <td data-v="used"><span class="chip">Used</span></td>
@@ -386,7 +387,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41592-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/41592.html">41592 The Hulk</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="29.698272">₪29.70</td>
       <td data-v="used"><span class="chip">Used</span></td>
@@ -402,7 +403,7 @@
       <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41604-1.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="sets/41604.html">41604 Iron Man MK50</a>
           </td>
-      <td>BrickHeadz</td>
+      <td>Brickheadz</td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="53.5104">₪53.51</td>
       <td data-v="used"><span class="chip">Used</span></td>
@@ -438,8 +439,8 @@
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="29.698272">₪29.70</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num" data-v="18.23"><b>₪18.23</b></td>
+      <td class="num" data-v="-38.615957184310254"><span class="delta down">▼ 39%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1254,8 +1255,8 @@
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="44.592">₪44.59</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="44.7"><b>₪44.70</b></td>
-      <td class="num" data-v="0.24219590958020296"><span class="delta up">▲ 0%</span></td>
+      <td class="num" data-v="23.89"><b>₪23.89</b></td>
+      <td class="num" data-v="-46.4253677789738"><span class="delta down">▼ 46%</span></td>
       <td class="num" data-v="-8.135302932990804"><span class="delta down">▼ 8.1%</span></td>
       
     </tr>
@@ -1366,8 +1367,8 @@
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="148.610272">₪149</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="34.47"><b>₪34.47</b></td>
-      <td class="num" data-v="-76.80510267823209"><span class="delta down">▼ 77%</span></td>
+      <td class="num" data-v=""><b>—</b></td>
+      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1558,8 +1559,8 @@
       <td class="num">98</td>
       <td class="num">₪17,230</td>
       <td></td>
-      <td class="num">₪16,304</td>
-      <td class="num"><span class="delta down">▼ 5.4%</span></td>
+      <td class="num">₪16,243</td>
+      <td class="num"><span class="delta down">▼ 5.7%</span></td>
       <td></td>
     </tr>
     </tfoot>
@@ -1645,6 +1646,6 @@
   
 </footer>
 
-<script src="static/app.js"></script>
+<script src="static/app.js?v=1788134816"></script>
 </body>
 </html>

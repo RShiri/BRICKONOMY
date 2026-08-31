@@ -347,16 +347,23 @@
       value: (a, b) => (b.vnew || 0) - (a.vnew || 0),
     };
 
+    // Same treatment as the server-rendered tables: clip the name rather than
+    // wrap it, and drop the "(minifig)" tag on a page where every row is one.
     const rowHTML = (i) => `<tr>
-      <td><img class="thumb" src="${setImg(i.id, i.type)}" alt="" loading="lazy"
-               onerror="this.style.visibility='hidden'"><a href="${itemURL(i)}"><b>${esc(i.id)}</b> ${esc(i.name)}</a>
-          ${i.type === "M" ? '<span style="color:var(--muted)"> (minifig)</span>' : ""}</td>
-      <td>${esc(i.theme) || "—"}</td>
+      <td class="name"><a href="${itemURL(i)}" title="${esc(i.id)} ${esc(i.name)}"><img
+               class="thumb" src="${setImg(i.id, i.type)}" alt="" loading="lazy"
+               onerror="this.style.visibility='hidden'"><b>${esc(i.id)}</b> ${esc(i.name)}</a>${
+          i.type === "M" && catalogKind !== "M"
+            ? '<span style="color:var(--muted)"> (minifig)</span>' : ""}</td>
+      <td class="theme" title="${esc(i.theme)}">${esc(i.theme) || "—"}</td>
       <td class="num">${i.year || "—"}</td>
       <td class="num">${i.parts ? i.parts.toLocaleString() : "—"}</td>
       <td class="num"><b>${i.vnew ? catalogMoney(i.vnew) : "—"}</b></td>
       <td class="num">${i.vused ? catalogMoney(i.vused) : "—"}</td>
-      <td>${i.p ? '<span class="chip on">priced</span>'
+      <td>${(i.vnew || i.vused)
+              ? '<span class="chip on">priced</span>'
+              : i.p
+                ? '<span class="chip" style="color:var(--muted)" title="Scanned, but BrickLink had no sold history and too few asks to price it from.">no price yet</span>'
                 : '<span class="chip" style="color:var(--muted)">not scanned</span>'}</td>
     </tr>`;
 
@@ -378,7 +385,10 @@
         // The page declares which half of the catalog it is: without this the
         // minifig tab listed sets too.
         if (catalogKind && i.type !== catalogKind) return false;
-        if (pricedOnly && !i.p) return false;
+        // A price, not a page. `p` means the item has its own exported page,
+        // which a scan yields even when it finds nothing usable: ten sets
+        // were flagged priced while showing "—" in both value columns.
+        if (pricedOnly && !(i.vnew || i.vused)) return false;
         if (theme && i.theme !== theme) return false;
         if (!q) return true;
         return i.id.toLowerCase().includes(q) || (i.name || "").toLowerCase().includes(q);
@@ -443,7 +453,7 @@
         <a class="relcard" href="${itemURL(i)}">
           <img src="${setImg(i.id, i.type)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">
           <div class="relname"><b>${esc(i.id)}</b> ${esc((i.name || "").slice(0, 34))}</div>
-          <div class="relmeta">${i.year || ""}${i.p ? " · priced" : ""}</div>
+          <div class="relmeta">${i.year || ""}${(i.vnew || i.vused) ? " · priced" : ""}</div>
         </a>`).join("");
     });
   }

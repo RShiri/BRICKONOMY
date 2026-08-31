@@ -1,1 +1,1 @@
-{"currency":"ILS","series":{"blended":[{"t":"2026-08-12","v":5200.02}],"bricklink":[{"t":"2026-08-12","v":5200.02}],"ebay":[],"brickowl":[]},"series_used":{"blended":[]},"forecast":[{"t":"2026-08-12","v":5200.02,"lo":5200.02,"hi":5200.02},{"t":"2028-12-31","v":5570.39,"lo":4456.31,"hi":6684.47},{"t":"2031-12-31","v":6175.99,"lo":4940.79,"hi":7411.19}]}
+{"currency":"ILS","series":{"blended":[],"bricklink":[{"t":"2026-08-12","v":5200.02}],"ebay":[],"brickowl":[]},"series_used":{"blended":[]}}

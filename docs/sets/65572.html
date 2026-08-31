@@ -6,7 +6,7 @@
 <title>65572 Spider-Man Co-Pack · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="../static/style.css?v=1788134816">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
@@ -95,7 +95,7 @@
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
     <div class="label">Value — new / sealed</div>
-    <div class="value" style="opacity:.55">₪45,061</div>
+    <div class="value" style="">—</div>
     <div class="delta">
       
       
@@ -109,13 +109,13 @@
     <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
   </div>
   <div class="tile">
-    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
-    <div class="value">₪48,271</div>
-    <div class="delta">trend estimate · ±20% band</div>
+    <div class="label">Forecast  <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="value">—</div>
+    <div class="delta">needs price history</div>
   </div>
   <div class="tile">
     <div class="label">Buy target</div>
-    <div class="value">₪36,049</div>
+    <div class="value">—</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
 </div>
@@ -125,9 +125,10 @@
 <div class="card">
   <h3>Price history &amp; forecast <span class="soft">(ILS, BrickLink average · new/sealed)</span>
     <span class="rangebtns" role="group" aria-label="Chart range">
+      
       <button class="rangebtn" data-range="365">1Y</button>
-      <button class="rangebtn" data-range="1095">3Y</button>
-      <button class="rangebtn active" data-range="0">All</button>
+      <button class="rangebtn active" data-range="1095">3Y</button>
+      <button class="rangebtn" data-range="0">All</button>
     </span>
   </h3>
   <div class="legend">
@@ -173,54 +174,6 @@
 
 
 
-
-<div class="card" id="importCard"
-     data-vat="18.0"
-     data-ship-usd="25.0"
-     data-ship-rate="2.9728"
-     data-ccy="ILS">
-  <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
-  <div class="table-scroll">
-  <table>
-    <thead>
-      <tr><th>Condition</th><th class="num">BrickLink average</th>
-          <th class="num">VAT 18%</th>
-          <th class="num">Shipping</th><th class="num">Landed cost</th></tr>
-    </thead>
-    <tbody>
-      
-      
-      
-      <tr data-cond="new" data-base="45061.05">
-        <td>New / sealed</td>
-        <td class="num">₪45,061</td>
-        <td class="num">₪8,111</td>
-        <td class="num import-ship">₪74.32</td>
-        <td class="num import-total"><b>₪53,246</b></td>
-      </tr>
-      
-      
-      
-      
-      
-    </tbody>
-  </table>
-  </div>
-  <div class="searchrow" style="margin-top:12px">
-    <label class="chip" style="gap:8px">Shipping&nbsp;$
-      <input class="inp" type="number" id="importShip" min="0" step="1"
-             value="25"
-             style="border:0;background:transparent;padding:0;width:64px"
-             aria-label="Shipping cost in US dollars">
-    </label>
-    <span class="soft" style="font-size:12px">Courier rates vary by weight and service — set your own and the table follows.</span>
-  </div>
-  <div style="color:var(--muted);font-size:12px;margin-top:8px">
-    VAT is applied to the item price only, as specified. Israeli customs actually levies it on
-    item + shipping + insurance, so a real bill runs slightly higher; personal imports under
-    $75 are normally VAT-exempt, and above $500 duty may apply on top. Treat this as a floor.
-  </div>
-</div>
 
 
 
@@ -362,6 +315,6 @@
   
 </footer>
 
-<script src="../static/app.js"></script>
+<script src="../static/app.js?v=1788134816"></script>
 </body>
 </html>
