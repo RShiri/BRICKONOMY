@@ -367,11 +367,17 @@ def dashboard(request: Request):
 
         # Catalog-wide top lists (BrickEconomy-style leaderboards).
         catalog = []
+        # Every value in one query, and only the items that have one. Asking
+        # per row over the whole catalog meant 34,880 lookups to find the few
+        # hundred rows that could appear in a leaderboard, and a growth
+        # estimate on top for each survivor.
+        catalog_values = dbq.latest_values(conn, "new")
         for row in conn.execute(
                 "SELECT item_id, name, theme, year, item_type, parts, retail_price, "
-                "retail_currency FROM items"):
-            value, _, _ = current_value(conn, row["item_id"], "new")
-            v = disp(conn, value, "ILS", ccy)
+                "retail_currency FROM items WHERE item_id IN ({})".format(
+                    ",".join("?" * len(catalog_values)) or "NULL"),
+                tuple(catalog_values)):
+            v = disp(conn, catalog_values.get(row["item_id"]), "ILS", ccy)
             if not v:
                 continue
             g, _ = growth_mod.best_growth_estimate(conn, row["item_id"])
@@ -515,7 +521,17 @@ def deals_page(request: Request, min_margin: float = 0.0, rating: str = ""):
     try:
         ccy = display_ccy(request)
         deals = []
-        for row in conn.execute("SELECT item_id, name, theme, year, item_type FROM items"):
+        # Only items with a live listing can be a deal, and a listing exists
+        # only where a stock snapshot does — a few hundred rows, not the
+        # 34,880 in the catalog. Walking all of them cost four queries each
+        # (one per source in cheapest_stock, plus the value lookup): 140,141
+        # queries per page load, essentially all of them asking about sets
+        # that have never been scanned and cannot have an offer.
+        for row in conn.execute(
+                """SELECT i.item_id, i.name, i.theme, i.year, i.item_type
+                   FROM items i
+                   WHERE i.item_id IN (SELECT DISTINCT item_id
+                                       FROM price_snapshots WHERE kind='stock')"""):
             d = deal_for(conn, row["item_id"], ccy)
             if not d or d["margin"] < min_margin:
                 continue
@@ -1026,8 +1042,13 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
             # real collection is used.
             # (fig_shares_by_condition is built at most twice, not per row.)
             condition = "used" if (row["condition"] or "new") == "used" else "new"
-            fig_shares = fig_shares_by_condition.setdefault(
-                condition, partout_mod.fig_shares(conn, condition, ccy))
+            # Not setdefault: it evaluates its second argument every time,
+            # so the "cache" recomputed the whole lookup once per row — 92
+            # scans of set_minifigs on a 92-set collection.
+            if condition not in fig_shares_by_condition:
+                fig_shares_by_condition[condition] = partout_mod.fig_shares(
+                    conn, condition, ccy)
+            fig_shares = fig_shares_by_condition[condition]
             val, _, _ = current_value(conn, row["item_id"], condition)
             v = disp(conn, val, "ILS", ccy)
             paid = disp(conn, row["purchase_price"], row["purchase_currency"] or "USD", ccy) \

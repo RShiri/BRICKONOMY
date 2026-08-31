@@ -233,3 +233,55 @@ class TestSearchIndex:
         data = self._client(db_path, monkeypatch).get("/api/index").json()
         ids = {r[0] for r in data["rows"]}
         assert "10075" in ids and "sh0007" in ids
+
+
+class TestPagesDoNotWalkTheCatalog:
+    """Both /deals and the dashboard queried per item over all 34,880 catalog
+    rows to find the few hundred that could appear — 140,000 queries a page
+    load, essentially all of them asking about sets never scanned."""
+
+    def _counted(self, db_path, monkeypatch):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as app_mod
+        seen = []
+        real = dbq.connect
+
+        def traced():
+            conn = real(db_path=db_path)
+            conn.set_trace_callback(lambda _sql: seen.append(1))
+            return conn
+
+        monkeypatch.setattr(app_mod, "get_conn", traced)
+        return TestClient(app_mod.app), seen
+
+    def test_deals_does_not_query_per_catalog_row(self, db_path, monkeypatch):
+        client, seen = self._counted(db_path, monkeypatch)
+        client.get("/deals")
+        seen.clear()
+        client.get("/deals")
+        # 671 items in this fixture, none with a listing. Anything close to
+        # one query per item means the catalog is being walked again.
+        assert len(seen) < 200, f"{len(seen)} queries for 671 items"
+
+    def test_the_dashboard_does_not_either(self, db_path, monkeypatch):
+        client, seen = self._counted(db_path, monkeypatch)
+        client.get("/")
+        seen.clear()
+        client.get("/")
+        assert len(seen) < 200, f"{len(seen)} queries for 671 items"
+
+    def test_a_deal_still_appears(self, db_path, monkeypatch):
+        """The narrower query must not lose one: a deal needs a live listing,
+        and a listing lives in a stock snapshot."""
+        import json
+        c = dbq.connect(db_path=db_path)
+        dbq.insert_snapshot(c, "10075", "blended", "new", "market", "ILS",
+                            market_price=500.0)
+        dbq.insert_snapshot(c, "10075", "bricklink", "new", "stock", "ILS",
+                            price_avg=100.0, listing_count=6,
+                            raw=[{"price": 100.0, "description": ""}] * 6)
+        c.commit()
+        c.close()
+        client, _ = self._counted(db_path, monkeypatch)
+        assert "10075" in client.get("/deals").text
