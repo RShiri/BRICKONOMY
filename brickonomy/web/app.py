@@ -330,7 +330,8 @@ def dashboard(request: Request):
                 basis_rows += 1
             theme = row["theme"] or "Other"
             theme_totals[theme] = theme_totals.get(theme, 0.0) + v * qty
-            delta = dbq.market_delta(conn, row["item_id"], days=30)
+            delta = dbq.market_delta(conn, row["item_id"], condition=held,
+                                     days=30)
             if delta is not None and v > 0:
                 movers.append({"item_id": row["item_id"], "name": row["name"],
                                "value": v, "delta": delta})
@@ -1032,7 +1033,11 @@ def portfolio_page(request: Request, edit: str = None, imported: int = None,
                 "paid_ccy": row["purchase_currency"] or "USD",
                 "purchase_date": row["purchase_date"], "condition": row["condition"],
                 "value": v, "gain": gain,
-                "delta30": dbq.market_delta(conn, row["item_id"], days=30),
+                # The same condition the Value beside it uses. Defaulting to
+                # new put a used holding's used value next to the change in
+                # its sealed price — two different series read as one row.
+                "delta30": dbq.market_delta(conn, row["item_id"],
+                                            condition=condition, days=30),
                 "signal": signals_mod.sell_signal(
                     conn, row["item_id"], paid=paid, condition=condition),
             })

@@ -173,3 +173,48 @@ class TestGainBasis:
     def test_no_collection_is_not_a_division_by_zero(self, app):
         client, _ = app
         assert gain(client.get("/").text) == "—"
+
+
+class TestDeltaMatchesTheCondition:
+    """The 30-day change sat beside the value in the same row, but defaulted
+    to the sealed series while the value used the held one — two different
+    price series presented as one holding."""
+
+    def _own(self, path, item_id, condition):
+        c = dbq.connect(db_path=path)
+        dbq.upsert_item(c, item_id, name="Set", item_type="S", year=2016)
+        dbq.upsert_portfolio(c, item_id, owned=1, condition=condition)
+        # New rises 100 -> 200; used falls 100 -> 50. Nothing but the
+        # condition can tell the two apart.
+        for cond, then, now in (("new", 100.0, 200.0), ("used", 100.0, 50.0)):
+            dbq.insert_snapshot(c, item_id, "blended", cond, "market", "ILS",
+                                market_price=then,
+                                scraped_at="2026-01-01T00:00:00")
+            dbq.insert_snapshot(c, item_id, "blended", cond, "market", "ILS",
+                                market_price=now,
+                                scraped_at="2026-08-30T00:00:00")
+        c.commit()
+        c.close()
+
+    def test_a_used_holding_shows_the_used_change(self, app):
+        client, path = app
+        self._own(path, "75192", "used")
+        html = client.get("/portfolio").text
+        assert "50.0%" in html, "the used series fell by half"
+        assert "100.0%" not in html, "not the sealed series doubling"
+
+    def test_a_new_holding_shows_the_new_change(self, app):
+        client, path = app
+        self._own(path, "75192", "new")
+        assert "100.0%" in client.get("/portfolio").text
+
+    def test_the_dashboard_movers_agree(self, app):
+        client, path = app
+        self._own(path, "75192", "used")
+        # Only the movers tables, not the whole page: a theme bar's width is
+        # written as style="width:100.0%" and is not a price change. A halving
+        # is a decline, so it belongs to the second of the two.
+        html = client.get("/").text
+        movers = html[html.index("Top gainers"):html.index("Best deals right now")]
+        assert "50.0%" in movers
+        assert "100.0%" not in movers, "not the sealed series doubling"
