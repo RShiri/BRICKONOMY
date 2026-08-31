@@ -272,7 +272,12 @@ svg.spark polyline { fill: none; stroke: var(--s1); stroke-width: 2; }
 .sitesearch .inp:focus { border-color: rgba(79,140,255,.55); outline: none;
                          box-shadow: 0 0 12px rgba(79,140,255,.2); }
 .sresults {
-  position: absolute; top: calc(100% + 6px); right: 0; width: 330px; z-index: 20;
+  /* Anchored left, not right. The panel is wider than the 230px search box,
+     and right:0 resolved that to left:-100px — with the box sitting 24px from
+     the edge of the page, every result had its set number cut off the screen.
+     The cap keeps a narrow window from pushing it off the other side. */
+  position: absolute; top: calc(100% + 6px); left: 0; right: auto;
+  width: min(330px, calc(100vw - 48px)); z-index: 20;
   background: rgba(13,19,35,0.97); backdrop-filter: blur(14px);
   border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
   box-shadow: 0 12px 30px rgba(0,0,0,.5);
