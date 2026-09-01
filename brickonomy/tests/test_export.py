@@ -60,6 +60,46 @@ class TestExport:
         assert (out / ".nojekyll").exists()
         assert n_pages >= 5 and n_json >= 1
 
+    def test_export_is_an_installable_pwa(self, seeded_db, tmp_path):
+        out = tmp_path / "site"
+        export(str(out), "ILS", quiet=True)
+
+        # The worker lives at the export root — its scope can only reach as
+        # deep as its own URL — with the placeholder stamped, so a republish
+        # changes the file and old caches are dropped on activate.
+        sw = (out / "sw.js").read_text(encoding="utf-8")
+        assert "__BRICKONOMY_VERSION__" not in sw
+        assert 'VERSION = "20' in sw
+        assert not (out / "static" / "sw.js").exists()
+
+        assert (out / "static" / "manifest.webmanifest").exists()
+        for icon in ("icon-192.png", "icon-512.png",
+                     "icon-maskable-512.png", "apple-touch-icon.png"):
+            assert (out / "static" / "icons" / icon).exists(), icon
+
+        # Charts must work offline and inside an app shell: vendored, never a
+        # CDN <script>.
+        assert (out / "static" / "vendor" / "chart.umd.min.js").exists()
+        html = (out / "index.html").read_text(encoding="utf-8")
+        assert "cdn.jsdelivr.net" not in html
+        assert 'rel="manifest"' in html
+        assert 'rel="apple-touch-icon"' in html
+
+        # One level down the manifest link climbs back out, like every asset.
+        sub = (out / "sets" / "75192.html").read_text(encoding="utf-8")
+        assert 'href="../static/manifest.webmanifest"' in sub
+
+    def test_live_app_serves_a_stamped_service_worker(self, seeded_db):
+        from starlette.testclient import TestClient
+
+        from brickonomy.web import app as webapp
+
+        resp = TestClient(webapp.app).get("/sw.js")
+        assert resp.status_code == 200
+        assert "javascript" in resp.headers["content-type"]
+        assert resp.headers["cache-control"] == "no-cache"
+        assert "__BRICKONOMY_VERSION__" not in resp.text
+
     def test_links_are_relative_to_each_page(self, seeded_db, tmp_path):
         out = tmp_path / "site"
         export(str(out), "ILS", quiet=True)

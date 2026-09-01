@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>76247 The Hulkbuster: The Battle of Wakanda · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788193104">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<link rel="stylesheet" href="../static/style.css?v=1788224195">
+<link rel="manifest" href="../static/manifest.webmanifest">
+<meta name="theme-color" content="#070b16">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Brickonomy">
+<link rel="apple-touch-icon" href="../static/icons/apple-touch-icon.png">
+<script src="../static/vendor/chart.umd.min.js"></script>
+<script src="../static/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body data-static="1" data-base="../">
 <header class="app">
+  
+  <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
   <a class="logo" href="../index.html">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -75,12 +84,12 @@
       <span class="chip">₪0.41 / part</span>
       
       <span class="chip" id="figPctChip"
-            data-used="37"
-            data-new="32"
+            data-used="34"
+            data-new="29"
             data-partial-used=""
             data-partial-new=""
             title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
-        🧍 37% of value in figs</span>
+        🧍 34% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -110,7 +119,7 @@
     <div class="value" style="">₪157</div>
     <div class="delta">
       <span class="delta up">▲ 5%</span> vs retail
-       · +1.8%/yr
+       · +1.6%/yr
     </div>
     <div style="margin-top:6px"><span class="chip" style="color:var(--ink-2)"
         title="24 BrickLink sales (28 units) in the last six months — sells about monthly.">
@@ -182,7 +191,7 @@
     <h3>Value vs retail</h3>
     <div class="vsbars">
       <div class="vsrow"><span>Retail</span>
-        <div class="track"><div class="fill retail" style="width:94.9%"></div></div>
+        <div class="track"><div class="fill retail" style="width:95.4%"></div></div>
         <span class="num" title="$49.99 at launch">₪149</span></div>
       <div class="vsrow"><span>Value new</span>
         <div class="track"><div class="fill" style="width:100.0%"></div></div>
@@ -194,7 +203,7 @@
     
     <div style="color:var(--ink-2);font-size:12.5px;margin-top:10px">
       A buyer at retail is <span class="delta up">▲ 5%</span> today,
-      compounding at +1.8% a year.
+      compounding at +1.6% a year.
     </div>
     
   </div>
@@ -211,7 +220,7 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪3.52</div>
+        <div class="value" style="font-size:22px">₪3.45</div>
         <div class="delta up">
           −88% vs theme
         </div>
@@ -246,7 +255,7 @@
       <div class="offer">
         
         <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
-        <div class="price">₪482</div>
+        <div class="price">₪484</div>
         <div class="meta">$162 native<br>“LEGO Marvel 76247 Hulkbuster: Battle of Wakanda (385 pcs) 2023, BNIB, retired Opens in a new window or tab”</div>
       </div>
       
@@ -264,19 +273,19 @@
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
-              data-figs="50.66"
-              data-parts="122.36"
+              data-figs="45.45"
+              data-parts="128.44"
               data-ccy="ILS"></canvas>
     </div>
     <div style="flex:1;min-width:220px">
       <dl class="kv">
         
         <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
-        <dd>₪50.66 · 29% of part-out</dd>
+        <dd>₪45.45 · 26% of part-out</dd>
         <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
-        <dd>₪122 · 71% of part-out</dd>
+        <dd>₪128 · 74% of part-out</dd>
         <dt>Part-out total</dt>
-        <dd><b>₪173</b></dd>
+        <dd><b>₪174</b></dd>
       </dl>
       <div style="color:var(--muted);font-size:12px;margin-top:10px">
         Slices are of the <b>part-out value</b> — what the set fetches broken up, at
@@ -296,7 +305,7 @@
 <div class="card" id="importCard"
      data-vat="18.0"
      data-ship-usd="25.0"
-     data-ship-rate="2.9728"
+     data-ship-rate="2.9877999999999996"
      data-ccy="ILS">
   <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
   <div class="table-scroll">
@@ -314,7 +323,7 @@
         <td>New / sealed</td>
         <td class="num">₪157</td>
         <td class="num">₪28.18</td>
-        <td class="num import-ship">₪74.32</td>
+        <td class="num import-ship">₪74.69</td>
         <td class="num import-total"><b>₪259</b></td>
       </tr>
       
@@ -325,7 +334,7 @@
         <td>Used</td>
         <td class="num">₪98.55</td>
         <td class="num">₪17.74</td>
-        <td class="num import-ship">₪74.32</td>
+        <td class="num import-ship">₪74.69</td>
         <td class="num import-total"><b>₪191</b></td>
       </tr>
       
@@ -379,8 +388,8 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
             eBay
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
-        <td class="num">₪572</td>
-        <td class="num">₪421</td>
+        <td class="num">₪575</td>
+        <td class="num">₪423</td>
         <td class="num">13</td>
         <td class="num">12</td>
         <td>USD</td>
@@ -416,7 +425,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 4 in this set<span id="figsTotalLabel">, ₪36.18 together</span></span></h3>
+  <h3>Minifigures <span class="soft">— 4 in this set<span id="figsTotalLabel">, ₪33.37 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -430,8 +439,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used="₪36.18"
-         data-total-new="₪50.66">
+         data-total-used="₪33.37"
+         data-total-new="₪45.45">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -450,12 +459,12 @@
     
     
     <a class="figtile" href="../sets/sh0854.html" title="Bruce Banner - Dark Bluish Gray Legs"
-       data-value="18.76" data-name="bruce banner - dark bluish gray legs" data-qty="1"
-       data-v-used="18.76" data-v-new="25.96"
-       data-price-used="₪18.76"
-       data-price-new="₪25.96"
-       data-share-used="19.0% of set"
-       data-share-new="16.6% of set">
+       data-value="16.75" data-name="bruce banner - dark bluish gray legs" data-qty="1"
+       data-v-used="16.75" data-v-new="21.22"
+       data-price-used="₪16.75"
+       data-price-new="₪21.22"
+       data-share-used="17.0% of set"
+       data-share-new="13.6% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0854.png" alt="Bruce Banner - Dark Bluish Gray Legs" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -463,18 +472,18 @@
       </div>
       <div class="figtile-id">sh0854</div>
       <div class="figtile-name">Bruce Banner - Dark Bluish Gray Legs</div>
-      <div class="figtile-value">₪18.76</div>
-      <div class="figtile-share">19.0% of set</div>
+      <div class="figtile-value">₪16.75</div>
+      <div class="figtile-share">17.0% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0870.html" title="Okoye - Red Top, Shoulder Armor"
-       data-value="8.17" data-name="okoye - red top, shoulder armor" data-qty="1"
-       data-v-used="8.17" data-v-new="8.65"
-       data-price-used="₪8.17"
-       data-price-new="₪8.65"
-       data-share-used="8.3% of set"
+       data-value="7.74" data-name="okoye - red top, shoulder armor" data-qty="1"
+       data-v-used="7.74" data-v-new="8.55"
+       data-price-used="₪7.74"
+       data-price-new="₪8.55"
+       data-share-used="7.9% of set"
        data-share-new="5.5% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0870.png" alt="Okoye - Red Top, Shoulder Armor" loading="lazy"
@@ -483,19 +492,19 @@
       </div>
       <div class="figtile-id">sh0870</div>
       <div class="figtile-name">Okoye - Red Top, Shoulder Armor</div>
-      <div class="figtile-value">₪8.17</div>
-      <div class="figtile-share">8.3% of set</div>
+      <div class="figtile-value">₪7.74</div>
+      <div class="figtile-share">7.9% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0871.html" title="Outrider - Extended Arms, Torso with Short Dark Bluish Gray Tips at Neck"
-       data-value="5.24" data-name="outrider - extended arms, torso with short dark bluish gray tips at neck" data-qty="1"
-       data-v-used="5.24" data-v-new="9.39"
-       data-price-used="₪5.24"
-       data-price-new="₪9.39"
-       data-share-used="5.3% of set"
-       data-share-new="6.0% of set">
+       data-value="4.98" data-name="outrider - extended arms, torso with short dark bluish gray tips at neck" data-qty="1"
+       data-v-used="4.98" data-v-new="8.78"
+       data-price-used="₪4.98"
+       data-price-new="₪8.78"
+       data-share-used="5.1% of set"
+       data-share-new="5.6% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0871.png" alt="Outrider - Extended Arms, Torso with Short Dark Bluish Gray Tips at Neck" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -503,19 +512,19 @@
       </div>
       <div class="figtile-id">sh0871</div>
       <div class="figtile-name">Outrider - Extended Arms, Torso with Short Dark Bluish Gray Tips at Neck</div>
-      <div class="figtile-value">₪5.24</div>
-      <div class="figtile-share">5.3% of set</div>
+      <div class="figtile-value">₪4.98</div>
+      <div class="figtile-share">5.1% of set</div>
     </a>
     
     
     
     <a class="figtile" href="../sets/sh0872.html" title="Outrider - Torso with Short Dark Bluish Gray Tips at Neck"
-       data-value="4.01" data-name="outrider - torso with short dark bluish gray tips at neck" data-qty="1"
-       data-v-used="4.01" data-v-new="6.66"
-       data-price-used="₪4.01"
-       data-price-new="₪6.66"
-       data-share-used="4.1% of set"
-       data-share-new="4.3% of set">
+       data-value="3.9" data-name="outrider - torso with short dark bluish gray tips at neck" data-qty="1"
+       data-v-used="3.9" data-v-new="6.9"
+       data-price-used="₪3.90"
+       data-price-new="₪6.90"
+       data-share-used="4.0% of set"
+       data-share-new="4.4% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0872.png" alt="Outrider - Torso with Short Dark Bluish Gray Tips at Neck" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -523,8 +532,8 @@
       </div>
       <div class="figtile-id">sh0872</div>
       <div class="figtile-name">Outrider - Torso with Short Dark Bluish Gray Tips at Neck</div>
-      <div class="figtile-value">₪4.01</div>
-      <div class="figtile-share">4.1% of set</div>
+      <div class="figtile-value">₪3.90</div>
+      <div class="figtile-share">4.0% of set</div>
     </a>
     
   </div>
@@ -542,16 +551,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0854.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0854.html"><b>sh0854</b> Bruce Banner - Dark Bluish Gray Legs</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="18.76"
-            data-v-used="18.76" data-v-new="25.96"
-            data-price-used="₪18.76"
-            data-price-new="₪25.96"
-            >₪18.76</td>
-        <td class="num figcell-share" data-v="19.036022323693558"
-            data-v-used="19.036022323693558" data-v-new="16.582561481954645"
-            data-share-used="19.0%"
-            data-share-new="16.6%"
-            >19.0%</td>
+        <td class="num figcell-value" data-v="16.75"
+            data-v-used="16.75" data-v-new="21.22"
+            data-price-used="₪16.75"
+            data-price-new="₪21.22"
+            >₪16.75</td>
+        <td class="num figcell-share" data-v="16.99644850329782"
+            data-v-used="16.99644850329782" data-v-new="13.55477483232194"
+            data-share-used="17.0%"
+            data-share-new="13.6%"
+            >17.0%</td>
       </tr>
       
       
@@ -560,16 +569,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0870.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0870.html"><b>sh0870</b> Okoye - Red Top, Shoulder Armor</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="8.17"
-            data-v-used="8.17" data-v-new="8.65"
-            data-price-used="₪8.17"
-            data-price-new="₪8.65"
-            >₪8.17</td>
-        <td class="num figcell-share" data-v="8.290208016235413"
-            data-v-used="8.290208016235413" data-v-new="5.5253912488023"
-            data-share-used="8.3%"
+        <td class="num figcell-value" data-v="7.74"
+            data-v-used="7.74" data-v-new="8.55"
+            data-price-used="₪7.74"
+            data-price-new="₪8.55"
+            >₪7.74</td>
+        <td class="num figcell-share" data-v="7.853881278538813"
+            data-v-used="7.853881278538813" data-v-new="5.461513893324817"
+            data-share-used="7.9%"
             data-share-new="5.5%"
-            >8.3%</td>
+            >7.9%</td>
       </tr>
       
       
@@ -578,16 +587,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0871.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0871.html"><b>sh0871</b> Outrider - Extended Arms, Torso with Short Dark Bluish Gray Tips at Neck</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="5.24"
-            data-v-used="5.24" data-v-new="9.39"
-            data-price-used="₪5.24"
-            data-price-new="₪9.39"
-            >₪5.24</td>
-        <td class="num figcell-share" data-v="5.3170979198376465"
-            data-v-used="5.3170979198376465" data-v-new="5.998083679335675"
-            data-share-used="5.3%"
-            data-share-new="6.0%"
-            >5.3%</td>
+        <td class="num figcell-value" data-v="4.98"
+            data-v-used="4.98" data-v-new="8.78"
+            data-price-used="₪4.98"
+            data-price-new="₪8.78"
+            >₪4.98</td>
+        <td class="num figcell-share" data-v="5.053272450532726"
+            data-v-used="5.053272450532726" data-v-new="5.608431810923027"
+            data-share-used="5.1%"
+            data-share-new="5.6%"
+            >5.1%</td>
       </tr>
       
       
@@ -596,16 +605,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0872.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0872.html"><b>sh0872</b> Outrider - Torso with Short Dark Bluish Gray Tips at Neck</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="4.01"
-            data-v-used="4.01" data-v-new="6.66"
-            data-price-used="₪4.01"
-            data-price-new="₪6.66"
-            >₪4.01</td>
-        <td class="num figcell-share" data-v="4.069000507356671"
-            data-v-used="4.069000507356671" data-v-new="4.254231874800383"
-            data-share-used="4.1%"
-            data-share-new="4.3%"
-            >4.1%</td>
+        <td class="num figcell-value" data-v="3.9"
+            data-v-used="3.9" data-v-new="6.9"
+            data-price-used="₪3.90"
+            data-price-new="₪6.90"
+            >₪3.90</td>
+        <td class="num figcell-share" data-v="3.95738203957382"
+            data-v-used="3.95738203957382" data-v-new="4.407537527946343"
+            data-share-used="4.0%"
+            data-share-new="4.4%"
+            >4.0%</td>
       </tr>
       
     </tbody>
@@ -613,23 +622,23 @@
     <tfoot>
       <tr class="total"><td>Figs total</td><td class="num"></td>
           <td class="num" id="figFootValue"
-              data-price-used="₪36.18"
-              data-price-new="₪50.66"
-              >₪36.18</td>
+              data-price-used="₪33.37"
+              data-price-new="₪45.45"
+              >₪33.37</td>
           <td class="num" id="figFootShare"
-              data-share-used="37%"
-              data-share-new="32%"
-              >37%</td></tr>
+              data-share-used="34%"
+              data-share-new="29%"
+              >34%</td></tr>
     </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used="Figs are 37% of the used set price → not a part-out candidate (flag raises at 80%)."
-       data-note-new="Figs are 32% of the sealed set price → not a part-out candidate (flag raises at 80%).">
+       data-note-used="Figs are 34% of the used set price → not a part-out candidate (flag raises at 80%)."
+       data-note-new="Figs are 29% of the sealed set price → not a part-out candidate (flag raises at 80%).">
     
-      Figs are <b>37% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Figs are <b>34% of the used set price</b> → not a part-out candidate (flag raises at 80%).
       
     
   </div>
@@ -649,7 +658,7 @@
   <div class="searchrow" style="margin-bottom:8px">
     <span class="chip on">137 lots · 380 parts</span>
     
-    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪173</b>
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪174</b>
       &nbsp;· premium <span class="delta up">▲ 11%</span> vs set</span>
     
     <span class="spacer"></span>
@@ -1532,6 +1541,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788193104"></script>
+<script src="../static/app.js?v=1788224195"></script>
 </body>
 </html>

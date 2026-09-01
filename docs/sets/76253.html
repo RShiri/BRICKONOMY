@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>76253 Guardians of the Galaxy Headquarters · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788193104">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<link rel="stylesheet" href="../static/style.css?v=1788224195">
+<link rel="manifest" href="../static/manifest.webmanifest">
+<meta name="theme-color" content="#070b16">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Brickonomy">
+<link rel="apple-touch-icon" href="../static/icons/apple-touch-icon.png">
+<script src="../static/vendor/chart.umd.min.js"></script>
+<script src="../static/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body data-static="1" data-base="../">
 <header class="app">
+  
+  <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
   <a class="logo" href="../index.html">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -74,12 +83,12 @@
       <span class="chip">₪0.47 / part</span>
       
       <span class="chip" id="figPctChip"
-            data-used="39"
-            data-new="29"
+            data-used="38"
+            data-new="26"
             data-partial-used="1"
             data-partial-new="1"
             title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
-        🧍 39% of value in figs (partial)</span>
+        🧍 38% of value in figs (partial)</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -189,9 +198,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪3.52</div>
+        <div class="value" style="font-size:22px">₪3.45</div>
         <div class="delta up">
-          −87% vs theme
+          −86% vs theme
         </div>
       </div>
       
@@ -224,7 +233,7 @@
       <div class="offer">
         
         <div><span class="dot" style="background:var(--s3)"></span> <b>eBay</b></div>
-        <div class="price">₪51.01</div>
+        <div class="price">₪51.27</div>
         <div class="meta">$17.16 native<br>“LEGO MARVEL MINIFIGURE ``STAR-LORD ́ ́ Ref 76253 ORIGINAL LEGO Opens in a new window or tab”</div>
       </div>
       
@@ -250,19 +259,19 @@
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
-              data-figs="9.11"
-              data-parts="29.21"
+              data-figs="8.26"
+              data-parts="30.25"
               data-ccy="ILS"></canvas>
     </div>
     <div style="flex:1;min-width:220px">
       <dl class="kv">
         
         <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
-        <dd>₪9.11 · 24% of part-out</dd>
+        <dd>₪8.26 · 21% of part-out</dd>
         <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
-        <dd>₪29.21 · 76% of part-out</dd>
+        <dd>₪30.25 · 79% of part-out</dd>
         <dt>Part-out total</dt>
-        <dd><b>₪38.32</b></dd>
+        <dd><b>₪38.51</b></dd>
       </dl>
       <div style="color:var(--muted);font-size:12px;margin-top:10px">
         Slices are of the <b>part-out value</b> — what the set fetches broken up, at
@@ -283,7 +292,7 @@
 <div class="card" id="importCard"
      data-vat="18.0"
      data-ship-usd="25.0"
-     data-ship-rate="2.9728"
+     data-ship-rate="2.9877999999999996"
      data-ccy="ILS">
   <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
   <div class="table-scroll">
@@ -301,7 +310,7 @@
         <td>New / sealed</td>
         <td class="num">₪31.60</td>
         <td class="num">₪5.69</td>
-        <td class="num import-ship">₪74.32</td>
+        <td class="num import-ship">₪74.69</td>
         <td class="num import-total"><b>₪112</b></td>
       </tr>
       
@@ -312,8 +321,8 @@
         <td>Used</td>
         <td class="num">₪18.49</td>
         <td class="num">₪3.33</td>
-        <td class="num import-ship">₪74.32</td>
-        <td class="num import-total"><b>₪96.14</b></td>
+        <td class="num import-ship">₪74.69</td>
+        <td class="num import-total"><b>₪96.51</b></td>
       </tr>
       
       
@@ -366,8 +375,8 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
             eBay
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
-        <td class="num">₪110</td>
-        <td class="num">₪84.43</td>
+        <td class="num">₪111</td>
+        <td class="num">₪84.85</td>
         <td class="num">6</td>
         <td class="num">24</td>
         <td>USD</td>
@@ -403,7 +412,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 2 in this set<span id="figsTotalLabel">, ₪7.24 together</span></span></h3>
+  <h3>Minifigures <span class="soft">— 2 in this set<span id="figsTotalLabel">, ₪7.06 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -417,8 +426,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used="₪7.24"
-         data-total-new="₪9.11">
+         data-total-used="₪7.06"
+         data-total-new="₪8.26">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -437,12 +446,12 @@
     
     
     <a class="figtile" href="../sets/sh0873.html" title="Star-Lord - Dark Blue Suit"
-       data-value="7.24" data-name="star-lord - dark blue suit" data-qty="1"
-       data-v-used="7.24" data-v-new="9.11"
-       data-price-used="₪7.24"
-       data-price-new="₪9.11"
-       data-share-used="39.2% of set"
-       data-share-new="28.8% of set">
+       data-value="7.06" data-name="star-lord - dark blue suit" data-qty="1"
+       data-v-used="7.06" data-v-new="8.26"
+       data-price-used="₪7.06"
+       data-price-new="₪8.26"
+       data-share-used="38.2% of set"
+       data-share-new="26.1% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0873.png" alt="Star-Lord - Dark Blue Suit" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -450,8 +459,8 @@
       </div>
       <div class="figtile-id">sh0873</div>
       <div class="figtile-name">Star-Lord - Dark Blue Suit</div>
-      <div class="figtile-value">₪7.24</div>
-      <div class="figtile-share">39.2% of set</div>
+      <div class="figtile-value">₪7.06</div>
+      <div class="figtile-share">38.2% of set</div>
     </a>
     
     
@@ -489,16 +498,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0873.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0873.html"><b>sh0873</b> Star-Lord - Dark Blue Suit</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="7.24"
-            data-v-used="7.24" data-v-new="9.11"
-            data-price-used="₪7.24"
-            data-price-new="₪9.11"
-            >₪7.24</td>
-        <td class="num figcell-share" data-v="39.15630070308275"
-            data-v-used="39.15630070308275" data-v-new="28.82911392405063"
-            data-share-used="39.2%"
-            data-share-new="28.8%"
-            >39.2%</td>
+        <td class="num figcell-value" data-v="7.06"
+            data-v-used="7.06" data-v-new="8.26"
+            data-price-used="₪7.06"
+            data-price-new="₪8.26"
+            >₪7.06</td>
+        <td class="num figcell-share" data-v="38.18280151433207"
+            data-v-used="38.18280151433207" data-v-new="26.139240506329113"
+            data-share-used="38.2%"
+            data-share-new="26.1%"
+            >38.2%</td>
       </tr>
       
       
@@ -524,23 +533,23 @@
     <tfoot>
       <tr class="total"><td>Figs total</td><td class="num"></td>
           <td class="num" id="figFootValue"
-              data-price-used="₪7.24"
-              data-price-new="₪9.11"
-              >₪7.24</td>
+              data-price-used="₪7.06"
+              data-price-new="₪8.26"
+              >₪7.06</td>
           <td class="num" id="figFootShare"
-              data-share-used="39%"
-              data-share-new="29%"
-              >39%</td></tr>
+              data-share-used="38%"
+              data-share-new="26%"
+              >38%</td></tr>
     </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used="Figs are 39% of the used set price → not a part-out candidate (flag raises at 80%). Only 1 of 2 figs have a used price, so the true share is higher."
-       data-note-new="Figs are 29% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 1 of 2 figs have a new price, so the true share is higher.">
+       data-note-used="Figs are 38% of the used set price → not a part-out candidate (flag raises at 80%). Only 1 of 2 figs have a used price, so the true share is higher."
+       data-note-new="Figs are 26% of the sealed set price → not a part-out candidate (flag raises at 80%). Only 1 of 2 figs have a new price, so the true share is higher.">
     
-      Figs are <b>39% of the used set price</b> → not a part-out candidate (flag raises at 80%).
+      Figs are <b>38% of the used set price</b> → not a part-out candidate (flag raises at 80%).
       Only 1 of 2 figs have a used price, so the true share is higher.
     
   </div>
@@ -560,8 +569,8 @@
   <div class="searchrow" style="margin-bottom:8px">
     <span class="chip on">48 lots · 62 parts</span>
     
-    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪38.32</b>
-      &nbsp;· premium <span class="delta up">▲ 21%</span> vs set</span>
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪38.51</b>
+      &nbsp;· premium <span class="delta up">▲ 22%</span> vs set</span>
     
     <span class="spacer"></span>
     <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
@@ -1025,6 +1034,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788193104"></script>
+<script src="../static/app.js?v=1788224195"></script>
 </body>
 </html>

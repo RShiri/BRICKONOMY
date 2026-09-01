@@ -14,7 +14,7 @@ from datetime import datetime
 from pathlib import Path
 
 from fastapi import FastAPI, Form, Request, UploadFile
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -163,6 +163,20 @@ def asset_version():
         except OSError:
             pass
     return str(stamp)
+
+
+@app.get("/sw.js")
+def service_worker():
+    """The service worker, stamped with the current asset version.
+
+    Served from the root, not /static/: a worker's scope can only reach as
+    deep as the URL it was loaded from. no-cache so a redeploy is noticed on
+    the next load rather than whenever a far-future cache expires.
+    """
+    src = (BASE_DIR / "static" / "sw.js").read_text(encoding="utf-8")
+    return Response(src.replace("__BRICKONOMY_VERSION__", asset_version()),
+                    media_type="application/javascript",
+                    headers={"Cache-Control": "no-cache"})
 
 
 def ctx(request: Request, conn, **extra):

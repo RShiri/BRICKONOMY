@@ -38,6 +38,7 @@ one, so it can never happen by forgetting a password. See lockbox.py.
 import argparse
 import json
 import shutil
+from datetime import datetime
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -206,7 +207,15 @@ def _crawl(webapp, out_dir: str, quiet: bool):
     n_json += save("/api/index", "api/index.json")
 
     static_src = Path(webapp.BASE_DIR) / "static"
-    shutil.copytree(static_src, out / "static", dirs_exist_ok=True)
+    # sw.js is excluded: a worker's scope can only reach as deep as its own
+    # URL, so the stamped copy below lives at the export root instead.
+    shutil.copytree(static_src, out / "static", dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("sw.js"))
+    stamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    (out / "sw.js").write_text(
+        (static_src / "sw.js").read_text(encoding="utf-8")
+        .replace("__BRICKONOMY_VERSION__", stamp),
+        encoding="utf-8")
     (out / ".nojekyll").write_text("")
 
     log(f"Exported {n_pages} pages + {n_json} JSON files to {out}/")

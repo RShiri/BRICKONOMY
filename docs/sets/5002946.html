@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>5002946 Silver Centurion · Brickonomy</title>
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f8cff'/%3E%3Crect x='7' y='13' width='18' height='11' rx='2' fill='%23e8edfb'/%3E%3Crect x='10' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3Crect x='17' y='9' width='5' height='5' rx='1.5' fill='%23e8edfb'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="../static/style.css?v=1788193104">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<link rel="stylesheet" href="../static/style.css?v=1788224195">
+<link rel="manifest" href="../static/manifest.webmanifest">
+<meta name="theme-color" content="#070b16">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Brickonomy">
+<link rel="apple-touch-icon" href="../static/icons/apple-touch-icon.png">
+<script src="../static/vendor/chart.umd.min.js"></script>
+<script src="../static/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body data-static="1" data-base="../">
 <header class="app">
+  
+  <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
   <a class="logo" href="../index.html">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -74,12 +83,12 @@
       <span class="chip">₪21.78 / part</span>
       
       <span class="chip" id="figPctChip"
-            data-used="111"
-            data-new="128"
+            data-used="110"
+            data-new="96"
             data-partial-used=""
             data-partial-new=""
             title="Share of the set's value that sits in its minifigs, comparing like with like — used figs against the used set price. The doughnut below answers a different question and so gives a different number: there the figures are a share of the part-out total, not of the whole set's price.">
-        🧍 111% of value in figs</span>
+        🧍 110% of value in figs</span>
       
       <span class="chip"><span class="dot" style="background:var(--s2)"></span>Retired</span>
       
@@ -177,9 +186,9 @@
       
       <div class="tile" style="background:transparent;border:0;padding:0">
         <div class="label">Super Heroes Marvel average</div>
-        <div class="value" style="font-size:22px">₪3.52</div>
+        <div class="value" style="font-size:22px">₪3.45</div>
         <div class="delta down">
-          519% vs theme
+          531% vs theme
         </div>
       </div>
       
@@ -230,7 +239,7 @@
   <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
     <div style="flex:0 1 220px;height:220px;position:relative;min-width:0">
       <canvas id="splitChart"
-              data-figs="245.82"
+              data-figs="247.06"
               data-parts="0.00"
               data-ccy="ILS"></canvas>
     </div>
@@ -238,11 +247,11 @@
       <dl class="kv">
         
         <dt><span class="sw" style="background:var(--s1)"></span> Minifigures</dt>
-        <dd>₪246 · 100% of part-out</dd>
+        <dd>₪247 · 100% of part-out</dd>
         <dt><span class="sw" style="background:var(--s2)"></span> Parts</dt>
         <dd>₪0.00 · 0% of part-out</dd>
         <dt>Part-out total</dt>
-        <dd><b>₪246</b></dd>
+        <dd><b>₪247</b></dd>
       </dl>
       <div style="color:var(--muted);font-size:12px;margin-top:10px">
         Slices are of the <b>part-out value</b> — what the set fetches broken up, at
@@ -264,7 +273,7 @@
 <div class="card" id="importCard"
      data-vat="18.0"
      data-ship-usd="25.0"
-     data-ship-rate="2.9728"
+     data-ship-rate="2.9877999999999996"
      data-ccy="ILS">
   <h3>Cost to import <span class="soft">— buying abroad and shipping to Israel</span></h3>
   <div class="table-scroll">
@@ -282,7 +291,7 @@
         <td>New / sealed</td>
         <td class="num">₪261</td>
         <td class="num">₪47.05</td>
-        <td class="num import-ship">₪74.32</td>
+        <td class="num import-ship">₪74.69</td>
         <td class="num import-total"><b>₪383</b></td>
       </tr>
       
@@ -293,8 +302,8 @@
         <td>Used</td>
         <td class="num">₪228</td>
         <td class="num">₪41.03</td>
-        <td class="num import-ship">₪74.32</td>
-        <td class="num import-total"><b>₪343</b></td>
+        <td class="num import-ship">₪74.69</td>
+        <td class="num import-total"><b>₪344</b></td>
       </tr>
       
       
@@ -347,8 +356,8 @@
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s3)"></span>
             eBay
             <span class="chip" style="color:var(--muted)" title="Scraped and shown for reference, but excluded from the valuation">reference</span></td>
-        <td class="num">₪1,204</td>
-        <td class="num">₪513</td>
+        <td class="num">₪1,210</td>
+        <td class="num">₪515</td>
         <td class="num">2</td>
         <td class="num">1</td>
         <td>USD</td>
@@ -384,7 +393,7 @@
 </div>
 
 <div class="card">
-  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel">, ₪253 together</span></span></h3>
+  <h3>Minifigures <span class="soft">— 1 in this set<span id="figsTotalLabel">, ₪252 together</span></span></h3>
   
   <div class="searchrow" style="margin-bottom:12px">
     <label class="chip" style="gap:8px">Sort
@@ -398,8 +407,8 @@
     <!-- Used leads: a figure pulled from a set is a used figure, and the
          sealed-new price is roughly double what a part-out actually gets. -->
     <div class="toggle" id="figCond"
-         data-total-used="₪253"
-         data-total-new="₪333">
+         data-total-used="₪252"
+         data-total-new="₪252">
       <button type="button" class="chip on" data-cond="used"
               title="What the figures fetch loose — the realistic part-out price">Used</button>
       <button type="button" class="chip" data-cond="new"
@@ -418,12 +427,12 @@
     
     
     <a class="figtile" href="../sets/sh0232.html" title="Silver Centurion (Iron Man - Mark 33 Armor)"
-       data-value="252.9" data-name="silver centurion (iron man - mark 33 armor)" data-qty="1"
-       data-v-used="252.9" data-v-new="333.34"
-       data-price-used="₪253"
-       data-price-new="₪333"
-       data-share-used="111.0% of set"
-       data-share-new="127.5% of set">
+       data-value="251.82" data-name="silver centurion (iron man - mark 33 armor)" data-qty="1"
+       data-v-used="251.82" data-v-new="251.97"
+       data-price-used="₪252"
+       data-price-new="₪252"
+       data-share-used="110.5% of set"
+       data-share-new="96.4% of set">
       <div class="figtile-img">
         <img src="https://img.bricklink.com/ItemImage/MN/0/sh0232.png" alt="Silver Centurion (Iron Man - Mark 33 Armor)" loading="lazy"
              onerror="this.style.visibility='hidden'">
@@ -431,8 +440,8 @@
       </div>
       <div class="figtile-id">sh0232</div>
       <div class="figtile-name">Silver Centurion (Iron Man - Mark 33 Armor)</div>
-      <div class="figtile-value">₪253</div>
-      <div class="figtile-share">111.0% of set</div>
+      <div class="figtile-value">₪252</div>
+      <div class="figtile-share">110.5% of set</div>
     </a>
     
   </div>
@@ -450,16 +459,16 @@
         <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0232.png" alt="" loading="lazy"
        onerror="this.style.visibility='hidden'"><a href="../sets/sh0232.html"><b>sh0232</b> Silver Centurion (Iron Man - Mark 33 Armor)</a></td>
         <td class="num" data-v="1">1</td>
-        <td class="num figcell-value" data-v="252.9"
-            data-v-used="252.9" data-v-new="333.34"
-            data-price-used="₪253"
-            data-price-new="₪333"
-            >₪253</td>
-        <td class="num figcell-share" data-v="110.95025006580678"
-            data-v-used="110.95025006580678" data-v-new="127.53567739220262"
-            data-share-used="111.0%"
-            data-share-new="127.5%"
-            >111.0%</td>
+        <td class="num figcell-value" data-v="251.82"
+            data-v-used="251.82" data-v-new="251.97"
+            data-price-used="₪252"
+            data-price-new="₪252"
+            >₪252</td>
+        <td class="num figcell-share" data-v="110.47644116872861"
+            data-v-used="110.47644116872861" data-v-new="96.40356582622336"
+            data-share-used="110.5%"
+            data-share-new="96.4%"
+            >110.5%</td>
       </tr>
       
     </tbody>
@@ -467,23 +476,23 @@
     <tfoot>
       <tr class="total"><td>Figs total</td><td class="num"></td>
           <td class="num" id="figFootValue"
-              data-price-used="₪253"
-              data-price-new="₪333"
-              >₪253</td>
+              data-price-used="₪252"
+              data-price-new="₪252"
+              >₪252</td>
           <td class="num" id="figFootShare"
-              data-share-used="111%"
-              data-share-new="128%"
-              >111%</td></tr>
+              data-share-used="110%"
+              data-share-new="96%"
+              >110%</td></tr>
     </tfoot>
     
   </table>
   </div>
 
   <div style="color:var(--muted);font-size:12px;margin-top:10px" id="figNote"
-       data-note-used="Figs are 111% of the used set price → strong part-out candidate."
-       data-note-new="Figs are 128% of the sealed set price → strong part-out candidate.">
+       data-note-used="Figs are 110% of the used set price → strong part-out candidate."
+       data-note-new="Figs are 96% of the sealed set price → strong part-out candidate.">
     
-      Figs are <b>111% of the used set price</b> → strong part-out candidate.
+      Figs are <b>110% of the used set price</b> → strong part-out candidate.
       
     
   </div>
@@ -503,8 +512,8 @@
   <div class="searchrow" style="margin-bottom:8px">
     <span class="chip on">1 lots · 2 parts</span>
     
-    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪246</b>
-      &nbsp;· premium <span class="delta down">▼ 6%</span> vs set</span>
+    <span class="chip">Part-out value: <b style="color:var(--ink)">&nbsp;₪247</b>
+      &nbsp;· premium <span class="delta down">▼ 5%</span> vs set</span>
     
     <span class="spacer"></span>
     <input class="inp" type="search" data-filter-table="partsTable" placeholder="Filter parts…" aria-label="Filter parts">
@@ -592,6 +601,6 @@
   
 </footer>
 
-<script src="../static/app.js?v=1788193104"></script>
+<script src="../static/app.js?v=1788224195"></script>
 </body>
 </html>

@@ -1098,3 +1098,16 @@
     render();
   }
 })();
+
+/* PWA: register the service worker. Live server: /sw.js (a route that stamps
+   the version). Static export: sw.js sits at the export root, so climb there
+   with the page's own base prefix — the scope then covers the whole site
+   wherever it is mounted (github.io/<repo>/, a custom domain, /docs). */
+if ("serviceWorker" in navigator) {
+  var swUrl = document.body.dataset.static === "1"
+    ? (document.body.dataset.base || "") + "sw.js"
+    : "/sw.js";
+  navigator.serviceWorker.register(swUrl).catch(function () {
+    /* http:// LAN preview or an old browser — the site works without it. */
+  });
+}

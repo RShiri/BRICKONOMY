@@ -413,6 +413,55 @@ class BrickLinkSource(BaseScraper):
     # codeComplete: B is a part of the item, C the whole thing, S still sealed.
     _INCOMPLETE_CODE = "B"
 
+
+    # The offers endpoint is an XHR the catalog page makes, and it is treated
+    # as one: called cold it answers 403, and only a client carrying the
+    # cookies that page sets — and naming it as the referer — gets JSON. The
+    # first attempt appeared to work only because _get fell back to Selenium,
+    # which had them; the moment plain HTTP was used it was refused, and 40
+    # sets in a row recorded "no offers" for what was really a closed door.
+    #
+    # One session per process, warmed once. After that an item costs a single
+    # request, which is both faster and politer than the two it replaced.
+    _ifs_session = None
+
+    @classmethod
+    def _offers_session(cls):
+        import requests
+
+        if cls._ifs_session is not None:
+            return cls._ifs_session
+        session = requests.Session()
+        session.headers.update({"User-Agent": USER_AGENT})
+        try:
+            session.get(f"{BASE_URL}?S=75192-1", timeout=25)
+        except Exception:
+            pass                      # an unwarmed session still gets a try
+        cls._ifs_session = session
+        return session
+
+    @classmethod
+    def _get_offers_json(cls, internal_id, item_id, item_type, per_page):
+        session = cls._offers_session()
+        referer = f"{BASE_URL}?{item_type}={item_id}"
+        try:
+            resp = session.get(
+                f"{cls.IFS_URL}?itemid={internal_id}&rpp={per_page}&pi=1&ci=0",
+                headers={"Referer": referer, "X-Requested-With": "XMLHttpRequest"},
+                timeout=25)
+        except Exception as exc:
+            return None, f"{type(exc).__name__}: {exc}"
+        if resp.status_code == 403:
+            # The session has gone stale; drop it so the next call rebuilds one
+            # rather than every remaining item inheriting the refusal.
+            cls._ifs_session = None
+            return None, "refused (403) — session expired"
+        if resp.status_code != 200:
+            return None, f"HTTP {resp.status_code}"
+        if not resp.text.lstrip().startswith("{"):
+            return None, "not JSON (blocked or challenged)"
+        return resp.text, None
+
     @staticmethod
     def find_internal_id(item_id: str, item_type: str = "S"):
         """BrickLink's numeric id for an item, or None.
@@ -464,20 +513,22 @@ class BrickLinkSource(BaseScraper):
             })
         return out
 
-    def fetch_offers(self, item_id: str, internal_id: int, per_page: int = 200):
+    def fetch_offers(self, item_id: str, internal_id: int, item_type: str = "S",
+                     per_page: int = 200):
         """(offers, error) — every current listing for the item.
 
         `internal_id` comes from find_internal_id and is expected to be cached
         by the caller; this method never looks it up, so a scan costs one
         request per item rather than two.
         """
-        html, error = self._get(
-            f"{self.IFS_URL}?itemid={internal_id}&rpp={per_page}&pi=1&ci=0")
-        if not html:
+        payload, error = self._get_offers_json(internal_id, item_id,
+                                               item_type, per_page)
+        if not payload:
             return [], error
-        offers = self.parse_offers(html)
-        if not offers:
-            return [], "no offers parsed"
+        offers = self.parse_offers(payload)
+        # An item with no listings is a fact about the market, not a failure,
+        # and must not read like one — that distinction is what 40 "no offers
+        # parsed" lines hid.
         return offers, None
 
     def parse_minifig_inventory(self, html: str):
@@ -553,9 +604,26 @@ class BrickLinkSource(BaseScraper):
         except Exception as exc:
             error = f"{type(exc).__name__}: {exc}"
         html, browser_error = BrickLinkSource._get_browser(url)
-        if html:
+        if html and not BrickLinkSource._is_error_page(html):
             return html, None
+        if html:
+            # Chrome renders its own page when a request fails, and returning
+            # that as content made a refused request look like an item with
+            # nothing to say: 40 sets in a row reported "no offers parsed"
+            # when what had actually happened was that BrickLink stopped
+            # answering us.
+            browser_error = "browser returned an error page (blocked or offline)"
         return None, f"{error}; browser fallback: {browser_error}"
+
+    # Chromium's built-in error pages carry this stylesheet variable and the
+    # neterror body class; real BrickLink pages carry neither.
+    _ERROR_PAGE_MARKERS = ("--error-code-color", "id=\"main-frame-error\"",
+                           "chrome-error://", "ERR_")
+
+    @staticmethod
+    def _is_error_page(html):
+        head = html[:4000]
+        return any(m in head for m in BrickLinkSource._ERROR_PAGE_MARKERS)
 
     @staticmethod
     def _get_browser(url):

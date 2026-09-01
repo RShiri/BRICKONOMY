@@ -301,9 +301,13 @@ def _refresh_offers(conn, item_id, item_type="S", force=False, log=print):
         dbq.upsert_item(conn, item_id, bricklink_id=internal)
         conn.commit()
 
-    offers, err = src.fetch_offers(item_id, internal)
+    offers, err = src.fetch_offers(item_id, internal, item_type or "S")
     if err:
         log(f"  ✘ offers: {err}")
+        return True
+    if not offers:
+        # Nothing for sale is a fact about the market, not a failed scrape.
+        log("  ○ offers: nothing listed right now")
         return True
 
     for condition in ("new", "used"):
@@ -325,6 +329,8 @@ def _refresh_offers(conn, item_id, item_type="S", force=False, log=print):
     conn.commit()
     kept = sum(1 for o in offers if o["complete"])
     log(f"  ⚙ offers: {kept} whole of {len(offers)} listings")
+    if not kept:
+        log("      every listing is a part of the item, not the item")
     return True
 
 

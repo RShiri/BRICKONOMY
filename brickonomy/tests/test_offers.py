@@ -183,3 +183,25 @@ class TestOffersCountAsWork:
             assert [i for i, _ in select_targets(c, scope="offers")] == ["76049"]
         finally:
             c.close()
+
+
+class TestFailuresAreDistinguishable:
+    """A refused request and an item nobody is selling are different things,
+    and reporting both as "no offers parsed" is what let 40 sets in a row
+    record silence for what was really a 403."""
+
+    def test_an_empty_market_is_not_an_error(self):
+        assert BrickLinkSource.parse_offers(payload([])) == []
+
+    def test_a_chromium_error_page_is_not_content(self):
+        """_get fell back to a browser, the browser rendered its own error
+        page, and that came back as if BrickLink had answered."""
+        err_page = ('<html><head><style>body { --error-code-color: '
+                    'var(--google-gray-700); }</style></head>'
+                    '<body id="main-frame-error">ERR_FAILED</body></html>')
+        assert BrickLinkSource._is_error_page(err_page) is True
+
+    def test_a_real_answer_is_not_mistaken_for_one(self):
+        assert BrickLinkSource._is_error_page('{"total_count": 58}') is False
+        assert BrickLinkSource._is_error_page(
+            "<html><body>Avenjet Space Mission</body></html>") is False

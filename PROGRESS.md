@@ -205,9 +205,23 @@ the leaderboard need the same believability rules.
 ## Wave 4 — Polish
 *Fully parallel, any order.*
 
-### [ ] E1 · PWA — ½ session — depends: **Pages enabled**
+### [~] E1 · PWA — ½ session — depends: **Pages enabled**
 Manifest + icons + service worker with a per-export version stamp.
-**Accept:** installs on your phone · republish shows fresh prices within one reload.
+- [x] `static/manifest.webmanifest` (standalone, relative start_url/scope so it
+      works at any mount point) + generated icons (192/512/maskable/apple-touch)
+- [x] `sw.js` stamped per export at the export root (worker scope only reaches
+      as deep as its own URL): network-first pages/JSON, cache-first static,
+      old-version caches dropped on activate; live app serves it from `/sw.js`
+- [x] Chart.js + date adapter vendored into `static/vendor/` — no CDN, charts
+      work offline
+- [x] iOS install meta (apple-touch-icon, status bar, safe-area padding) and a
+      back button that appears only in standalone mode — an installed PWA has
+      no browser chrome
+- [x] 4 tests (369 total green); verified live: SW active at root scope,
+      charts render from vendored libs, zero overflow at 375px
+
+**Accept:** ⏳ installs on your phone + fresh-within-one-reload — both need
+**Pages enabled**, the one remaining step.
 
 ### [ ] E2 · Theme Perf — ½ session — depends: nothing
 One aggregate query replaces the per-row N+1; sets-only aggregates.
