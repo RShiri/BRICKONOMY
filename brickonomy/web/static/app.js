@@ -19,7 +19,7 @@
   if (window.Chart) {
     Chart.defaults.color = CHART_DEFAULTS.color;
     Chart.defaults.borderColor = CHART_DEFAULTS.borderColor;
-    Chart.defaults.font.family = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+    Chart.defaults.font.family = css("--font-body") || 'system-ui, -apple-system, "Segoe UI", sans-serif';
   }
 
   const SOURCE_STYLE = {
@@ -95,7 +95,7 @@
           datasets.push({
             label: "Forecast high", data: f.map((p) => ({ x: p.t, y: p.hi })),
             borderColor: "transparent", pointRadius: 0, fill: "+1",
-            backgroundColor: "rgba(57,135,229,0.14)", tension: 0,
+            backgroundColor: css("--band"), tension: 0,
           });
           datasets.push({
             label: "Forecast low", data: f.map((p) => ({ x: p.t, y: p.lo })),
@@ -217,7 +217,7 @@
             datasets: [{
               label: "Portfolio value", data: pts,
               borderColor: SOURCE_STYLE.blended.color, borderWidth: 2.5,
-              backgroundColor: "rgba(57,135,229,0.14)", fill: true,
+              backgroundColor: css("--band"), fill: true,
               pointRadius: pts.length < 15 ? 3 : 0, tension: 0.25,
             }],
           },
