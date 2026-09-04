@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
-{% block title %}{{ 'Minifigs' if kind == 'M' else 'Sets' }} · Brickonomy{% endblock %}
+{% block title %}{{ 'Minifigs' if kind == 'M' else 'Sets' }} · BRICKO{% endblock %}
 {% block content %}
 {# One listing serves both tabs; `kind` decides which and where links point.
    These live inside the block: a top-level {% set %} in a child template is

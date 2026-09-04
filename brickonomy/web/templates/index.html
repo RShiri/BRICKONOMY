@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
-{% block title %}Dashboard · Brickonomy{% endblock %}
+{% block title %}Dashboard · BRICKO{% endblock %}
 {% block content %}
 
 <div class="eyebrow">Overview</div>
@@ -122,7 +122,7 @@
     {% if static_mode %}
     <h3>About this snapshot</h3>
     <div style="color:var(--ink-2)">
-      Static export of the Brickonomy database, published to GitHub Pages.
+      Static export of the BRICKO database, published to GitHub Pages.
       Values are BrickLink’s six-month sold average as of the last scan
       {% if last_scan %}(last scan {{ last_scan[:16].replace('T', ' ') }}){% endif %}.
       To update: <code>python -m brickonomy.refresh</code> →
