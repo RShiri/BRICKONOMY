@@ -287,8 +287,12 @@ th[data-sort="desc"]::after { content: "↓"; opacity: 1; color: var(--accent); 
 svg.spark polyline { fill: none; stroke: var(--accent); stroke-width: 2; }
 
 .sethead { display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap; }
+/* The image plate and its (phone-only) number strip need to share one width
+   and sit flush together, so the wrapper — not .setimg itself — carries the
+   fixed size and .sethead's flex sizing; .setimg just fills it. */
+.setimg-wrap { width: 320px; flex: none; }
 .setimg {
-  width: 320px; min-height: 200px; flex: none;
+  width: 100%; min-height: 200px;
   border: 1px solid var(--line-strong);
   background: var(--well);
   display: flex; align-items: center; justify-content: center;
@@ -506,7 +510,7 @@ footer.note {
    switches them on. .refreshctl/.ccyform are inert wrappers kept transparent
    to desktop's flex layout via display:contents. */
 .dock, .dock-panel, .dock-scrim, .segctl, .phcolhead, .searchtoggle, .headertitle,
-.setimg-tag, .setimg-num, .lifecyclehead, .retiredtag, .rowmeta { display: none; }
+.setimg-tag, .setimg-foot, .lifecyclehead, .retiredtag, .rowmeta, .dc-lbl, .rc-theme { display: none; }
 .refreshctl, .ccyform { display: contents; }
 .setimg { position: relative; }
 
@@ -530,7 +534,7 @@ footer.note {
 
   /* The set image is a hard 320px, which clears 375px by 7px and overflows
      every 360px Android and the 320px SE. */
-  .setimg { width: min(320px, 100%); }
+  .setimg-wrap { width: min(320px, 100%); }
 
   /* .chip is nowrap, and a nowrap flex item cannot be wrapped by its parent —
      one long hint chip was pushing whole pages sideways. */
@@ -696,6 +700,20 @@ footer.note {
   }
   .rowcards td.rc-delta { grid-area: 2 / 2 / 3 / 3; text-align: right; }
   .rowcards td:not(.name):not(.theme):not(.meta):not(.rc-value):not(.rc-delta) { display: none; }
+
+  /* Dashboard movers (Top gainers/decliners) have no separate theme column
+     on desktop, so their theme goes on a second line inside .name itself
+     (.rc-theme) rather than in its own grid cell — .name spans both rows
+     and centers its two lines against the value/delta stack on the right. */
+  .rowcards-notheme td.name {
+    grid-area: 1 / 1 / 3 / 2; display: flex; flex-direction: column;
+    justify-content: center; gap: 2px;
+  }
+  .rc-theme {
+    display: block; padding-left: 56px;
+    font-family: var(--font-label); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  }
   /* Inline-edit rows (portfolio) carry a full <form> in a colspan cell —
      let it flow normally instead of forcing the 2x2 grid on it. */
   .rowcards tr.editrow { display: block; grid-template-columns: none; }
@@ -712,24 +730,40 @@ footer.note {
     letter-spacing: 0.06em; text-transform: uppercase;
   }
 
-  /* ── deal-card tables: name full width, then a wrapping meta/rating line,
-     then the ask/market/margin row — for the dashboard "best deals" table
-     and the full Deals page table. */
+  /* ── deal-card tables: a fixed 3-line layout — name, then where + rating,
+     then a 3-column ASK / MKT / MARGIN strip with a tiny caps label over
+     each number (matching the Stitch "ASK 879  MKT 1,392  ▲45%" row) — for
+     the dashboard "best deals" table and the full Deals page table. A flex
+     row that just wrapped its stats let a long rating chip push MARGIN onto
+     its own third line; grid areas give each stat a fixed slot instead. */
   .dealcards thead { display: none; }
   .dealcards, .dealcards tbody { display: block; }
   .dealcards tr {
-    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "name name name" "where where rating" "ask mkt margin";
+    row-gap: 8px; column-gap: 6px;
     background: var(--surface-2); padding: 10px 12px; margin-bottom: 8px;
   }
   /* Same td.num width:1% table-layout leftover as .rowcards above — in this
-     flex row it collapsed dc-ask/dc-market/dc-margin to near-zero width and
+     grid it collapsed dc-ask/dc-market/dc-margin to near-zero width and
      their nowrap text overlapped. */
-  .dealcards td { border: 0; padding: 0; background: transparent !important; width: auto; }
-  .dealcards td.name { flex: 1 1 100%; order: 1; }
-  .dealcards td.dc-where { order: 2; font-size: 12px; color: var(--muted); }
-  .dealcards td.dc-rating { order: 3; margin-left: auto; }
-  .dealcards td.dc-ask, .dealcards td.dc-market, .dealcards td.dc-margin { order: 4; font-size: 13px; }
-  .dealcards td.dc-margin { margin-left: auto; font-weight: 700; }
+  .dealcards td { border: 0; padding: 0; background: transparent !important; width: auto; min-width: 0; }
+  .dealcards td.name { grid-area: name; }
+  .dealcards td.dc-where { grid-area: where; align-self: center; font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dealcards td.dc-rating { grid-area: rating; justify-self: end; align-self: center; }
+  .dealcards td.dc-ask { grid-area: ask; }
+  .dealcards td.dc-market { grid-area: mkt; }
+  .dealcards td.dc-margin { grid-area: margin; }
+  .dealcards td.dc-ask, .dealcards td.dc-market, .dealcards td.dc-margin {
+    display: flex; flex-direction: column; gap: 2px;
+    background: var(--well); padding: 6px 8px;
+  }
+  .dealcards .dc-lbl {
+    display: block; font-family: var(--font-label); font-size: 9px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+  .dealcards .dc-val { font-size: 13px; font-weight: 700; }
+  .dealcards td.dc-margin .dc-val { color: var(--accent); }
   .dealcards td:not(.name):not(.dc-where):not(.dc-rating):not(.dc-ask):not(.dc-market):not(.dc-margin) { display: none; }
 
   /* thead was sticky at top:0 — the same offset as the app header — so on a
@@ -751,17 +785,26 @@ footer.note {
   .bars .row .track { order: 3; flex: 1 1 100%; }
   .vsrow { grid-template-columns: 70px 1fr 78px; }
 
-  /* Hero image overlays: retirement status top-right, set number bottom-right. */
+  /* Hero image: retirement status overlays the photo's top-right (readable
+     on any product-shot background — it sits on its own chip, not bare
+     text). The set number does NOT overlay the photo — plenty of BrickLink
+     shots are white/light and swallowed white italic text. It gets its own
+     dark strip directly under the image instead (part of .setimg-wrap, so
+     it lines up edge-to-edge with the photo above it). */
   .setimg-tag {
     display: block; position: absolute; top: 8px; right: 8px; z-index: 1;
     clip-path: var(--slant-sm); background: var(--surface-2); color: var(--accent);
     font-family: var(--font-label); font-size: 10.5px; font-weight: 800;
     letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px;
   }
-  .setimg-num {
-    display: block; position: absolute; bottom: 8px; right: 10px; z-index: 1;
-    font-family: var(--font-display); font-size: 20px; font-weight: 800;
-    font-style: italic; color: var(--ink); text-shadow: 0 1px 6px rgba(0,0,0,.6);
+  .setimg-foot {
+    display: flex; justify-content: flex-end; align-items: center;
+    background: var(--well); padding: 6px 12px;
+    border: 1px solid var(--line-strong); border-top: 0;
+  }
+  .setimg-foot span {
+    font-family: var(--font-display); font-size: 18px; font-weight: 800;
+    font-style: italic; color: var(--ink);
   }
 
   /* "/ Lifecycle tracker" header above the existing .phasebar. */

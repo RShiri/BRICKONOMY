@@ -49,7 +49,7 @@
       <td class="theme" title="{{ d.theme or '' }}">{{ d.theme or '—' }}</td>
       <td class="dc-where"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
           {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
-      <td class="num dc-ask">{{ d.ask|money(ccy) }}{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
+      <td class="num dc-ask"><span class="dc-lbl">Ask</span><span class="dc-val">{{ d.ask|money(ccy) }}</span>{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
       {# Only a foreign-currency listing is known to be an import. BrickLink
          quotes every seller in the display currency, so for those rows the
          delivered cost is unknown rather than zero — say so instead of
@@ -57,9 +57,9 @@
       <td class="num"><b>{{ d.landed|money(ccy) }}</b>
         {%- if d.imported %}<br><span class="soft" style="font-size:11px" title="VAT plus shipping">+{{ d.import_extra|money(ccy) }} import</span>
         {%- else %}<br><span class="soft" style="font-size:11px" title="Quoted in {{ ccy }}, so the seller’s country is unknown — no import cost is assumed. If the seller ships from abroad, add VAT and shipping.">as quoted</span>{% endif %}</td>
-      <td class="num dc-market">{{ d.value|money(ccy) }}</td>
+      <td class="num dc-market"><span class="dc-lbl">Mkt</span><span class="dc-val">{{ d.value|money(ccy) }}</span></td>
       <td class="num delta up">{{ d.profit|money(ccy) }}</td>
-      <td class="num dc-margin">{{ m.delta(d.margin, 0) }}</td>
+      <td class="num dc-margin"><span class="dc-lbl">Margin</span><span class="dc-val">{{ m.delta(d.margin, 0) }}</span></td>
       <td>{{ m.velocity_chip(d.velocity) }}</td>
       <td class="dc-rating">{{ m.rating_chip(d.rating) }}</td>
       <td>{{ m.phase_chip(d.phase) }} {{ m.confidence_chip(d.confidence) }}</td>

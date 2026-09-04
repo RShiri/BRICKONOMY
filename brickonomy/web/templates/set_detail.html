@@ -13,12 +13,16 @@
 {% endif %}
 
 <div class="sethead">
-  <figure class="setimg" style="margin:0">
-    <span class="setimg-tag">Status: {{ 'Retired' if is_retired else 'Available' }}</span>
-    <span class="setimg-num">{{ item.item_id }}</span>
-    <img src="{{ img_url(item.item_id, item.item_type) }}" alt="{{ item.name }}"
-         onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>({{ item.item_id }})</div>'">
-  </figure>
+  <div class="setimg-wrap">
+    <figure class="setimg" style="margin:0">
+      <span class="setimg-tag">Status: {{ 'Retired' if is_retired else 'Available' }}</span>
+      <img src="{{ img_url(item.item_id, item.item_type) }}" alt="{{ item.name }}"
+           onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>({{ item.item_id }})</div>'">
+    </figure>
+    {# The set number sits on its own dark strip under the image, never over
+       the (often white-background) product photo — see setimg-foot below. #}
+    <div class="setimg-foot"><span>{{ item.item_id }}</span></div>
+  </div>
   <div style="flex:1;min-width:280px">
     <div class="eyebrow">{{ item.theme or 'LEGO' }}{% if item.subtheme %} · {{ item.subtheme }}{% endif %}</div>
     <h1 style="font-size:26px">{{ item.name }} <span style="color:var(--muted);font-weight:400">· {{ item.item_id }}</span></h1>

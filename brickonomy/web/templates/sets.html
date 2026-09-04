@@ -33,18 +33,26 @@
          placeholder="Filter this page… (number, name, theme)" aria-label="Filter {{ noun }}">
 </div>
 {% else %}
-<form class="searchrow" method="get" action="{{ listing }}">
-  <input class="inp" type="search" name="q" value="{{ q }}"
-         placeholder="{{ 'Search fig id or name… (e.g. sh0254, Iron Man)' if is_figs else 'Search set number or name… (e.g. 75192, Falcon)' }}"
-         aria-label="Search {{ noun }}">
-  <input type="hidden" name="sort" value="{{ sort }}">
-  {% if theme %}<input type="hidden" name="theme" value="{{ theme }}">{% endif %}
-  <a class="chip {{ 'on' if not filter }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&sort={{ sort }}">All</a>
-  <a class="chip {{ 'on' if filter == 'retired' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter=retired&sort={{ sort }}">Retired only</a>
-  <a class="chip {{ 'on' if filter == 'portfolio' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter=portfolio&sort={{ sort }}">In portfolio</a>
-  <a class="chip {{ 'on' if sort == 'growth' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter={{ filter }}&sort=growth">Sort: growth/yr</a>
-  <a class="chip {{ 'on' if sort == 'value' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter={{ filter }}&sort=value">Sort: value</a>
-  <button class="btn-primary" type="submit">Search</button>
+<form method="get" action="{{ listing }}">
+  <div class="searchrow">
+    <input class="inp" type="search" name="q" value="{{ q }}"
+           placeholder="{{ 'Search fig id or name… (e.g. sh0254, Iron Man)' if is_figs else 'Search set number or name… (e.g. 75192, Falcon)' }}"
+           aria-label="Search {{ noun }}">
+    <input type="hidden" name="sort" value="{{ sort }}">
+    {% if theme %}<input type="hidden" name="theme" value="{{ theme }}">{% endif %}
+    <button class="btn-primary" type="submit">Search</button>
+  </div>
+  {# A separate row so the filter/sort chips can scroll sideways on a phone
+     instead of wrapping into the search row above and clipping at the
+     screen edge — .chipscroll is a no-op above 640px (same wrap-in-place
+     it always was). #}
+  <div class="searchrow chipscroll">
+    <a class="chip {{ 'on' if not filter }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&sort={{ sort }}">All</a>
+    <a class="chip {{ 'on' if filter == 'retired' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter=retired&sort={{ sort }}">Retired only</a>
+    <a class="chip {{ 'on' if filter == 'portfolio' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter=portfolio&sort={{ sort }}">In portfolio</a>
+    <a class="chip {{ 'on' if sort == 'growth' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter={{ filter }}&sort=growth">Sort: growth/yr</a>
+    <a class="chip {{ 'on' if sort == 'value' }}" href="{{ listing }}?q={{ q }}&theme={{ theme|urlencode }}&filter={{ filter }}&sort=value">Sort: value</a>
+  </div>
 </form>
 {% endif %}
 

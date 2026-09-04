@@ -396,7 +396,7 @@ def dashboard(request: Request):
                                      days=30)
             if delta is not None and v > 0:
                 movers.append({"item_id": row["item_id"], "name": row["name"],
-                               "value": v, "delta": delta})
+                               "theme": theme, "value": v, "delta": delta})
 
         movers.sort(key=lambda m: m["delta"], reverse=True)
         gainers, decliners = movers[:5], sorted(movers[-5:], key=lambda m: m["delta"])
