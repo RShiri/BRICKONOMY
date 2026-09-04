@@ -9,7 +9,7 @@ import os
 import re
 import sqlite3
 import xml.etree.ElementTree as ET
-from urllib.parse import quote
+from urllib.parse import quote, quote_plus
 from datetime import datetime
 from pathlib import Path
 
@@ -141,6 +141,25 @@ def clamp(value, low, high, default=0.0):
     return max(low, min(high, value))
 
 
+BRICKLINK_ITEM_URL = "https://www.bricklink.com/v2/catalog/catalogitem.page"
+
+
+def source_url(source: str, item_id: str, item_type: str = None) -> str:
+    """Where a person can look the item up on a marketplace, for the links
+    on the set and minifig pages. BrickLink files sets under a -1 suffix and
+    minifigs under their bare id; the other two get a search for the number,
+    which is how sellers label listings there."""
+    is_fig = item_type == "M" or (item_type is None and item_id[:1].isalpha())
+    if source == "bricklink":
+        ref = item_id if (is_fig or "-" in item_id) else f"{item_id}-1"
+        return f"{BRICKLINK_ITEM_URL}?{'M' if is_fig else 'S'}={quote(ref)}#T=P"
+    if source == "brickowl":
+        return f"https://www.brickowl.com/search/catalog?query={quote(item_id)}"
+    if source == "ebay":
+        return f"https://www.ebay.com/sch/i.html?_nkw={quote_plus('lego ' + item_id)}&LH_BIN=1"
+    return ""
+
+
 def img_url(item_id: str, item_type: str = "S") -> str:
     if item_type == "M" or any(c.isalpha() for c in item_id):
         return f"https://img.bricklink.com/ItemImage/MN/0/{item_id}.png"
@@ -189,6 +208,7 @@ def ctx(request: Request, conn, **extra):
         "rates": rates_status(),
         "job": jobs.status(),
         "img_url": img_url,
+        "source_url": source_url,
         "static_mode": STATIC_MODE,
         "base_path": static_prefix(),
         "u": static_url,

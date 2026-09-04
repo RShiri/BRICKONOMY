@@ -17,6 +17,14 @@
       {% if item.year %}First appeared {{ item.year }} · {% endif %}
       appears in {{ appears_in|length }} set(s)
     </p>
+    <div class="facts sourcelinks" style="margin-bottom:8px">
+      <a class="chip" href="{{ source_url('bricklink', item.item_id, 'M') }}" target="_blank" rel="noopener"
+         title="BrickLink catalog entry and price guide — where the headline value comes from">🔗 BrickLink ↗</a>
+      <a class="chip" href="{{ source_url('brickowl', item.item_id, 'M') }}" target="_blank" rel="noopener"
+         title="Search BrickOwl for this figure">🔗 BrickOwl ↗</a>
+      <a class="chip" href="{{ source_url('ebay', item.item_id, 'M') }}" target="_blank" rel="noopener"
+         title="Buy-it-now listings for this figure on eBay">🔗 eBay ↗</a>
+    </div>
     <div class="facts">
       <span class="chip">🧍 minifigure</span>
       {% if appears_in %}<span class="chip">📦 {{ appears_in|length }} sets</span>{% endif %}
@@ -69,7 +77,7 @@
       {% set o = offers[source] %}
       <div class="{{ 'best' if source == best_source else 'offer' }}">
         {% if source == best_source %}<span class="tag">Best deal</span>{% endif %}
-        <div><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span> <b>{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}</b></div>
+        <div><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span> <b><a href="{{ source_url(source, item.item_id, item.item_type) }}" target="_blank" rel="noopener" title="Open this item on the marketplace">{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }} ↗</a></b></div>
         <div class="price">{{ o.display|money(ccy) }}</div>
         <div class="meta">{{ o.price|money(o.currency) }} native{% if o.description %}<br>“{{ o.description }}”{% endif %}</div>
       </div>
@@ -110,7 +118,7 @@
       {% set ps = per_source.get(source, {}) %}
       <tr>
         <td style="white-space:nowrap"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[source] }})"></span>
-            {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }}</td>
+            <a href="{{ source_url(source, item.item_id, item.item_type) }}" target="_blank" rel="noopener" title="Open this item on the marketplace">{{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[source] }} ↗</a></td>
         <td class="num">{{ ps.new.display|money(ccy) if ps.get('new') else '—' }}</td>
         <td class="num">{{ ps.used.display|money(ccy) if ps.get('used') else '—' }}</td>
         <td>{{ m.confidence_chip(ps.new.confidence if ps.get('new') else (ps.used.confidence if ps.get('used') else None)) }}</td>

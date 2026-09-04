@@ -50,10 +50,67 @@ class TestLifecycle:
 class TestGrowth:
     def test_observed_growth_annualizes(self, conn):
         dbq.upsert_item(conn, "1111", name="Test set", year=2020)
-        # 1000 -> 1100 over exactly one year ≈ +10 %/yr
-        seed_series(conn, "1111", [(1000, 365), (1100, 0)])
+        # 1000 -> 1100 over exactly one year ≈ +10 %/yr, scanned quarterly
+        seed_series(conn, "1111", [(1000, 365), (1024.1, 274), (1048.8, 183),
+                                   (1074.0, 91), (1100, 0)])
         g = growth_mod.observed_growth(conn, "1111")
         assert g == pytest.approx(10.0, abs=0.5)
+
+    def test_two_snapshots_are_a_difference_not_a_trend(self, conn):
+        dbq.upsert_item(conn, "1112", name="Test set", year=2020)
+        seed_series(conn, "1112", [(1000, 365), (1100, 0)])
+        assert growth_mod.observed_growth(conn, "1112") is None
+
+    def test_rate_is_fitted_through_every_point_not_read_off_the_ends(self, conn):
+        """A last reading that blips up must not become the whole trend."""
+        dbq.upsert_item(conn, "1113", name="Test set", year=2020)
+        seed_series(conn, "1113", [(1000, 180), (1000, 120), (1000, 60),
+                                   (1000, 30), (1080, 0)])
+        g = growth_mod.observed_growth(conn, "1113")
+        # End-to-end this is +8 % in half a year (≈ +17 %/yr); the fit through
+        # four flat readings and one jump is well under that.
+        assert 0 < g < 12
+
+    def test_a_lone_early_snapshot_does_not_start_the_clock(self, conn):
+        """76105: one January scrape, then nothing until nightly scanning
+        began in August. The 530 → 482 step between the two eras read as
+        -14 %/yr and sent the forecast downhill."""
+        dbq.upsert_item(conn, "1114", name="Hulkbuster", year=2018,
+                        retail_price=120.0, retail_currency="USD")
+        seed_series(conn, "1114", [(530.36, 228), (485.97, 20), (481.69, 1),
+                                   (481.69, 0), (481.69, 0)])
+        assert growth_mod.observed_growth(conn, "1114") is None
+        g, basis = growth_mod.best_growth_estimate(conn, "1114")
+        assert basis == "retail-cagr" and g > 0
+
+    def test_same_day_rescans_count_once(self, conn):
+        dbq.upsert_item(conn, "1115", name="Test set", year=2020)
+        pts = [(1000, 180), (1050, 90)] + [(1100, 0)] * 6
+        seed_series(conn, "1115", pts)
+        assert len(growth_mod.recent_run(growth_mod.series(conn, "1115"))) == 3
+
+    def test_young_history_is_blended_with_retail(self, conn):
+        year = datetime.now().year - 4
+        dbq.upsert_item(conn, "1116", name="Test", year=year,
+                        retail_price=50.0, retail_currency="USD")   # 175 ILS
+        seed_series(conn, "1116", [(700, 180), (735, 90), (770, 0)])
+        g_obs = growth_mod.observed_growth(conn, "1116")
+        _, cagr = growth_mod.growth_vs_retail(conn, "1116")
+        g, basis = growth_mod.best_growth_estimate(conn, "1116")
+        w = 180 / 365
+        assert basis == "blended"
+        assert g == pytest.approx(w * g_obs + (1 - w) * cagr, abs=0.05)
+        assert min(g_obs, cagr) < g < max(g_obs, cagr)
+
+    def test_a_full_year_of_scans_stands_alone(self, conn):
+        year = datetime.now().year - 4
+        dbq.upsert_item(conn, "1117", name="Test", year=year,
+                        retail_price=50.0, retail_currency="USD")
+        seed_series(conn, "1117", [(700, 365), (717, 274), (735, 183),
+                                   (752, 91), (770, 0)])
+        g, basis = growth_mod.best_growth_estimate(conn, "1117")
+        assert basis == "observed"
+        assert g == pytest.approx(growth_mod.observed_growth(conn, "1117"))
 
     def test_short_span_returns_none(self, conn):
         dbq.upsert_item(conn, "2222", name="Test", year=2020)
@@ -206,7 +263,9 @@ class TestForecast:
         dbq.upsert_item(conn, item_id, name="Test", year=year)
         p0 = 1000.0
         p1 = p0 * (1 + growth_yearly_pct / 100.0)
-        seed_series(conn, item_id, [(p0, 365), (p1, 0)])
+        # Quarterly scans along a steady curve from p0 to p1.
+        seed_series(conn, item_id, [(p0 * (p1 / p0) ** (k / 4), 365 - 91 * k)
+                                    for k in range(4)] + [(p1, 0)])
 
     def test_retired_accel_beats_new_at_same_growth(self, conn):
         year = datetime.now().year
@@ -218,7 +277,8 @@ class TestForecast:
 
     def test_growth_clamped(self, conn):
         dbq.upsert_item(conn, "9990", name="Test", year=2020)
-        seed_series(conn, "9990", [(100, 365), (900, 0)])  # +800 %/yr → clamped
+        seed_series(conn, "9990", [(100, 365), (173, 274), (300, 183),
+                                   (520, 91), (900, 0)])  # +800 %/yr → clamped
         f = forecast_mod.forecast(conn, "9990")
         assert f["growth_pct"] == forecast_mod.PARAMS["clamp_max_pct"]
 
@@ -233,6 +293,20 @@ class TestForecast:
     def test_no_value_returns_none(self, conn):
         dbq.upsert_item(conn, "9992", name="Test", year=2020)
         assert forecast_mod.forecast(conn, "9992") is None
+
+    def test_retired_set_up_on_retail_is_not_forecast_downhill(self, conn):
+        """The 76105 shape: a stale early scrape, then a run of recent ones
+        a touch lower. Retail says +3.6 %/yr over eight years; that is the
+        trend, not the step between two eras of scanning."""
+        dbq.upsert_item(conn, "9993", name="Hulkbuster",
+                        year=datetime.now().year - 8,
+                        retail_price=120.0, retail_currency="USD")
+        seed_series(conn, "9993", [(530.36, 228), (485.97, 20), (481.69, 1),
+                                   (481.69, 0)])
+        f = forecast_mod.forecast(conn, "9993")
+        assert f["basis"] == "retail-cagr"
+        assert f["growth_pct"] > 0
+        assert f["horizons"][2]["value"] > 481.69
 
 
 class TestEbaySoldOnlyPricing:
@@ -333,6 +407,7 @@ class TestGrowthNeedsARealSpan:
         conn = dbq.connect(db_path=str(tmp_path / "g.db"))
         try:
             self._series(conn, "76051", [("2026-01-01T00:00:00", 400.0),
+                                         ("2026-04-01T00:00:00", 420.0),
                                          ("2026-07-01T00:00:00", 440.0)])
             g = growth_mod.observed_growth(conn, "76051", "new")
             assert g is not None and 18 < g < 22   # 10% over half a year
