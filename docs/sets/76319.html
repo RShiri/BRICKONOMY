@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../static/style.css?v=1788463116">
+<link rel="stylesheet" href="../static/style.css?v=1788528290">
 <link rel="manifest" href="../static/manifest.webmanifest">
 <meta name="theme-color" content="#0c0d10">
 
@@ -21,10 +22,11 @@
 <script src="../static/vendor/chart.umd.min.js"></script>
 <script src="../static/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
-<body data-static="1" data-base="../">
+<body class="detail" data-static="1" data-base="../">
 <header class="app">
   
   <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
+  <span class="headertitle">Set detail</span>
   <a class="logo" href="../index.html">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -49,14 +51,21 @@
     
   </nav>
   <div class="spacer"></div>
-  <div class="sitesearch">
+  
+  <button class="searchtoggle" type="button" id="searchToggle" aria-expanded="false"
+          aria-controls="siteSearchRow" aria-label="Search sets and minifigs"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+  <div class="sitesearch" id="siteSearchRow">
     <input class="inp" id="siteSearch" type="search" autocomplete="off"
            placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
     <div class="sresults" id="siteSearchResults" hidden></div>
   </div>
   
-  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  <span class="chip ccychip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
   
+  
+  <div class="refreshctl">
+  
+  </div>
 </header>
 
 <main>
@@ -66,8 +75,11 @@
 
 
 
+
 <div class="sethead">
   <figure class="setimg" style="margin:0">
+    <span class="setimg-tag">Status: Available</span>
+    <span class="setimg-num">76319</span>
     <img src="https://img.bricklink.com/ItemImage/SN/0/76319-1.png" alt="Captain America vs. Thanos"
          onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>(76319)</div>'">
   </figure>
@@ -102,6 +114,11 @@
     </div>
     
     
+    
+    <div class="lifecyclehead">
+      <span>/ Lifecycle tracker</span>
+      <span class="cur">Available</span>
+    </div>
     <div class="phasebar" style="margin-top:16px">
       <div class="phase current" style="flex:4">Available 2025–2028</div>
       <div class="phase " style="flex:2">Retirement</div>
@@ -121,7 +138,7 @@
 
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
-    <div class="label">Value — new / sealed</div>
+    <div class="label-row"><div class="label">Value — new / sealed</div><span class="tile-dot up"></span></div>
     <div class="value" style="opacity:.55">₪82.57</div>
     <div class="delta">
       
@@ -130,18 +147,18 @@
     <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
   </div>
   <div class="tile">
-    <div class="label">Value — used</div>
+    <div class="label-row"><div class="label">Value — used</div><span class="tile-dot"></span></div>
     <div class="value" style="">—</div>
     <div class="delta"><span class="chip" style="color:var(--muted)">—</span></div>
     <div style="margin-top:6px"><span class="chip" style="color:var(--muted)" title="No sold data scraped yet — which is not the same as “does not sell”.">↻ sales unknown</span></div>
   </div>
   <div class="tile">
-    <div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="label-row"><div class="label">Forecast 2028 <span title="Trend estimate, not a guarantee">ⓘ</span></div><span class="tile-dot info"></span></div>
     <div class="value">₪95.43</div>
     <div class="delta">trend estimate · ±20% band</div>
   </div>
   <div class="tile">
-    <div class="label">Buy target</div>
+    <div class="label-row"><div class="label">Buy target</div><span class="tile-dot up"></span></div>
     <div class="value">₪66.06</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
@@ -1065,12 +1082,36 @@
 
 </main>
 
+
+<nav class="dock" aria-label="Primary">
+  <a class="dock-tab " href="../index.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 13h6V4H4v9zm10 7h6V4h-6v16zM4 20h6v-4H4v4z"/></svg></span><span class="dock-lbl">Dashboard</span></a>
+  <a class="dock-tab active" href="../sets/index.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5L12 12l8-4.5M12 12v9"/></svg></span><span class="dock-lbl">Sets</span></a>
+  <a class="dock-tab " href="../deals.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><span class="dock-lbl">Deals</span></a>
+  <a class="dock-tab " href="../portfolio.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4"/></svg></span><span class="dock-lbl">Portfolio</span></a>
+  
+  <button class="dock-tab dock-more " type="button"
+          id="dockMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="dockMorePanel">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span><span class="dock-lbl">More</span></button>
+</nav>
+<div class="dock-scrim" id="dockScrim" hidden></div>
+<div class="dock-panel" id="dockMorePanel" hidden role="menu" aria-label="More">
+  <a role="menuitem" href="../minifigs.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="6" r="3"/><path d="M6 21v-6a6 6 0 0112 0v6"/></svg><span>Minifigs</span></a>
+  <a role="menuitem" href="../themes.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z"/></svg><span>Themes</span></a>
+  <a role="menuitem" href="../compare.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M8 3v18M16 3v18M4 8h4M4 16h4M16 8h4M16 16h4"/></svg><span>Compare</span></a>
+  <a role="menuitem" href="../partout.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Part-out</span></a>
+  
+</div>
+
 <footer class="note">
   BRICKO · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
   · static snapshot — run <code>python -m brickonomy.export</code> to update
   
 </footer>
 
-<script src="../static/app.js?v=1788463116"></script>
+<script src="../static/app.js?v=1788528290"></script>
 </body>
 </html>

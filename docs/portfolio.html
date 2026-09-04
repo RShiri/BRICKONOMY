@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -10,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="static/style.css?v=1788463116">
+<link rel="stylesheet" href="static/style.css?v=1788528290">
 <link rel="manifest" href="static/manifest.webmanifest">
 <meta name="theme-color" content="#0c0d10">
 
@@ -21,10 +22,11 @@
 <script src="static/vendor/chart.umd.min.js"></script>
 <script src="static/vendor/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
-<body data-static="1" data-base="">
+<body class="" data-static="1" data-base="">
 <header class="app">
   
   <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
+  <span class="headertitle"></span>
   <a class="logo" href="index.html">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -49,14 +51,21 @@
     
   </nav>
   <div class="spacer"></div>
-  <div class="sitesearch">
+  
+  <button class="searchtoggle" type="button" id="searchToggle" aria-expanded="false"
+          aria-controls="siteSearchRow" aria-label="Search sets and minifigs"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg></button>
+  <div class="sitesearch" id="siteSearchRow">
     <input class="inp" id="siteSearch" type="search" autocomplete="off"
            placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
     <div class="sresults" id="siteSearchResults" hidden></div>
   </div>
   
-  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
+  <span class="chip ccychip" title="Static snapshot published to GitHub Pages">📄 snapshot · ILS</span>
   
+  
+  <div class="refreshctl">
+  
+  </div>
 </header>
 
 <main>
@@ -83,7 +92,7 @@
     <input class="inp" type="search" data-filter-table="ownedTable" placeholder="Filter by set, name or theme…" aria-label="Filter owned sets">
   </div>
   <div class="table-scroll">
-  <table id="ownedTable" data-sortable>
+  <table id="ownedTable" class="rowcards" data-sortable>
     <thead>
     <tr>
       <th>Set</th><th>Theme</th><th class="num">Qty</th><th class="num">Paid</th>
@@ -94,15 +103,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10303-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/10303.html">10303 Loop Coaster</a>
+      <td class="name"><a href="sets/10303.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10303-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">10303 Loop Coaster</a>
           </td>
-      <td>Icons</td>
+      <td class="theme">Icons<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="634.053">₪634</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="896.68"><b>₪897</b></td>
-      <td class="num" data-v="41.4203544498646"><span class="delta up">▲ 41%</span></td>
+      <td class="num rc-value" data-v="896.68"><b>₪897</b></td>
+      <td class="num rc-delta" data-v="41.4203544498646"><span class="delta up">▲ 41%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -110,15 +119,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10338-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/10338.html">10338 Bumblebee</a>
+      <td class="name"><a href="sets/10338.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/10338-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">10338 Bumblebee</a>
           </td>
-      <td>Icons</td>
+      <td class="theme">Icons<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="181.158">₪181</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="175.68"><b>₪176</b></td>
-      <td class="num" data-v="-3.023879707216894"><span class="delta down">▼ 3%</span></td>
+      <td class="num rc-value" data-v="175.68"><b>₪176</b></td>
+      <td class="num rc-delta" data-v="-3.023879707216894"><span class="delta down">▼ 3%</span></td>
       <td class="num" data-v="1.9025522041763345"><span class="delta up">▲ 1.9%</span></td>
       
     </tr>
@@ -126,15 +135,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242406-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/242406.html">242406 Iron Man</a>
+      <td class="name"><a href="sets/242406.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/242406-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">242406 Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="12.0772">₪12.08</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v=""><b>—</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -142,15 +151,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30163-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/30163.html">30163 Thor and the Cosmic Cube</a>
+      <td class="name"><a href="sets/30163.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30163-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">30163 Thor and the Cosmic Cube</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="6.0386">₪6.04</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="26.3"><b>₪26.30</b></td>
-      <td class="num" data-v="335.53141456629027"><span class="delta up">▲ 336%</span></td>
+      <td class="num rc-value" data-v="26.3"><b>₪26.30</b></td>
+      <td class="num rc-delta" data-v="335.53141456629027"><span class="delta up">▲ 336%</span></td>
       <td class="num" data-v="66.45569620253164"><span class="delta up">▲ 66.5%</span></td>
       
     </tr>
@@ -158,17 +167,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30452-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/30452.html">30452 Iron Man and Dum-E</a>
+      <td class="name"><a href="sets/30452.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30452-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">30452 Iron Man and Dum-E</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 1 minifigure is worth ₪15.15 — 91% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="3.0193">₪3.02</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="16.61"><b>₪16.61</b></td>
-      <td class="num" data-v="450.12751299970193"><span class="delta up">▲ 450%</span></td>
+      <td class="num rc-value" data-v="16.61"><b>₪16.61</b></td>
+      <td class="num rc-delta" data-v="450.12751299970193"><span class="delta up">▲ 450%</span></td>
       <td class="num" data-v="88.96473265073949"><span class="delta up">▲ 89.0%</span></td>
       
     </tr>
@@ -176,15 +185,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30707-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/30707.html">30707 Venom&#39;s Museum Heist</a>
+      <td class="name"><a href="sets/30707.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/30707-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">30707 Venom&#39;s Museum Heist</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="15.066307">₪15.07</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v=""><b>—</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -192,15 +201,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31152-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/31152.html">31152 Space Astronaut</a>
+      <td class="name"><a href="sets/31152.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31152-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">31152 Space Astronaut</a>
           </td>
-      <td>Creator</td>
+      <td class="theme">Creator<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="123.79129999999999">₪124</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="86.79"><b>₪86.79</b></td>
-      <td class="num" data-v="-29.890064972255715"><span class="delta down">▼ 30%</span></td>
+      <td class="num rc-value" data-v="86.79"><b>₪86.79</b></td>
+      <td class="num rc-delta" data-v="-29.890064972255715"><span class="delta down">▼ 30%</span></td>
       <td class="num" data-v="-4.342554833021048"><span class="delta down">▼ 4.3%</span></td>
       
     </tr>
@@ -208,15 +217,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31161-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/31161.html">31161 Medieval Dragon</a>
+      <td class="name"><a href="sets/31161.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31161-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">31161 Medieval Dragon</a>
           </td>
-      <td>Creator</td>
+      <td class="theme">Creator<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="120.77199999999999">₪121</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="146.73"><b>₪147</b></td>
-      <td class="num" data-v="21.493392508197264"><span class="delta up">▲ 21%</span></td>
+      <td class="num rc-value" data-v="146.73"><b>₪147</b></td>
+      <td class="num rc-delta" data-v="21.493392508197264"><span class="delta up">▲ 21%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -224,15 +233,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31166-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/31166.html">31166 Beautiful Horse</a>
+      <td class="name"><a href="sets/31166.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31166-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">31166 Beautiful Horse</a>
           </td>
-      <td>Creator</td>
+      <td class="theme">Creator<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="135.86849999999998">₪136</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="99.3"><b>₪99.30</b></td>
-      <td class="num" data-v="-26.91462701067576"><span class="delta down">▼ 27%</span></td>
+      <td class="num rc-value" data-v="99.3"><b>₪99.30</b></td>
+      <td class="num rc-delta" data-v="-26.91462701067576"><span class="delta down">▼ 27%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -240,15 +249,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31199-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/31199.html">31199 Marvel Studios Iron Man</a>
+      <td class="name"><a href="sets/31199.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/31199-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">31199 Marvel Studios Iron Man</a>
           </td>
-      <td>LEGO Art</td>
+      <td class="theme">LEGO Art<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="214.3703">₪214</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="255.68"><b>₪256</b></td>
-      <td class="num" data-v="19.270253388645735"><span class="delta up">▲ 19%</span></td>
+      <td class="num rc-value" data-v="255.68"><b>₪256</b></td>
+      <td class="num rc-delta" data-v="19.270253388645735"><span class="delta up">▲ 19%</span></td>
       <td class="num" data-v="9.61629153269025"><span class="delta up">▲ 9.6%</span></td>
       
     </tr>
@@ -256,15 +265,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40334-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40334.html">40334 Avengers Tower</a>
+      <td class="name"><a href="sets/40334.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40334-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40334 Avengers Tower</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="105.6755">₪106</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="78.76"><b>₪78.76</b></td>
-      <td class="num" data-v="-25.4699528272873"><span class="delta down">▼ 25%</span></td>
+      <td class="num rc-value" data-v="78.76"><b>₪78.76</b></td>
+      <td class="num rc-delta" data-v="-25.4699528272873"><span class="delta down">▼ 25%</span></td>
       <td class="num" data-v="-10.61173533083645"><span class="delta down">▼ 10.6%</span></td>
       
     </tr>
@@ -272,15 +281,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40485-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40485.html">40485 FC Barcelona Celebration</a>
+      <td class="name"><a href="sets/40485.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40485-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40485 FC Barcelona Celebration</a>
           </td>
-      <td>Icons</td>
+      <td class="theme">Icons<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="90.579">₪90.58</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="153.28"><b>₪153</b></td>
-      <td class="num" data-v="69.22244670398217"><span class="delta up">▲ 69%</span></td>
+      <td class="num rc-value" data-v="153.28"><b>₪153</b></td>
+      <td class="num rc-delta" data-v="69.22244670398217"><span class="delta up">▲ 69%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -288,15 +297,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40535-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40535.html">40535 Iron Man</a>
+      <td class="name"><a href="sets/40535.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40535-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40535 Iron Man</a>
           </td>
-      <td>Brick Sketches</td>
+      <td class="theme">Brick Sketches<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="30.192999999999998">₪30.19</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="40.27"><b>₪40.27</b></td>
-      <td class="num" data-v="33.37528566223961"><span class="delta up">▲ 33%</span></td>
+      <td class="num rc-value" data-v="40.27"><b>₪40.27</b></td>
+      <td class="num rc-delta" data-v="33.37528566223961"><span class="delta up">▲ 33%</span></td>
       <td class="num" data-v="74.48006932409015"><span class="delta up">▲ 74.5%</span></td>
       
     </tr>
@@ -304,15 +313,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40554-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40554.html">40554 Jake Sully &amp; his Avatar</a>
+      <td class="name"><a href="sets/40554.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40554-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40554 Jake Sully &amp; his Avatar</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="60.35580699999999">₪60.36</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="53.91"><b>₪53.91</b></td>
-      <td class="num" data-v="-10.679679918785604"><span class="delta down">▼ 11%</span></td>
+      <td class="num rc-value" data-v="53.91"><b>₪53.91</b></td>
+      <td class="num rc-delta" data-v="-10.679679918785604"><span class="delta down">▼ 11%</span></td>
       <td class="num" data-v="83.30499829989797"><span class="delta up">▲ 83.3%</span></td>
       
     </tr>
@@ -320,15 +329,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40669-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40669.html">40669 Iron Man MK5</a>
+      <td class="name"><a href="sets/40669.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40669-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40669 Iron Man MK5</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="37.74125">₪37.74</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="33.37"><b>₪33.37</b></td>
-      <td class="num" data-v="-11.582154804093673"><span class="delta down">▼ 12%</span></td>
+      <td class="num rc-value" data-v="33.37"><b>₪33.37</b></td>
+      <td class="num rc-delta" data-v="-11.582154804093673"><span class="delta down">▼ 12%</span></td>
       <td class="num" data-v="29.39123691353237"><span class="delta up">▲ 29.4%</span></td>
       
     </tr>
@@ -336,15 +345,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40760-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40760.html">40760 Adventure Peely &amp; Cuddle Team Leader</a>
+      <td class="name"><a href="sets/40760.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40760-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40760 Adventure Peely &amp; Cuddle Team Leader</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="60.35580699999999">₪60.36</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="46.8"><b>₪46.80</b></td>
-      <td class="num" data-v="-22.45982230011438"><span class="delta down">▼ 22%</span></td>
+      <td class="num rc-value" data-v="46.8"><b>₪46.80</b></td>
+      <td class="num rc-delta" data-v="-22.45982230011438"><span class="delta down">▼ 22%</span></td>
       <td class="num" data-v="-19.73932430114904"><span class="delta down">▼ 19.7%</span></td>
       
     </tr>
@@ -352,15 +361,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40774-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40774.html">40774 Classic Animation Scenes</a>
+      <td class="name"><a href="sets/40774.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40774-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40774 Classic Animation Scenes</a>
           </td>
-      <td>Disney</td>
+      <td class="theme">Disney<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="70.77"><b>₪70.77</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="70.77"><b>₪70.77</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -368,15 +377,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40902-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/40902.html">40902 Tribute to Leonardo da Vinci</a>
+      <td class="name"><a href="sets/40902.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/40902-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">40902 Tribute to Leonardo da Vinci</a>
           </td>
-      <td>Promotional</td>
+      <td class="theme">Promotional<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="45.08"><b>₪45.08</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="45.08"><b>₪45.08</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -384,15 +393,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41590-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/41590.html">41590 Iron Man</a>
+      <td class="name"><a href="sets/41590.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41590-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">41590 Iron Man</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="45.2895">₪45.29</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="46.32"><b>₪46.32</b></td>
-      <td class="num" data-v="2.275361838836824"><span class="delta up">▲ 2%</span></td>
+      <td class="num rc-value" data-v="46.32"><b>₪46.32</b></td>
+      <td class="num rc-delta" data-v="2.275361838836824"><span class="delta up">▲ 2%</span></td>
       <td class="num" data-v="-32.2113273818235"><span class="delta down">▼ 32.2%</span></td>
       
     </tr>
@@ -400,15 +409,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41592-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/41592.html">41592 The Hulk</a>
+      <td class="name"><a href="sets/41592.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41592-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">41592 The Hulk</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="30.162807">₪30.16</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="38.38"><b>₪38.38</b></td>
-      <td class="num" data-v="27.242799385348988"><span class="delta up">▲ 27%</span></td>
+      <td class="num rc-value" data-v="38.38"><b>₪38.38</b></td>
+      <td class="num rc-delta" data-v="27.242799385348988"><span class="delta up">▲ 27%</span></td>
       <td class="num" data-v="-42.389672770939654"><span class="delta down">▼ 42.4%</span></td>
       
     </tr>
@@ -416,15 +425,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41604-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/41604.html">41604 Iron Man MK50</a>
+      <td class="name"><a href="sets/41604.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/41604-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">41604 Iron Man MK50</a>
           </td>
-      <td>Brickheadz</td>
+      <td class="theme">Brickheadz<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="54.3474">₪54.35</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="63.04"><b>₪63.04</b></td>
-      <td class="num" data-v="15.99450939695367"><span class="delta up">▲ 16%</span></td>
+      <td class="num rc-value" data-v="63.04"><b>₪63.04</b></td>
+      <td class="num rc-delta" data-v="15.99450939695367"><span class="delta up">▲ 16%</span></td>
       <td class="num" data-v="-15.325721961047686"><span class="delta down">▼ 15.3%</span></td>
       
     </tr>
@@ -432,15 +441,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42171-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/42171.html">42171 Mercedes F1 Car</a>
+      <td class="name"><a href="sets/42171.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42171-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">42171 Mercedes F1 Car</a>
           </td>
-      <td>Technic</td>
+      <td class="theme">Technic<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="754.8249999999999">₪755</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="407.75"><b>₪408</b></td>
-      <td class="num" data-v="-45.98085648991488"><span class="delta down">▼ 46%</span></td>
+      <td class="num rc-value" data-v="407.75"><b>₪408</b></td>
+      <td class="num rc-delta" data-v="-45.98085648991488"><span class="delta down">▼ 46%</span></td>
       <td class="num" data-v="8.300132802124834"><span class="delta up">▲ 8.3%</span></td>
       
     </tr>
@@ -448,15 +457,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42197-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/42197.html">42197 Backhoe Loader</a>
+      <td class="name"><a href="sets/42197.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42197-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">42197 Backhoe Loader</a>
           </td>
-      <td>Technic</td>
+      <td class="theme">Technic<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="30.162807">₪30.16</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="18.23"><b>₪18.23</b></td>
-      <td class="num" data-v="-39.56132796261303"><span class="delta down">▼ 40%</span></td>
+      <td class="num rc-value" data-v="18.23"><b>₪18.23</b></td>
+      <td class="num rc-delta" data-v="-39.56132796261303"><span class="delta down">▼ 40%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -464,15 +473,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42206-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/42206.html">42206 Oracle Red Bull Racing RB20 F1 Car</a>
+      <td class="name"><a href="sets/42206.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42206-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">42206 Oracle Red Bull Racing RB20 F1 Car</a>
           </td>
-      <td>Technic</td>
+      <td class="theme">Technic<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="875.597">₪876</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="412.4"><b>₪412</b></td>
-      <td class="num" data-v="-52.90070660360874"><span class="delta down">▼ 53%</span></td>
+      <td class="num rc-value" data-v="412.4"><b>₪412</b></td>
+      <td class="num rc-delta" data-v="-52.90070660360874"><span class="delta down">▼ 53%</span></td>
       <td class="num" data-v="-1.2120921764959522"><span class="delta down">▼ 1.2%</span></td>
       
     </tr>
@@ -480,15 +489,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42639-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/42639.html">42639 Andrea&#39;s Modern Mansion</a>
+      <td class="name"><a href="sets/42639.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/42639-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">42639 Andrea&#39;s Modern Mansion</a>
           </td>
-      <td>Friends</td>
+      <td class="theme">Friends<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="670.2846">₪670</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="725.65"><b>₪726</b></td>
-      <td class="num" data-v="8.259983893408863"><span class="delta up">▲ 8%</span></td>
+      <td class="num rc-value" data-v="725.65"><b>₪726</b></td>
+      <td class="num rc-delta" data-v="8.259983893408863"><span class="delta up">▲ 8%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -496,15 +505,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43011-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/43011.html">43011 Lionel Messi - Soccer Highlights</a>
+      <td class="name"><a href="sets/43011.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43011-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">43011 Lionel Messi - Soccer Highlights</a>
           </td>
-      <td>Editions</td>
+      <td class="theme">Editions<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="90.548807">₪90.55</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v=""><b>—</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -512,15 +521,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43015-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/43015.html">43015 Lionel Messi - Soccer Legend</a>
+      <td class="name"><a href="sets/43015.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43015-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">43015 Lionel Messi - Soccer Legend</a>
           </td>
-      <td>Editions</td>
+      <td class="theme">Editions<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="241.51380699999999">₪242</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="228.13"><b>₪228</b></td>
-      <td class="num" data-v="-5.541632242996356"><span class="delta down">▼ 6%</span></td>
+      <td class="num rc-value" data-v="228.13"><b>₪228</b></td>
+      <td class="num rc-delta" data-v="-5.541632242996356"><span class="delta down">▼ 6%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -528,15 +537,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43269-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/43269.html">43269 101 Dalmatians Puppy</a>
+      <td class="name"><a href="sets/43269.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/43269-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">43269 101 Dalmatians Puppy</a>
           </td>
-      <td>Disney</td>
+      <td class="theme">Disney<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="150.965">₪151</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="299.71"><b>₪300</b></td>
-      <td class="num" data-v="98.52946047097008"><span class="delta up">▲ 99%</span></td>
+      <td class="num rc-value" data-v="299.71"><b>₪300</b></td>
+      <td class="num rc-delta" data-v="98.52946047097008"><span class="delta up">▲ 99%</span></td>
       <td class="num" data-v="-13.560984050990696"><span class="delta down">▼ 13.6%</span></td>
       
     </tr>
@@ -544,15 +553,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/4529-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/4529.html">4529 Iron Man</a>
+      <td class="name"><a href="sets/4529.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/4529-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">4529 Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="45.259307">₪45.26</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="33.62"><b>₪33.62</b></td>
-      <td class="num" data-v="-25.71693596634169"><span class="delta down">▼ 26%</span></td>
+      <td class="num rc-value" data-v="33.62"><b>₪33.62</b></td>
+      <td class="num rc-delta" data-v="-25.71693596634169"><span class="delta down">▼ 26%</span></td>
       <td class="num" data-v="-50.02972651605232"><span class="delta down">▼ 50.0%</span></td>
       
     </tr>
@@ -560,17 +569,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/5002946-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/5002946.html">5002946 Silver Centurion</a>
+      <td class="name"><a href="sets/5002946.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/5002946-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">5002946 Silver Centurion</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 1 minifigure is worth ₪252 — 96% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="261.37"><b>₪261</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="261.37"><b>₪261</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="-8.694892754838254"><span class="delta down">▼ 8.7%</span></td>
       
     </tr>
@@ -578,17 +587,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/5005256-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/5005256.html">5005256 Marvel Super Heroes Minifigure Collection</a>
+      <td class="name"><a href="sets/5005256.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/5005256-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">5005256 Marvel Super Heroes Minifigure Collection</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 4 minifigures are worth ₪312 — 127% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="181.158">₪181</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="245.8"><b>₪246</b></td>
-      <td class="num" data-v="35.68266375208383"><span class="delta up">▲ 36%</span></td>
+      <td class="num rc-value" data-v="245.8"><b>₪246</b></td>
+      <td class="num rc-delta" data-v="35.68266375208383"><span class="delta up">▲ 36%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -596,15 +605,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60304-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/60304.html">60304 Road Plates</a>
+      <td class="name"><a href="sets/60304.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60304-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">60304 Road Plates</a>
           </td>
-      <td>City</td>
+      <td class="theme">City<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="60.35580699999999">₪60.36</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="35.52"><b>₪35.52</b></td>
-      <td class="num" data-v="-41.14899333547142"><span class="delta down">▼ 41%</span></td>
+      <td class="num rc-value" data-v="35.52"><b>₪35.52</b></td>
+      <td class="num rc-delta" data-v="-41.14899333547142"><span class="delta down">▼ 41%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -612,15 +621,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60380-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/60380.html">60380 Downtown</a>
+      <td class="name"><a href="sets/60380.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60380-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">60380 Downtown</a>
           </td>
-      <td>City</td>
+      <td class="theme">City<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="401.5669">₪402</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="505.81"><b>₪506</b></td>
-      <td class="num" data-v="25.959086767360567"><span class="delta up">▲ 26%</span></td>
+      <td class="num rc-value" data-v="505.81"><b>₪506</b></td>
+      <td class="num rc-delta" data-v="25.959086767360567"><span class="delta up">▲ 26%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -628,15 +637,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60445-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/60445.html">60445 F1 Truck with RB20 &amp; AMR24 F1 Cars</a>
+      <td class="name"><a href="sets/60445.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/60445-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">60445 F1 Truck with RB20 &amp; AMR24 F1 Cars</a>
           </td>
-      <td>City</td>
+      <td class="theme">City<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="301.89980699999995">₪302</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="194.75"><b>₪195</b></td>
-      <td class="num" data-v="-35.49184349097645"><span class="delta down">▼ 35%</span></td>
+      <td class="num rc-value" data-v="194.75"><b>₪195</b></td>
+      <td class="num rc-delta" data-v="-35.49184349097645"><span class="delta down">▼ 35%</span></td>
       <td class="num" data-v="-4.585762579001526"><span class="delta down">▼ 4.6%</span></td>
       
     </tr>
@@ -644,17 +653,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76016-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76016.html">76016 Spider-Helicopter Rescue</a>
+      <td class="name"><a href="sets/76016.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76016-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76016 Spider-Helicopter Rescue</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 4 minifigures are worth ₪138 — 95% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="99.6369">₪99.64</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="145.7"><b>₪146</b></td>
-      <td class="num" data-v="46.23096463258089"><span class="delta up">▲ 46%</span></td>
+      <td class="num rc-value" data-v="145.7"><b>₪146</b></td>
+      <td class="num rc-delta" data-v="46.23096463258089"><span class="delta up">▲ 46%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -662,15 +671,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76029-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76029.html">76029 Iron Man vs. Ultron</a>
+      <td class="name"><a href="sets/76029.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76029-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76029 Iron Man vs. Ultron</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="27.1737">₪27.17</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="50.43"><b>₪50.43</b></td>
-      <td class="num" data-v="85.58385497742303"><span class="delta up">▲ 86%</span></td>
+      <td class="num rc-value" data-v="50.43"><b>₪50.43</b></td>
+      <td class="num rc-delta" data-v="85.58385497742303"><span class="delta up">▲ 86%</span></td>
       <td class="num" data-v="-20.557655954631375"><span class="delta down">▼ 20.6%</span></td>
       
     </tr>
@@ -678,17 +687,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76031-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76031.html">76031 The Hulk Buster Smash</a>
+      <td class="name"><a href="sets/76031.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76031-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76031 The Hulk Buster Smash</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 4 minifigures are worth ₪93.77 — 83% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="31.70265">₪31.70</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="113.63"><b>₪114</b></td>
-      <td class="num" data-v="258.42429576076444"><span class="delta up">▲ 258%</span></td>
+      <td class="num rc-value" data-v="113.63"><b>₪114</b></td>
+      <td class="num rc-delta" data-v="258.42429576076444"><span class="delta up">▲ 258%</span></td>
       <td class="num" data-v="7.350023618327824"><span class="delta up">▲ 7.4%</span></td>
       
     </tr>
@@ -696,15 +705,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76042-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76042.html">76042 SHIELD Helicarrier</a>
+      <td class="name"><a href="sets/76042.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76042-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76042 SHIELD Helicarrier</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="700.0">₪700</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="856.06"><b>₪856</b></td>
-      <td class="num" data-v="22.294285714285706"><span class="delta up">▲ 22%</span></td>
+      <td class="num rc-value" data-v="856.06"><b>₪856</b></td>
+      <td class="num rc-delta" data-v="22.294285714285706"><span class="delta up">▲ 22%</span></td>
       <td class="num" data-v="-8.251433470875089"><span class="delta down">▼ 8.3%</span></td>
       
     </tr>
@@ -712,17 +721,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76049-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76049.html">76049 Avenjet Space Mission</a>
+      <td class="name"><a href="sets/76049.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76049-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76049 Avenjet Space Mission</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 5 minifigures are worth ₪313 — 106% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="271.73699999999997">₪272</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="293.83"><b>₪294</b></td>
-      <td class="num" data-v="8.1302877414559"><span class="delta up">▲ 8%</span></td>
+      <td class="num rc-value" data-v="293.83"><b>₪294</b></td>
+      <td class="num rc-delta" data-v="8.1302877414559"><span class="delta up">▲ 8%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -730,15 +739,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76102-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76102.html">76102 Thor&#39;s Weapon Quest</a>
+      <td class="name"><a href="sets/76102.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76102-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76102 Thor&#39;s Weapon Quest</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="60.385999999999996">₪60.39</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="56.05"><b>₪56.05</b></td>
-      <td class="num" data-v="-7.18047229490279"><span class="delta down">▼ 7%</span></td>
+      <td class="num rc-value" data-v="56.05"><b>₪56.05</b></td>
+      <td class="num rc-delta" data-v="-7.18047229490279"><span class="delta down">▼ 7%</span></td>
       <td class="num" data-v="-19.00289017341041"><span class="delta down">▼ 19.0%</span></td>
       
     </tr>
@@ -746,17 +755,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76103-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76103.html">76103 Corvus Glaive Thresher Attack</a>
+      <td class="name"><a href="sets/76103.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76103-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76103 Corvus Glaive Thresher Attack</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 5 minifigures are worth ₪144 — 101% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="135.86849999999998">₪136</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="142.7"><b>₪143</b></td>
-      <td class="num" data-v="5.028023419703615"><span class="delta up">▲ 5%</span></td>
+      <td class="num rc-value" data-v="142.7"><b>₪143</b></td>
+      <td class="num rc-delta" data-v="5.028023419703615"><span class="delta up">▲ 5%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -764,15 +773,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76104-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76104.html">76104 The Hulkbuster Smash-Up</a>
+      <td class="name"><a href="sets/76104.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76104-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76104 The Hulkbuster Smash-Up</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="75.4825">₪75.48</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="63.51"><b>₪63.51</b></td>
-      <td class="num" data-v="-15.861292352532047"><span class="delta down">▼ 16%</span></td>
+      <td class="num rc-value" data-v="63.51"><b>₪63.51</b></td>
+      <td class="num rc-delta" data-v="-15.861292352532047"><span class="delta down">▼ 16%</span></td>
       <td class="num" data-v="-10.118879139541464"><span class="delta down">▼ 10.1%</span></td>
       
     </tr>
@@ -780,15 +789,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76105-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76105.html">76105 The Hulkbuster Ultron Edition</a>
+      <td class="name"><a href="sets/76105.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76105-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76105 The Hulkbuster Ultron Edition</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="377.41249999999997">₪377</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="266.9"><b>₪267</b></td>
-      <td class="num" data-v="-29.281621567913092"><span class="delta down">▼ 29%</span></td>
+      <td class="num rc-value" data-v="266.9"><b>₪267</b></td>
+      <td class="num rc-delta" data-v="-29.281621567913092"><span class="delta down">▼ 29%</span></td>
       <td class="num" data-v="-23.251667816885213"><span class="delta down">▼ 23.3%</span></td>
       
     </tr>
@@ -796,17 +805,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76107-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76107.html">76107 Thanos Ultimate Battle</a>
+      <td class="name"><a href="sets/76107.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76107-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76107 Thanos Ultimate Battle</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 5 minifigures are worth ₪178 — 100% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="211.351">₪211</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="177.89"><b>₪178</b></td>
-      <td class="num" data-v="-15.83195726540211"><span class="delta down">▼ 16%</span></td>
+      <td class="num rc-value" data-v="177.89"><b>₪178</b></td>
+      <td class="num rc-delta" data-v="-15.83195726540211"><span class="delta down">▼ 16%</span></td>
       <td class="num" data-v="14.990303813833226"><span class="delta up">▲ 15.0%</span></td>
       
     </tr>
@@ -814,15 +823,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76108-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76108.html">76108 Sanctum Sanctorum Showdown</a>
+      <td class="name"><a href="sets/76108.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76108-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76108 Sanctum Sanctorum Showdown</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="196.25449999999998">₪196</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="334.65"><b>₪335</b></td>
-      <td class="num" data-v="70.51838301796903"><span class="delta up">▲ 71%</span></td>
+      <td class="num rc-value" data-v="334.65"><b>₪335</b></td>
+      <td class="num rc-delta" data-v="70.51838301796903"><span class="delta up">▲ 71%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -830,15 +839,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76124-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76124.html">76124 War Machine Buster</a>
+      <td class="name"><a href="sets/76124.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76124-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76124 War Machine Buster</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="90.579">₪90.58</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="78.7"><b>₪78.70</b></td>
-      <td class="num" data-v="-13.114518817827522"><span class="delta down">▼ 13%</span></td>
+      <td class="num rc-value" data-v="78.7"><b>₪78.70</b></td>
+      <td class="num rc-delta" data-v="-13.114518817827522"><span class="delta down">▼ 13%</span></td>
       <td class="num" data-v="-8.071486975820578"><span class="delta down">▼ 8.1%</span></td>
       
     </tr>
@@ -846,15 +855,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76125-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76125.html">76125 Iron Man Hall of Armour</a>
+      <td class="name"><a href="sets/76125.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76125-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76125 Iron Man Hall of Armour</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="135.86849999999998">₪136</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="137.38"><b>₪137</b></td>
-      <td class="num" data-v="1.112472721786148"><span class="delta up">▲ 1%</span></td>
+      <td class="num rc-value" data-v="137.38"><b>₪137</b></td>
+      <td class="num rc-delta" data-v="1.112472721786148"><span class="delta up">▲ 1%</span></td>
       <td class="num" data-v="3.4098607452013563"><span class="delta up">▲ 3.4%</span></td>
       
     </tr>
@@ -862,15 +871,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76126-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76126.html">76126 Avengers Ultimate Quinjet</a>
+      <td class="name"><a href="sets/76126.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76126-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76126 Avengers Ultimate Quinjet</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="181.158">₪181</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="164.58"><b>₪165</b></td>
-      <td class="num" data-v="-9.151127744841506"><span class="delta down">▼ 9%</span></td>
+      <td class="num rc-value" data-v="164.58"><b>₪165</b></td>
+      <td class="num rc-delta" data-v="-9.151127744841506"><span class="delta down">▼ 9%</span></td>
       <td class="num" data-v="8.827613568736377"><span class="delta up">▲ 8.8%</span></td>
       
     </tr>
@@ -878,15 +887,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76131-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76131.html">76131 Avengers Compound Battle</a>
+      <td class="name"><a href="sets/76131.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76131-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76131 Avengers Compound Battle</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="166.0615">₪166</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="202.39"><b>₪202</b></td>
-      <td class="num" data-v="21.876533693842337"><span class="delta up">▲ 22%</span></td>
+      <td class="num rc-value" data-v="202.39"><b>₪202</b></td>
+      <td class="num rc-delta" data-v="21.876533693842337"><span class="delta up">▲ 22%</span></td>
       <td class="num" data-v="22.112947990828992"><span class="delta up">▲ 22.1%</span></td>
       
     </tr>
@@ -894,15 +903,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76140-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76140.html">76140 Iron Man Mech</a>
+      <td class="name"><a href="sets/76140.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76140-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76140 Iron Man Mech</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="39.2509">₪39.25</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="21.35"><b>₪21.35</b></td>
-      <td class="num" data-v="-45.60634278449666"><span class="delta down">▼ 46%</span></td>
+      <td class="num rc-value" data-v="21.35"><b>₪21.35</b></td>
+      <td class="num rc-delta" data-v="-45.60634278449666"><span class="delta down">▼ 46%</span></td>
       <td class="num" data-v="-66.0031847133758"><span class="delta down">▼ 66.0%</span></td>
       
     </tr>
@@ -910,17 +919,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76144-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76144.html">76144 Hulk Helicopter Drop</a>
+      <td class="name"><a href="sets/76144.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76144-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76144 Hulk Helicopter Drop</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 4 minifigures are worth ₪150 — 97% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="150.965">₪151</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="155.0"><b>₪155</b></td>
-      <td class="num" data-v="2.672804954790843"><span class="delta up">▲ 3%</span></td>
+      <td class="num rc-value" data-v="155.0"><b>₪155</b></td>
+      <td class="num rc-delta" data-v="2.672804954790843"><span class="delta up">▲ 3%</span></td>
       <td class="num" data-v="-4.668183775139925"><span class="delta down">▼ 4.7%</span></td>
       
     </tr>
@@ -928,15 +937,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76155-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76155.html">76155 In Arishem&#39;s Shadow</a>
+      <td class="name"><a href="sets/76155.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76155-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76155 In Arishem&#39;s Shadow</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="102.6562">₪103</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="78.02"><b>₪78.02</b></td>
-      <td class="num" data-v="-23.99874532663395"><span class="delta down">▼ 24%</span></td>
+      <td class="num rc-value" data-v="78.02"><b>₪78.02</b></td>
+      <td class="num rc-delta" data-v="-23.99874532663395"><span class="delta down">▼ 24%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -944,15 +953,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76165-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76165.html">76165 Iron Man</a>
+      <td class="name"><a href="sets/76165.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76165-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76165 Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="202.29309999999998">₪202</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="176.15"><b>₪176</b></td>
-      <td class="num" data-v="-12.92337702076837"><span class="delta down">▼ 13%</span></td>
+      <td class="num rc-value" data-v="176.15"><b>₪176</b></td>
+      <td class="num rc-delta" data-v="-12.92337702076837"><span class="delta down">▼ 13%</span></td>
       <td class="num" data-v="-17.970569060258917"><span class="delta down">▼ 18.0%</span></td>
       
     </tr>
@@ -960,15 +969,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76166-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76166.html">76166 Avengers Tower Battle</a>
+      <td class="name"><a href="sets/76166.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76166-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76166 Avengers Tower Battle</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="271.73699999999997">₪272</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="387.77"><b>₪388</b></td>
-      <td class="num" data-v="42.70047877175358"><span class="delta up">▲ 43%</span></td>
+      <td class="num rc-value" data-v="387.77"><b>₪388</b></td>
+      <td class="num rc-delta" data-v="42.70047877175358"><span class="delta up">▲ 43%</span></td>
       <td class="num" data-v="46.88257575757575"><span class="delta up">▲ 46.9%</span></td>
       
     </tr>
@@ -976,15 +985,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76167-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76167.html">76167 Iron Man Armoury</a>
+      <td class="name"><a href="sets/76167.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76167-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76167 Iron Man Armoury</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="90.548807">₪90.55</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="160.13"><b>₪160</b></td>
-      <td class="num" data-v="76.84385394497798"><span class="delta up">▲ 77%</span></td>
+      <td class="num rc-value" data-v="160.13"><b>₪160</b></td>
+      <td class="num rc-delta" data-v="76.84385394497798"><span class="delta up">▲ 77%</span></td>
       <td class="num" data-v="40.415643633812685"><span class="delta up">▲ 40.4%</span></td>
       
     </tr>
@@ -992,15 +1001,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76178-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76178.html">76178 Daily Bugle</a>
+      <td class="name"><a href="sets/76178.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76178-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76178 Daily Bugle</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="900.0">₪900</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="988.85"><b>₪989</b></td>
-      <td class="num" data-v="9.872222222222225"><span class="delta up">▲ 10%</span></td>
+      <td class="num rc-value" data-v="988.85"><b>₪989</b></td>
+      <td class="num rc-delta" data-v="9.872222222222225"><span class="delta up">▲ 10%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1008,15 +1017,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76190-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76190.html">76190 Iron Man: Iron Monger Mayhem</a>
+      <td class="name"><a href="sets/76190.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76190-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76190 Iron Man: Iron Monger Mayhem</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="83.0156535">₪83.02</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="91.04"><b>₪91.04</b></td>
-      <td class="num" data-v="9.666064364596018"><span class="delta up">▲ 10%</span></td>
+      <td class="num rc-value" data-v="91.04"><b>₪91.04</b></td>
+      <td class="num rc-delta" data-v="9.666064364596018"><span class="delta up">▲ 10%</span></td>
       <td class="num" data-v="-1.5570934256055338"><span class="delta down">▼ 1.6%</span></td>
       
     </tr>
@@ -1024,15 +1033,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76194-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76194.html">76194 Tony Stark&#39;s Sakaarian Iron Man</a>
+      <td class="name"><a href="sets/76194.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76194-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76194 Tony Stark&#39;s Sakaarian Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="90.579">₪90.58</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="63.15"><b>₪63.15</b></td>
-      <td class="num" data-v="-30.28185340973073"><span class="delta down">▼ 30%</span></td>
+      <td class="num rc-value" data-v="63.15"><b>₪63.15</b></td>
+      <td class="num rc-delta" data-v="-30.28185340973073"><span class="delta down">▼ 30%</span></td>
       <td class="num" data-v="-26.66356985251423"><span class="delta down">▼ 26.7%</span></td>
       
     </tr>
@@ -1040,15 +1049,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76200-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76200.html">76200 Bro Thor&#39;s New Asgard</a>
+      <td class="name"><a href="sets/76200.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76200-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76200 Bro Thor&#39;s New Asgard</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="75.4825">₪75.48</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="62.0"><b>₪62.00</b></td>
-      <td class="num" data-v="-17.861756036167325"><span class="delta down">▼ 18%</span></td>
+      <td class="num rc-value" data-v="62.0"><b>₪62.00</b></td>
+      <td class="num rc-delta" data-v="-17.861756036167325"><span class="delta down">▼ 18%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1056,15 +1065,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76201-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76201.html">76201 Captain Carter &amp; The Hydra Stomper</a>
+      <td class="name"><a href="sets/76201.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76201-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76201 Captain Carter &amp; The Hydra Stomper</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="27.1737">₪27.17</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="67.66"><b>₪67.66</b></td>
-      <td class="num" data-v="148.99075208749636"><span class="delta up">▲ 149%</span></td>
+      <td class="num rc-value" data-v="67.66"><b>₪67.66</b></td>
+      <td class="num rc-delta" data-v="148.99075208749636"><span class="delta up">▲ 149%</span></td>
       <td class="num" data-v="-13.896665818274373"><span class="delta down">▼ 13.9%</span></td>
       
     </tr>
@@ -1072,15 +1081,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76206-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76206.html">76206 Iron Man Figure</a>
+      <td class="name"><a href="sets/76206.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76206-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76206 Iron Man Figure</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="105.66040350000002">₪106</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="79.16"><b>₪79.16</b></td>
-      <td class="num" data-v="-25.080732821543705"><span class="delta down">▼ 25%</span></td>
+      <td class="num rc-value" data-v="79.16"><b>₪79.16</b></td>
+      <td class="num rc-delta" data-v="-25.080732821543705"><span class="delta down">▼ 25%</span></td>
       <td class="num" data-v="-27.701159923280667"><span class="delta down">▼ 27.7%</span></td>
       
     </tr>
@@ -1088,15 +1097,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76208-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76208.html">76208 The Goat Boat</a>
+      <td class="name"><a href="sets/76208.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76208-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76208 The Goat Boat</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="90.579">₪90.58</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="77.2"><b>₪77.20</b></td>
-      <td class="num" data-v="-14.77053180096931"><span class="delta down">▼ 15%</span></td>
+      <td class="num rc-value" data-v="77.2"><b>₪77.20</b></td>
+      <td class="num rc-delta" data-v="-14.77053180096931"><span class="delta down">▼ 15%</span></td>
       <td class="num" data-v="-17.388978063135365"><span class="delta down">▼ 17.4%</span></td>
       
     </tr>
@@ -1104,15 +1113,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76209-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76209.html">76209 Thor&#39;s Hammer</a>
+      <td class="name"><a href="sets/76209.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76209-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76209 Thor&#39;s Hammer</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="241.54399999999998">₪242</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="283.74"><b>₪284</b></td>
-      <td class="num" data-v="17.46928095916273"><span class="delta up">▲ 17%</span></td>
+      <td class="num rc-value" data-v="283.74"><b>₪284</b></td>
+      <td class="num rc-delta" data-v="17.46928095916273"><span class="delta up">▲ 17%</span></td>
       <td class="num" data-v="-3.7745447146200006"><span class="delta down">▼ 3.8%</span></td>
       
     </tr>
@@ -1120,15 +1129,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76210-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76210.html">76210 Hulkbuster</a>
+      <td class="name"><a href="sets/76210.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76210-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76210 Hulkbuster</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="1100.0">₪1,100</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="1210.53"><b>₪1,211</b></td>
-      <td class="num" data-v="10.048181818181815"><span class="delta up">▲ 10%</span></td>
+      <td class="num rc-value" data-v="1210.53"><b>₪1,211</b></td>
+      <td class="num rc-delta" data-v="10.048181818181815"><span class="delta up">▲ 10%</span></td>
       <td class="num" data-v="3.1098277712475078"><span class="delta up">▲ 3.1%</span></td>
       
     </tr>
@@ -1136,15 +1145,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76216-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76216.html">76216 Iron Man Armoury</a>
+      <td class="name"><a href="sets/76216.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76216-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76216 Iron Man Armoury</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="283.81419999999997">₪284</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="150.95"><b>₪151</b></td>
-      <td class="num" data-v="-46.81379578611641"><span class="delta down">▼ 47%</span></td>
+      <td class="num rc-value" data-v="150.95"><b>₪151</b></td>
+      <td class="num rc-delta" data-v="-46.81379578611641"><span class="delta down">▼ 47%</span></td>
       <td class="num" data-v="-35.25349575362443"><span class="delta down">▼ 35.3%</span></td>
       
     </tr>
@@ -1152,15 +1161,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76218-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76218.html">76218 Sanctum Sanctorum</a>
+      <td class="name"><a href="sets/76218.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76218-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76218 Sanctum Sanctorum</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="552.5319">₪553</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="874.06"><b>₪874</b></td>
-      <td class="num" data-v="58.19177137102854"><span class="delta up">▲ 58%</span></td>
+      <td class="num rc-value" data-v="874.06"><b>₪874</b></td>
+      <td class="num rc-delta" data-v="58.19177137102854"><span class="delta up">▲ 58%</span></td>
       <td class="num" data-v="16.502499166944347"><span class="delta up">▲ 16.5%</span></td>
       
     </tr>
@@ -1168,15 +1177,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76247-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76247.html">76247 The Hulkbuster: The Battle of Wakanda</a>
+      <td class="name"><a href="sets/76247.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76247-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76247 The Hulkbuster: The Battle of Wakanda</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="120.7569035">₪121</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="98.55"><b>₪98.55</b></td>
-      <td class="num" data-v="-18.38975897556036"><span class="delta down">▼ 18%</span></td>
+      <td class="num rc-value" data-v="98.55"><b>₪98.55</b></td>
+      <td class="num rc-delta" data-v="-18.38975897556036"><span class="delta down">▼ 18%</span></td>
       <td class="num" data-v="-7.01075674655596"><span class="delta down">▼ 7.0%</span></td>
       
     </tr>
@@ -1184,15 +1193,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76255-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76255.html">76255 The New Guardians&#39; Ship</a>
+      <td class="name"><a href="sets/76255.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76255-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76255 The New Guardians&#39; Ship</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="135.86849999999998">₪136</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="173.03"><b>₪173</b></td>
-      <td class="num" data-v="27.35107843245493"><span class="delta up">▲ 27%</span></td>
+      <td class="num rc-value" data-v="173.03"><b>₪173</b></td>
+      <td class="num rc-delta" data-v="27.35107843245493"><span class="delta up">▲ 27%</span></td>
       <td class="num" data-v="-2.6444606988127997"><span class="delta down">▼ 2.6%</span></td>
       
     </tr>
@@ -1200,15 +1209,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76269-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76269.html">76269 Avengers Tower</a>
+      <td class="name"><a href="sets/76269.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76269-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76269 Avengers Tower</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="1358.685">₪1,359</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="1180.75"><b>₪1,181</b></td>
-      <td class="num" data-v="-13.096118673570398"><span class="delta down">▼ 13%</span></td>
+      <td class="num rc-value" data-v="1180.75"><b>₪1,181</b></td>
+      <td class="num rc-delta" data-v="-13.096118673570398"><span class="delta down">▼ 13%</span></td>
       <td class="num" data-v="10.27626270173341"><span class="delta up">▲ 10.3%</span></td>
       
     </tr>
@@ -1216,17 +1225,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76287-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76287.html">76287 Iron Man with Bike and The Hulk</a>
+      <td class="name"><a href="sets/76287.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76287-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76287 Iron Man with Bike and The Hulk</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 2 minifigures are worth ₪25.32 — 82% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="45.2895">₪45.29</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="30.82"><b>₪30.82</b></td>
-      <td class="num" data-v="-31.948906479426793"><span class="delta down">▼ 32%</span></td>
+      <td class="num rc-value" data-v="30.82"><b>₪30.82</b></td>
+      <td class="num rc-delta" data-v="-31.948906479426793"><span class="delta down">▼ 32%</span></td>
       <td class="num" data-v="0.0"><span class="delta up">▲ 0.0%</span></td>
       
     </tr>
@@ -1234,15 +1243,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76288-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76288.html">76288 Iron Man &amp; Iron Legion vs. Hydra Soldier</a>
+      <td class="name"><a href="sets/76288.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76288-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76288 Iron Man &amp; Iron Legion vs. Hydra Soldier</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="60.385999999999996">₪60.39</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="38.17"><b>₪38.17</b></td>
-      <td class="num" data-v="-36.789984433477954"><span class="delta down">▼ 37%</span></td>
+      <td class="num rc-value" data-v="38.17"><b>₪38.17</b></td>
+      <td class="num rc-delta" data-v="-36.789984433477954"><span class="delta down">▼ 37%</span></td>
       <td class="num" data-v="-47.690831848704946"><span class="delta down">▼ 47.7%</span></td>
       
     </tr>
@@ -1250,17 +1259,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76290-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76290.html">76290 The Avengers vs. The Leviathan</a>
+      <td class="name"><a href="sets/76290.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76290-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76290 The Avengers vs. The Leviathan</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 5 minifigures are worth ₪92.15 — 80% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="135.86849999999998">₪136</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="114.65"><b>₪115</b></td>
-      <td class="num" data-v="-15.616938436797328"><span class="delta down">▼ 16%</span></td>
+      <td class="num rc-value" data-v="114.65"><b>₪115</b></td>
+      <td class="num rc-delta" data-v="-15.616938436797328"><span class="delta down">▼ 16%</span></td>
       <td class="num" data-v="73.34442092530996"><span class="delta up">▲ 73.3%</span></td>
       
     </tr>
@@ -1268,15 +1277,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76298-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76298.html">76298 Spider-Man Buildable Figure</a>
+      <td class="name"><a href="sets/76298.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76298-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76298 Spider-Man Buildable Figure</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="105.645307">₪106</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="43.58"><b>₪43.58</b></td>
-      <td class="num" data-v="-58.74875918529917"><span class="delta down">▼ 59%</span></td>
+      <td class="num rc-value" data-v="43.58"><b>₪43.58</b></td>
+      <td class="num rc-delta" data-v="-58.74875918529917"><span class="delta down">▼ 59%</span></td>
       <td class="num" data-v="-31.434864694776593"><span class="delta down">▼ 31.4%</span></td>
       
     </tr>
@@ -1284,17 +1293,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76307-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76307.html">76307 Iron Man Mech vs. Ultron</a>
+      <td class="name"><a href="sets/76307.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76307-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76307 Iron Man Mech vs. Ultron</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 2 minifigures are worth ₪33.48 — 140% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="45.2895">₪45.29</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="23.89"><b>₪23.89</b></td>
-      <td class="num" data-v="-47.25046644365691"><span class="delta down">▼ 47%</span></td>
+      <td class="num rc-value" data-v="23.89"><b>₪23.89</b></td>
+      <td class="num rc-delta" data-v="-47.25046644365691"><span class="delta down">▼ 47%</span></td>
       <td class="num" data-v="0.0"><span class="delta up">▲ 0.0%</span></td>
       
     </tr>
@@ -1302,15 +1311,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76313-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76313.html">76313 MARVEL Logo</a>
+      <td class="name"><a href="sets/76313.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76313-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76313 MARVEL Logo</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="286.8335">₪287</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="184.95"><b>₪185</b></td>
-      <td class="num" data-v="-35.5200839511424"><span class="delta down">▼ 36%</span></td>
+      <td class="num rc-value" data-v="184.95"><b>₪185</b></td>
+      <td class="num rc-delta" data-v="-35.5200839511424"><span class="delta down">▼ 36%</span></td>
       <td class="num" data-v="-18.387609213661644"><span class="delta down">▼ 18.4%</span></td>
       
     </tr>
@@ -1318,17 +1327,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76315-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76315.html">76315 Iron Man&#39;s Hall of Armor</a>
+      <td class="name"><a href="sets/76315.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76315-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76315 Iron Man&#39;s Hall of Armor</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 6 minifigures are worth ₪109 — 111% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="114.73339999999999">₪115</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="97.74"><b>₪97.74</b></td>
-      <td class="num" data-v="-14.811205804064025"><span class="delta down">▼ 15%</span></td>
+      <td class="num rc-value" data-v="97.74"><b>₪97.74</b></td>
+      <td class="num rc-delta" data-v="-14.811205804064025"><span class="delta down">▼ 15%</span></td>
       <td class="num" data-v="20.28058085158748"><span class="delta up">▲ 20.3%</span></td>
       
     </tr>
@@ -1336,15 +1345,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76316-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76316.html">76316 Fantastic Four vs. Galactus Construction Figure</a>
+      <td class="name"><a href="sets/76316.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76316-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76316 Fantastic Four vs. Galactus Construction Figure</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="150.965">₪151</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="148.88"><b>₪149</b></td>
-      <td class="num" data-v="-1.3811148279402563"><span class="delta down">▼ 1%</span></td>
+      <td class="num rc-value" data-v="148.88"><b>₪149</b></td>
+      <td class="num rc-delta" data-v="-1.3811148279402563"><span class="delta down">▼ 1%</span></td>
       <td class="num" data-v="8.703271028037374"><span class="delta up">▲ 8.7%</span></td>
       
     </tr>
@@ -1352,17 +1361,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76320-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76320.html">76320 Iron Man &amp; War Machine vs. Hammer Drones</a>
+      <td class="name"><a href="sets/76320.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76320-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76320 Iron Man &amp; War Machine vs. Hammer Drones</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 2 minifigures are worth ₪42.13 — 96% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="69.41370699999999">₪69.41</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="43.96"><b>₪43.96</b></td>
-      <td class="num" data-v="-36.6695687351779"><span class="delta down">▼ 37%</span></td>
+      <td class="num rc-value" data-v="43.96"><b>₪43.96</b></td>
+      <td class="num rc-delta" data-v="-36.6695687351779"><span class="delta down">▼ 37%</span></td>
       <td class="num" data-v="0.0"><span class="delta up">▲ 0.0%</span></td>
       
     </tr>
@@ -1370,17 +1379,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76325-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76325.html">76325 Avengers: Age of Ultron Quinjet</a>
+      <td class="name"><a href="sets/76325.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76325-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76325 Avengers: Age of Ultron Quinjet</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 5 minifigures are worth ₪231 — 105% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="196.25449999999998">₪196</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="219.93"><b>₪220</b></td>
-      <td class="num" data-v="12.063672425345677"><span class="delta up">▲ 12%</span></td>
+      <td class="num rc-value" data-v="219.93"><b>₪220</b></td>
+      <td class="num rc-delta" data-v="12.063672425345677"><span class="delta up">▲ 12%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1388,17 +1397,17 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76327-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76327.html">76327 Iron Man MK4 Bust</a>
+      <td class="name"><a href="sets/76327.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76327-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76327 Iron Man MK4 Bust</a>
           <span class="chip" style="color:var(--ok);border-color:var(--ok)"
         title="Its 1 minifigure is worth ₪58.46 — 109% of what the set itself fetches. Selling the figures separately would beat selling it whole.">
     ✂ worth more in pieces</span></td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="166.0615">₪166</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="53.6"><b>₪53.60</b></td>
-      <td class="num" data-v="-67.72280149221824"><span class="delta down">▼ 68%</span></td>
+      <td class="num rc-value" data-v="53.6"><b>₪53.60</b></td>
+      <td class="num rc-delta" data-v="-67.72280149221824"><span class="delta down">▼ 68%</span></td>
       <td class="num" data-v="-41.97250189455451"><span class="delta down">▼ 42.0%</span></td>
       
     </tr>
@@ -1406,15 +1415,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76343-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76343.html">76343 Epic Battle: Hulkbuster vs. The Hulk</a>
+      <td class="name"><a href="sets/76343.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76343-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76343 Epic Battle: Hulkbuster vs. The Hulk</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="150.934807">₪151</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v=""><b>—</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v=""><b>—</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1422,15 +1431,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76344-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/76344.html">76344 Iron Man Mark 3 Collectors’ Edition</a>
+      <td class="name"><a href="sets/76344.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/76344-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">76344 Iron Man Mark 3 Collectors’ Edition</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">Used</span></td>
       <td class="num" data-v="2">2</td>
       <td class="num" data-v="301.93">₪302</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="232.22"><b>₪232</b></td>
-      <td class="num" data-v="-23.088133010962807"><span class="delta down">▼ 23%</span></td>
+      <td class="num rc-value" data-v="232.22"><b>₪232</b></td>
+      <td class="num rc-delta" data-v="-23.088133010962807"><span class="delta down">▼ 23%</span></td>
       <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
       
     </tr>
@@ -1438,15 +1447,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/77242-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/77242.html">77242 Ferrari SF-24 F1 Race Car</a>
+      <td class="name"><a href="sets/77242.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/77242-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">77242 Ferrari SF-24 F1 Race Car</a>
           </td>
-      <td>Speed Champions</td>
+      <td class="theme">Speed Champions<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="81.49090699999999">₪81.49</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="42.75"><b>₪42.75</b></td>
-      <td class="num" data-v="-47.5401592965458"><span class="delta down">▼ 48%</span></td>
+      <td class="num rc-value" data-v="42.75"><b>₪42.75</b></td>
+      <td class="num rc-delta" data-v="-47.5401592965458"><span class="delta down">▼ 48%</span></td>
       <td class="num" data-v="-30.85880640465793"><span class="delta down">▼ 30.9%</span></td>
       
     </tr>
@@ -1454,15 +1463,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/77243-1.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/77243.html">77243 Oracle Red Bull Racing RB20 F1 Race Car</a>
+      <td class="name"><a href="sets/77243.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/SN/0/77243-1.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">77243 Oracle Red Bull Racing RB20 F1 Race Car</a>
           </td>
-      <td>Speed Champions</td>
+      <td class="theme">Speed Champions<span class="rowmeta">Used</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="81.49090699999999">₪81.49</td>
       <td data-v="used"><span class="chip">Used</span></td>
-      <td class="num" data-v="46.53"><b>₪46.53</b></td>
-      <td class="num" data-v="-42.90160496066143"><span class="delta down">▼ 43%</span></td>
+      <td class="num rc-value" data-v="46.53"><b>₪46.53</b></td>
+      <td class="num rc-delta" data-v="-42.90160496066143"><span class="delta down">▼ 43%</span></td>
       <td class="num" data-v="13.404825737265416"><span class="delta up">▲ 13.4%</span></td>
       
     </tr>
@@ -1470,15 +1479,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col334.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/col334.html">col334 War Machine - Black and Silver Armor with Backpack</a>
+      <td class="name"><a href="sets/col334.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col334.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">col334 War Machine - Black and Silver Armor with Backpack</a>
           </td>
-      <td>Collectible Minifigures</td>
+      <td class="theme">Collectible Minifigures<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="123.95"><b>₪124</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="123.95"><b>₪124</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="-3.929623314214856"><span class="delta down">▼ 3.9%</span></td>
       
     </tr>
@@ -1486,15 +1495,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col335.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/col335.html">col335 Wong</a>
+      <td class="name"><a href="sets/col335.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col335.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">col335 Wong</a>
           </td>
-      <td>Collectible Minifigures</td>
+      <td class="theme">Collectible Minifigures<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="41.97"><b>₪41.97</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="41.97"><b>₪41.97</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="1.573088092933201"><span class="delta up">▲ 1.6%</span></td>
       
     </tr>
@@ -1502,15 +1511,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col336.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/col336.html">col336 Tony Stark - Hoodie with Dark Silver Camouflage</a>
+      <td class="name"><a href="sets/col336.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col336.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">col336 Tony Stark - Hoodie with Dark Silver Camouflage</a>
           </td>
-      <td>Collectible Minifigures</td>
+      <td class="theme">Collectible Minifigures<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="69.58"><b>₪69.58</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="69.58"><b>₪69.58</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="-14.436792916871614"><span class="delta down">▼ 14.4%</span></td>
       
     </tr>
@@ -1518,15 +1527,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col337.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/col337.html">col337 Bucky Barnes / White Wolf</a>
+      <td class="name"><a href="sets/col337.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/col337.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">col337 Bucky Barnes / White Wolf</a>
           </td>
-      <td>Collectible Minifigures</td>
+      <td class="theme">Collectible Minifigures<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="76.16"><b>₪76.16</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="76.16"><b>₪76.16</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="-3.911178400201878"><span class="delta down">▼ 3.9%</span></td>
       
     </tr>
@@ -1534,15 +1543,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0213.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/sh0213.html">sh0213 Scuba Iron Man</a>
+      <td class="name"><a href="sets/sh0213.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0213.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">sh0213 Scuba Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="130.92"><b>₪131</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="130.92"><b>₪131</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="11.973999315771454"><span class="delta up">▲ 12.0%</span></td>
       
     </tr>
@@ -1550,15 +1559,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0229.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/sh0229.html">sh0229 Space Iron Man</a>
+      <td class="name"><a href="sets/sh0229.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0229.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">sh0229 Space Iron Man</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="281.15"><b>₪281</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="281.15"><b>₪281</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="11.320082356667713"><span class="delta up">▲ 11.3%</span></td>
       
     </tr>
@@ -1566,15 +1575,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0362.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/sh0362.html">sh0362 Iron Man - Short Legs</a>
+      <td class="name"><a href="sets/sh0362.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0362.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">sh0362 Iron Man - Short Legs</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="44.01"><b>₪44.01</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="44.01"><b>₪44.01</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="13.020030816640988"><span class="delta up">▲ 13.0%</span></td>
       
     </tr>
@@ -1582,15 +1591,15 @@
     
     
     <tr>
-      <td><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0405.png" alt="" loading="lazy"
-       onerror="this.style.visibility='hidden'"><a href="sets/sh0405.html">sh0405 Iron Man - Mark 47 Armor</a>
+      <td class="name"><a href="sets/sh0405.html"><img class="thumb" src="https://img.bricklink.com/ItemImage/MN/0/sh0405.png" alt="" loading="lazy"
+       onerror="this.style.visibility='hidden'">sh0405 Iron Man - Mark 47 Armor</a>
           </td>
-      <td>Super Heroes Marvel</td>
+      <td class="theme">Super Heroes Marvel<span class="rowmeta">New</span></td>
       <td class="num" data-v="1">1</td>
       <td class="num" data-v="">—</td>
       <td data-v="new"><span class="chip">New</span></td>
-      <td class="num" data-v="96.71"><b>₪96.71</b></td>
-      <td class="num" data-v=""><span style="color:var(--muted)">—</span></td>
+      <td class="num rc-value" data-v="96.71"><b>₪96.71</b></td>
+      <td class="num rc-delta" data-v=""><span style="color:var(--muted)">—</span></td>
       <td class="num" data-v="-3.732828986661358"><span class="delta down">▼ 3.7%</span></td>
       
     </tr>
@@ -1689,12 +1698,36 @@
 
 </main>
 
+
+<nav class="dock" aria-label="Primary">
+  <a class="dock-tab " href="index.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 13h6V4H4v9zm10 7h6V4h-6v16zM4 20h6v-4H4v4z"/></svg></span><span class="dock-lbl">Dashboard</span></a>
+  <a class="dock-tab " href="sets/index.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5L12 12l8-4.5M12 12v9"/></svg></span><span class="dock-lbl">Sets</span></a>
+  <a class="dock-tab " href="deals.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><span class="dock-lbl">Deals</span></a>
+  <a class="dock-tab active" href="portfolio.html">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l7 4"/></svg></span><span class="dock-lbl">Portfolio</span></a>
+  
+  <button class="dock-tab dock-more " type="button"
+          id="dockMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="dockMorePanel">
+    <span class="dock-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span><span class="dock-lbl">More</span></button>
+</nav>
+<div class="dock-scrim" id="dockScrim" hidden></div>
+<div class="dock-panel" id="dockMorePanel" hidden role="menu" aria-label="More">
+  <a role="menuitem" href="minifigs.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="6" r="3"/><path d="M6 21v-6a6 6 0 0112 0v6"/></svg><span>Minifigs</span></a>
+  <a role="menuitem" href="themes.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><path d="M4 4h7v7H4V4zM13 4h7v7h-7V4zM4 13h7v7H4v-7zM13 13h7v7h-7v-7z"/></svg><span>Themes</span></a>
+  <a role="menuitem" href="compare.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true"><path d="M8 3v18M16 3v18M4 8h4M4 16h4M16 8h4M16 16h4"/></svg><span>Compare</span></a>
+  <a role="menuitem" href="partout.html" class=""><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Part-out</span></a>
+  
+</div>
+
 <footer class="note">
   BRICKO · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl
   · static snapshot — run <code>python -m brickonomy.export</code> to update
   
 </footer>
 
-<script src="static/app.js?v=1788463116"></script>
+<script src="static/app.js?v=1788528290"></script>
 </body>
 </html>

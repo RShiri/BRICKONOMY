@@ -9,12 +9,12 @@
 
 <div class="tiles">
   <div class="tile">
-    <div class="label">Portfolio value</div>
+    <div class="label-row"><div class="label">Portfolio value</div><span class="tile-ico">{{ m.icon('wallet', 16) }}</span></div>
     <div class="value">{{ total_value|money(ccy) }}</div>
     <div class="delta">{{ counts.portfolio }} sets owned</div>
   </div>
   <div class="tile">
-    <div class="label" title="Today's value against what was paid, falling back to retail where no price was recorded. Both sides cover the same sets — a set with neither is left out of both.">Gain vs paid</div>
+    <div class="label-row"><div class="label" title="Today's value against what was paid, falling back to retail where no price was recorded. Both sides cover the same sets — a set with neither is left out of both.">Gain vs paid</div><span class="tile-ico">{{ m.icon('trend-down', 16) }}</span></div>
     <div class="value">{% if gain_pct is not none %}{{ "%+.1f"|format(gain_pct) }}%{% else %}—{% endif %}</div>
     <div class="delta {{ 'up' if gain_pct and gain_pct > 0 else 'down' if gain_pct and gain_pct < 0 }}">
       {% if gain_abs is not none %}{{ gain_abs|money(ccy) }} unrealized{% if gain_rows < owned_rows %}
@@ -22,12 +22,12 @@
     </div>
   </div>
   <div class="tile">
-    <div class="label">Items tracked</div>
+    <div class="label-row"><div class="label">Items tracked</div><span class="tile-ico">{{ m.icon('radar', 16) }}</span></div>
     <div class="value">{{ counts['items'] }}</div>
     <div class="delta">{{ counts.retired }} retired</div>
   </div>
   <div class="tile">
-    <div class="label">Last scan</div>
+    <div class="label-row"><div class="label">Last scan</div><span class="tile-ico">{{ m.icon('clock', 16) }}</span></div>
     <div class="value" style="font-size:18px">{{ last_scan[:16].replace('T', ' ') if last_scan else 'never' }}</div>
     <div class="delta">
       {% if job.running %}<span class="dot" style="background:var(--warn)"></span> scan running…
@@ -40,34 +40,38 @@
   <div class="card">
     <h3>Top gainers <span class="soft">— 30 days, BrickLink average</span></h3>
     <div class="table-scroll">
-    <table>
-      <tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr>
+    <table class="rowcards">
+      <thead><tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr></thead>
+      <tbody>
       {% for g in gainers %}
       <tr>
-        <td>{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
-        <td class="num">{{ g.value|money(ccy) }}</td>
-        <td class="num">{{ m.delta(g.delta) }}</td>
+        <td class="name">{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
+        <td class="num rc-value">{{ g.value|money(ccy) }}</td>
+        <td class="num rc-delta">{{ m.delta(g.delta) }}</td>
       </tr>
       {% else %}
       <tr><td colspan="3" style="color:var(--muted)">Run at least two scans a week apart to see movers.</td></tr>
       {% endfor %}
+      </tbody>
     </table>
   </div>
   </div>
   <div class="card">
     <h3>Top decliners <span class="soft">— 30 days</span></h3>
     <div class="table-scroll">
-    <table>
-      <tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr>
+    <table class="rowcards">
+      <thead><tr><th>Set</th><th class="num">Value</th><th class="num">Δ 30d</th></tr></thead>
+      <tbody>
       {% for g in decliners %}
       <tr>
-        <td>{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
-        <td class="num">{{ g.value|money(ccy) }}</td>
-        <td class="num">{{ m.delta(g.delta) }}</td>
+        <td class="name">{{ m.thumb(g.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ g.item_id) }}">{{ g.item_id }} {{ g.name }}</a></td>
+        <td class="num rc-value">{{ g.value|money(ccy) }}</td>
+        <td class="num rc-delta">{{ m.delta(g.delta) }}</td>
       </tr>
       {% else %}
       <tr><td colspan="3" style="color:var(--muted)">No decliners in the last 30 days.</td></tr>
       {% endfor %}
+      </tbody>
     </table>
   </div>
   </div>
@@ -76,21 +80,23 @@
 <div class="card">
   <h3>Best deals right now <span class="soft">— cheapest live listing vs market value</span></h3>
   <div class="table-scroll">
-  <table>
-    <tr><th>Item</th><th>Where</th><th class="num">Ask</th><th class="num">Market</th><th class="num">Margin</th><th>Rating</th></tr>
+  <table class="dealcards">
+    <thead><tr><th>Item</th><th>Where</th><th class="num">Ask</th><th class="num">Market</th><th class="num">Margin</th><th>Rating</th></tr></thead>
+    <tbody>
     {% for d in top_deals %}
     <tr>
-      <td>{{ m.thumb(d.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ d.item_id) }}">{{ d.item_id }} {{ d.name }}</a></td>
-      <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
+      <td class="name">{{ m.thumb(d.item_id, 'S', img_url) }}<a href="{{ u('/sets/' ~ d.item_id) }}">{{ d.item_id }} {{ d.name }}</a></td>
+      <td class="dc-where"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
           {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
-      <td class="num">{{ d.ask|money(ccy) }}</td>
-      <td class="num">{{ d.value|money(ccy) }}</td>
-      <td class="num">{{ m.delta(d.margin, 0) }}</td>
-      <td>{{ m.rating_chip(d.rating) }}</td>
+      <td class="num dc-ask">{{ d.ask|money(ccy) }}</td>
+      <td class="num dc-market">{{ d.value|money(ccy) }}</td>
+      <td class="num dc-margin">{{ m.delta(d.margin, 0) }}</td>
+      <td class="dc-rating">{{ m.rating_chip(d.rating) }}</td>
     </tr>
     {% else %}
     <tr><td colspan="6" style="color:var(--muted)">No listing is currently below market value. <a href="{{ u('/deals') }}">See all deals →</a></td></tr>
     {% endfor %}
+    </tbody>
   </table>
   </div>
   {% if top_deals %}<div style="margin-top:8px"><a class="btn-ghost" href="{{ u('/deals') }}">All deals →</a></div>{% endif %}
@@ -110,7 +116,7 @@
       <div class="row">
         <span>{{ theme }}</span>
         <div class="track"><div class="fill" style="width:{{ (v / max_theme * 100)|round(1) }}%"></div></div>
-        <span class="num">{{ v|money(ccy) }}</span>
+        <span class="num">{{ v|money(ccy) }}{% if total_value %} <span class="soft">({{ (v / total_value * 100)|round(0)|int }}%)</span>{% endif %}</span>
       </div>
       {% else %}
       <div style="color:var(--muted)">Import your portfolio to see the theme breakdown.</div>

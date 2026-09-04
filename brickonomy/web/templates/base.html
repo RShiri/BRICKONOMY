@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% import "_macros.html" as m with context %}
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -26,11 +27,14 @@
 <script src="{{ u('/static/vendor/chart.umd.min.js') }}"></script>
 <script src="{{ u('/static/vendor/chartjs-adapter-date-fns.bundle.min.js') }}"></script>
 </head>
-<body data-static="{{ 1 if static_mode else 0 }}" data-base="{{ base_path }}">
+<body class="{% block bodyclass %}{% endblock %}" data-static="{{ 1 if static_mode else 0 }}" data-base="{{ base_path }}">
 <header class="app">
   {# Installed to the home screen there is no browser chrome, so no back
-     button; shown by CSS only in display-mode: standalone. #}
+     button; shown by CSS only in display-mode: standalone — except on a
+     phone-width "detail" page (set detail), where it doubles as the phone
+     back button even outside a standalone PWA. #}
   <button class="navback" type="button" onclick="history.back()" aria-label="Back">‹</button>
+  <span class="headertitle">{% block headertitle %}{% endblock %}</span>
   <a class="logo" href="{{ u('/') }}">
     <svg width="28" height="22" viewBox="0 0 26 20" aria-hidden="true">
       <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
@@ -57,21 +61,30 @@
     {% endif %}
   </nav>
   <div class="spacer"></div>
-  <div class="sitesearch">
+  {# Phone only: the search row is collapsed behind this button so the header
+     stays one line at 54px. Toggled by app.js (aria-expanded mirrors state). #}
+  <button class="searchtoggle" type="button" id="searchToggle" aria-expanded="false"
+          aria-controls="siteSearchRow" aria-label="Search sets and minifigs">{{ m.icon('search') }}</button>
+  <div class="sitesearch" id="siteSearchRow">
     <input class="inp" id="siteSearch" type="search" autocomplete="off"
            placeholder="Search sets &amp; minifigs…" aria-label="Search the catalog">
     <div class="sresults" id="siteSearchResults" hidden></div>
   </div>
   {% if static_mode %}
-  <span class="chip" title="Static snapshot published to GitHub Pages">📄 snapshot · {{ ccy }}</span>
+  <span class="chip ccychip" title="Static snapshot published to GitHub Pages">📄 snapshot · {{ ccy }}</span>
   {% else %}
-  <form method="post" action="/settings/currency">
+  <form method="post" action="/settings/currency" class="ccyform">
     <select class="ccy" name="ccy" onchange="this.form.submit()" title="Display currency" aria-label="Display currency">
       {% for c in currencies %}
       <option value="{{ c }}" {{ 'selected' if c == ccy }}>{{ c }}</option>
       {% endfor %}
     </select>
   </form>
+  {% endif %}
+  {# The scan controls live on /refresh (and in the phone More panel) — on a
+     54px phone header there is no room for a third control. #}
+  <div class="refreshctl">
+  {% if not static_mode %}
   {% if job.blocked %}
   {# A scan that never started is not a scan that found nothing. #}
   <a class="btn-ghost" href="{{ u('/refresh') }}"
@@ -85,11 +98,44 @@
   </form>
   {% endif %}
   {% endif %}
+  </div>
 </header>
 
 <main>
 {% block content %}{% endblock %}
 </main>
+
+{# ── phone bottom dock ─────────────────────────────────────────────────────
+   Desktop keeps nav.tabs above; on a phone (≤640px) that bar is hidden and
+   this fixed dock takes over. Five equal tabs — the fifth opens an upward
+   panel with the routes that don't fit: Minifigs, Themes, Compare, Part-out,
+   Refresh & Sources (the last one only off the static export, same rule as
+   nav.tabs above). Every tab shares .dock-tab so app.js and tests can count
+   them regardless of whether it renders as <a> or <button>. #}
+<nav class="dock" aria-label="Primary">
+  <a class="dock-tab {{ 'active' if path == '/' }}" href="{{ u('/') }}">
+    <span class="dock-ico">{{ m.icon('dashboard') }}</span><span class="dock-lbl">Dashboard</span></a>
+  <a class="dock-tab {{ 'active' if path.startswith('/sets') or path == '/set' }}" href="{{ u('/sets') }}">
+    <span class="dock-ico">{{ m.icon('sets') }}</span><span class="dock-lbl">Sets</span></a>
+  <a class="dock-tab {{ 'active' if path.startswith('/deals') }}" href="{{ u('/deals') }}">
+    <span class="dock-ico">{{ m.icon('deals') }}</span><span class="dock-lbl">Deals</span></a>
+  <a class="dock-tab {{ 'active' if path.startswith('/portfolio') }}" href="{{ u('/portfolio') }}">
+    <span class="dock-ico">{{ m.icon('portfolio') }}</span><span class="dock-lbl">Portfolio</span></a>
+  {% set more_active = path.startswith('/minifigs') or path.startswith('/themes') or path.startswith('/compare') or path.startswith('/partout') or path.startswith('/refresh') %}
+  <button class="dock-tab dock-more {{ 'active' if more_active }}" type="button"
+          id="dockMoreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="dockMorePanel">
+    <span class="dock-ico">{{ m.icon('more') }}</span><span class="dock-lbl">More</span></button>
+</nav>
+<div class="dock-scrim" id="dockScrim" hidden></div>
+<div class="dock-panel" id="dockMorePanel" hidden role="menu" aria-label="More">
+  <a role="menuitem" href="{{ u('/minifigs') }}" class="{{ 'on' if path.startswith('/minifigs') }}">{{ m.icon('minifig') }}<span>Minifigs</span></a>
+  <a role="menuitem" href="{{ u('/themes') }}" class="{{ 'on' if path.startswith('/themes') }}">{{ m.icon('theme') }}<span>Themes</span></a>
+  <a role="menuitem" href="{{ u('/compare') }}" class="{{ 'on' if path.startswith('/compare') }}">{{ m.icon('compare') }}<span>Compare</span></a>
+  <a role="menuitem" href="{{ u('/partout') }}" class="{{ 'on' if path.startswith('/partout') }}">{{ m.icon('partout') }}<span>Part-out</span></a>
+  {% if not static_mode %}
+  <a role="menuitem" href="/refresh" class="{{ 'on' if path.startswith('/refresh') }}">{{ m.icon('refresh') }}<span>Refresh &amp; Sources</span></a>
+  {% endif %}
+</div>
 
 <footer class="note">
   BRICKO · self-hosted, no API keys · sources: BrickLink, eBay, BrickOwl

@@ -52,7 +52,7 @@
     <input class="inp" type="search" data-filter-table="ownedTable" placeholder="Filter by set, name or theme…" aria-label="Filter owned sets">
   </div>
   <div class="table-scroll">
-  <table id="ownedTable" data-sortable>
+  <table id="ownedTable" class="rowcards" data-sortable>
     <thead>
     <tr>
       <th>Set</th><th>Theme</th><th class="num">Qty</th><th class="num">Paid</th>
@@ -63,8 +63,8 @@
     {% for e in entries %}
     {% if edit == e.item_id %}
     <tr class="editrow">
-      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<b>{{ e.item_id }} {{ e.name }}</b></td>
-      <td>{{ e.theme or '—' }}</td>
+      <td class="name">{{ m.thumb(e.item_id, e.item_type, img_url) }}<b>{{ e.item_id }} {{ e.name }}</b></td>
+      <td class="theme">{{ e.theme or '—' }}</td>
       <td colspan="7">
         <form class="editpanel" method="post" action="/portfolio/{{ e.item_id }}">
           <label>Qty <input class="inp" type="number" name="qty" value="{{ e.qty }}" min="0" style="width:64px"></label>
@@ -92,14 +92,14 @@
     </tr>
     {% else %}
     <tr>
-      <td>{{ m.thumb(e.item_id, e.item_type, img_url) }}<a href="{{ u('/sets/' ~ e.item_id) }}">{{ e.item_id }} {{ e.name }}</a>
+      <td class="name"><a href="{{ u('/sets/' ~ e.item_id) }}">{{ m.thumb(e.item_id, e.item_type, img_url) }}{{ e.item_id }} {{ e.name }}</a>
           {{ m.sell_chip(e.signal) }}{{ m.part_out_chip(e.fig_share, ccy) }}</td>
-      <td>{{ e.theme or '—' }}</td>
+      <td class="theme">{{ e.theme or '—' }}<span class="rowmeta">{{ 'Used' if e.condition == 'used' else 'New' }}</span></td>
       <td class="num" data-v="{{ e.qty }}">{{ e.qty }}</td>
       <td class="num" data-v="{{ e.paid or '' }}">{{ e.paid|money(ccy) if e.paid else '—' }}</td>
       <td data-v="{{ e.condition }}"><span class="chip">{{ 'Used' if e.condition == 'used' else 'New' }}</span></td>
-      <td class="num" data-v="{{ e.value or '' }}"><b>{{ e.value|money(ccy) if e.value else '—' }}</b></td>
-      <td class="num" data-v="{{ e.gain if e.gain is not none else '' }}">{{ m.delta(e.gain, 0) }}</td>
+      <td class="num rc-value" data-v="{{ e.value or '' }}"><b>{{ e.value|money(ccy) if e.value else '—' }}</b></td>
+      <td class="num rc-delta" data-v="{{ e.gain if e.gain is not none else '' }}">{{ m.delta(e.gain, 0) }}</td>
       <td class="num" data-v="{{ e.delta30 if e.delta30 is not none else '' }}">{{ m.delta(e.delta30) }}</td>
       {% if not static_mode %}<td><a class="btn-ghost" style="padding:2px 9px" href="/portfolio?edit={{ e.item_id }}" title="Edit">✎</a></td>{% endif %}
     </tr>

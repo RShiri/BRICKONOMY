@@ -674,6 +674,14 @@ def sets_page(request: Request, q: str = "", filter: str = "", sort: str = "grow
                 WHERE item_type = ?{' AND theme = ?' if theme else ''}""",
             (kind, theme) if theme else (kind,),
         ).fetchone()["c"]
+        # The phone Sets/Minifigs segmented control needs both counts, not
+        # just the kind on screen — one extra indexed COUNT, cheap either way.
+        other_kind = "M" if kind == "S" else "S"
+        other_total = conn.execute(
+            "SELECT COUNT(*) c FROM items WHERE item_type = ?", (other_kind,)
+        ).fetchone()["c"]
+        sets_total = catalog_total if kind == "S" else other_total
+        figs_total = catalog_total if kind == "M" else other_total
         # The static build browses the whole catalog client-side from
         # api/index.json — 23k rows can't be pre-rendered as pages.
         template = "sets_static.html" if STATIC_MODE else "sets.html"
@@ -681,7 +689,7 @@ def sets_page(request: Request, q: str = "", filter: str = "", sort: str = "grow
             request, conn, items=items[:200], q=q, filter=filter, sort=sort,
             theme=theme, themes=themes, n_categories=n_categories,
             total=len(items), catalog_total=catalog_total,
-            kind=kind, matched=matched,
+            kind=kind, matched=matched, sets_total=sets_total, figs_total=figs_total,
         ))
     finally:
         conn.close()

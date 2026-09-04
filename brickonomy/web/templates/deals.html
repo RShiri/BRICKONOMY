@@ -33,22 +33,23 @@
 
 <div class="card">
   <div class="table-scroll">
-  <table>
-    <tr>
+  <table class="dealcards">
+    <thead><tr>
       <th>Item</th><th>Theme</th><th>Where</th>
       <th class="num">Ask</th>
       <th class="num" title="What it costs delivered. A listing priced abroad carries VAT and shipping into Israel.">Landed</th>
       <th class="num">Market</th><th class="num">Profit</th>
       <th class="num">Margin</th><th>Sells</th><th>Rating</th><th>Status</th>
-    </tr>
+    </tr></thead>
+    <tbody>
     {% for d in deals %}
     <tr {{ 'class=hl' if d.rating in ('EXCELLENT', 'GREAT INVEST') }}>
       <td class="name"><a href="{{ u('/sets/' ~ d.item_id) }}" title="{{ d.item_id }} {{ d.name }}">
           {{- m.thumb(d.item_id, d.item_type, img_url) }}<b>{{ d.item_id }}</b> {{ d.name }}</a></td>
       <td class="theme" title="{{ d.theme or '' }}">{{ d.theme or '—' }}</td>
-      <td><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
+      <td class="dc-where"><span class="dot" style="background:var(--s{{ {'bricklink': 2, 'ebay': 3, 'brickowl': 4}[d.source] }})"></span>
           {{ {'bricklink': 'BrickLink', 'ebay': 'eBay', 'brickowl': 'BrickOwl'}[d.source] }}</td>
-      <td class="num">{{ d.ask|money(ccy) }}{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
+      <td class="num dc-ask">{{ d.ask|money(ccy) }}{% if d.imported %}<br><span class="soft" style="font-size:11px">{{ d.ask_currency if d.ask_currency else '' }}</span>{% endif %}</td>
       {# Only a foreign-currency listing is known to be an import. BrickLink
          quotes every seller in the display currency, so for those rows the
          delivered cost is unknown rather than zero — say so instead of
@@ -56,11 +57,11 @@
       <td class="num"><b>{{ d.landed|money(ccy) }}</b>
         {%- if d.imported %}<br><span class="soft" style="font-size:11px" title="VAT plus shipping">+{{ d.import_extra|money(ccy) }} import</span>
         {%- else %}<br><span class="soft" style="font-size:11px" title="Quoted in {{ ccy }}, so the seller’s country is unknown — no import cost is assumed. If the seller ships from abroad, add VAT and shipping.">as quoted</span>{% endif %}</td>
-      <td class="num">{{ d.value|money(ccy) }}</td>
+      <td class="num dc-market">{{ d.value|money(ccy) }}</td>
       <td class="num delta up">{{ d.profit|money(ccy) }}</td>
-      <td class="num">{{ m.delta(d.margin, 0) }}</td>
+      <td class="num dc-margin">{{ m.delta(d.margin, 0) }}</td>
       <td>{{ m.velocity_chip(d.velocity) }}</td>
-      <td>{{ m.rating_chip(d.rating) }}</td>
+      <td class="dc-rating">{{ m.rating_chip(d.rating) }}</td>
       <td>{{ m.phase_chip(d.phase) }} {{ m.confidence_chip(d.confidence) }}</td>
     </tr>
     {% else %}
@@ -68,6 +69,7 @@
       No deals right now — every tracked listing sits at or above market value.
       Run a scan to refresh live listings.</td></tr>
     {% endfor %}
+    </tbody>
   </table>
   </div>
   <div style="color:var(--muted);font-size:12px;margin-top:8px">

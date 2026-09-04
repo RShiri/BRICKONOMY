@@ -11,6 +11,12 @@
 
 <div class="eyebrow">Catalog</div>
 <h1>{{ 'Minifigures' if is_figs else 'Sets' }}</h1>
+
+{# Phone only — desktop already switches tabs via nav.tabs (Sets/Minifigs). #}
+<div class="segctl">
+  <a href="{{ u('/sets') }}" class="{{ 'on' if not is_figs }}">{{ m.icon('sets', 16) }}Sets ({{ "{:,}".format(sets_total) }})</a>
+  <a href="{{ u('/minifigs') }}" class="{{ 'on' if is_figs }}">{{ m.icon('minifig', 16) }}Minifigs ({{ "{:,}".format(figs_total) }})</a>
+</div>
 <p class="sub">
   {% if matched is defined and matched > total %}
     Showing {{ total }} of {{ "{:,}".format(matched) }} {{ noun }}{% if theme %} in {{ theme }}{% endif %} —
@@ -43,7 +49,7 @@
 {% endif %}
 
 {% if themes %}
-<div class="searchrow" style="margin-top:2px">
+<div class="searchrow chipscroll" style="margin-top:2px">
   <span class="eyebrow" style="margin-right:4px">Themes</span>
   <a class="chip {{ 'on' if not theme }}" href="{{ u(listing) }}">All themes</a>
   {% for t in themes[:14] %}
@@ -62,14 +68,16 @@
 {% endif %}
 
 <div class="card">
+  <div class="phcolhead"><b>Set &amp; theme</b><span class="sp"></span><b>Value</b><span class="sp"></span><b>Growth</b></div>
   <div class="table-scroll">
-  <table id="setsTable">
-    <tr>
+  <table id="setsTable" class="rowcards">
+    <thead><tr>
       <th>{{ 'Minifig' if is_figs else 'Set' }}</th><th>Theme</th><th class="num">Year</th>
       {% if not is_figs %}<th class="num">Retail</th>{% endif %}
       <th class="num">Value new</th><th class="num">Value used</th><th class="num">Growth / yr</th>
       <th>Trend</th><th>Status</th>
-    </tr>
+    </tr></thead>
+    <tbody>
     {% for i in items %}
     <tr>
       {# Fig names run long — "Formula 1 Driver, Aston Martin - Male, Green
@@ -79,26 +87,27 @@
       <td class="name"><a href="{{ u('/sets/' ~ i.item_id) }}" title="{{ i.item_id }} {{ i.name }}">
           {{- m.thumb(i.item_id, i.item_type, img_url) }}<b>{{ i.item_id }}</b> {{ i.name }}</a>
         {%- if i.item_type == 'M' and not is_figs %}<span style="color:var(--muted)"> (minifig)</span>{% endif %}</td>
-      <td class="theme" title="{{ i.theme or '' }}">{{ i.theme or '—' }}</td>
+      <td class="theme" title="{{ i.theme or '' }}">{{ i.theme or '—' }}{% if i.phase.phase in ('RETIRED_ACCEL', 'RETIRED_STABLE') %} <span class="retiredtag">Retired</span>{% endif %}</td>
       <td class="num">{{ i.year or '—' }}</td>
       {% if not is_figs %}<td class="num" data-v="{{ i.retail or '' }}"
           {%- if i.retail and i.retail_ccy != ccy %} title="{{ i.retail|money(ccy) }} at today's rate"{% endif %}>
         {{- i.retail_native|money(i.retail_ccy) if i.retail_native else '—' }}</td>{% endif %}
       {# Dimmed where the evidence is thin, the same as on the item's own
          page: a value from one sale should not read like one from thirty. #}
-      <td class="num" style="{{ m.value_class(i.confidence) }}"
+      <td class="num rc-value" style="{{ m.value_class(i.confidence) }}"
           {%- if i.confidence == 'LOW' %} title="Thin evidence — fewer than three recorded sales, or a stale scan."{% endif %}>
         <b>{{ i.value_new|money(ccy) if i.value_new else '—' }}</b></td>
       <td class="num" style="{{ m.value_class(i.confidence_used) }}"
           {%- if i.confidence_used == 'LOW' %} title="Thin evidence — fewer than three recorded sales, or a stale scan."{% endif %}>
         {{ i.value_used|money(ccy) if i.value_used else '—' }}</td>
-      <td class="num">{{ m.delta(i.growth) }}</td>
+      <td class="num rc-delta">{{ m.delta(i.growth) }}</td>
       <td>{% if i.spark %}<svg class="spark" width="72" height="20" viewBox="0 0 72 20" aria-label="trend"><polyline points="{{ i.spark }}"/></svg>{% else %}<span style="color:var(--muted)">—</span>{% endif %}</td>
       <td>{{ m.phase_chip(i.phase) }}</td>
     </tr>
     {% else %}
     <tr><td colspan="{{ 8 if is_figs else 9 }}" style="color:var(--muted);text-align:center">No items match. Run the importer or add sets to your portfolio.</td></tr>
     {% endfor %}
+    </tbody>
   </table>
   </div>
   {% if total > 200 %}<div style="color:var(--muted);font-size:12px;margin-top:8px">Showing first 200 of {{ total }} — narrow with search.</div>{% endif %}

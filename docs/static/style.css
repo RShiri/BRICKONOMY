@@ -65,6 +65,9 @@
 
   /* geometry: no radii anywhere; chamfered plates, slanted controls */
   --plate-cut: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  /* Stat tiles get a tighter 12px chamfer than cards (14px) — the Stitch
+     spec distinguishes the two; small tiles read as fussy at 14px. */
+  --tile-cut:  polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
   --slant:     polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   --slant-sm:  polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
   --shadow-float: 0 18px 40px rgba(0,0,0,0.6);
@@ -173,11 +176,18 @@ td a:hover { color: var(--accent); }
   clip-path: var(--plate-cut);
   position: relative;
 }
-.tile { padding: 16px 16px 14px; border-top: 1px solid var(--line-strong); }
+.tile { padding: 16px 16px 14px; border-top: 1px solid var(--line-strong); clip-path: var(--tile-cut); }
 .tile::before {
   content: ""; position: absolute; top: -2px; left: 0; width: 26px; height: 3px;
   background: var(--accent); transform: skewX(-30deg);
 }
+.tile .label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tile .label-row .label { margin-top: 0; }
+.tile .tile-ico { color: var(--muted); flex: none; display: flex; }
+.tile .tile-dot { width: 7px; height: 7px; flex: none; background: var(--muted); }
+.tile .tile-dot.up { background: var(--accent); }
+.tile .tile-dot.down { background: var(--down); }
+.tile .tile-dot.info { background: var(--accent-2); }
 .tile .label {
   font-family: var(--font-label); color: var(--muted); font-size: 12.5px;
   font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px;
@@ -487,6 +497,19 @@ footer.note {
 }
 @media (prefers-reduced-motion: reduce) { .progress > div { transition: none; } }
 
+/* ── Phone-only components ───────────────────────────────────────────────
+   These render in the DOM at every width (the templates are shared with
+   desktop) but only mean something on a phone: the bottom dock, its "More"
+   panel, the Sets/Minifigs segmented control, the decorative column-header
+   row above a row-card table, and the header's search-toggle button. Hidden
+   here so desktop is untouched; the @media(max-width:640px) block below
+   switches them on. .refreshctl/.ccyform are inert wrappers kept transparent
+   to desktop's flex layout via display:contents. */
+.dock, .dock-panel, .dock-scrim, .segctl, .phcolhead, .searchtoggle, .headertitle,
+.setimg-tag, .setimg-num, .lifecyclehead, .retiredtag, .rowmeta { display: none; }
+.refreshctl, .ccyform { display: contents; }
+.setimg { position: relative; }
+
 /* ── Phones ───────────────────────────────────────────────────────────────
    Everything above this point is tuned for a desktop window; the only other
    layout breakpoint is 840px, so without this block a 375px phone gets tablet
@@ -520,15 +543,14 @@ footer.note {
      zooms back out. */
   .inp, select.inp, .ccy, input, select, textarea { font-size: 16px; }
 
-  /* Seven nav items wrap to three rows inside a sticky header, eating a third
-     of the screen. One scrollable strip instead. */
-  nav.tabs {
-    flex-wrap: nowrap; overflow-x: auto; width: 100%;
-    scrollbar-width: none; -webkit-overflow-scrolling: touch;
-  }
-  nav.tabs::-webkit-scrollbar { display: none; }
-  nav.tabs a { flex: none; }
-  header.app { padding: 10px 12px; gap: 10px; }
+  /* Seven nav items used to wrap to three rows inside a sticky header,
+     eating a third of the screen. The bottom dock (further down this block)
+     replaces primary navigation on a phone entirely, so the top nav goes
+     away rather than scroll sideways — it stays in the DOM for desktop. */
+  nav.tabs { display: none; }
+  header.app { height: 54px; padding: 0 10px; gap: 8px; flex-wrap: nowrap; overflow: visible; }
+  header.app .logo { font-size: 17px; gap: 7px; }
+  header.app .logo svg { width: 22px; height: 17px; }
 
   /* Tap targets. Chips are the only way to filter Sets and Deals, and at 24px
      they are half the 44px guideline — but only the interactive ones grow, so
@@ -539,6 +561,177 @@ footer.note {
   }
   a.btn-ghost { padding-left: 12px; padding-right: 12px; }
 
+  /* ── header: search toggle, hidden refresh controls, skewed currency chip ── */
+  .searchtoggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; min-height: 44px; flex: none;
+    background: transparent; border: 0; color: var(--ink); cursor: pointer;
+  }
+  .searchtoggle[aria-expanded="true"] { color: var(--accent); }
+  .sitesearch { display: none; }
+  .sitesearch.open {
+    display: block; position: fixed; top: 54px; left: 0; right: 0; z-index: 15;
+    background: var(--page); padding: 10px 12px 12px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .sitesearch.open .inp { width: 100%; }
+  .sitesearch.open .sresults { left: 12px; right: 12px; width: auto; }
+  /* The scan button/link only makes sense with room to spare; it lives on
+     /refresh and in the dock's More panel instead. */
+  .refreshctl { display: none; }
+  .ccyform, .ccychip { flex: none; }
+  .ccy {
+    clip-path: var(--slant-sm); height: 30px; padding: 0 12px;
+    font-family: var(--font-label); font-size: 12px; font-weight: 700;
+  }
+  .ccychip { padding: 4px 12px 4px 14px; }
+
+  /* ── phone back button + title on "detail" pages (set detail) ──────────
+     .navback already exists for the installed-PWA case; body.detail wins
+     the specificity fight (two classes beat one) so the same button also
+     works as an ordinary in-browser back button on this one page. */
+  body.detail .navback { display: flex; }
+  body.detail .logo { display: none; }
+  body.detail .headertitle {
+    display: block; font-family: var(--font-display); font-size: 15px;
+    font-weight: 800; font-style: italic; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--ink);
+  }
+
+  /* ── bottom dock: replaces nav.tabs as primary navigation ──────────────── */
+  main { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 22px); }
+  .dock {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+    gap: 6px; background: rgba(9,10,13,0.92); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line-strong);
+  }
+  .dock-tab {
+    flex: 1; min-width: 0; min-height: 44px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; background: var(--surface-2); clip-path: var(--slant-sm);
+    color: var(--muted); text-decoration: none; border: 0; font: inherit; cursor: pointer;
+  }
+  .dock-tab .dock-ico { display: flex; }
+  .dock-tab .dock-lbl {
+    font-family: var(--font-label); font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; line-height: 1;
+  }
+  .dock-tab.active { background: var(--accent); color: var(--accent-ink); }
+  .dock-scrim { display: block; position: fixed; inset: 0; z-index: 28; background: rgba(0,0,0,0.8); border: 0; padding: 0; }
+  .dock-panel {
+    display: flex; flex-direction: column;
+    position: fixed; left: 0; right: 0; z-index: 29;
+    bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    background: var(--surface); border-top: 2px solid var(--accent);
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+  }
+  .dock-panel a {
+    display: flex; align-items: center; gap: 12px; padding: 13px 20px; min-height: 44px;
+    color: var(--ink); text-decoration: none;
+    font-family: var(--font-label); font-weight: 700; letter-spacing: 0.03em;
+    text-transform: uppercase; font-size: 13.5px;
+  }
+  .dock-panel a svg { flex: none; color: var(--muted); }
+  .dock-panel a.on { color: var(--accent); }
+  .dock-panel a.on svg { color: var(--accent); }
+  .dock-panel a + a { border-top: 1px solid var(--line); }
+
+  /* ── Sets/Minifigs segmented control ────────────────────────────────── */
+  .segctl { display: flex; gap: 2px; margin: 4px 0 8px; }
+  .segctl a {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    height: 44px; min-height: 44px; background: var(--well); color: var(--muted);
+    text-decoration: none; clip-path: var(--slant-sm);
+    font-family: var(--font-label); font-weight: 800; font-size: 12px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .segctl a.on { background: var(--accent); color: var(--accent-ink); }
+
+  /* A filter-chip row scrolls sideways instead of wrapping to a second and
+     third line — the Stitch spec calls this out explicitly for Sets. */
+  .searchrow.chipscroll {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; padding-bottom: 2px;
+  }
+  .searchrow.chipscroll::-webkit-scrollbar { display: none; }
+  .searchrow.chipscroll > * { flex: none; }
+
+  /* Decorative column-header strip above a row-card table (the real <thead>
+     is hidden — see .rowcards below). */
+  .phcolhead {
+    display: flex; align-items: center; gap: 6px; padding: 6px 4px;
+    font-family: var(--font-label); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+  .phcolhead .sp { flex: 1; }
+  .phcolhead b { color: var(--muted); font-weight: 700; }
+
+  /* ── row-card tables: a <table> reflows into a name/meta + value/delta
+     2x2 card per row. Works for any table whose header row sits in a
+     <thead> and whose cells carry .name/.theme (or .meta)/.rc-value/
+     .rc-delta — columns without one of those roles are simply dropped from
+     the phone view rather than wrapped. setsTable, catalogTable and the
+     dashboard gainers/decliners tables all share this. */
+  .rowcards thead { display: none; }
+  .rowcards, .rowcards tbody { display: block; }
+  .rowcards tr {
+    display: grid; grid-template-columns: 1fr auto; column-gap: 10px; row-gap: 2px;
+    padding: 10px 4px; border-bottom: 1px solid var(--line); align-items: center;
+  }
+  .rowcards tfoot tr { display: flex; justify-content: space-between; grid-template-columns: none; }
+  /* td.num carries width:1% for the desktop table layout (shrink-to-fit
+     against an auto column) — inside a grid/flex row-card that 1% resolves
+     against the grid area / flex line instead and collapses the cell to a
+     few px, so its nowrap text overflows and overlaps its neighbours. */
+  .rowcards td { border: 0; padding: 0; background: transparent !important; width: auto; }
+  .rowcards td.name { grid-area: 1 / 1 / 2 / 2; min-width: 0; }
+  .rowcards td.name a { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .rowcards td.name .thumb { width: 46px; height: 34px; }
+  .rowcards td.theme, .rowcards td.meta { grid-area: 2 / 1 / 3 / 2; min-width: 0; }
+  .rowcards td.rc-value {
+    grid-area: 1 / 2 / 2 / 3; text-align: right;
+    font-family: var(--font-display); font-size: 22px; font-weight: 700;
+  }
+  .rowcards td.rc-delta { grid-area: 2 / 2 / 3 / 3; text-align: right; }
+  .rowcards td:not(.name):not(.theme):not(.meta):not(.rc-value):not(.rc-delta) { display: none; }
+  /* Inline-edit rows (portfolio) carry a full <form> in a colspan cell —
+     let it flow normally instead of forcing the 2x2 grid on it. */
+  .rowcards tr.editrow { display: block; grid-template-columns: none; }
+  .rowcards tr.editrow td { display: block !important; }
+  .rowmeta {
+    display: inline; margin-left: 6px; color: var(--muted);
+    font-family: var(--font-label); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .retiredtag {
+    display: inline-block; margin-left: 4px; padding: 1px 5px;
+    background: var(--surface-2); color: var(--warn);
+    font-family: var(--font-label); font-size: 9.5px; font-weight: 800;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  /* ── deal-card tables: name full width, then a wrapping meta/rating line,
+     then the ask/market/margin row — for the dashboard "best deals" table
+     and the full Deals page table. */
+  .dealcards thead { display: none; }
+  .dealcards, .dealcards tbody { display: block; }
+  .dealcards tr {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+    background: var(--surface-2); padding: 10px 12px; margin-bottom: 8px;
+  }
+  /* Same td.num width:1% table-layout leftover as .rowcards above — in this
+     flex row it collapsed dc-ask/dc-market/dc-margin to near-zero width and
+     their nowrap text overlapped. */
+  .dealcards td { border: 0; padding: 0; background: transparent !important; width: auto; }
+  .dealcards td.name { flex: 1 1 100%; order: 1; }
+  .dealcards td.dc-where { order: 2; font-size: 12px; color: var(--muted); }
+  .dealcards td.dc-rating { order: 3; margin-left: auto; }
+  .dealcards td.dc-ask, .dealcards td.dc-market, .dealcards td.dc-margin { order: 4; font-size: 13px; }
+  .dealcards td.dc-margin { margin-left: auto; font-weight: 700; }
+  .dealcards td:not(.name):not(.dc-where):not(.dc-rating):not(.dc-ask):not(.dc-market):not(.dc-margin) { display: none; }
+
   /* thead was sticky at top:0 — the same offset as the app header — so on a
      phone the column names scroll underneath it and are never visible. */
   thead th { position: static; }
@@ -547,10 +740,55 @@ footer.note {
   .phasebar { height: auto; min-height: 36px; }
   .phasebar .phase { padding: 5px 6px; font-size: 11px; }
 
-  /* 150px + 90px of fixed track inside a 291px card left a 31px bar. */
-  .bars .row { grid-template-columns: 1fr; gap: 2px; }
-  .bars .row .num { text-align: left; }
+  /* 150px + 90px of fixed track inside a 291px card left a 31px bar. Label
+     and value share a line (as on the Stitch "portfolio by theme" card),
+     with the hatched bar full width underneath. */
+  .bars .row {
+    display: flex; flex-wrap: wrap; column-gap: 8px; row-gap: 4px; align-items: baseline;
+  }
+  .bars .row span:first-child { flex: 1 1 auto; min-width: 0; }
+  .bars .row .num { order: 2; margin-left: auto; text-align: right; white-space: nowrap; }
+  .bars .row .track { order: 3; flex: 1 1 100%; }
   .vsrow { grid-template-columns: 70px 1fr 78px; }
+
+  /* Hero image overlays: retirement status top-right, set number bottom-right. */
+  .setimg-tag {
+    display: block; position: absolute; top: 8px; right: 8px; z-index: 1;
+    clip-path: var(--slant-sm); background: var(--surface-2); color: var(--accent);
+    font-family: var(--font-label); font-size: 10.5px; font-weight: 800;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px;
+  }
+  .setimg-num {
+    display: block; position: absolute; bottom: 8px; right: 10px; z-index: 1;
+    font-family: var(--font-display); font-size: 20px; font-weight: 800;
+    font-style: italic; color: var(--ink); text-shadow: 0 1px 6px rgba(0,0,0,.6);
+  }
+
+  /* "/ Lifecycle tracker" header above the existing .phasebar. */
+  .lifecyclehead {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 20px; gap: 10px;
+  }
+  .lifecyclehead span:first-child {
+    font-family: var(--font-label); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+  .lifecyclehead .cur {
+    font-family: var(--font-label); font-size: 12px; font-weight: 800;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+  }
+  .lifecyclehead + .phasebar { margin-top: 8px !important; }
+
+  /* Buy-signal banner reads as a plate with a volt left slash, matching
+     .best/.autoscan's accent-bar treatment elsewhere on the page. */
+  .dealbanner {
+    position: relative; overflow: hidden; padding-left: 24px;
+    border-top: 0; background: var(--surface-2);
+  }
+  .dealbanner::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 8px;
+    background: var(--accent); clip-path: polygon(0 0, 100% 0, 40% 100%, 0 100%);
+  }
 
   /* Give the wide tables a visible edge so it is discoverable that they
      scroll sideways at all. */
@@ -559,9 +797,23 @@ footer.note {
     background: linear-gradient(to right, transparent, rgba(215,255,58,0.09)) right / 22px 100% no-repeat;
   }
 
-  h1 { font-size: 24px; }
-  h1::before { width: 6px; }
-  .tiles { gap: 8px; }
+  /* h1 is a flex row on desktop, fine for a one-word "Dashboard"/"Sets" —
+     but a long set name plus its trailing "· 76105" span forced onto one
+     nowrap flex line either overflowed or (with the item id shrinking least)
+     left the id pinned top-right while the title wrapped oddly beneath it.
+     Block + inline lets the title, and the id after it, wrap normally. */
+  h1 { font-size: 24px; display: block; }
+  h1::before { width: 6px; display: inline-block; vertical-align: -0.1em; margin-right: 10px; }
+
+  /* Same nowrap-flex problem as h1 above: a long card title ("Price history
+     & forecast") plus the 1Y/3Y/ALL range chips forced onto one line either
+     overflowed or stacked one word per line. block + float lets the title
+     wrap and the (already float:right) range chips sit beside it normally. */
+  .card h3 { display: block; }
+  .card h3::before { display: inline-block; vertical-align: -0.05em; margin-right: 8px; }
+  /* Explicit 2 columns: the desktop auto-fit(minmax(190px,1fr)) rule can't
+     fit two 190px tiles in a 375px screen and collapses to one column. */
+  .tiles { grid-template-columns: 1fr 1fr; gap: 8px; }
 }
 
 /* ── Installed as a PWA ───────────────────────────────────────────────────
@@ -572,12 +824,15 @@ footer.note {
 @media (display-mode: standalone) {
   .navback {
     display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px; flex: none;
+    width: 40px; height: 40px; flex: none;
     border: 1px solid var(--line-strong);
     background: var(--surface-2); color: var(--ink);
     font-size: 22px; line-height: 1; padding: 0 0 3px;
     cursor: pointer;
   }
   header.app { padding-top: calc(10px + env(safe-area-inset-top)); }
-  main { padding-bottom: calc(40px + env(safe-area-inset-bottom)); }
+  /* The installed app is phone-width in practice, so the bottom dock (see
+     max-width:640px above) is showing here too — clear it, not just the
+     old flat 40px buffer. */
+  main { padding-bottom: calc(64px + env(safe-area-inset-bottom) + 22px); }
 }

@@ -9,6 +9,12 @@
 
 <div class="eyebrow">Catalog</div>
 <h1>{{ 'Minifigures' if is_figs else 'Sets' }}</h1>
+
+{# Phone only — desktop already switches tabs via nav.tabs (Sets/Minifigs). #}
+<div class="segctl">
+  <a href="{{ u('/sets') }}" class="{{ 'on' if not is_figs }}">{{ m.icon('sets', 16) }}Sets ({{ "{:,}".format(sets_total) }})</a>
+  <a href="{{ u('/minifigs') }}" class="{{ 'on' if is_figs }}">{{ m.icon('minifig', 16) }}Minifigs ({{ "{:,}".format(figs_total) }})</a>
+</div>
 <p class="sub">Every LEGO {{ 'minifigure' if is_figs else 'set' }} ever released —
    {{ "{:,}".format(catalog_total) }} {{ noun }}.
    Search by number, name or theme; {{ noun }} with scanned prices open their own page.</p>
@@ -30,8 +36,9 @@
 
 <div class="card">
   <div id="catalogCount" style="color:var(--muted);font-size:12.5px;margin-bottom:8px">Loading catalog…</div>
+  <div class="phcolhead"><b>Set &amp; theme</b><span class="sp"></span><b>Value</b><span class="sp"></span><b>Status</b></div>
   <div class="table-scroll">
-  <table id="catalogTable" data-kind="{{ kind }}">
+  <table id="catalogTable" class="rowcards" data-kind="{{ kind }}">
     <thead>
       <tr><th>{{ 'Minifig' if is_figs else 'Set' }}</th><th>Theme</th><th class="num">Year</th>
           <th class="num">Parts</th><th class="num">Value new</th><th class="num">Value used</th>

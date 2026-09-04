@@ -15,7 +15,7 @@ def headline(html):
     """The Portfolio value tile, not any of the catalog tables around it —
     those legitimately show a set's new price whatever condition it is held
     in."""
-    m = re.search(r'Portfolio value</div>\s*<div class="value">([^<]+)', html)
+    m = re.search(r'Portfolio value</div>.*?<div class="value">([^<]+)', html, re.S)
     assert m, "portfolio value tile not found"
     return m.group(1)
 
@@ -155,7 +155,10 @@ class TestHistoryCoverage:
 
 
 def gain(html):
-    m = re.search(r'Gain vs paid</div>\s*<div class="value">([^<]+)', html)
+    # The label sits in a .label-row with an icon (a phone/desktop shared
+    # tile refinement) before the .value div, so match past it rather than
+    # requiring strict adjacency.
+    m = re.search(r'Gain vs paid</div>.*?<div class="value">([^<]+)', html, re.S)
     assert m, "gain tile not found"
     return m.group(1)
 

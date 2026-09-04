@@ -29,6 +29,49 @@
     brickowl:  { color: css("--s4") || "#c98500", width: 1.5, label: "BrickOwl" },
   };
 
+  // ── phone header: search toggle ─────────────────────────────────────────
+  // Collapses the search row behind an icon button so a 54px phone header
+  // stays one line; desktop never renders .searchtoggle (see style.css), so
+  // this is inert there.
+  const searchToggle = document.getElementById("searchToggle");
+  const searchRow = document.getElementById("siteSearchRow");
+  if (searchToggle && searchRow) {
+    const setOpen = (open) => {
+      searchRow.classList.toggle("open", open);
+      searchToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open) {
+        const input = searchRow.querySelector("input");
+        if (input) input.focus();
+      }
+    };
+    searchToggle.addEventListener("click", () =>
+      setOpen(!searchRow.classList.contains("open")));
+    document.addEventListener("click", (e) => {
+      if (!searchRow.classList.contains("open")) return;
+      if (!searchRow.contains(e.target) && e.target !== searchToggle) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && searchRow.classList.contains("open")) setOpen(false);
+    });
+  }
+
+  // ── phone bottom dock: "More" panel ─────────────────────────────────────
+  const dockMoreBtn = document.getElementById("dockMoreBtn");
+  const dockPanel = document.getElementById("dockMorePanel");
+  const dockScrim = document.getElementById("dockScrim");
+  if (dockMoreBtn && dockPanel && dockScrim) {
+    const setOpen = (open) => {
+      dockPanel.hidden = !open;
+      dockScrim.hidden = !open;
+      dockMoreBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    dockMoreBtn.addEventListener("click", () => setOpen(dockPanel.hidden));
+    dockScrim.addEventListener("click", () => setOpen(false));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !dockPanel.hidden) setOpen(false);
+    });
+  }
+
   // ── set detail: history + forecast ─────────────────────────────────────
   const historyCanvas = document.getElementById("historyChart");
   if (historyCanvas && window.Chart) {
@@ -365,9 +408,9 @@
       <td class="theme" title="${esc(i.theme)}">${esc(i.theme) || "—"}</td>
       <td class="num">${i.year || "—"}</td>
       <td class="num">${i.parts ? i.parts.toLocaleString() : "—"}</td>
-      <td class="num"><b>${i.vnew ? catalogMoney(i.vnew) : "—"}</b></td>
+      <td class="num rc-value"><b>${i.vnew ? catalogMoney(i.vnew) : "—"}</b></td>
       <td class="num">${i.vused ? catalogMoney(i.vused) : "—"}</td>
-      <td>${(i.vnew || i.vused)
+      <td class="rc-delta">${(i.vnew || i.vused)
               ? '<span class="chip on">priced</span>'
               : i.p
                 ? '<span class="chip" style="color:var(--muted)" title="Scanned, but BrickLink had no sold history and too few asks to price it from.">no price yet</span>'

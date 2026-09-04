@@ -1,6 +1,6 @@
 /* Brickonomy service worker.
  *
- * 20260904151915 is replaced at serve/export time: the live app
+ * 20260904163245 is replaced at serve/export time: the live app
  * stamps it with the asset version, the static exporter with the export
  * time. A republish therefore changes this file byte-for-byte, the browser
  * installs the new worker, and `activate` below drops every cache from the
@@ -11,7 +11,7 @@
  * already carry a ?v= stamp. Cross-origin requests (set images live on
  * external CDNs) are left to the browser.
  */
-const VERSION = "20260904151915";
+const VERSION = "20260904163245";
 const CACHE = "brickonomy-" + VERSION;
 
 self.addEventListener("install", () => self.skipWaiting());

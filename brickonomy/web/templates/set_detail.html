@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% import "_macros.html" as m with context %}
 {% block title %}{{ item.item_id }} {{ item.name }} · BRICKO{% endblock %}
+{% block bodyclass %}detail{% endblock %}
+{% block headertitle %}Set detail{% endblock %}
 {% block content %}
+{% set is_retired = phase.phase in ('RETIRED_ACCEL', 'RETIRED_STABLE') %}
 
 {{ m.autoscan_banner(auto_scan, item.item_id) }}
 
@@ -11,6 +14,8 @@
 
 <div class="sethead">
   <figure class="setimg" style="margin:0">
+    <span class="setimg-tag">Status: {{ 'Retired' if is_retired else 'Available' }}</span>
+    <span class="setimg-num">{{ item.item_id }}</span>
     <img src="{{ img_url(item.item_id, item.item_type) }}" alt="{{ item.name }}"
          onerror="this.parentElement.innerHTML='<div style=&quot;color:var(--muted);text-align:center&quot;>image unavailable<br>({{ item.item_id }})</div>'">
   </figure>
@@ -95,6 +100,11 @@
     </div>
     {% endif %}
     {% if phase.phase and item.year %}
+    {% set phase_label = {'NEW': 'Available', 'EOL WATCH': 'EOL watch', 'RETIRED_ACCEL': 'Accelerating', 'RETIRED_STABLE': 'Steady growth'}.get(phase.phase, 'Unknown') %}
+    <div class="lifecyclehead">
+      <span>/ Lifecycle tracker</span>
+      <span class="cur">{{ phase_label }}</span>
+    </div>
     <div class="phasebar" style="margin-top:16px">
       <div class="phase {{ 'current' if phase.phase == 'NEW' }}" style="flex:4">Available {{ item.year }}–{{ phase.retirement_year }}</div>
       <div class="phase {{ 'current' if phase.phase == 'EOL WATCH' }}" style="flex:2">Retirement</div>
@@ -114,7 +124,7 @@
 
 <div class="tiles" style="margin-top:16px">
   <div class="tile">
-    <div class="label">Value — new / sealed</div>
+    <div class="label-row"><div class="label">Value — new / sealed</div><span class="tile-dot up"></span></div>
     <div class="value" style="{{ m.value_class(values.new.confidence) }}">{{ values.new.value|money(ccy) if values.new.value else '—' }}</div>
     <div class="delta">
       {% if growth_total is not none %}{{ m.delta(growth_total, 0) }} vs retail{% endif %}
@@ -123,18 +133,18 @@
     <div style="margin-top:6px">{{ m.velocity_chip(values.new.velocity) }}</div>
   </div>
   <div class="tile">
-    <div class="label">Value — used</div>
+    <div class="label-row"><div class="label">Value — used</div><span class="tile-dot"></span></div>
     <div class="value" style="{{ m.value_class(values.used.confidence) }}">{{ values.used.value|money(ccy) if values.used.value else '—' }}</div>
     <div class="delta">{{ m.confidence_chip(values.used.confidence) }}</div>
     <div style="margin-top:6px">{{ m.velocity_chip(values.used.velocity) }}</div>
   </div>
   <div class="tile">
-    <div class="label">Forecast {{ forecast.horizons[2].year if forecast }} <span title="Trend estimate, not a guarantee">ⓘ</span></div>
+    <div class="label-row"><div class="label">Forecast {{ forecast.horizons[2].year if forecast }} <span title="Trend estimate, not a guarantee">ⓘ</span></div><span class="tile-dot info"></span></div>
     <div class="value">{% if forecast %}{{ forecast.horizons[2].value|money(ccy) }}{% else %}—{% endif %}</div>
     <div class="delta">{% if forecast %}trend estimate · ±20% band{% else %}needs price history{% endif %}</div>
   </div>
   <div class="tile">
-    <div class="label">Buy target</div>
+    <div class="label-row"><div class="label">Buy target</div><span class="tile-dot up"></span></div>
     <div class="value">{{ buy_target|money(ccy) if buy_target else '—' }}</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
