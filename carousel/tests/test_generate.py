@@ -104,6 +104,8 @@ def test_view_paginates_four_per_slide_and_weights_quantity(view):
     assert v["pricing"]["msrp_display"] == 500
     assert v["pricing"]["new_display"] == 505
     assert v["pricing"]["used_display"] == 390
+    assert v["pricing"]["used_vs_retail_label"] == "−22%"   # used $391 vs $500 retail
+    assert round(v["pricing"]["used_vs_retail_pct"]) == -22
     assert v["market"]["trend"]["direction"] == "up" and v["market"]["trend"]["label"] == "1.7%"
     assert v["minifigs"]["figs"][0]["used_display"] == 48      # Vision 145.94 ILS
     shares = [f["share_of_total"] for f in v["minifigs"]["figs"]]

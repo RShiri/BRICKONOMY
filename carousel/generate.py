@@ -402,6 +402,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
 
     msrp, new, used = round_to_5(p["msrp"]), round_to_5(p["new_value"]), round_to_5(p["used_value"])
     vs_retail = ((p["new_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
+    used_vs_retail = ((p["used_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
 
     # Extra readouts: price per piece, the figures' combined value as a share
     # of the set's used value, and each figure's (quantity-weighted) slice of
@@ -419,10 +420,13 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "msrp_display": msrp, "new_display": new, "used_display": used,
             "vs_retail_pct": vs_retail,
             "vs_retail_label": f"{'+' if vs_retail >= 0 else '−'}{abs(vs_retail):.0f}%",
+            "used_vs_retail_pct": used_vs_retail,
+            "used_vs_retail_label": f"{'+' if used_vs_retail >= 0 else '−'}{abs(used_vs_retail):.0f}%",
             "per_piece_label": f"${per_piece:.2f}" if per_piece is not None else "—",
             # Meter widths (0-100) for themes with bars: growth capped at +100%,
             # month move at +-10%, $/piece against a $0.20 reference.
             "vs_retail_meter": min(abs(vs_retail), 100),
+            "used_vs_retail_meter": min(abs(used_vs_retail), 100),
             "per_piece_meter": min(per_piece / 0.20 * 100, 100) if per_piece is not None else 0,
         },
         "market": {

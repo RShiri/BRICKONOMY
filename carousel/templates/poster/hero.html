@@ -42,9 +42,11 @@
   .tagcard .arrow::after { content: ""; flex: 1; height: 3px; background: repeating-linear-gradient(90deg, #d9d9de 0 8px, transparent 8px 14px); }
   .tagcard .new .v { font-size: 96px; font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
   .tagcard .new .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  .tagcard .used { background: var(--black); color: #fff; margin: 0 -26px; padding: 16px 26px; display: flex; justify-content: space-between; align-items: baseline; }
+  .tagcard .used { background: var(--black); color: #fff; margin: 0 -26px; padding: 14px 26px; display: flex; justify-content: space-between; align-items: center; }
   .tagcard .used .k { color: rgba(255,255,255,0.7); }
   .tagcard .used .v { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; color: var(--yellow); }
+  .tagcard .used > div:first-child { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .tagcard .used .chip.used-pct { height: 26px; padding: 0 10px; font-size: 13px; }
   .tagcard .barcode { margin-top: 14px; height: 38px; background-image: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 5px, #111 5px 6px, transparent 6px 9px, #111 9px 12px, transparent 12px 14px); }
   .tagcard .sku { font-family: var(--mono); font-size: 13px; letter-spacing: 0.3em; color: #6b6b78; margin-top: 6px; text-align: center; }
 
@@ -115,7 +117,10 @@
         </div>
       </div>
       <div>
-        <div class="used"><div class="k">Value · used</div><div class="v money">{{ pricing.used_display | money }}</div></div>
+        <div class="used">
+          <div><div class="k">Value · used</div><span class="chip yellow used-pct">{{ pricing.used_vs_retail_label }} vs retail</span></div>
+          <div class="v money">{{ pricing.used_display | money }}</div>
+        </div>
         <div class="barcode"></div>
         <div class="sku">{{ set.number }}-{{ set.year }}-USD</div>
       </div>
@@ -131,7 +136,7 @@
   </div>
 
   <div class="stats">
-    <div class="stat hud"><div class="lbl"><i class="dot"></i>vs retail</div><div class="v {{ 'g' if pricing.vs_retail_pct >= 0 else 'r' }}">{{ pricing.vs_retail_label }}</div><div class="bar"><i style="width: {{ pricing.vs_retail_meter }}%"></i></div></div>
+    <div class="stat hud"><div class="lbl"><i class="dot"></i>new vs retail</div><div class="v {{ 'g' if pricing.vs_retail_pct >= 0 else 'r' }}">{{ pricing.vs_retail_label }}</div><div class="bar"><i style="width: {{ pricing.vs_retail_meter }}%"></i></div></div>
     <div class="stat hud"><div class="lbl"><i class="dot"></i>{{ t.period }}</div><div class="v {{ 'g' if t.direction == 'up' else ('r' if t.direction == 'down' else '') }}">{{ '▲' if t.direction == 'up' else ('▼' if t.direction == 'down' else '■') }} {{ t.label }}</div><div class="bar"><i style="width: {{ t.meter }}%"></i></div></div>
     <div class="stat hud"><div class="lbl"><i class="dot"></i>per piece</div><div class="v y">{{ pricing.per_piece_label }}</div><div class="bar"><i style="width: {{ pricing.per_piece_meter }}%"></i></div></div>
     <div class="stat hud"><div class="lbl"><i class="dot"></i>figs share</div><div class="v y">{{ minifigs.share_label }}</div><div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div></div>

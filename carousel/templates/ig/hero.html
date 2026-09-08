@@ -28,6 +28,8 @@
   .card .lbl { font-size: 18px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
   .card .val { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin-top: 12px; }
   .card .sub { margin-top: 10px; font-size: 20px; color: var(--muted); font-weight: 600; }
+  .card .pct { font-size: 20px; font-weight: 800; }
+  .card .pct.up { color: var(--up); } .card .pct.down { color: var(--down); }
   .card.new { background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.38); }
   .card.new .lbl { color: rgba(255,255,255,0.85); }
   .card.new .val { color: #fff; }
@@ -112,7 +114,7 @@
     <div class="card used">
       <div class="lbl">Value · Used</div>
       <div class="val money">{{ pricing.used_display | money }}</div>
-      <div class="sub">complete, no box</div>
+      <div class="sub"><span class="pct {{ 'up' if pricing.used_vs_retail_pct >= 0 else 'down' }}">{{ pricing.used_vs_retail_label }}</span> vs retail</div>
     </div>
   </div>
 

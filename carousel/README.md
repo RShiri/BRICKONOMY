@@ -8,7 +8,7 @@ better than a 1080 one; `--scale 1` gives exact 1080×1350 files.
 
 | Slide | Content |
 | --- | --- |
-| 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value, month-over-month trend, growth vs retail, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
+| 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value (each shown as a % vs retail), month-over-month trend, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
 | 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
 
 The look is an Instagram post, not a web page: a story-style progress bar
@@ -23,7 +23,7 @@ Two designs ship, chosen with `--theme`:
 
 | Theme | Look | Sample |
 | --- | --- | --- |
-| `poster` (default) | LEGO yellow and red HUD: hazard stripes, perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode, stat meters (vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
+| `poster` (default) | LEGO yellow and red HUD: perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode and a growth starburst, both new and used value shown against retail, stat meters (new vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
 | `ig` | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269-ig/`](out/76269-ig/), [`out/76051-ig/`](out/76051-ig/) |
 
 Sample output for **76269 Avengers Tower** and **76051 Super Hero Airport
