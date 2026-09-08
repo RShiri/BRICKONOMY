@@ -13,11 +13,11 @@
   .stage .cross::before { left: 50%; top: 0; width: 2px; height: 100%; margin-left: -1px; mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); }
   .stage .cross::after { top: 50%; left: 0; height: 2px; width: 100%; margin-top: -1px; mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); }
   .stage .glow { position: absolute; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,213,0,0.35), rgba(227,0,11,0.18) 60%, transparent); filter: blur(24px); }
-  .stage img { position: relative; max-width: 86%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
+  .stage img { position: relative; max-width: 86%; max-height: 88%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
   .stage .num { position: absolute; top: 16px; left: 16px; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
-  .stage .readout { position: absolute; right: 16px; top: 16px; text-align: right; font-family: var(--mono); font-size: 14px; letter-spacing: 0.14em; color: var(--muted); line-height: 1.7; text-transform: uppercase; }
+  .stage .readout { position: absolute; right: 16px; bottom: 30px; text-align: right; font-family: var(--mono); font-size: 14px; letter-spacing: 0.14em; color: var(--muted); line-height: 1.7; text-transform: uppercase; }
   .stage .readout b { color: var(--yellow); font-weight: 700; }
-  .stage .ticks { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 10px; background-image: repeating-linear-gradient(90deg, rgba(255,213,0,0.7) 0 2px, transparent 2px 22px); }
+  .stage .ticks { position: absolute; left: 16px; right: 300px; bottom: 14px; height: 10px; background-image: repeating-linear-gradient(90deg, rgba(255,213,0,0.7) 0 2px, transparent 2px 22px); }
   .stage .ticks::after { content: ""; position: absolute; left: 0; width: 34%; top: 0; bottom: 0; background-image: repeating-linear-gradient(90deg, var(--red) 0 2px, transparent 2px 22px); }
 
   /* Price tag with barcode. */

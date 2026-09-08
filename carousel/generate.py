@@ -182,7 +182,7 @@ def bricklink_image_url(item_id: str, kind: str) -> str:
     return f"https://img.bricklink.com/ItemImage/SN/0/{suffix}.png"
 
 
-def cut_out_white_background(data: bytes, threshold: int = 40, feather: int = 5) -> tuple[bytes, str]:
+def cut_out_white_background(data: bytes, threshold: int = 48, feather: int = 12) -> tuple[bytes, str]:
     """Make the white studio background of a catalog photo transparent.
 
     BrickLink (and most catalog) pictures sit on plain white, which shows as a
@@ -223,8 +223,9 @@ def cut_out_white_background(data: bytes, threshold: int = 40, feather: int = 5)
     bg = bg.point(lambda v: 255 if v == 0 else 0)
     band = bg.filter(ImageFilter.MaxFilter(2 * feather + 1))
 
-    # Brightness -> alpha ramp: >= 247 transparent, <= 191 opaque.
-    ramp = img.convert("L").point(lambda v: max(0, min(255, (247 - v) * 4)))
+    # Brightness -> alpha ramp: >= 250 transparent, <= 165 opaque. Off-white
+    # shadow haze around a figure (JPEG photos) fades out instead of framing it.
+    ramp = img.convert("L").point(lambda v: max(0, min(255, (250 - v) * 3)))
     ramp = ramp.filter(ImageFilter.MedianFilter(5))
     opaque = Image.new("L", (w, h), 255)
     alpha = Image.composite(ramp, opaque, band)          # ramp inside the band
