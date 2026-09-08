@@ -1,0 +1,128 @@
+{#
+  "Card" theme: a collectible trading card, playing on the sports-card /
+  Pokémon-card aesthetic LEGO collectors already know — holo foil corner,
+  metallic border, a rarity tier and an edition number. Genre-specific
+  rather than a generic template, which is where the niche resonance is.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Manrope"; src: url("{{ assets.font }}") format("truetype"); font-weight: 200 800; font-display: block; }
+
+  :root {
+    --w: 1080px; --h: 1350px; --pad: 56px;
+    --page:  #0c0912;
+    --panel: #171220;
+    --line:  rgba(255,255,255,0.10);
+    --ink:   #ffffff;
+    --muted: #948da3;
+    --muted-2: #c9c3d6;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+
+    /* Rarity tiers, from a minifig's share of the figs total or the set's
+       growth since retail — a decorative narrative device, not a
+       valuation claim. */
+    --common:    #9aa0ab;
+    --rare:      #4da3ff;
+    --epic:      #b26bff;
+    --legendary: #ffd66b;
+
+    --up: #35e0a1; --down: #ff5c7a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; }
+  body {
+    font-family: "Manrope", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--ink); -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1;
+    background: var(--page);
+  }
+
+  .slide {
+    width: var(--w); height: var(--h); padding: 48px var(--pad) var(--pad);
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+    background:
+      radial-gradient(900px 560px at 50% -8%, rgba(178,107,255,0.16), transparent 65%),
+      radial-gradient(700px 500px at 100% 105%, rgba(77,163,255,0.10), transparent 60%),
+      var(--page);
+  }
+  .slide::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1.2px);
+    background-size: 30px 30px; }
+  .slide > * { position: relative; }
+
+  /* ---------- story progress ---------- */
+  .story { display: flex; gap: 8px; height: 6px; margin-bottom: 26px; }
+  .story i { flex: 1; display: block; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.12); }
+  .story i.done { background: rgba(255,255,255,0.4); }
+  .story i.on { background: linear-gradient(90deg, var(--legendary), var(--epic)); }
+
+  /* ---------- header ---------- */
+  .header { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 15px; }
+  .ring { width: 56px; height: 56px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--legendary), var(--epic), var(--rare)); flex: 0 0 auto; }
+  .ring span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--page); overflow: hidden; }
+  .ring img.avatar { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .ring img.mark { width: 27px; height: 27px; }
+  .who b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+  .who small { display: block; margin-top: 3px; font-size: 17px; color: var(--muted); font-weight: 700; }
+  .pill { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--muted-2); font-size: 17px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .money { font-variant-numeric: tabular-nums; }
+  .money .cur { font-size: 0.55em; vertical-align: 0.42em; margin-right: 0.05em; opacity: 0.85; font-weight: 700; }
+  .mono { font-family: var(--mono); }
+
+  /* ---------- rarity tiers ---------- */
+  .tier-common  { --tier: var(--common); }
+  .tier-rare    { --tier: var(--rare); }
+  .tier-epic    { --tier: var(--epic); }
+  .tier-legendary { --tier: var(--legendary); }
+  .rarity-badge {
+    display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px 0 10px;
+    border-radius: 999px; background: color-mix(in srgb, var(--tier) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tier) 55%, transparent);
+    color: var(--tier); font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .rarity-badge svg { width: 13px; height: 13px; }
+
+  /* ---------- footer ---------- */
+  .footer { margin-top: auto; padding-top: 18px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 17px; font-weight: 600; }
+  .footer strong { color: var(--muted-2); font-weight: 700; }
+  .footer .handle { display: inline-flex; align-items: center; gap: 8px; color: var(--legendary); font-weight: 800; font-size: 19px; }
+  .footer .handle svg { width: 19px; height: 19px; }
+
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="story">
+    {% for i in range(nav.total) %}<i class="{{ 'on' if i == nav.index else ('done' if i < nav.index else '') }}"></i>{% endfor %}
+  </div>
+
+  <div class="header">
+    <div class="brand">
+      <div class="ring"><span>
+        {% if assets.avatar %}<img class="avatar" src="{{ assets.avatar }}" alt="">
+        {% else %}<img class="mark" src="{{ assets.mark }}" alt="">{% endif %}
+      </span></div>
+      <div class="who"><b>{{ branding.site_name }}</b><small>{% block header_sub %}LEGO price check{% endblock %}</small></div>
+    </div>
+    {% block header_right %}{% endblock %}
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <div class="footer">
+    <span>Prices valid as of <strong>{{ market.updated_label }}</strong> · USD · BrickLink sold · not financial advice</span>
+    {% if branding.handle %}
+      <span class="handle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        {{ branding.handle }}
+      </span>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

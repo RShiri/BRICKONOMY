@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .sub-head { margin-top: 22px; display: flex; align-items: baseline; justify-content: space-between; }
+  .sub-head h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
+  .sub-head h2 small { color: var(--muted); font-weight: 700; font-size: 22px; margin-left: 10px; }
+  .sub-head .hint { font-size: 15px; color: var(--muted); font-weight: 700; }
+
+  .grid { margin-top: 18px; flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; }
+  .fig {
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
+    border-radius: 22px; border: 2px solid var(--tier);
+    background: linear-gradient(165deg, #201a2c, #140f1c 60%, #100c17);
+    box-shadow: 0 16px 30px rgba(0,0,0,0.4), 0 0 26px color-mix(in srgb, var(--tier) 22%, transparent);
+    padding: 14px 16px;
+  }
+  .fig .holo { position: absolute; top: -50%; right: -40%; width: 90%; height: 80%;
+    clip-path: polygon(35% 0, 100% 0, 100% 65%);
+    background: conic-gradient(from 200deg, #ff8a8a, #ffd66b, #7dffb0, #6bd8ff, #b28aff, #ff8ad1, #ff8a8a);
+    opacity: 0.14; mix-blend-mode: screen; pointer-events: none; }
+  .tier-legendary.fig .holo { opacity: 0.26; }
+  .tier-epic.fig .holo { opacity: 0.19; }
+
+  .fig .top { display: flex; align-items: center; justify-content: space-between; }
+  .fig .rarity-badge { height: 26px; padding: 0 9px 0 8px; font-size: 11px; }
+  .fig .rarity-badge svg { width: 11px; height: 11px; }
+  .fig .qty { background: rgba(255,255,255,0.10); border: 1px solid var(--line); color: var(--muted-2); font-size: 13px; font-weight: 800; padding: 4px 9px; border-radius: 999px; }
+
+  .fig .img { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+  .fig .img .glow { position: absolute; width: 66%; height: 66%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--tier) 30%, transparent), transparent 72%); filter: blur(14px); }
+  .fig .img img { position: relative; max-width: 76%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 14px 20px rgba(0,0,0,0.6)); }
+
+  .fig .name { border-top: 1px solid var(--line); padding-top: 8px; }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 20px; font-weight: 800; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-weight: 600; font-size: 15px; margin-top: 2px; }
+
+  .fig .price { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+  .fig .price .v { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: var(--tier); }
+  .fig .price .code { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+  .fig.empty { background: transparent; border: 1.5px dashed var(--line); box-shadow: none; }
+  .fig.cta { align-items: flex-start; justify-content: center; gap: 12px; padding: 26px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--legendary) 20%, #140f1c), #140f1c); }
+  .fig.cta .big { font-size: 24px; font-weight: 800; line-height: 1.15; }
+  .fig.cta .url { font-size: 16px; font-weight: 800; color: var(--legendary); }
+{% endblock %}
+
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill">Minifigs {{ page.index }}/{{ page.total }}</span>{% endblock %}
+
+{% block body %}
+  <div class="sub-head">
+    <h2>Minifigures <small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small></h2>
+    <span class="hint">rarity = share of figs total {{ minifigs.total_display | money }}</span>
+  </div>
+
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="fig tier-{{ f.rarity_tier }}">
+        <div class="holo"></div>
+        <div class="top">
+          <span class="rarity-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.6 5.9 20.6l1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            {{ f.rarity_label }}
+          </span>
+          {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        </div>
+        <div class="img"><div class="glow"></div><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
+        <div class="price"><span class="v money">{{ f.used_display | money }}</span><span class="code">No. {{ f.code }}</span></div>
+      </div>
+    {% endfor %}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.handle or branding.url }}</div></div>
+      {% else %}
+        <div class="fig empty"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -31,7 +31,7 @@
   .stage .ticks { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 10px; background-image: repeating-linear-gradient(90deg, rgba(255,213,0,0.7) 0 2px, transparent 2px 22px); }
   .stage .ticks::after { content: ""; position: absolute; left: 0; width: 34%; top: 0; bottom: 0; background-image: repeating-linear-gradient(90deg, var(--red) 0 2px, transparent 2px 22px); }
 
-  /* Price tag with barcode. */
+  /* Price tag. */
   .tagcard { position: relative; background: #fff; color: var(--black); padding: 26px 26px 22px; display: flex; flex-direction: column; justify-content: space-between; transform: rotate(-2deg); transform-origin: 50% 40%; clip-path: var(--chamfer); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
   .tagcard .hole { position: absolute; top: 16px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de; }
   .tagcard .k { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6b6b78; }
@@ -47,8 +47,6 @@
   .tagcard .used .v { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; color: var(--yellow); }
   .tagcard .used > div:first-child { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .tagcard .used .chip.used-pct { height: 26px; padding: 0 10px; font-size: 13px; }
-  .tagcard .barcode { margin-top: 14px; height: 38px; background-image: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 5px, #111 5px 6px, transparent 6px 9px, #111 9px 12px, transparent 12px 14px); }
-  .tagcard .sku { font-family: var(--mono); font-size: 13px; letter-spacing: 0.3em; color: #6b6b78; margin-top: 6px; text-align: center; }
 
   .title { margin-top: 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
   .title h1 { font-size: 80px; line-height: 0.92; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 660px; }
@@ -116,13 +114,9 @@
             {{ t.label }} {{ t.period }}</span>
         </div>
       </div>
-      <div>
-        <div class="used">
-          <div><div class="k">Value · used</div><span class="chip yellow used-pct">{{ pricing.used_vs_retail_label }} vs retail</span></div>
-          <div class="v money">{{ pricing.used_display | money }}</div>
-        </div>
-        <div class="barcode"></div>
-        <div class="sku">{{ set.number }}-{{ set.year }}-USD</div>
+      <div class="used">
+        <div><div class="k">Value · used</div><span class="chip yellow used-pct">{{ pricing.used_vs_retail_label }} vs retail</span></div>
+        <div class="v money">{{ pricing.used_display | money }}</div>
       </div>
     </div>
   </div>

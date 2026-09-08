@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .title { flex: 0 0 auto; margin-top: 20px; }
+  .title h1 { font-size: 46px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.02; }
+  .title .meta { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .title .meta span { font-size: 15px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-2); background: var(--panel); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; }
+
+  /* ---------- the split ---------- */
+  .split { position: relative; flex: 0 0 580px; margin-top: 20px; display: flex; border-radius: 26px; overflow: hidden; border: 1px solid var(--line); }
+  .half { flex: 1 1 50%; position: relative; display: flex; flex-direction: column; padding: 26px 28px; min-width: 0; }
+  .half.then { background: linear-gradient(180deg, #1c1f27, #14161c); padding-right: 66px; }
+  .half.now { background: var(--now); padding-left: 66px; }
+  .half .tag { font-size: 15px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+  .half.then .tag { color: var(--then-ink); }
+  .half.now .tag { color: rgba(255,255,255,0.85); }
+
+  .then .stage { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  .then .stage img { max-width: 84%; max-height: 84%; object-fit: contain; filter: grayscale(1) contrast(0.92) brightness(0.8); opacity: 0.85; }
+  .then .price { margin-top: auto; }
+  .then .price .v { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; color: var(--then-ink); }
+  .then .price .k { margin-top: 4px; font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .now .fill { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+  .now .v { font-size: 66px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; color: #fff; }
+  .now .k { margin-top: 4px; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .now .trend { margin-top: 16px; }
+
+  /* Badge straddling the seam: the one connecting number. */
+  .seam-badge {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 96px; height: 96px; border-radius: 50%; background: var(--ink); color: var(--page);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.4); z-index: 2; border: 6px solid var(--page);
+  }
+  .seam-badge b { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .seam-badge span { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; color: #6a6f7c; }
+  .seam-badge.down { background: var(--down); color: #fff; }
+  .seam-badge.down span { color: rgba(255,255,255,0.75); }
+  .seam-badge.up { background: var(--up); color: #06231a; }
+  .seam-badge.up span { color: rgba(6,35,26,0.65); }
+
+  /* ---------- used value row ---------- */
+  .used-row { flex: 0 0 130px; margin-top: 20px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); padding: 22px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .used-row .k { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .used-row .v { margin-top: 6px; font-size: 40px; font-weight: 800; letter-spacing: -0.025em; }
+
+  /* ---------- figs band ---------- */
+  .figs { flex: 0 0 150px; margin-top: 20px; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); padding: 22px 28px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+  .figs .row { display: flex; align-items: center; justify-content: space-between; }
+  .figs .l b { display: block; font-size: 24px; font-weight: 800; }
+  .figs .l span { display: block; margin-top: 4px; font-size: 15px; color: var(--muted); font-weight: 700; }
+  .figs .r { display: flex; align-items: baseline; gap: 14px; }
+  .figs .total { font-size: 38px; font-weight: 800; }
+  .figs .of { font-size: 15px; color: var(--muted); font-weight: 700; }
+  .figs .pct { font-size: 28px; font-weight: 800; color: var(--now-a); }
+  .figs .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(255,255,255,0.08); }
+  .figs .bar i { display: block; height: 100%; background: var(--now); }
+{% endblock %}
+
+{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill now">Price check</span>{% endblock %}
+
+{% block body %}
+  {% set t = market.trend %}
+  <div class="title">
+    <h1>{{ set.name }}</h1>
+    <div class="meta">
+      <span class="code">#{{ set.number }}</span>
+      <span>{{ set.pieces | thousands }} pieces</span>
+      {% if set.theme %}<span>{{ set.theme }}</span>{% endif %}
+    </div>
+  </div>
+
+  <div class="split">
+    <div class="half then">
+      <span class="tag">Release · {{ set.year }}</span>
+      <div class="stage"><img src="{{ assets.set_image }}" alt=""></div>
+      <div class="price">
+        <div class="v money">{{ pricing.msrp_display | money }}</div>
+        <div class="k">retail price</div>
+      </div>
+    </div>
+    <div class="half now">
+      <span class="tag">Today · {{ market.updated_label }}</span>
+      <div class="fill">
+        <div class="v money">{{ pricing.new_display | money }}</div>
+        <div class="k">value · new · sealed</div>
+        <div class="trend">
+          <span class="chip {{ t.direction }}">
+            {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
+            {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
+            {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
+            {{ t.label }} {{ t.period }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="seam-badge {{ 'down' if pricing.vs_retail_pct < 0 else 'up' }}">
+      <b>{{ pricing.vs_retail_label }}</b>
+      <span>growth</span>
+    </div>
+  </div>
+
+  <div class="used-row">
+    <div>
+      <div class="k">Value · used</div>
+      <div class="v money">{{ pricing.used_display | money }}</div>
+    </div>
+    <span class="chip {{ 'up' if pricing.used_vs_retail_pct >= 0 else 'down' }}">{{ pricing.used_vs_retail_label }} vs retail</span>
+  </div>
+
+  <div class="figs">
+    <div class="row">
+      <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
+      <div class="r">
+        <span class="total money">{{ minifigs.total_display | money }}</span>
+        <span class="of">of <b class="money" style="color:#fff">{{ minifigs.set_used_display | money }}</b></span>
+        <span class="pct">{{ minifigs.share_label }}</span>
+      </div>
+    </div>
+    <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
+  </div>
+{% endblock %}

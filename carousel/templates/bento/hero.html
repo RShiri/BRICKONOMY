@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block style %}
+  /* Nested flexbox rather than one shared CSS grid: the image column and
+     the title/price stack next to it need independent heights (the image
+     should soak up any extra vertical room; the title tile should not, or
+     it reads as an empty box), which a single grid's shared row tracks
+     cannot express without one stretching the other. Every band below is a
+     fixed height tuned to its own content — big, confident numbers rather
+     than flex-grow "soak up whatever's left", which is what leaves a tile
+     looking broken and empty. */
+  .bento { flex: 1 1 auto; margin-top: 24px; display: flex; flex-direction: column; gap: 20px; min-height: 0; }
+  .bento-top { flex: 0 0 540px; display: flex; gap: 20px; }
+  .bento-right { flex: 1 1 0; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .bento-mid { flex: 0 0 auto; display: flex; gap: 20px; }
+  .bento-mid > .tile { flex: 1 1 0; min-width: 0; }
+
+  .t-img { flex: 0 0 34%; display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .t-img img { max-width: 92%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 18px 30px rgba(20,21,26,0.14)); }
+  .t-img .num { position: absolute; top: 16px; left: 16px; background: var(--ink); color: #fff; font-family: var(--mono); font-weight: 800; font-size: 18px; padding: 7px 12px; border-radius: 10px; }
+
+  .t-title { flex: 0 0 168px; padding: 26px 30px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+  .t-title h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.06; }
+  .t-title .meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .t-title .meta span { font-size: 15px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); background: var(--tile-2); padding: 6px 11px; border-radius: 9px; }
+
+  .price-row { flex: 1 1 0; min-height: 0; display: flex; gap: 20px; }
+  .price-row > .tile { flex: 1 1 0; min-width: 0; }
+  .t-new { padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .t-new .v { font-size: 76px; font-weight: 800; letter-spacing: -0.035em; line-height: 1; margin-top: 10px; }
+  .t-new .sub { margin-top: 10px; }
+
+  .t-used { padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; }
+  .t-used .v { font-size: 58px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-top: 10px; }
+  .t-used .sub { margin-top: 10px; }
+
+  .t-meta { padding: 24px 26px; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+  .t-meta .row { display: flex; align-items: baseline; justify-content: space-between; }
+  .t-meta .row b { font-size: 27px; font-weight: 800; }
+  .t-meta .row span { font-size: 14px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .t-stat { padding: 24px 26px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .t-stat .v { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; }
+
+  .t-figs { flex: 0 0 180px; padding: 26px 30px; display: flex; align-items: center; justify-content: space-between; }
+  .t-figs .l b { display: block; font-size: 22px; font-weight: 800; }
+  .t-figs .l span { display: block; margin-top: 4px; font-size: 15px; color: rgba(255,255,255,0.65); font-weight: 700; }
+  .t-figs .r { display: flex; align-items: baseline; gap: 14px; }
+  .t-figs .total { font-size: 40px; font-weight: 800; }
+  .t-figs .of { font-size: 16px; color: rgba(255,255,255,0.65); font-weight: 700; }
+  .t-figs .pct { font-size: 30px; font-weight: 800; }
+  .t-figs .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(255,255,255,0.15); }
+  .t-figs .bar i { display: block; height: 100%; background: var(--accent); }
+{% endblock %}
+
+{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill accent">Price check</span>{% endblock %}
+
+{% block body %}
+  {% set t = market.trend %}
+  <div class="bento">
+    <div class="bento-top">
+      <div class="tile t-img">
+        <span class="num">#{{ set.number }}</span>
+        <img src="{{ assets.set_image }}" alt="">
+      </div>
+
+      <div class="bento-right">
+        <div class="tile t-title">
+          <h1>{{ set.name }}</h1>
+          <div class="meta">
+            <span>{{ set.year }}</span>
+            <span>{{ set.pieces | thousands }} pcs</span>
+            {% if set.theme %}<span>{{ set.theme }}</span>{% endif %}
+          </div>
+        </div>
+
+        <div class="price-row">
+          <div class="tile dark t-new">
+            <div class="k">Value · New</div>
+            <div class="v money">{{ pricing.new_display | money }}</div>
+            <div class="sub"><span class="chip {{ t.direction }}">{{ '▲' if t.direction == 'up' else ('▼' if t.direction == 'down' else '■') }} {{ t.label }}</span></div>
+          </div>
+
+          <div class="tile t-used">
+            <div class="k">Value · Used</div>
+            <div class="v money">{{ pricing.used_display | money }}</div>
+            <div class="sub"><span class="chip {{ 'up' if pricing.used_vs_retail_pct >= 0 else 'down' }}">{{ pricing.used_vs_retail_label }} vs retail</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento-mid">
+      <div class="tile t-meta">
+        <div class="row"><b class="money">{{ pricing.msrp_display | money }}</b><span>{{ set.year }} retail</span></div>
+        <div class="row"><b>{{ pricing.vs_retail_label }}</b><span>new vs retail</span></div>
+        <div class="row"><b>{{ minifigs.count }}</b><span>minifigs</span></div>
+      </div>
+
+      <div class="tile t-stat">
+        <div class="k">Per piece</div>
+        <div class="v">{{ pricing.per_piece_label }}</div>
+      </div>
+
+      <div class="tile t-stat">
+        <div class="k">Figs share</div>
+        <div class="v">{{ minifigs.share_label }}</div>
+      </div>
+    </div>
+
+    <div class="tile dark t-figs">
+      <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
+      <div class="r">
+        <span class="total money">{{ minifigs.total_display | money }}</span>
+        <span class="of">of <b class="money" style="color:#fff">{{ minifigs.set_used_display | money }}</b></span>
+        <span class="pct" style="color: var(--accent)">{{ minifigs.share_label }}</span>
+      </div>
+      <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
+    </div>
+  </div>
+{% endblock %}

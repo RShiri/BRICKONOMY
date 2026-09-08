@@ -11,27 +11,57 @@ better than a 1080 one; `--scale 1` gives exact 1080×1350 files.
 | 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value (each shown as a % vs retail), month-over-month trend, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
 | 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
 
-The look is an Instagram post, not a web page: a story-style progress bar
-along the top, a post header with the **brickanalyst.en** avatar in a
-gradient story ring, the Instagram brand gradient (yellow → orange → pink →
-purple) on the highlighted value card, pills and rank badges, dark glass
-cards on near-black, and the handle with the Instagram glyph as watermark.
-`assets/profile.jpg` is the avatar; a 1080×1080 copy for the Instagram
-profile itself is in `out/profile-1080.jpg`.
+Every theme carries the same building blocks — a story-style progress bar,
+a post header with the **brickanalyst.en** avatar, both new and used value
+shown against retail, and a footer watermark — just drawn in a different
+visual language. `assets/profile.jpg` is the avatar; a 1080×1080 copy for
+the Instagram profile itself is in `out/profile-1080.jpg`.
 
-Two designs ship, chosen with `--theme`:
+Five designs ship, chosen with `--theme`. The last three (`bento`,
+`contrast`, `card`) were built after a look at what's actually driving
+Instagram carousel engagement in 2026 — see [Design research](#design-research-2026)
+below.
 
 | Theme | Look | Sample |
 | --- | --- | --- |
-| `poster` (default) | LEGO yellow and red HUD: perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode and a growth starburst, both new and used value shown against retail, stat meters (new vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
+| `poster` (default) | LEGO yellow and red HUD: perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with a growth starburst, stat meters (new vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
 | `ig` | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269-ig/`](out/76269-ig/), [`out/76051-ig/`](out/76051-ig/) |
+| `bento` | Light mode — the only light theme of the five, which is the point of the contrast. Modular boxed tiles (2026's dominant layout trend), one accent color, no gradients or glow, generous whitespace | [`out/76269-bento/`](out/76269-bento/), [`out/76051-bento/`](out/76051-bento/) |
+| `contrast` | A literal then/now split screen: muted release-era half (desaturated photo, retail price) against a vivid electric-blue "today" half (current value, trend), joined by a growth badge straddling the seam | [`out/76269-contrast/`](out/76269-contrast/), [`out/76051-contrast/`](out/76051-contrast/) |
+| `card` | A collectible trading card: holographic corner foil, a metallic border colored by rarity tier, a rarity badge derived from the set's growth (or, per minifigure, its share of the figs total), card-stat rows, an edition number | [`out/76269-card/`](out/76269-card/), [`out/76051-card/`](out/76051-card/) |
 
 Sample output for **76269 Avengers Tower** and **76051 Super Hero Airport
-Battle** is in those folders.
+Battle** is in those folders, in every theme.
 It was rendered on a machine that cannot reach `img.bricklink.com`, so the
 pictures are the built-in placeholders; the site itself hotlinks the same
 BrickLink URLs, and running the command below on a normal connection fills
 in the real set and minifig images.
+
+## Design research (2026)
+
+Before building `bento`, `contrast` and `card`, I looked at what's actually
+driving engagement on Instagram carousels in 2026, rather than guessing:
+
+- Carousels get 12% more engagement than Reels and 114% more than single
+  images, and the highest save rate of any format (Socialinsider's 2026
+  Instagram Benchmarks Report, 31M posts analyzed).
+- **Bento grids** are the named successor to flat minimalism — modular
+  boxed tiles mixing content types on one clean grid — and are described
+  as the dominant 2026 UI layout trend, from product pages to social posts.
+- **"Contrast carousels"** — two opposing ideas side by side, often a
+  literal split-screen — are called out as a specific high-performing
+  2026 format, especially for before/after and comparison content (exactly
+  what a "retail vs today" price check is).
+- General principles across every source: high contrast, bold typography,
+  generous white space, and micro-learning (15–20 words a slide with one
+  strong visual anchor) beat dense, paragraph-heavy slides.
+
+`bento` and `contrast` are direct builds of the first two trends. `card`
+isn't from the generic research — it leans on something a generic trend
+report wouldn't know: LEGO collectors already speak fluent trading-card
+visual language (rarity tiers, holo foil, card stats), so that genre fit
+is a stronger hook for this specific audience than another generic
+template would be.
 
 ## Why HTML/CSS + Chromium rather than Pillow
 

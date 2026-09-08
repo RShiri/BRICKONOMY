@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .card-wrap { flex: 1 1 auto; min-height: 0; margin-top: 14px; display: flex; align-items: center; justify-content: center; }
+  .card {
+    width: 100%; height: 100%; max-width: 900px;
+    position: relative; overflow: hidden; display: flex; flex-direction: column;
+    border-radius: 30px; border: 3px solid var(--tier);
+    background: linear-gradient(165deg, #201a2c, #140f1c 55%, #100c17);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04) inset,
+                0 0 60px color-mix(in srgb, var(--tier) 30%, transparent);
+  }
+  /* Holo corner sheen — brighter and more rainbow for rarer tiers. */
+  .holo {
+    position: absolute; top: -40%; right: -30%; width: 75%; height: 65%;
+    clip-path: polygon(30% 0, 100% 0, 100% 70%);
+    background: conic-gradient(from 200deg, #ff8a8a, #ffd66b, #7dffb0, #6bd8ff, #b28aff, #ff8ad1, #ff8a8a);
+    opacity: 0.16; mix-blend-mode: screen; pointer-events: none;
+  }
+  .tier-legendary .holo { opacity: 0.30; }
+  .tier-epic .holo { opacity: 0.22; }
+
+  .card-top { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; }
+  .edition { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); }
+  .edition b { color: var(--muted-2); }
+
+  .stage { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; padding: 10px 30px; }
+  .stage .glow { position: absolute; width: 62%; height: 66%; border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--tier) 38%, transparent), transparent 72%);
+    filter: blur(20px); }
+  .stage img { position: relative; max-width: 82%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.6)); }
+  .stage .num { position: absolute; bottom: 14px; left: 30px; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); color: var(--muted-2); font-family: var(--mono); font-weight: 700; font-size: 15px; padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); }
+
+  .nameplate { flex: 0 0 auto; padding: 4px 30px 18px; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 18px; }
+  .nameplate h1 { font-size: 40px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.04; }
+  .nameplate .sub { margin-top: 6px; font-size: 17px; color: var(--muted); font-weight: 700; }
+  .nameplate .sub b { color: var(--muted-2); }
+
+  .stats { flex: 0 0 auto; display: flex; gap: 14px; padding: 0 30px; }
+  .stat { flex: 1 1 0; min-width: 0; background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .stat .k { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .stat .v { margin-top: 6px; font-size: 25px; font-weight: 800; letter-spacing: -0.02em; }
+
+  .power { flex: 0 0 auto; margin: 16px 30px 0; border-radius: 18px; padding: 18px 22px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--tier) 22%, transparent), transparent);
+    border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent); }
+  .power .row { display: flex; align-items: baseline; justify-content: space-between; }
+  .power .k { font-size: 13px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .power .v { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; color: var(--tier); }
+  .power .bar { margin-top: 10px; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .power .bar i { display: block; height: 100%; background: var(--tier); }
+
+  .flavor { flex: 0 0 auto; margin: 16px 30px 26px; padding-top: 14px; border-top: 1px dashed var(--line);
+    font-size: 15px; color: var(--muted); font-weight: 600; font-style: italic; }
+  .flavor b { color: var(--muted-2); font-style: normal; font-weight: 800; }
+{% endblock %}
+
+{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill">Price check</span>{% endblock %}
+
+{% block body %}
+  {% set t = market.trend %}
+  <div class="card-wrap">
+    <div class="card tier-{{ pricing.rarity_tier }}">
+      <div class="holo"></div>
+
+      <div class="card-top">
+        <span class="rarity-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.6 5.9 20.6l1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+          {{ pricing.rarity_label }}
+        </span>
+        <span class="edition">No. <b>{{ set.number }}</b> · {{ set.year }}</span>
+      </div>
+
+      <div class="stage">
+        <div class="glow"></div>
+        <img src="{{ assets.set_image }}" alt="">
+        <span class="num">{{ set.pieces | thousands }} pcs{% if set.theme %} · {{ set.theme }}{% endif %}</span>
+      </div>
+
+      <div class="nameplate">
+        <h1>{{ set.name }}</h1>
+        <div class="sub">Retail <b class="money">{{ pricing.msrp_display | money }}</b> · {{ set.year }} · {{ minifigs.count }} minifigures</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Value · New</div><div class="v money">{{ pricing.new_display | money }}</div></div>
+        <div class="stat"><div class="k">Value · Used</div><div class="v money">{{ pricing.used_display | money }}</div></div>
+        <div class="stat"><div class="k">Figs total</div><div class="v money">{{ minifigs.total_display | money }}</div></div>
+      </div>
+
+      <div class="power">
+        <div class="row">
+          <span class="k">Growth since {{ set.year }}</span>
+          <span class="v">{{ pricing.vs_retail_label }}</span>
+        </div>
+        <div class="bar"><i style="width: {{ pricing.vs_retail_meter }}%"></i></div>
+      </div>
+
+      <div class="flavor">"<b>{{ t.label }}</b> {{ t.period }}" — used value runs <b>{{ pricing.used_vs_retail_label }}</b> vs retail, figs make up <b>{{ minifigs.share_label }}</b> of the set's used value. Swipe for the full lineup →</div>
+    </div>
+  </div>
+{% endblock %}

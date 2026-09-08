@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .sub-head { margin-top: 24px; display: flex; align-items: baseline; justify-content: space-between; }
+  .sub-head h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; }
+  .sub-head h2 small { color: var(--muted); font-weight: 700; font-size: 23px; margin-left: 10px; }
+  .sub-head .hint { font-size: 16px; color: var(--muted); font-weight: 700; }
+
+  .grid { margin-top: 20px; flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; }
+  .fig { position: relative; border-radius: 22px; background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--then); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+  .fig .img { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border-radius: 14px; }
+  .fig .img img { max-width: 76%; max-height: 88%; object-fit: contain; filter: drop-shadow(0 14px 20px rgba(0,0,0,0.5)); }
+  .fig .rank { position: absolute; top: 14px; left: 14px; background: var(--ink); color: var(--page); font-size: 15px; font-weight: 800; padding: 5px 10px; border-radius: 8px; font-family: var(--mono); z-index: 1; }
+  .fig .qty { position: absolute; top: 14px; right: 14px; background: var(--now); color: #fff; font-size: 15px; font-weight: 800; padding: 5px 10px; border-radius: 8px; z-index: 1; }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 21px; font-weight: 800; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-weight: 600; font-size: 16px; margin-top: 2px; }
+  .fig .price { display: flex; align-items: center; justify-content: space-between; }
+  .fig .price .v { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; background: var(--now); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fig .price .code { font-family: var(--mono); font-size: 15px; color: var(--muted); background: rgba(255,255,255,0.06); padding: 5px 9px; border-radius: 8px; }
+  .fig .share { display: flex; align-items: center; gap: 8px; }
+  .fig .share .bar { flex: 1; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .fig .share .bar i { display: block; height: 100%; background: var(--now); }
+  .fig .share span { font-size: 13px; color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .fig.empty { background: transparent; border: 1.5px dashed var(--line); border-left: 1.5px dashed var(--line); }
+  .fig.cta { background: var(--now); border-color: transparent; justify-content: center; gap: 14px; padding: 30px; }
+  .fig.cta .big { font-size: 27px; font-weight: 800; line-height: 1.15; color: #fff; }
+  .fig.cta .url { font-size: 18px; font-weight: 800; color: rgba(255,255,255,0.9); }
+{% endblock %}
+
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill">Minifigs {{ page.index }}/{{ page.total }}</span>{% endblock %}
+
+{% block body %}
+  <div class="sub-head">
+    <h2>Minifigures <small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small></h2>
+    <span class="hint">bar = share of figs total {{ minifigs.total_display | money }}</span>
+  </div>
+
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="fig">
+        <span class="rank">#{{ f.rank }}</span>
+        {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
+        <div class="price"><span class="v money">{{ f.used_display | money }}</span><span class="code">{{ f.code }}</span></div>
+        <div class="share"><div class="bar"><i style="width: {{ [f.share_of_total * 2, 100] | min }}%"></i></div><span>{{ f.share_label }}</span></div>
+      </div>
+    {% endfor %}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.handle or branding.url }}</div></div>
+      {% else %}
+        <div class="fig empty"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

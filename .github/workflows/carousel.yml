@@ -59,13 +59,15 @@ jobs:
       - name: Test
         run: python -m pytest carousel/tests -q
 
-      - name: Render (both designs)
+      - name: Render (every theme)
         run: |
           shopt -s nullglob
           payloads=("$PAYLOAD"); [ -z "$PAYLOAD" ] && payloads=(carousel/samples/*.json)
+          themes=$(python -c "from carousel import generate as g; print(' '.join(g.THEMES))")
           for p in "${payloads[@]}"; do
-            python -m carousel.generate "$p" --sort "$SORT" --theme poster
-            python -m carousel.generate "$p" --sort "$SORT" --theme ig
+            for theme in $themes; do
+              python -m carousel.generate "$p" --sort "$SORT" --theme "$theme"
+            done
           done
 
       - name: Upload slides

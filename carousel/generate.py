@@ -345,6 +345,25 @@ def to_usd(pricing: dict[str, Any]) -> tuple[dict[str, Any], float]:
     return out, float(fx)
 
 
+def rarity_tier(pct: float, thresholds: tuple[float, float, float] = (3, 8, 15)) -> tuple[str, str]:
+    """Map a percentage to a trading-card rarity tier: (css class, display label).
+
+    Purely a decorative narrative device for the `card` theme, not a
+    valuation claim. `thresholds` is (rare, epic, legendary) in percent;
+    the default suits a per-minifig share-of-total (usually a few percent
+    to ~20%). The hero card passes a wider set (vs retail growth, which
+    ranges from deeply negative to 100%+).
+    """
+    lo, mid, hi = thresholds
+    if pct >= hi:
+        return "legendary", "Legendary"
+    if pct >= mid:
+        return "epic", "Epic"
+    if pct >= lo:
+        return "rare", "Rare"
+    return "common", "Common"
+
+
 def split_name(name: str) -> tuple[str, str]:
     """BrickLink names read 'Character - variant details'; show them on two lines."""
     head, sep, tail = name.partition(" - ")
@@ -413,6 +432,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         slice_pct = (f["used_price"] * f["quantity"] / raw_total * 100) if raw_total else 0
         f["share_of_total"] = slice_pct
         f["share_label"] = f"{slice_pct:.1f}%" if slice_pct < 10 else f"{slice_pct:.0f}%"
+        f["rarity_tier"], f["rarity_label"] = rarity_tier(slice_pct)
 
     return {
         "set": {**s, "number": str(s["number"])},
@@ -428,6 +448,11 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "vs_retail_meter": min(abs(vs_retail), 100),
             "used_vs_retail_meter": min(abs(used_vs_retail), 100),
             "per_piece_meter": min(per_piece / 0.20 * 100, 100) if per_piece is not None else 0,
+            # Rarity tier for the `card` theme, from growth since retail
+            # (a much wider range than a minifig's share of the total, so it
+            # gets its own thresholds).
+            "rarity_tier": rarity_tier(vs_retail, thresholds=(0, 25, 75))[0],
+            "rarity_label": rarity_tier(vs_retail, thresholds=(0, 25, 75))[1],
         },
         "market": {
             "updated_label": parse_date(m["updated_at"]).strftime("%b %-d, %Y"),

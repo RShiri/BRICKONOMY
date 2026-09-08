@@ -1,0 +1,102 @@
+{#
+  "Contrast" theme: a literal then/now split-screen — the research calls
+  these "contrast carousels", built on opposing halves so the message reads
+  before anyone finishes the text. Muted "then" (release-era) on the left,
+  vivid electric "now" on the right, joined by a badge straddling the seam.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Manrope"; src: url("{{ assets.font }}") format("truetype"); font-weight: 200 800; font-display: block; }
+
+  :root {
+    --w: 1080px; --h: 1350px; --pad: 56px;
+    --page:  #0b0d12;
+    --panel: #151820;
+    --line:  rgba(255,255,255,0.09);
+    --ink:   #ffffff;
+    --muted: #8a8f9c;
+    --muted-2: #c3c7d1;
+    --then:  #3a3f4b;         /* muted "release era" tone */
+    --then-ink: #b7bbc4;
+    --now-a: #00c2ff;         /* vivid "today" gradient */
+    --now-b: #2f5bff;
+    --now:   linear-gradient(160deg, var(--now-a), var(--now-b));
+    --up: #33e2a0; --down: #ff5470; --flat: #c3c7d1;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; }
+  body { font-family: "Manrope", "Inter", "Segoe UI", Roboto, Arial, sans-serif; background: var(--page); color: var(--ink); -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1; }
+
+  .slide { width: var(--w); height: var(--h); padding: 48px var(--pad) var(--pad); display: flex; flex-direction: column; background: var(--page); position: relative; overflow: hidden; }
+  .slide::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.035) 1.5px, transparent 1.6px); background-size: 34px 34px; pointer-events: none; }
+  .slide > * { position: relative; }
+
+  /* ---------- story progress ---------- */
+  .story { display: flex; gap: 8px; height: 6px; margin-bottom: 28px; }
+  .story i { flex: 1; display: block; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.12); }
+  .story i.done { background: rgba(255,255,255,0.4); }
+  .story i.on { background: var(--now-a); }
+
+  /* ---------- header ---------- */
+  .header { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .ring { width: 58px; height: 58px; border-radius: 50%; padding: 3px; background: var(--now); flex: 0 0 auto; }
+  .ring span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--page); overflow: hidden; }
+  .ring img.avatar { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  .ring img.mark { width: 28px; height: 28px; }
+  .who b { display: block; font-size: 27px; font-weight: 800; letter-spacing: -0.01em; }
+  .who small { display: block; margin-top: 3px; font-size: 18px; color: var(--muted); font-weight: 700; }
+  .pill { display: inline-flex; align-items: center; height: 46px; padding: 0 20px; border-radius: 999px; background: var(--panel); border: 1px solid var(--line); color: var(--muted-2); font-size: 18px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pill.now { background: var(--now); color: #fff; border-color: transparent; }
+
+  .money { font-variant-numeric: tabular-nums; }
+  .money .cur { font-size: 0.55em; vertical-align: 0.42em; margin-right: 0.05em; opacity: 0.9; font-weight: 700; }
+  .code { font-family: var(--mono); font-weight: 600; letter-spacing: 0.04em; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px; border-radius: 999px; font-size: 17px; font-weight: 800; background: rgba(255,255,255,0.12); color: #fff; }
+  .chip.up { background: rgba(51,226,160,0.18); color: var(--up); } .chip.down { background: rgba(255,84,112,0.18); color: var(--down); }
+  .chip svg { width: 16px; height: 16px; }
+
+  /* ---------- footer ---------- */
+  .footer { margin-top: auto; padding-top: 20px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 18px; font-weight: 600; }
+  .footer strong { color: var(--muted-2); font-weight: 700; }
+  .footer .handle { display: inline-flex; align-items: center; gap: 8px; color: var(--now-a); font-weight: 800; font-size: 20px; }
+  .footer .handle svg { width: 20px; height: 20px; }
+
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="story">
+    {% for i in range(nav.total) %}<i class="{{ 'on' if i == nav.index else ('done' if i < nav.index else '') }}"></i>{% endfor %}
+  </div>
+
+  <div class="header">
+    <div class="brand">
+      <div class="ring"><span>
+        {% if assets.avatar %}<img class="avatar" src="{{ assets.avatar }}" alt="">
+        {% else %}<img class="mark" src="{{ assets.mark }}" alt="">{% endif %}
+      </span></div>
+      <div class="who"><b>{{ branding.site_name }}</b><small>{% block header_sub %}LEGO price check{% endblock %}</small></div>
+    </div>
+    {% block header_right %}{% endblock %}
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <div class="footer">
+    <span>Prices valid as of <strong>{{ market.updated_label }}</strong> · USD · BrickLink sold</span>
+    {% if branding.handle %}
+      <span class="handle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        {{ branding.handle }}
+      </span>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

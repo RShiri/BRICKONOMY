@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .sub-head { margin-top: 24px; display: flex; align-items: baseline; justify-content: space-between; }
+  .sub-head h2 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
+  .sub-head h2 small { color: var(--muted); font-weight: 700; font-size: 22px; margin-left: 10px; }
+  .sub-head .hint { font-size: 16px; color: var(--muted); font-weight: 700; }
+
+  .grid { margin-top: 20px; flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; }
+  .fig { position: relative; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .fig .img { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; background: var(--tile-2); border-radius: 14px; }
+  .fig .img img { max-width: 76%; max-height: 88%; object-fit: contain; filter: drop-shadow(0 12px 18px rgba(20,21,26,0.14)); }
+  .fig .rank { position: absolute; top: 14px; left: 14px; background: var(--ink); color: #fff; font-size: 15px; font-weight: 800; padding: 5px 10px; border-radius: 8px; font-family: var(--mono); z-index: 1; }
+  .fig .qty { position: absolute; top: 14px; right: 14px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 800; padding: 5px 10px; border-radius: 8px; z-index: 1; }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 21px; font-weight: 800; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-weight: 600; font-size: 16px; margin-top: 2px; }
+  .fig .price { display: flex; align-items: center; justify-content: space-between; }
+  .fig .price .v { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; }
+  .fig .price .code { font-family: var(--mono); font-size: 15px; color: var(--muted); background: var(--tile-2); padding: 5px 9px; border-radius: 8px; }
+  .fig .share { display: flex; align-items: center; gap: 8px; }
+  .fig .share .bar { flex: 1; height: 5px; border-radius: 999px; background: var(--tile-2); overflow: hidden; }
+  .fig .share .bar i { display: block; height: 100%; background: var(--accent); }
+  .fig .share span { font-size: 13px; color: var(--muted); font-weight: 700; white-space: nowrap; }
+  .fig.empty { background: transparent; border: 1.5px dashed var(--line); }
+  .fig.cta { background: var(--ink); color: #fff; justify-content: center; gap: 14px; padding: 30px; }
+  .fig.cta .big { font-size: 28px; font-weight: 800; line-height: 1.15; }
+  .fig.cta .url { font-size: 18px; font-weight: 800; color: var(--accent); }
+{% endblock %}
+
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="pill">Minifigs {{ page.index }}/{{ page.total }}</span>{% endblock %}
+
+{% block body %}
+  <div class="sub-head">
+    <h2>Minifigures <small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small></h2>
+    <span class="hint">bar = share of figs total {{ minifigs.total_display | money }}</span>
+  </div>
+
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="tile fig">
+        <span class="rank">#{{ f.rank }}</span>
+        {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
+        <div class="price"><span class="v money">{{ f.used_display | money }}</span><span class="code">{{ f.code }}</span></div>
+        <div class="share"><div class="bar"><i style="width: {{ [f.share_of_total * 2, 100] | min }}%"></i></div><span>{{ f.share_label }}</span></div>
+      </div>
+    {% endfor %}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="tile fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.handle or branding.url }}</div></div>
+      {% else %}
+        <div class="fig empty"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{#
+  "Bento" theme: light mode, modular boxed tiles (the 2026 successor to flat
+  minimalism — mixed tile sizes on one clean grid, one accent color, no
+  gradients or glow). The only light-mode theme in the set, which is itself
+  the point of contrast against the two dark ones.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: "Manrope"; src: url("{{ assets.font }}") format("truetype"); font-weight: 200 800; font-display: block; }
+
+  :root {
+    --w: 1080px; --h: 1350px; --pad: 56px;
+    --page:   #f4f3ef;
+    --tile:   #ffffff;
+    --tile-2: #eeece5;
+    --ink:    #14151a;
+    --muted:  #7c7a72;
+    --muted-2: #4d4c47;
+    --line:   #e2e0d7;
+    --accent: #e3372a;      /* one accent color, used sparingly */
+    --accent-ink: #ffffff;
+    --up: #1a8a53; --down: #d1382a; --flat: #7c7a72;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    --r: 22px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; }
+  body {
+    font-family: "Manrope", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--page); color: var(--ink);
+    -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1;
+  }
+
+  .slide { width: var(--w); height: var(--h); padding: 48px var(--pad) var(--pad); display: flex; flex-direction: column; background: var(--page); }
+
+  /* ---------- story progress ---------- */
+  .story { display: flex; gap: 8px; height: 6px; margin-bottom: 28px; }
+  .story i { flex: 1; display: block; height: 6px; border-radius: 999px; background: var(--tile-2); }
+  .story i.done { background: #cfccc0; }
+  .story i.on { background: var(--accent); }
+
+  /* ---------- header ---------- */
+  .header { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .ring { width: 60px; height: 60px; border-radius: 18px; background: var(--ink); display: grid; place-items: center; flex: 0 0 auto; overflow: hidden; }
+  .ring img.avatar { width: 100%; height: 100%; object-fit: cover; }
+  .ring img.mark { width: 30px; height: 30px; }
+  .who b { display: block; font-size: 27px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+  .who small { display: block; margin-top: 4px; font-size: 18px; color: var(--muted); font-weight: 700; }
+  .pill { display: inline-flex; align-items: center; height: 46px; padding: 0 20px; border-radius: 14px; background: var(--tile); border: 1px solid var(--line); color: var(--muted-2); font-size: 18px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pill.accent { background: var(--ink); color: #fff; border-color: transparent; }
+
+  /* ---------- bento building blocks ---------- */
+  .tile { background: var(--tile); border: 1px solid var(--line); border-radius: var(--r); position: relative; overflow: hidden; }
+  .tile.dark { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .tile.accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .k { font-size: 15px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .tile.dark .k { color: rgba(255,255,255,0.55); }
+  .tile.accent .k { color: rgba(255,255,255,0.75); }
+  .money { font-variant-numeric: tabular-nums; }
+  .money .cur { font-size: 0.5em; vertical-align: 0.4em; margin-right: 0.05em; opacity: 0.8; font-weight: 700; }
+  .code { font-family: var(--mono); font-weight: 700; letter-spacing: 0.03em; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 10px; font-size: 16px; font-weight: 800; background: var(--tile-2); color: var(--muted-2); }
+  .chip.up { background: #dff3e7; color: var(--up); } .chip.down { background: #fbe1de; color: var(--down); }
+  .chip svg { width: 15px; height: 15px; }
+
+  /* ---------- footer ---------- */
+  .footer { margin-top: auto; padding-top: 22px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 18px; font-weight: 600; }
+  .footer strong { color: var(--muted-2); font-weight: 800; }
+  .footer .handle { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 800; font-size: 20px; }
+  .footer .handle svg { width: 20px; height: 20px; }
+
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="story">
+    {% for i in range(nav.total) %}<i class="{{ 'on' if i == nav.index else ('done' if i < nav.index else '') }}"></i>{% endfor %}
+  </div>
+
+  <div class="header">
+    <div class="brand">
+      <div class="ring">
+        {% if assets.avatar %}<img class="avatar" src="{{ assets.avatar }}" alt="">
+        {% else %}<img class="mark" src="{{ assets.mark }}" alt="">{% endif %}
+      </div>
+      <div class="who"><b>{{ branding.site_name }}</b><small>{% block header_sub %}LEGO price check{% endblock %}</small></div>
+    </div>
+    {% block header_right %}{% endblock %}
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <div class="footer">
+    <span>Prices valid as of <strong>{{ market.updated_label }}</strong> · USD · BrickLink sold · not financial advice</span>
+    {% if branding.handle %}
+      <span class="handle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        {{ branding.handle }}
+      </span>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>
