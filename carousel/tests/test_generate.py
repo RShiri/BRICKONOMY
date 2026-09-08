@@ -152,7 +152,7 @@ def test_hook_slide_precedes_hero(view):
     # The sample payload sets a custom headline/sub.
     assert v["hook"]["headline"] == "Will the Avengers Tower retire soon?"
     assert "Will the Avengers Tower retire soon?" in hook_html
-    assert "Data" in hook_html and "Price check" in hook_html
+    assert "Scroll" in hook_html and "Price check" in hook_html
 
 
 def test_hook_falls_back_to_a_stat_line_when_omitted(view, tmp_path):
