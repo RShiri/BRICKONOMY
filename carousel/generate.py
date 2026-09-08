@@ -47,7 +47,8 @@ ASSETS = HERE / "assets"
 SCHEMA = HERE / "schema.json"
 DEFAULT_CACHE = HERE / ".cache"
 
-WIDTH, HEIGHT = 1080, 1350          # Instagram portrait, 4:5
+WIDTH, HEIGHT = 1080, 1350          # Instagram portrait, 4:5 (CSS pixels)
+DEFAULT_SCALE = 2                   # rendered at 2160x2700: crisper after Instagram's recompression
 MAX_PER_SLIDE = 4
 INSTAGRAM_MAX_SLIDES = 20
 
@@ -486,8 +487,18 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
     return slides
 
 
+def _optimize_png(path: Path) -> None:
+    """Losslessly shrink Chromium's screenshot PNG (it writes them uncompressed-ish)."""
+    try:
+        from PIL import Image
+    except ImportError:
+        return
+    with Image.open(path) as im:
+        im.save(path, format="PNG", optimize=True)
+
+
 def screenshot(slides: list[Slide], out_dir: Path, stem: str, scale: int,
-               chromium: str | None, keep_html: bool) -> list[Path]:
+               chromium: str | None, keep_html: bool, fmt: str = "png", quality: int = 95) -> list[Path]:
     from playwright.sync_api import sync_playwright
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -506,9 +517,14 @@ def screenshot(slides: list[Slide], out_dir: Path, stem: str, scale: int,
                 (out_dir / f"{name}.html").write_text(slide.html, encoding="utf-8")
             page.set_content(slide.html, wait_until="load")
             page.evaluate("document.fonts.ready")
-            target = out_dir / f"{name}.png"
-            page.screenshot(path=str(target), type="png",
-                            clip={"x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+            target = out_dir / f"{name}.{fmt}"
+            if fmt == "jpg":
+                page.screenshot(path=str(target), type="jpeg", quality=quality,
+                                clip={"x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+            else:
+                page.screenshot(path=str(target), type="png",
+                                clip={"x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+                _optimize_png(target)
             written.append(target)
         browser.close()
     return written
@@ -527,8 +543,11 @@ def main(argv: list[str] | None = None) -> int:
                     help="order minifigs as given, or most valuable first")
     ap.add_argument("--per-slide", type=int, default=MAX_PER_SLIDE, choices=[1, 2, 3, 4],
                     help="minifigs per slide (max 4)")
-    ap.add_argument("--scale", type=int, default=1, choices=[1, 2],
-                    help="device scale factor; 2 renders 2160x2700 for print-quality previews")
+    ap.add_argument("--scale", type=int, default=DEFAULT_SCALE, choices=[1, 2, 3],
+                    help="device scale factor: 1 = 1080x1350, 2 = 2160x2700 (default), 3 = 3240x4050")
+    ap.add_argument("--format", choices=["png", "jpg"], default="png",
+                    help="png (lossless, default) or jpg at --quality for smaller uploads")
+    ap.add_argument("--quality", type=int, default=95, help="JPEG quality when --format jpg")
     ap.add_argument("--no-fetch", action="store_true",
                     help="never hit the network; use cached files or placeholders")
     ap.add_argument("--keep-background", action="store_true",
@@ -564,7 +583,8 @@ def main(argv: list[str] | None = None) -> int:
             f.write_text(s.html, encoding="utf-8")
             files.append(f)
     else:
-        files = screenshot(slides, out_dir, stem, args.scale, args.chromium, args.keep_html)
+        files = screenshot(slides, out_dir, stem, args.scale, args.chromium, args.keep_html,
+                           args.format, args.quality)
 
     manifest = {
         "set": view["set"]["number"],

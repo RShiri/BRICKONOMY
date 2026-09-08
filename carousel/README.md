@@ -1,8 +1,10 @@
 # Instagram carousel generator
 
 Turns one set's market snapshot (a JSON payload) into a ready-to-post
-Instagram carousel: 1080×1350 PNGs (4:5, the largest portrait format the
-feed shows uncropped).
+Instagram carousel: 4:5 portrait slides (the largest format the feed shows
+uncropped), rendered at **2160×2700** by default. Instagram scales feed
+images down to 1080 wide, but a 2× source survives its recompression far
+better than a 1080 one; `--scale 1` gives exact 1080×1350 files.
 
 | Slide | Content |
 | --- | --- |
@@ -63,7 +65,8 @@ python -m carousel.generate payload.json --out /tmp/post --sort value --keep-htm
 | `--theme ig\|poster` | Which design to render (see table above) |
 | `--sort none\|value` | Keep payload order, or most valuable figure first |
 | `--per-slide 1-4` | Figures per minifig slide (default and maximum 4) |
-| `--scale 2` | Render at 2160×2700 for a crisper preview (Instagram downsizes anyway) |
+| `--scale 1\|2\|3` | 1080×1350, 2160×2700 (default) or 3240×4050 |
+| `--format png\|jpg` | Lossless PNG (default) or JPEG at `--quality` (95) for smaller uploads |
 | `--no-fetch` | Never touch the network: cached images or placeholders |
 | `--keep-background` | Don't cut the white studio background out of photos |
 | `--cache DIR` | Where downloaded images are kept (default `carousel/.cache`, git-ignored) |

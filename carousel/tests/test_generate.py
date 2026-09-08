@@ -147,3 +147,4 @@ def test_cli_html_only(tmp_path):
                                      "minifigs_used_total": 285, "trend": "up"}
     assert manifest["source_currency"] == "ILS" and manifest["fx_rate"] == 3.0193
     assert manifest["slides"][0]["kind"] == "hero"
+    assert manifest["size"] == [2160, 2700]
