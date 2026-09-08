@@ -32,8 +32,12 @@
     text-transform: uppercase; border-radius: 999px; }
   .hookcopy h1 { margin-top: 20px; font-size: 62px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em;
     text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
-  .hookcopy .sub { margin-top: 16px; font-family: var(--mono); font-size: 19px; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--yellow); }
+  /* The sub line as a bordered arrow chip -- a small CTA pointing at the
+     next slide, not just a caption. */
+  .hookcopy .sub { margin-top: 22px; display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 22px;
+    border: 2px solid var(--yellow); border-radius: 999px; font-family: var(--mono); font-size: 18px; font-weight: 800;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--yellow); }
+  .hookcopy .sub .arrow { font-size: 20px; line-height: 1; }
 {% endblock %}
 
 {% block body %}
@@ -44,6 +48,6 @@
   <div class="hookcopy">
     <span class="kicker">{{ hook.kicker }}</span>
     <h1>{{ hook.headline }}</h1>
-    <div class="sub">{{ hook.sub }}</div>
+    <div class="sub">{{ hook.sub }}<span class="arrow">→</span></div>
   </div>
 {% endblock %}

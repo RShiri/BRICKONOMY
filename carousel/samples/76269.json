@@ -165,5 +165,9 @@
     "handle": "@brickanalyst.en",
     "avatar": "assets/profile.jpg",
     "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "Will the Avengers Tower retire soon?",
+    "sub": "Data"
   }
 }

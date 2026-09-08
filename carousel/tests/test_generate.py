@@ -149,9 +149,18 @@ def test_hook_slide_precedes_hero(view):
     assert [s.kind for s in slides[:2]] == ["hook", "hero"]
     assert len(slides) == 2 + len(v["minifigs"]["pages"])
     hook_html = slides[0].html
-    # No hook given in the sample payload -> falls back to a short stat line.
+    # The sample payload sets a custom headline/sub.
+    assert v["hook"]["headline"] == "Will the Avengers Tower retire soon?"
+    assert "Will the Avengers Tower retire soon?" in hook_html
+    assert "Data" in hook_html and "Price check" in hook_html
+
+
+def test_hook_falls_back_to_a_stat_line_when_omitted(view, tmp_path):
+    payload, _, fetcher = view
+    del payload["hook"]
+    v = g.build_view(payload, fetcher, SAMPLE.parent, sort="none", per_slide=4)
     assert v["hook"]["headline"] == "+1% since 2023"
-    assert "+1% since 2023" in hook_html and "Price check" in hook_html
+    assert v["hook"]["sub"] == "Swipe for the full breakdown"
 
 
 def test_from_site_builds_76051(tmp_path):
