@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block style %}
-  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 30px; height: 626px; }
+  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 30px; height: 604px; }
   /* Growth burst: the one thing the thumb stops for. */
   .burst { position: absolute; z-index: 5; top: -26px; right: -30px; width: 190px; height: 190px; display: grid; place-items: center; text-align: center;
     background: var(--stud-yellow); color: var(--black); clip-path: polygon(100.0% 50.0%, 90.5% 56.4%, 97.6% 65.5%, 86.5% 68.6%, 90.5% 79.4%, 79.0% 79.0%, 79.4% 90.5%, 68.6% 86.5%, 65.5% 97.6%, 56.4% 90.5%, 50.0% 100.0%, 43.6% 90.5%, 34.5% 97.6%, 31.4% 86.5%, 20.6% 90.5%, 21.0% 79.0%, 9.5% 79.4%, 13.5% 68.6%, 2.4% 65.5%, 9.5% 56.4%, 0.0% 50.0%, 9.5% 43.6%, 2.4% 34.5%, 13.5% 31.4%, 9.5% 20.6%, 21.0% 21.0%, 20.6% 9.5%, 31.4% 13.5%, 34.5% 2.4%, 43.6% 9.5%, 50.0% 0.0%, 56.4% 9.5%, 65.5% 2.4%, 68.6% 13.5%, 79.4% 9.5%, 79.0% 21.0%, 90.5% 20.6%, 86.5% 31.4%, 97.6% 34.5%, 90.5% 43.6%); transform: rotate(8deg); filter: drop-shadow(0 16px 30px rgba(255,213,0,0.4)); }
@@ -27,64 +27,44 @@
   .stage img { position: relative; max-width: 90%; max-height: 90%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
   .stage .num { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--stud-yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
   .stage .readout { position: absolute; left: 16px; right: 16px; bottom: 36px; font-family: var(--mono); font-size: 16px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; }
-  .stage .readout b { color: var(--yellow); font-weight: 700; }
   .stage .stud-rail { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 12px;
     background-image: radial-gradient(circle at 42% 32%, #fff6c8 0 3px, var(--yellow) 3px 10px, var(--yellow-2) 10px 13px, transparent 14px);
     background-size: 24px 12px; background-repeat: repeat-x; opacity: 0.9; }
 
-  /* Price tag. */
-  .tagcard { position: relative; background: linear-gradient(165deg, #ffffff, #f2f1ee); color: var(--black); padding: 26px 26px 22px; display: flex; flex-direction: column; justify-content: space-between; transform: rotate(-2deg); transform-origin: 50% 40%; clip-path: var(--chamfer); box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.9); }
+  /* Price tag — stripped to the two numbers that matter: what it cost,
+     what it's worth now. No trend chip, no used value, no divider label;
+     just retail, a receipt-style dashed rule, and the current value. */
+  .tagcard { position: relative; background: linear-gradient(165deg, #ffffff, #f2f1ee); color: var(--black); padding: 30px 28px; display: flex; flex-direction: column; justify-content: center; gap: 26px; transform: rotate(-2deg); transform-origin: 50% 40%; clip-path: var(--chamfer); box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.9); }
   .tagcard .hole { position: absolute; top: 16px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de, inset 0 2px 3px rgba(0,0,0,0.6); }
-  .tagcard .k { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6b6b78; }
-  .tagcard .then { margin-top: 30px; display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
-  .tagcard .then .v { font-size: 58px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #3a3a44; }
-  .tagcard .then .year { background: var(--black); color: var(--yellow); font-family: var(--mono); font-weight: 800; font-size: 30px; padding: 8px 12px; line-height: 1; }
-  .tagcard .arrow { display: flex; align-items: center; gap: 10px; margin: 14px 0 4px; font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.22em; color: #6b6b78; }
-  .tagcard .arrow::after { content: ""; flex: 1; height: 3px; background: repeating-linear-gradient(90deg, #d9d9de 0 8px, transparent 8px 14px); }
-  .tagcard .new .v { font-size: 96px; font-weight: 800; letter-spacing: -0.045em; line-height: 0.95; }
-  .tagcard .new .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  .tagcard .used { background: var(--black); color: #fff; margin: 0 -26px; padding: 14px 26px; display: flex; justify-content: space-between; align-items: center; }
-  .tagcard .used .k { color: rgba(255,255,255,0.7); }
-  .tagcard .used .v { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; color: var(--yellow); }
-  .tagcard .used > div:first-child { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
-  .tagcard .used .chip.used-pct { height: 26px; padding: 0 10px; font-size: 13px; }
+  .tagcard .k { font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6b6b78; }
+  .tagcard .retail { margin-top: 12px; }
+  .tagcard .retail .v { margin-top: 8px; font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #3a3a44; }
+  .tagcard .divider { height: 3px; background: repeating-linear-gradient(90deg, #d9d9de 0 8px, transparent 8px 14px); }
+  .tagcard .current .v { margin-top: 8px; font-size: 100px; font-weight: 800; letter-spacing: -0.045em; line-height: 0.92; }
 
-  .title { margin-top: 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
-  .title h1 { font-size: 80px; line-height: 0.92; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 660px; }
-  .title h1 span { color: var(--yellow); }
-  .title .meta { text-align: right; }
-  .title .meta .year { display: block; font-size: 72px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.9; color: var(--yellow); }
-  .title .meta .sub { display: block; margin-top: 10px; white-space: nowrap; font-family: var(--mono); font-size: 17px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted); }
-  .title .meta .sub b { color: var(--ink); font-weight: 700; }
+  .title { margin-top: 36px; }
+  .title h1 { font-size: 80px; line-height: 0.92; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 900px; }
+  .title .meta { margin-top: 16px; font-family: var(--mono); font-size: 23px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-2); }
+  .title .meta .sep { color: var(--muted); margin: 0 10px; }
+  .title .meta b { color: var(--yellow); font-weight: 800; }
 
-  .stats { margin-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .stat { padding: 16px 22px 14px 18px; }
-  .stat .lbl { font-size: 15px; }
-  .stat .v { margin-top: 8px; font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-  .stat .v.y { color: var(--yellow); } .stat .v.r { color: var(--red-2); } .stat .v.g { color: var(--green); }
-  .stat .bar { margin-top: 12px; }
-
-  .figs { margin-top: 18px; background: linear-gradient(155deg, #1a1a24, var(--panel) 45%, #0c0c11); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 18px 28px 24px; position: relative; clip-path: var(--chamfer); box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.55); }
-  .figs .l b { display: block; font-size: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
-  .figs .l span { display: block; font-size: 17px; font-weight: 700; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: 0.07em; text-transform: uppercase; }
-  .figs .r { display: flex; align-items: center; gap: 22px; }
-  .figs .vs { display: flex; align-items: baseline; gap: 12px; }
-  .figs .total { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
-  .figs .of { font-size: 20px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-2); }
-  .figs .of b { font-size: 30px; letter-spacing: -0.01em; }
-  .figs .pct { text-align: right; }
-  .figs .pct b { display: block; font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--red-2); }
-  .figs .pct span { display: block; font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-  .figs .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--panel-2); }
-  .figs .bar i { background: var(--yellow); }
-  .figs .bar::after { display: none; }
+  /* Two clean stat blocks — no corner studs, no dot marker, no dashed
+     meter. Just a label and a big number, exactly what fits on a phone
+     screen without zooming. */
+  .clean-stats { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; flex: 1 1 auto; }
+  .clean-stat { background: linear-gradient(165deg, #1a1a24, var(--panel) 45%, #0c0c11); border-radius: 22px; padding: 30px 32px; display: flex; flex-direction: column; justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.5); }
+  .clean-stat .k { font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .clean-stat .v { margin-top: 14px; font-size: 64px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+  .clean-stat.highlight { background: linear-gradient(165deg, #262115, var(--panel) 45%, #0c0c11); }
+  .clean-stat.highlight .k { color: var(--yellow-2); }
+  .clean-stat.highlight .v { color: var(--yellow); }
 {% endblock %}
 
 {% block header_sub %}Price check · set {{ set.number }}{% endblock %}
 {% block header_right %}<span class="tag red">Price check</span>{% endblock %}
 
 {% block body %}
-  {% set t = market.trend %}
   <div class="top" style="position: relative;">
     <div class="stage hud">
       <div class="frame">
@@ -92,57 +72,38 @@
         <img src="{{ assets.set_image }}" alt="">
       </div>
       <span class="num">#{{ set.number }}</span>
-      <div class="readout">{{ set.year }} · {{ set.pieces | thousands }} PCS · <b>{{ set.theme or 'LEGO' }}</b></div>
+      <div class="readout">{{ set.theme or 'LEGO' }}</div>
       <div class="stud-rail"></div>
     </div>
     <div class="burst {{ 'down' if pricing.vs_retail_pct < 0 else '' }}"><div><b>{{ pricing.vs_retail_label }}</b><small>since {{ set.year }}</small></div></div>
 
     <div class="tagcard">
       <div class="hole"></div>
-      <div class="then">
-        <div><div class="k">Retail price</div><div class="v money">{{ pricing.msrp_display | money }}</div></div>
-        <span class="year">{{ set.year }}</span>
+      <div class="retail">
+        <div class="k">Retail price</div>
+        <div class="v money">{{ pricing.msrp_display | money }}</div>
       </div>
-      <div class="arrow">Now</div>
-      <div class="new">
-        <div class="k">Value · new · sealed</div>
+      <div class="divider"></div>
+      <div class="current">
+        <div class="k">Current value</div>
         <div class="v money">{{ pricing.new_display | money }}</div>
-        <div class="row">
-          <span class="chip {{ t.direction }}">
-            {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
-            {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
-            {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
-            {{ t.label }} {{ t.period }}</span>
-        </div>
-      </div>
-      <div class="used">
-        <div><div class="k">Value · used</div><span class="chip yellow used-pct">{{ pricing.used_vs_retail_label }} vs retail</span></div>
-        <div class="v money">{{ pricing.used_display | money }}</div>
       </div>
     </div>
   </div>
 
   <div class="title">
     <h1>{{ set.name }}</h1>
-    <div class="meta">
-      <span class="year">{{ set.year }}</span>
-      <span class="sub"><b>{{ set.pieces | thousands }}</b> pieces · <b>{{ minifigs.count }}</b> minifigs</span>
-    </div>
+    <div class="meta">{{ set.year }}<span class="sep">·</span><b>{{ set.pieces | thousands }}</b> pieces<span class="sep">·</span><b>{{ minifigs.count }}</b> minifigs</div>
   </div>
 
-  <div class="stats">
-    <div class="stat hud"><div class="lbl"><i class="dot"></i>new vs retail</div><div class="v {{ 'g' if pricing.vs_retail_pct >= 0 else 'r' }}">{{ pricing.vs_retail_label }}</div><div class="bar"><i style="width: {{ pricing.vs_retail_meter }}%"></i></div></div>
-    <div class="stat hud"><div class="lbl"><i class="dot"></i>{{ t.period }}</div><div class="v {{ 'g' if t.direction == 'up' else ('r' if t.direction == 'down' else '') }}">{{ '▲' if t.direction == 'up' else ('▼' if t.direction == 'down' else '■') }} {{ t.label }}</div><div class="bar"><i style="width: {{ t.meter }}%"></i></div></div>
-    <div class="stat hud"><div class="lbl"><i class="dot"></i>per piece</div><div class="v y">{{ pricing.per_piece_label }}</div><div class="bar"><i style="width: {{ pricing.per_piece_meter }}%"></i></div></div>
-    <div class="stat hud"><div class="lbl"><i class="dot"></i>figs share</div><div class="v y">{{ minifigs.share_label }}</div><div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div></div>
-  </div>
-
-  <div class="figs">
-    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
-    <div class="r">
-      <span class="vs"><span class="total money">{{ minifigs.total_display | money }}</span><span class="of">of <b class="money">{{ minifigs.set_used_display | money }}</b></span></span>
-      <span class="pct"><b>{{ minifigs.share_label }}</b><span>of set used</span></span>
+  <div class="clean-stats">
+    <div class="clean-stat">
+      <div class="k">Price per piece</div>
+      <div class="v">{{ pricing.per_piece_label }}</div>
     </div>
-    <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
+    <div class="clean-stat highlight">
+      <div class="k">Minifigs value share</div>
+      <div class="v">{{ minifigs.share_label }}</div>
+    </div>
   </div>
 {% endblock %}
