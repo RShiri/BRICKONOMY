@@ -19,12 +19,12 @@
   "slides": [
     {
       "index": 1,
-      "kind": "hero",
+      "kind": "hook",
       "file": "76269-slide-01.png"
     },
     {
       "index": 2,
-      "kind": "minifigs",
+      "kind": "hero",
       "file": "76269-slide-02.png"
     },
     {
@@ -56,6 +56,11 @@
       "index": 8,
       "kind": "minifigs",
       "file": "76269-slide-08.png"
+    },
+    {
+      "index": 9,
+      "kind": "minifigs",
+      "file": "76269-slide-09.png"
     }
   ],
   "image_fallbacks": 0
