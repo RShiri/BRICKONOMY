@@ -35,11 +35,13 @@
   /* The sub line as a bordered arrow chip -- a small CTA pointing at the
      next slide, not just a caption. Green (not the theme's yellow/red) so
      it reads as a distinct "go" signal, pinned to the opposite corner from
-     the headline so the two don't compete. */
-  .hookcopy .sub { position: absolute; right: var(--pad); bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
-    height: 46px; padding: 0 22px; border: 2px solid var(--green); border-radius: 999px; font-family: var(--mono);
-    font-size: 18px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); }
-  .hookcopy .sub .arrow { font-size: 20px; line-height: 1; }
+     the headline so the two don't compete. The arrow is a loose hand-drawn
+     doodle (sketchy stroke, not a straight typographic arrow) so the chip
+     reads as a scribbled note rather than a UI button. */
+  .hookcopy .sub { position: absolute; right: var(--pad); bottom: 24px; display: inline-flex; align-items: center; gap: 14px;
+    height: 62px; padding: 0 28px; border: 3px solid var(--green); border-radius: 999px; font-family: var(--mono);
+    font-size: 22px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); }
+  .hookcopy .sub svg { width: 46px; height: 24px; flex-shrink: 0; }
 {% endblock %}
 
 {% block body %}
@@ -50,6 +52,11 @@
   <div class="hookcopy">
     <span class="kicker">{{ hook.kicker }}</span>
     <h1>{{ hook.headline }}</h1>
-    <div class="sub">{{ hook.sub }}<span class="arrow">→</span></div>
+    <div class="sub">{{ hook.sub }}
+      <svg viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 21c9-3 17-10 26-13 8-3 17-3 24 3"/>
+        <path d="M41 5c4 2 9 4 13 7-3 3-7 9-9 13"/>
+      </svg>
+    </div>
   </div>
 {% endblock %}
