@@ -15,9 +15,21 @@
     --w: 1080px; --h: 1350px; --pad: 56px;
     --black: #07070a; --panel: #121218; --panel-2: #1b1b23; --line: #2a2a34;
     --yellow: #ffd500; --yellow-2: #ffb000; --red: #e3000b; --red-2: #ff2d3a; --green: #22d36b;
-    --ink: #ffffff; --muted: #9a9aa8; --muted-2: #d6d6df;
+    --ink: #ffffff; --muted: #aab0bd; --muted-2: #d6d6df;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
     --chamfer: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+    /* A raised LEGO stud: highlight top-left, rim shadow bottom-right.
+       Used to fill shapes that already have their own outline (badges,
+       ribbons, the burst) — its last stop is opaque so it reads as a solid
+       shaded color, not a floating dot. */
+    --stud-yellow: radial-gradient(circle at 34% 28%, #fff8d8 0%, var(--yellow) 42%, var(--yellow-2) 80%, #8a6300 100%);
+    --stud-red: radial-gradient(circle at 34% 28%, #ffc7c2 0%, var(--red) 42%, var(--red-2) 80%, #5c0004 100%);
+    /* Same look but fading to transparent — an isolated round stud sitting
+       on a panel, e.g. the corner studs below. Without the fade, a radial
+       gradient's default sizing reaches every corner of its box, so a small
+       square box renders as a solid square, not a dot. */
+    --stud-yellow-dot: radial-gradient(circle at 34% 28%, #fff8d8 0%, var(--yellow) 38%, var(--yellow-2) 60%, rgba(138,99,0,0.85) 72%, transparent 85%);
+    --stud-red-dot: radial-gradient(circle at 34% 28%, #ffc7c2 0%, var(--red) 38%, var(--red-2) 60%, rgba(92,0,4,0.85) 72%, transparent 85%);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: var(--w); height: var(--h); overflow: hidden; }
@@ -56,24 +68,24 @@
 
   .body { flex: 1 1 auto; padding: 14px var(--pad) 0; display: flex; flex-direction: column; }
 
-  /* ---------- HUD panel with corner brackets ---------- */
-  .hud { position: relative; background: var(--panel); clip-path: var(--chamfer); }
+  /* ---------- HUD panel: a raised brick slab with a stud in each corner
+     (was a flat targeting-bracket frame — this is the literal LEGO version:
+     every panel reads as a molded piece, not a scanner overlay). ---------- */
+  .hud { position: relative; background: linear-gradient(155deg, #1a1a24, var(--panel) 45%, #0c0c11); clip-path: var(--chamfer);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.55), 0 16px 30px rgba(0,0,0,0.4); }
   .hud::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.55));
     background:
-      linear-gradient(var(--yellow), var(--yellow)) top left / 34px 4px no-repeat,
-      linear-gradient(var(--yellow), var(--yellow)) top left / 4px 34px no-repeat,
-      linear-gradient(var(--yellow), var(--yellow)) top right / 34px 4px no-repeat,
-      linear-gradient(var(--yellow), var(--yellow)) top right / 4px 34px no-repeat,
-      linear-gradient(var(--red), var(--red)) bottom left / 34px 4px no-repeat,
-      linear-gradient(var(--red), var(--red)) bottom left / 4px 34px no-repeat,
-      linear-gradient(var(--red), var(--red)) bottom right / 34px 4px no-repeat,
-      linear-gradient(var(--red), var(--red)) bottom right / 4px 34px no-repeat; }
+      var(--stud-yellow-dot) top 5px left 5px / 18px 18px no-repeat,
+      var(--stud-yellow-dot) top 5px right 5px / 18px 18px no-repeat,
+      var(--stud-red-dot) bottom 5px left 5px / 18px 18px no-repeat,
+      var(--stud-red-dot) bottom 5px right 5px / 18px 18px no-repeat; }
 
   /* ---------- helpers ---------- */
   .code { font-family: var(--mono); font-weight: 600; letter-spacing: 0.04em; }
   .money { font-variant-numeric: tabular-nums; }
   .money .cur { font-size: 0.55em; vertical-align: 0.42em; margin-right: 0.04em; font-weight: 800; }
-  .lbl { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .lbl { font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
   .lbl .dot { display: inline-block; width: 8px; height: 8px; background: var(--red); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 10px var(--red-2); }
   .chip { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; font-size: 19px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
   .chip.up { background: var(--green); color: #052; } .chip.down { background: var(--red); color: #fff; } .chip.flat { background: var(--panel-2); color: var(--muted-2); }
@@ -84,13 +96,14 @@
   .bar::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, transparent 0 14px, var(--black) 14px 17px); }
 
   /* ---------- footer + stud strip ---------- */
-  .footer { margin-top: auto; padding: 0 var(--pad); height: 84px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 18px; font-weight: 600; border-top: 1px solid var(--line); font-family: var(--mono); letter-spacing: 0.04em; }
+  .footer { margin-top: auto; padding: 0 var(--pad); height: 84px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 19px; font-weight: 600; border-top: 1px solid var(--line); font-family: var(--mono); letter-spacing: 0.04em; }
   .footer strong { color: var(--yellow); font-weight: 700; }
-  .footer .handle { display: inline-flex; align-items: center; gap: 10px; color: var(--yellow); font-weight: 800; font-size: 22px; font-family: "Manrope", sans-serif; letter-spacing: 0; }
+  .footer .handle { display: inline-flex; align-items: center; gap: 10px; color: var(--yellow); font-weight: 800; font-size: 23px; font-family: "Manrope", sans-serif; letter-spacing: 0; }
   .footer .handle svg { width: 24px; height: 24px; }
-  .studs { height: 34px; background: var(--yellow); position: relative; }
+  .studs { height: 34px; background: var(--yellow); position: relative; box-shadow: 0 -2px 10px rgba(0,0,0,0.35); }
   .studs::before { content: ""; position: absolute; left: var(--pad); right: var(--pad); top: -14px; height: 14px;
-    background-image: radial-gradient(circle at 50% 100%, var(--yellow) 0 15px, transparent 16px); background-size: 52px 14px; background-repeat: repeat-x; }
+    background-image: radial-gradient(circle at 42% 32%, #fff6c8 0 3px, var(--yellow) 3px 12px, var(--yellow-2) 12px 15px, transparent 16px);
+    background-size: 52px 14px; background-repeat: repeat-x; }
 
   {% block style %}{% endblock %}
 </style>
