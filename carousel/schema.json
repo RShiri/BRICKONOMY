@@ -28,13 +28,14 @@
       "required": ["msrp", "new_value", "used_value"],
       "additionalProperties": false,
       "properties": {
-        "currency":   { "type": "string", "const": "USD" },
-        "msrp":       { "type": "number", "minimum": 0, "description": "Retail price. Displayed rounded to the nearest $5." },
-        "new_value":  { "type": "number", "minimum": 0, "description": "Current sealed/new market value. Displayed rounded to the nearest $5." },
-        "used_value": { "type": "number", "minimum": 0, "description": "Current used/complete market value. Displayed rounded to the nearest $5." },
+        "currency":   { "type": "string", "enum": ["USD", "ILS", "EUR", "GBP"], "default": "USD", "description": "Currency of every money field in this payload (pricing, market.previous_new_value, minifigs[].used_price). Slides always show USD." },
+        "fx_rate":    { "type": "number", "exclusiveMinimum": 0, "description": "Units of `currency` per 1 USD (e.g. 3.02 for ILS). Required for accurate conversion when currency is not USD; a built-in fallback is used otherwise." },
+        "msrp":       { "type": "number", "minimum": 0, "description": "Retail price, in `currency`. Displayed in USD rounded to the nearest $5." },
+        "new_value":  { "type": "number", "minimum": 0, "description": "Current sealed/new market value, in `currency`. Displayed in USD rounded to the nearest $5." },
+        "used_value": { "type": "number", "minimum": 0, "description": "Current used/complete market value, in `currency`. Displayed in USD rounded to the nearest $5." },
         "minifigs_used_total": {
           "type": "number", "minimum": 0,
-          "description": "Combined used value of every minifigure (quantity-weighted). Computed from `minifigs` when omitted."
+          "description": "Combined used value of every minifigure (quantity-weighted), in `currency`. Computed from `minifigs` when omitted."
         }
       }
     },
@@ -49,7 +50,7 @@
         },
         "previous_new_value": {
           "type": "number", "minimum": 0,
-          "description": "Last month's new value. Used to derive `trend` when `trend` is omitted."
+          "description": "Last month's new value, in `pricing.currency`. Used to derive `trend` when `trend` is omitted."
         },
         "trend": {
           "type": "object",
@@ -74,7 +75,7 @@
         "properties": {
           "code":       { "type": "string", "minLength": 1, "description": "BrickLink minifig ID, e.g. \"sh0916\"." },
           "name":       { "type": "string", "minLength": 1, "description": "Character name. Long BrickLink variant descriptions are fine; the card clamps to two lines." },
-          "used_price": { "type": "number", "minimum": 0, "description": "Used unit price. Displayed rounded to the nearest $1." },
+          "used_price": { "type": "number", "minimum": 0, "description": "Used unit price, in `pricing.currency`. Displayed in USD rounded to the nearest $1." },
           "quantity":   { "type": "integer", "minimum": 1, "default": 1, "description": "How many of this figure the set contains (shows a x4 badge and weights the total)." },
           "image_url":  { "type": "string", "description": "http(s) URL, file:// URL or local path. Omit to use BrickLink's catalog image (img.bricklink.com/ItemImage/MN/0/<code>.png). Placeholder on failure." }
         }

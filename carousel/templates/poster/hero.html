@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .top { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-top: 44px; height: 690px; }
+  .stage { position: relative; background: var(--panel); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .stage::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.07) 2px, transparent 2.5px); background-size: 34px 34px; }
+  .stage::after { content: ""; position: absolute; left: -80px; bottom: -160px; width: 420px; height: 420px; border-radius: 50%; background: var(--yellow); opacity: 0.16; }
+  .stage img { position: relative; max-width: 88%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.7)); }
+  .stage .num { position: absolute; top: 18px; left: 18px; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; }
+
+  /* Price tag, punched hole and all. */
+  .tagcard { position: relative; background: #fff; color: var(--black); padding: 30px 28px 26px; display: flex; flex-direction: column; justify-content: space-between; transform: rotate(-2.5deg); transform-origin: 50% 40%; box-shadow: 0 30px 60px rgba(0,0,0,0.55); }
+  .tagcard::before { content: ""; position: absolute; top: 18px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de; }
+  .tagcard .k { font-size: 16px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #6b6b78; }
+  .tagcard .msrp { margin-top: 30px; }
+  .tagcard .msrp .v { font-size: 34px; font-weight: 800; text-decoration: line-through; text-decoration-thickness: 4px; text-decoration-color: var(--red); color: #6b6b78; }
+  .tagcard .new .v { font-size: 92px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; }
+  .tagcard .new .vs { display: inline-block; margin-top: 10px; background: var(--yellow); font-size: 19px; font-weight: 800; padding: 6px 10px; letter-spacing: 0.04em; }
+  .tagcard .used { border-top: 3px dashed #e1e1e6; padding-top: 16px; display: flex; justify-content: space-between; align-items: baseline; }
+  .tagcard .used .v { font-size: 44px; font-weight: 800; color: var(--red); letter-spacing: -0.02em; }
+  .tagcard .trend { margin-top: 12px; }
+
+  .title { margin-top: 44px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .title h1 { font-size: 84px; line-height: 0.95; font-weight: 800; letter-spacing: -0.035em; text-transform: uppercase; max-width: 700px; }
+  .title .meta { text-align: right; color: var(--muted-2); font-size: 22px; font-weight: 700; line-height: 1.5; }
+  .title .meta b { color: var(--yellow); }
+
+  .figs { margin-top: 40px; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; }
+  .figs .l b { display: block; font-size: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+  .figs .l span { display: block; font-size: 19px; font-weight: 700; opacity: 0.85; margin-top: 4px; }
+  .figs .r { display: flex; align-items: center; gap: 24px; }
+  .figs .total { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .figs .swipe { font-size: 18px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+{% endblock %}
+
+{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="tag">Price check</span>{% endblock %}
+
+{% block body %}
+  <div class="top">
+    <div class="stage">
+      <span class="num">#{{ set.number }}</span>
+      <img src="{{ assets.set_image }}" alt="">
+    </div>
+    <div class="tagcard">
+      <div class="msrp"><div class="k">Retail {{ set.year }}</div><div class="v money">{{ pricing.msrp_display | money }}</div></div>
+      <div class="new">
+        <div class="k">Value · new</div>
+        <div class="v money">{{ pricing.new_display | money }}</div>
+        <span class="vs">{{ pricing.vs_retail_label }} vs retail</span>
+        {% set t = market.trend %}
+        <div class="trend"><span class="chip {{ t.direction }}">
+          {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
+          {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
+          {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
+          {{ t.label }} {{ t.period }}</span></div>
+      </div>
+      <div class="used"><div class="k">Value · used</div><div class="v money">{{ pricing.used_display | money }}</div></div>
+    </div>
+  </div>
+
+  <div class="title">
+    <h1>{{ set.name }}</h1>
+    <div class="meta">
+      <b>{{ set.year }}</b> release<br>
+      <b>{{ set.pieces | thousands }}</b> pieces{% if set.theme %}<br>{{ set.theme }}{% endif %}
+    </div>
+  </div>
+
+  <div class="figs">
+    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>combined used value · {{ minifigs.unique }} unique figures</span></div>
+    <div class="r">
+      <span class="total money">{{ minifigs.total_display | money }}</span>
+      <span class="swipe">Swipe <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </div>
+  </div>
+{% endblock %}

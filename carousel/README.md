@@ -17,7 +17,14 @@ cards on near-black, and the handle with the Instagram glyph as watermark.
 `assets/profile.jpg` is the avatar; a 1080×1080 copy for the Instagram
 profile itself is in `out/profile-1080.jpg`.
 
-Sample output for **76269 Avengers Tower** is in [`out/76269/`](out/76269/).
+Two designs ship, chosen with `--theme`:
+
+| Theme | Look | Sample |
+| --- | --- | --- |
+| `ig` (default) | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269/`](out/76269/) |
+| `poster` | Flat toy-shelf poster: LEGO yellow band, white price tag with a punched hole, red used values, stud strip | [`out/76269-poster/`](out/76269-poster/) |
+
+Sample output for **76269 Avengers Tower** is in those folders.
 It was rendered on a machine that cannot reach `img.bricklink.com`, so the
 pictures are the built-in placeholders; the site itself hotlinks the same
 BrickLink URLs, and running the command below on a normal connection fills
@@ -53,6 +60,7 @@ python -m carousel.generate payload.json --out /tmp/post --sort value --keep-htm
 | Flag | Meaning |
 | --- | --- |
 | `--out DIR` | Output directory (default `carousel/out/<set number>`) |
+| `--theme ig\|poster` | Which design to render (see table above) |
 | `--sort none\|value` | Keep payload order, or most valuable figure first |
 | `--per-slide 1-4` | Figures per minifig slide (default and maximum 4) |
 | `--scale 2` | Render at 2160×2700 for a crisper preview (Instagram downsizes anyway) |
@@ -75,13 +83,12 @@ automatically when `jsonschema` is installed). A minimal payload:
   "set":     { "number": "76269", "name": "Avengers Tower", "theme": "Marvel Super Heroes",
                "year": 2023, "pieces": 5201,
                "image_url": "https://img.bricklink.com/ItemImage/SN/0/76269-1.png" },
-  "pricing": { "currency": "USD", "msrp": 499.99, "new_value": 1273.65, "used_value": 1018.40 },
-  "market":  { "updated_at": "2026-09-08", "previous_new_value": 1224.90 },
+  "pricing": { "currency": "ILS", "fx_rate": 3.0193,
+               "msrp": 1509.62, "new_value": 1531.86, "used_value": 1180.75 },
+  "market":  { "updated_at": "2026-09-04", "previous_new_value": 1505.61 },
   "minifigs": [
-    { "code": "sh0916", "name": "Vision - Dark Turquoise", "used_price": 137.14,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0916.png" },
-    { "code": "sh0730", "name": "Chitauri - Dark Bluish Gray", "used_price": 5.09, "quantity": 4,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0730.png" }
+    { "code": "sh0916", "name": "Vision - Dark Turquoise", "used_price": 145.94 },
+    { "code": "sh0730", "name": "Chitauri - Dark Bluish Gray", "used_price": 15.21, "quantity": 4 }
   ],
   "branding": { "site_name": "brickanalyst.en", "handle": "@brickanalyst.en",
                 "avatar": "assets/profile.jpg", "url": "",
@@ -115,21 +122,35 @@ Notes:
   progress bar, rings, highlight card and gradient text; `accent` is the
   matching solid colour. Both default to Instagram's brand colours.
 
+## Currency
+
+Slides always show USD. The payload may be in another currency: set
+`pricing.currency` (`USD`, `ILS`, `EUR`, `GBP`) and `pricing.fx_rate`, the
+number of that currency per 1 USD. Every money field is converted before
+rounding: MSRP, new and used value, the minifig total, last month's value,
+and each minifig's used price. The Brickonomy site stores values in ILS,
+so its exports need `"currency": "ILS"` plus the rate; the sample uses
+3.0193, the rate implied by the site's own retail conversion. Without an
+`fx_rate` a built-in fallback rate is used and a warning is printed.
+`manifest.json` records the source currency and the rate applied.
+
 ## Rounding
 
 Displayed values are rounded for the feed; the payload keeps the raw numbers.
 
 | Value | Rule | Example |
 | --- | --- | --- |
-| MSRP, new value, used value, minifig total | nearest **$5** (ends in 0 or 5) | $499.99 → $500, $1,273.65 → $1,275 |
-| Each minifigure | nearest **$1** | $137.14 → $137, $5.09 → $5 |
+| MSRP, new value, used value, minifig total | nearest **$5** (ends in 0 or 5) | $499.99 → $500, $507.36 → $505 |
+| Each minifigure | nearest **$1** | $48.34 → $48, $5.04 → $5 |
 
 ## Customising the look
 
-- `templates/base.html` – shell shared by every slide: palette and gradient
-  tokens, story progress bar, header, footer/watermark.
-- `templates/hero.html` – slide 1.
-- `templates/minifigs.html` – the 2×2 figure grid.
+- `templates/<theme>/base.html` – shell shared by every slide of that theme:
+  palette tokens, progress bar, header, footer/watermark.
+- `templates/<theme>/hero.html` – slide 1.
+- `templates/<theme>/minifigs.html` – the 2×2 figure grid.
+- A new theme is a new folder with those three files; it shows up in
+  `--theme` automatically.
 - `assets/fonts/` – Manrope (SIL OFL), embedded so output is identical on any machine.
 - `assets/profile.jpg` – the avatar; `assets/brick-mark.svg` is the fallback
   when a payload sets `avatar` to an empty string.

@@ -59,8 +59,10 @@ jobs:
       - name: Test
         run: python -m pytest carousel/tests -q
 
-      - name: Render
-        run: python -m carousel.generate "$PAYLOAD" --sort "$SORT"
+      - name: Render (both designs)
+        run: |
+          python -m carousel.generate "$PAYLOAD" --sort "$SORT" --theme ig
+          python -m carousel.generate "$PAYLOAD" --sort "$SORT" --theme poster
 
       - name: Upload slides
         uses: actions/upload-artifact@v4

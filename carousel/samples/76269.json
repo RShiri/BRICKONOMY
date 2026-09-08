@@ -4,188 +4,160 @@
     "name": "Avengers Tower",
     "theme": "Marvel Super Heroes",
     "year": 2023,
-    "pieces": 5201,
-    "image_url": "https://img.bricklink.com/ItemImage/SN/0/76269-1.png"
+    "pieces": 5201
   },
   "pricing": {
-    "currency": "USD",
-    "msrp": 499.99,
-    "new_value": 1273.65,
-    "used_value": 1018.4
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 1509.62,
+    "new_value": 1531.86,
+    "used_value": 1180.75
   },
   "market": {
-    "updated_at": "2026-09-08",
-    "previous_new_value": 1224.9
+    "updated_at": "2026-09-04",
+    "previous_new_value": 1505.61
   },
   "minifigs": [
     {
       "code": "sh0916",
       "name": "Vision - Dark Turquoise",
-      "used_price": 137.14,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0916.png"
+      "used_price": 145.94
     },
     {
       "code": "sh0923",
       "name": "Iron Man - Mark 6 Armor, Large Helmet Visor, Battle Damage",
-      "used_price": 92.61,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0923.png"
-    },
-    {
-      "code": "sh0932",
-      "name": "Hulk - Giant, Dark Bluish Gray Pants, Smile",
-      "used_price": 79.65,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0932.png"
+      "used_price": 94.59
     },
     {
       "code": "sh0927",
       "name": "The Wasp (Hope van Dyne) - Trans-Clear Wings with Hexagons",
-      "used_price": 67.62,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0927.png"
+      "used_price": 75.75
+    },
+    {
+      "code": "sh0932",
+      "name": "Hulk - Giant, Dark Bluish Gray Pants, Smile",
+      "used_price": 72.66
     },
     {
       "code": "sh0925",
       "name": "Hawkeye - Black and Dark Red Suit, Dark Tan Hair, Quiver, Silver Zipper",
-      "used_price": 56.74,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0925.png"
+      "used_price": 49.12
     },
     {
       "code": "sh0924",
       "name": "Ultron MK1 - Dark Blue Head",
-      "used_price": 45.75,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0924.png"
-    },
-    {
-      "code": "sh0931",
-      "name": "Kevin Feige",
-      "used_price": 27.51,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0931.png"
-    },
-    {
-      "code": "sh0920",
-      "name": "Alexander Pierce",
-      "used_price": 23.6,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0920.png"
-    },
-    {
-      "code": "sh0919",
-      "name": "SHIELD Agent - Tony Stark, Tactical Vest, Black Helmet and Goggles",
-      "used_price": 22.21,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0919.png"
-    },
-    {
-      "code": "sh0860",
-      "name": "Loki - Pearl Dark Gray Suit, Cloth Cape",
-      "used_price": 21.14,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0860.png"
-    },
-    {
-      "code": "sh0917",
-      "name": "SHIELD Agent - Female, Tactical Vest, Black Goggles, Medium Brown Head",
-      "used_price": 20.89,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0917.png"
-    },
-    {
-      "code": "sh0930",
-      "name": "Dr. Erik Selvig",
-      "used_price": 20.69,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0930.png"
-    },
-    {
-      "code": "sh0918",
-      "name": "SHIELD Agent - Male, Tactical Vest, Black Goggles, Reddish Brown Head",
-      "used_price": 20.63,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0918.png"
-    },
-    {
-      "code": "sh0730",
-      "name": "Chitauri - Dark Bluish Gray",
-      "used_price": 5.09,
-      "quantity": 4,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0730.png"
-    },
-    {
-      "code": "sh0853",
-      "name": "Iron Man - Mark 7 Armor, Large Helmet Visor",
-      "used_price": 19.6,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0853.png"
-    },
-    {
-      "code": "sh0819",
-      "name": "War Machine - Pearl Dark Gray and Silver Armor with Backpack",
-      "used_price": 19.3,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0819.png"
+      "used_price": 43.02
     },
     {
       "code": "sh0921",
       "name": "Dr. Helen Cho",
-      "used_price": 18.9,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0921.png"
+      "used_price": 29.3
+    },
+    {
+      "code": "sh0931",
+      "name": "Kevin Feige",
+      "used_price": 28.36
+    },
+    {
+      "code": "sh0918",
+      "name": "SHIELD Agent - Male, Tactical Vest, Black Goggles, Reddish Brown Head",
+      "used_price": 28.29
+    },
+    {
+      "code": "sh0919",
+      "name": "SHIELD Agent - Tony Stark, Tactical Vest, Black Helmet and Goggles",
+      "used_price": 25.34
+    },
+    {
+      "code": "sh0917",
+      "name": "SHIELD Agent - Female, Tactical Vest, Black Goggles, Medium Brown Head",
+      "used_price": 23.07
+    },
+    {
+      "code": "sh0920",
+      "name": "Alexander Pierce",
+      "used_price": 22.96
+    },
+    {
+      "code": "sh0930",
+      "name": "Dr. Erik Selvig",
+      "used_price": 21.46
+    },
+    {
+      "code": "sh0860",
+      "name": "Loki - Pearl Dark Gray Suit, Cloth Cape",
+      "used_price": 20.06
+    },
+    {
+      "code": "sh0730",
+      "name": "Chitauri - Dark Bluish Gray",
+      "used_price": 4.76,
+      "quantity": 4
+    },
+    {
+      "code": "sh0819",
+      "name": "War Machine - Pearl Dark Gray and Silver Armor with Backpack",
+      "used_price": 18.71
     },
     {
       "code": "sh0897",
       "name": "The Scarlet Witch (Wanda Maximoff) - Plain Legs, Medium Nougat Hair, Dark Red Cloth Skirt",
-      "used_price": 18.08,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0897.png"
+      "used_price": 17.12
     },
     {
-      "code": "sh0929",
-      "name": "Falcon - Dark Bluish Gray and Black Suit, Printed Legs",
-      "used_price": 18.04,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0929.png"
+      "code": "sh0853",
+      "name": "Iron Man - Mark 7 Armor, Large Helmet Visor",
+      "used_price": 16.72
     },
     {
       "code": "sh0915",
       "name": "Thor - Spongy Cape with Single Hole, Black Legs, Bushy Hair",
-      "used_price": 13.74,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0915.png"
+      "used_price": 14.79
+    },
+    {
+      "code": "sh0929",
+      "name": "Falcon - Dark Bluish Gray and Black Suit, Printed Legs",
+      "used_price": 13.69
     },
     {
       "code": "sh0928",
       "name": "Tony Stark - Black Shirt with Gold Helmet, Pin Holder on Back",
-      "used_price": 13.48,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0928.png"
-    },
-    {
-      "code": "sh0922",
-      "name": "Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms",
-      "used_price": 12.31,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0922.png"
+      "used_price": 12.91
     },
     {
       "code": "sh0852",
       "name": "Captain America - Dark Blue Suit with Dark Blue Belt, Dark Red Hands, Helmet",
-      "used_price": 10.78,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0852.png"
+      "used_price": 11.01
     },
     {
-      "code": "sh0926",
-      "name": "Pepper Potts - Black Suit, Dark Orange Hair over Shoulder",
-      "used_price": 9.69,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0926.png"
-    },
-    {
-      "code": "sh0908",
-      "name": "Captain America - Dark Blue Suit with Dark Blue Belt, Dark Red Hands, Hair",
-      "used_price": 7.8,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0908.png"
+      "code": "sh0922",
+      "name": "Black Widow - Black Jumpsuit, Dark Orange Short Hair, Printed Legs, Printed Arms",
+      "used_price": 10.65
     },
     {
       "code": "sh0933",
       "name": "Dum-E - Black Mechanical Arm",
-      "used_price": 7.48,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0933.png"
+      "used_price": 10.21
+    },
+    {
+      "code": "sh0926",
+      "name": "Pepper Potts - Black Suit, Dark Orange Hair over Shoulder",
+      "used_price": 8.56
+    },
+    {
+      "code": "sh0908",
+      "name": "Captain America - Dark Blue Suit with Dark Blue Belt, Dark Red Hands, Hair",
+      "used_price": 8.23
     },
     {
       "code": "sh0585b",
       "name": "Nick Fury - Gray Sweater and Black Trench Coat, No Shirt Tail",
-      "used_price": 7.4,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0585b.png"
+      "used_price": 7.31
     },
     {
       "code": "sh0826",
       "name": "Wong - Dark Red Robe, Dark Blue Legs",
-      "used_price": 6.76,
-      "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0826.png"
+      "used_price": 6.85
     }
   ],
   "branding": {

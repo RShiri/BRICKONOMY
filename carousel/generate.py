@@ -37,6 +37,12 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoes
 
 HERE = Path(__file__).resolve().parent
 TEMPLATES = HERE / "templates"
+THEMES = sorted(p.name for p in TEMPLATES.iterdir() if (p / "hero.html").exists())
+DEFAULT_THEME = "ig"
+
+# Units of each currency per 1 USD, used only when a payload in that currency
+# gives no fx_rate of its own (mirrors brickonomy/currency.py's fallbacks).
+FALLBACK_FX = {"USD": 1.0, "ILS": 3.65, "EUR": 0.92, "GBP": 0.78}
 ASSETS = HERE / "assets"
 SCHEMA = HERE / "schema.json"
 DEFAULT_CACHE = HERE / ".cache"
@@ -313,6 +319,29 @@ def build_trend(market: dict[str, Any], new_value: float) -> dict[str, Any]:
     return t
 
 
+def to_usd(pricing: dict[str, Any]) -> tuple[dict[str, Any], float]:
+    """Return a copy of `pricing` in USD plus the rate that was applied.
+
+    `currency` names the payload's currency (default USD) and `fx_rate` is how
+    many of that currency buy one USD, e.g. 3.02 for ILS. Without an explicit
+    rate a conservative built-in fallback is used and a warning is printed.
+    """
+    ccy = (pricing.get("currency") or "USD").upper()
+    if ccy == "USD":
+        return dict(pricing), 1.0
+    fx = pricing.get("fx_rate")
+    if not fx:
+        fx = FALLBACK_FX.get(ccy)
+        if fx is None:
+            raise ValueError(f"unknown currency {ccy!r}: give pricing.fx_rate (units per 1 USD)")
+        print(f"warning: no fx_rate for {ccy}; using fallback {fx} per USD", file=sys.stderr)
+    out = {**pricing, "currency": "USD", "fx_rate": 1.0}
+    for key in ("msrp", "new_value", "used_value", "minifigs_used_total"):
+        if pricing.get(key) is not None:
+            out[key] = pricing[key] / fx
+    return out, float(fx)
+
+
 def split_name(name: str) -> tuple[str, str]:
     """BrickLink names read 'Character - variant details'; show them on two lines."""
     head, sep, tail = name.partition(" - ")
@@ -336,12 +365,22 @@ def _asset_or_ref(ref: str | None, fetcher: ImageFetcher, base: Path) -> str | N
 
 def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
                sort: str, per_slide: int) -> dict[str, Any]:
-    s, p, m = payload["set"], payload["pricing"], payload["market"]
+    s, m = payload["set"], dict(payload["market"])
     branding = {**DEFAULT_BRANDING, **(payload.get("branding") or {})}
+
+    # Everything below works in USD. Payloads may arrive in another currency
+    # (the site stores ILS); convert once, up front, before any rounding.
+    p, fx = to_usd(payload["pricing"])
+    if fx != 1.0:
+        if m.get("previous_new_value") is not None:
+            m["previous_new_value"] = m["previous_new_value"] / fx
+        if m.get("trend", {}).get("change_usd") is not None:
+            m["trend"] = {**m["trend"], "change_usd": m["trend"]["change_usd"] / fx}
 
     figs = [dict(f) for f in payload["minifigs"]]
     for f in figs:
         f.setdefault("quantity", 1)
+        f["used_price"] = f["used_price"] / fx
     if sort == "value":
         figs.sort(key=lambda f: -(f["used_price"] * f["quantity"]))
 
@@ -380,6 +419,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "pages": pages,
         },
         "branding": branding,
+        "fx_rate": fx,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
             "mark": _data_uri((ASSETS / "brick-mark.svg").read_bytes(), "image/svg+xml"),
@@ -400,9 +440,11 @@ class Slide:
     html: str
 
 
-def render_html(view: dict[str, Any], per_slide: int) -> list[Slide]:
+def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME) -> list[Slide]:
+    if theme not in THEMES:
+        raise ValueError(f"unknown theme {theme!r}; available: {', '.join(THEMES)}")
     env = Environment(
-        loader=FileSystemLoader(str(TEMPLATES)),
+        loader=FileSystemLoader(str(TEMPLATES / theme)),
         autoescape=select_autoescape(["html"]),
         undefined=StrictUndefined,
         trim_blocks=True, lstrip_blocks=True,
@@ -461,6 +503,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("payload", type=Path, help="JSON file matching carousel/schema.json")
     ap.add_argument("--out", type=Path, help="output directory (default: carousel/out/<set number>)")
+    ap.add_argument("--theme", choices=THEMES, default=DEFAULT_THEME,
+                    help="visual design: 'ig' (Instagram gradient, glass cards) or 'poster' (flat LEGO yellow/red)")
     ap.add_argument("--sort", choices=["none", "value"], default="none",
                     help="order minifigs as given, or most valuable first")
     ap.add_argument("--per-slide", type=int, default=MAX_PER_SLIDE, choices=[1, 2, 3, 4],
@@ -483,10 +527,10 @@ def main(argv: list[str] | None = None) -> int:
 
     fetcher = ImageFetcher(args.cache, enabled=not args.no_fetch, cutout=not args.keep_background)
     view = build_view(payload, fetcher, args.payload.resolve().parent, args.sort, args.per_slide)
-    slides = render_html(view, args.per_slide)
+    slides = render_html(view, args.per_slide, args.theme)
 
     stem = view["set"]["number"]
-    out_dir = args.out or (HERE / "out" / stem)
+    out_dir = args.out or (HERE / "out" / (stem if args.theme == DEFAULT_THEME else f"{stem}-{args.theme}"))
 
     if len(slides) > INSTAGRAM_MAX_SLIDES:
         print(f"warning: {len(slides)} slides exceeds Instagram's carousel limit of {INSTAGRAM_MAX_SLIDES}",
@@ -507,6 +551,9 @@ def main(argv: list[str] | None = None) -> int:
     manifest = {
         "set": view["set"]["number"],
         "name": view["set"]["name"],
+        "theme": args.theme,
+        "source_currency": (payload["pricing"].get("currency") or "USD").upper(),
+        "fx_rate": view["fx_rate"],
         "size": [WIDTH * args.scale, HEIGHT * args.scale],
         "updated_at": payload["market"]["updated_at"],
         "displayed": {

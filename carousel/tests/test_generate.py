@@ -68,6 +68,16 @@ def test_white_background_is_cut_out_but_inner_white_is_kept(tmp_path):
     assert uri.startswith("data:image/png;base64,")
 
 
+def test_payload_currency_is_converted_to_usd():
+    p, fx = g.to_usd({"currency": "ILS", "fx_rate": 3.0193, "msrp": 1509.62, "new_value": 1531.86, "used_value": 1180.75})
+    assert fx == 3.0193 and p["currency"] == "USD"
+    assert round(p["msrp"], 2) == 499.99 and round(p["new_value"], 2) == 507.36
+    p, fx = g.to_usd({"msrp": 10, "new_value": 20, "used_value": 15})
+    assert fx == 1.0 and p["msrp"] == 10
+    with pytest.raises(ValueError):
+        g.to_usd({"currency": "XXX", "msrp": 1, "new_value": 1, "used_value": 1})
+
+
 def test_split_name():
     assert g.split_name("Vision - Dark Turquoise") == ("Vision", "Dark Turquoise")
     assert g.split_name("Kevin Feige") == ("Kevin Feige", "")
@@ -88,12 +98,15 @@ def test_view_paginates_four_per_slide_and_weights_quantity(view):
     assert all(len(p) <= 4 for p in pages)
     assert v["minifigs"]["unique"] == len(figs)
     assert v["minifigs"]["count"] == sum(f.get("quantity", 1) for f in figs)
-    raw = sum(f["used_price"] * f.get("quantity", 1) for f in figs)
+    raw = sum(f["used_price"] * f.get("quantity", 1) for f in figs) / 3.0193
     assert v["minifigs"]["total_display"] == g.round_to_5(raw)
+    # Sample is in ILS (3.0193 per USD): 1531.86 -> $507 -> $505, 1180.75 -> $391 -> $390
     assert v["pricing"]["msrp_display"] == 500
-    assert v["pricing"]["new_display"] == 1275
-    assert v["pricing"]["used_display"] == 1020
-    assert v["market"]["updated_label"] == "Sep 8, 2026"
+    assert v["pricing"]["new_display"] == 505
+    assert v["pricing"]["used_display"] == 390
+    assert v["market"]["trend"]["direction"] == "up" and v["market"]["trend"]["label"] == "1.7%"
+    assert v["minifigs"]["figs"][0]["used_display"] == 48      # Vision 145.94 ILS
+    assert v["market"]["updated_label"] == "Sep 4, 2026"
     # Offline: every image became a placeholder rather than an error.
     assert len(fetcher.failures) == len(figs) + 1
     assert v["assets"]["set_image"].startswith("data:image/svg+xml")
@@ -105,12 +118,22 @@ def test_html_renders_every_slide(view):
     assert slides[0].kind == "hero" and all(s.kind == "minifigs" for s in slides[1:])
     assert len(slides) == 1 + len(v["minifigs"]["pages"])
     hero = slides[0].html
-    assert "Avengers Tower" in hero and "1,275" in hero and "Prices valid as of" in hero
-    assert "4.0% vs last month" in hero
+    assert "Avengers Tower" in hero and ">505<" in hero and "Prices valid as of" in hero
+    assert "1.7% vs last month" in hero
     figs = "".join(s.html for s in slides[1:])
     assert figs.count('class="qty">×4') == 1     # the Chitauri card, once
     assert "Minifigs <span" in slides[-1].html
     assert f"{len(slides) - 1}/{len(slides) - 1}" in slides[-1].html
+
+
+def test_every_theme_renders(view):
+    _, v, _ = view
+    assert set(g.THEMES) >= {"ig", "poster"}
+    for theme in g.THEMES:
+        slides = g.render_html(v, per_slide=4, theme=theme)
+        assert len(slides) == 8 and all("brickanalyst.en" in s.html for s in slides)
+    with pytest.raises(ValueError):
+        g.render_html(v, per_slide=4, theme="nope")
 
 
 def test_cli_html_only(tmp_path):
@@ -120,6 +143,7 @@ def test_cli_html_only(tmp_path):
     files = sorted(out.glob("76269-slide-*.html"))
     assert len(files) == 8
     manifest = json.loads((out / "manifest.json").read_text())
-    assert manifest["displayed"] == {"msrp": 500, "new_value": 1275, "used_value": 1020,
-                                     "minifigs_used_total": 840, "trend": "up"}
+    assert manifest["displayed"] == {"msrp": 500, "new_value": 505, "used_value": 390,
+                                     "minifigs_used_total": 285, "trend": "up"}
+    assert manifest["source_currency"] == "ILS" and manifest["fx_rate"] == 3.0193
     assert manifest["slides"][0]["kind"] == "hero"

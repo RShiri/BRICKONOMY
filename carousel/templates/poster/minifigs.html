@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .head { margin-top: 30px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .head h2 { font-size: 54px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; line-height: 1; }
+  .head h2 small { display: block; font-size: 20px; letter-spacing: 0.16em; color: var(--yellow); margin-bottom: 10px; }
+  .head .hint { color: var(--muted); font-size: 18px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  .grid { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 20px; height: 900px; }
+  .fig { position: relative; background: var(--panel); border-left: 8px solid var(--yellow); padding: 16px 20px 18px 22px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+  .fig .rank { position: absolute; top: 0; left: 0; background: var(--yellow); color: var(--black); font-weight: 800; font-size: 20px; padding: 8px 12px; font-family: var(--mono); }
+  .fig .qty { position: absolute; top: 0; right: 0; background: var(--red); color: #fff; font-weight: 800; font-size: 20px; padding: 8px 12px; }
+  .fig .img { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+  .fig .img::before { content: ""; position: absolute; width: 58%; height: 62%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,213,0,0.16), transparent); }
+  .fig .img img { position: relative; max-width: 80%; max-height: 94%; object-fit: contain; filter: drop-shadow(0 16px 24px rgba(0,0,0,0.7)); }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 27px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-size: 19px; font-weight: 600; margin-top: 4px; min-height: 23px; }
+  .fig .price { display: flex; align-items: center; justify-content: space-between; }
+  .fig .price .v { font-size: 48px; font-weight: 800; color: var(--yellow); letter-spacing: -0.03em; line-height: 1; }
+  .fig .price .v .lbl { margin-left: 10px; color: var(--muted); }
+  .fig .price .code { color: var(--muted-2); font-size: 19px; background: var(--panel-2); padding: 6px 10px; }
+  .fig.empty { background: transparent; border: 2px dashed var(--line); border-left-width: 2px; }
+  .fig.cta { background: var(--yellow); color: var(--black); border-left-color: var(--black); justify-content: center; gap: 16px; padding: 34px; }
+  .fig.cta .big { font-size: 38px; font-weight: 800; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.02em; }
+  .fig.cta .url { font-size: 22px; font-weight: 800; }
+{% endblock %}
+
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="tag">Minifigs <span class="num">{{ page.index }}/{{ page.total }}</span></span>{% endblock %}
+
+{% block body %}
+  <div class="head">
+    <h2><small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small>Minifigures</h2>
+    <span class="hint">used value · each</span>
+  </div>
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="fig">
+        <span class="rank">#{{ f.rank }}</span>
+        {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
+        <div class="price"><span class="v money">{{ f.used_display | money }}<span class="lbl">used</span></span><span class="code">{{ f.code }}</span></div>
+      </div>
+    {% endfor %}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.handle or branding.url }}</div></div>
+      {% else %}<div class="fig empty"></div>{% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
