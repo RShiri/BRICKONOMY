@@ -2,6 +2,11 @@
   Shared shell for every slide. Rendered by carousel/generate.py into a
   self-contained HTML document (font, logo and images are inlined as data
   URIs) and screenshotted by Chromium at exactly 1080x1350.
+
+  Look: Instagram-native dark mode. The signature gradient (yellow -> pink ->
+  purple) is used for the story-style progress bar, the "story ring" around
+  images, gradient text and the highlight card; everything else is near-black
+  glass so the gradient carries the brand.
 #}
 <!doctype html>
 <html lang="en">
@@ -20,20 +25,26 @@
     --h: 1350px;
     --pad: 64px;
 
-    /* Palette mirrors brickonomy/web/static/style.css so posts match the site. */
-    --page:    #0c0d10;
-    --surface: #15171c;
-    --well:    #090a0d;
-    --line:        rgba(255,255,255,0.08);
-    --line-strong: rgba(255,255,255,0.18);
-    --ink:   #f5f7fa;
-    --muted: #7e8794;
-    --muted-2: #a7afbd;
+    --page:    #0a0710;
+    --glass:   rgba(255,255,255,0.055);
+    --glass-2: rgba(255,255,255,0.09);
+    --line:    rgba(255,255,255,0.10);
+    --ink:     #ffffff;
+    --muted:   #9a93a8;
+    --muted-2: #c8c2d4;
+
+    /* Instagram brand gradient stops. */
+    --ig-yellow: #f9ce34;
+    --ig-orange: #fa7e1e;
+    --ig-pink:   #ee2a7b;
+    --ig-purple: #6228d7;
+    --ig-blue:   #4f5bd5;
+    --ig: {{ branding.gradient }};
     --accent: {{ branding.accent }};
-    --accent-ink: #0c0d10;
-    --up:   #3ddc84;
-    --down: #ff5c6c;
-    --flat: #a7afbd;
+
+    --up:   #35e0a1;
+    --down: #ff4d6d;
+    --flat: #c8c2d4;
 
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
   }
@@ -52,37 +63,56 @@
     position: relative;
     width: var(--w); height: var(--h);
     padding: var(--pad);
+    padding-top: 52px;
     display: flex; flex-direction: column;
-    background:
-      radial-gradient(900px 520px at 85% -10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
-      radial-gradient(700px 600px at -10% 110%, rgba(120,140,255,0.10), transparent 70%),
-      var(--page);
+    background: var(--page);
     overflow: hidden;
   }
-  /* Faint stud grid, like the site's background. */
-  .slide::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(rgba(255,255,255,0.05) 1.6px, transparent 1.7px);
-    background-size: 36px 36px;
-    mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.25));
+  /* Blurred gradient blobs, like an IG story background. */
+  .slide::before, .slide::after {
+    content: ""; position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none;
   }
-  .slide > * { position: relative; }
+  .slide::before {
+    width: 760px; height: 760px; right: -280px; top: -300px;
+    background: radial-gradient(closest-side, rgba(238,42,123,0.55), rgba(98,40,215,0.35) 60%, transparent);
+  }
+  .slide::after {
+    width: 720px; height: 720px; left: -320px; bottom: -320px;
+    background: radial-gradient(closest-side, rgba(250,126,30,0.40), rgba(249,206,52,0.18) 55%, transparent);
+  }
+  .slide > * { position: relative; z-index: 1; }
+
+  /* ---------- story progress bar ---------- */
+  .story { display: flex; gap: 8px; height: 6px; margin-bottom: 34px; }
+  .story i { flex: 1; display: block; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.22); }
+  .story i.done { background: rgba(255,255,255,0.55); }
+  .story i.on { background: var(--ig); box-shadow: 0 0 18px rgba(238,42,123,0.55); }
 
   /* ---------- header ---------- */
-  .header { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .header { display: flex; align-items: center; justify-content: space-between; height: 60px; }
   .brand { display: flex; align-items: center; gap: 16px; }
   .brand img.logo { height: 48px; width: auto; display: block; }
-  .brand img.mark { width: 48px; height: 48px; display: block; }
-  .brand .wordmark { font-weight: 800; font-size: 30px; letter-spacing: 0.14em; }
+  .brand .ring { width: 56px; height: 56px; border-radius: 50%; padding: 3px; background: var(--ig); }
+  .brand .ring span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; background: var(--page); border: 3px solid var(--page); }
+  .brand .ring img { width: 30px; height: 30px; display: block; }
+  .brand .wordmark { font-weight: 800; font-size: 30px; letter-spacing: 0.10em; }
+
   .pill {
     display: inline-flex; align-items: center; gap: 10px;
-    height: 48px; padding: 0 20px; border-radius: 999px;
-    border: 1.5px solid var(--line-strong); color: var(--muted-2);
-    font-size: 20px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    background: rgba(255,255,255,0.03);
+    height: 50px; padding: 0 22px; border-radius: 999px;
+    background: var(--glass); border: 1.5px solid var(--line); color: var(--muted-2);
+    font-size: 20px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase;
   }
-  .pill.accent { border-color: transparent; background: var(--accent); color: var(--accent-ink); }
+  .pill.ig { background: var(--ig); color: #fff; border-color: transparent; box-shadow: 0 10px 30px rgba(238,42,123,0.35); }
   .pill .num { font-family: var(--mono); letter-spacing: 0.04em; }
+
+  /* ---------- gradient helpers ---------- */
+  .grad-text {
+    background: var(--ig); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  /* "Story ring": gradient border around any tile. */
+  .ring-tile { padding: 4px; border-radius: 30px; background: var(--ig); }
+  .ring-tile > .inner { border-radius: 26px; background: #120d1a; height: 100%; }
 
   /* ---------- footer ---------- */
   .footer {
@@ -92,23 +122,20 @@
   }
   .footer .stamp { display: flex; flex-direction: column; gap: 6px; }
   .footer .stamp strong { color: var(--muted-2); font-weight: 700; }
-  .footer .wm { text-align: right; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .footer .wm { text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
   .footer .wm .url { color: var(--ink); font-weight: 800; letter-spacing: 0.02em; font-size: 22px; }
-  .footer .wm .handle { color: var(--muted); }
-
-  .dots { display: flex; gap: 8px; align-items: center; }
-  .dots i { width: 8px; height: 8px; border-radius: 999px; background: var(--line-strong); display: block; }
-  .dots i.on { background: var(--accent); width: 26px; }
+  .footer .wm .handle { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-2); font-weight: 700; }
+  .footer .wm .handle svg { width: 22px; height: 22px; }
 
   /* ---------- shared bits ---------- */
   .chip {
     display: inline-flex; align-items: center; gap: 8px;
     height: 36px; padding: 0 14px; border-radius: 999px;
-    font-size: 20px; font-weight: 800; letter-spacing: 0.02em;
-    background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+    font-size: 19px; font-weight: 800; letter-spacing: 0.02em;
+    background: var(--glass-2); border: 1px solid var(--line);
   }
-  .chip.up   { color: var(--up);   background: rgba(61,220,132,0.12);  border-color: rgba(61,220,132,0.35); }
-  .chip.down { color: var(--down); background: rgba(255,92,108,0.12);  border-color: rgba(255,92,108,0.35); }
+  .chip.up   { color: var(--up);   background: rgba(53,224,161,0.14); border-color: rgba(53,224,161,0.35); }
+  .chip.down { color: var(--down); background: rgba(255,77,109,0.14); border-color: rgba(255,77,109,0.35); }
   .chip.flat { color: var(--flat); }
   .chip svg { width: 18px; height: 18px; }
 
@@ -121,12 +148,16 @@
 </head>
 <body>
 <div class="slide">
+  <div class="story">
+    {% for i in range(nav.total) %}<i class="{{ 'on' if i == nav.index else ('done' if i < nav.index else '') }}"></i>{% endfor %}
+  </div>
+
   <div class="header">
     <div class="brand">
       {% if assets.logo %}
         <img class="logo" src="{{ assets.logo }}" alt="">
       {% else %}
-        <img class="mark" src="{{ assets.mark }}" alt="">
+        <div class="ring"><span><img src="{{ assets.mark }}" alt=""></span></div>
         <span class="wordmark">{{ branding.site_name }}</span>
       {% endif %}
     </div>
@@ -142,7 +173,12 @@
     </div>
     <div class="wm">
       <span class="url">{{ branding.url }}</span>
-      {% if branding.handle %}<span class="handle">{{ branding.handle }}</span>{% endif %}
+      {% if branding.handle %}
+        <span class="handle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          {{ branding.handle }}
+        </span>
+      {% endif %}
     </div>
   </div>
 </div>

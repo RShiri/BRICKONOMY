@@ -88,7 +88,8 @@
         "url":       { "type": "string", "default": "rshiri.github.io/BRICKONOMY", "description": "Watermark line in the footer." },
         "handle":    { "type": "string", "description": "Instagram handle, e.g. \"@brickonomy\"." },
         "logo":      { "type": "string", "description": "Path/URL of a logo (SVG/PNG, light-on-dark). Replaces the text wordmark. Defaults to carousel/assets/logo.svg." },
-        "accent":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "default": "#d7ff3a", "description": "Accent colour; defaults to the site's lime." },
+        "accent":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "default": "#ee2a7b", "description": "Solid accent colour (Instagram pink by default)." },
+        "gradient":  { "type": "string", "default": "linear-gradient(135deg, #f9ce34 0%, #fa7e1e 28%, #ee2a7b 58%, #6228d7 100%)", "description": "CSS gradient used for the progress bar, story rings, highlight card and gradient text. Defaults to the Instagram brand gradient." },
         "cta":       { "type": "string", "default": "Full price history on the site", "description": "Last-slide call to action." }
       }
     }

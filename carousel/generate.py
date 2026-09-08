@@ -50,7 +50,8 @@ DEFAULT_BRANDING = {
     "url": "rshiri.github.io/BRICKONOMY",
     "handle": "",
     "logo": "",
-    "accent": "#d7ff3a",
+    "accent": "#ee2a7b",
+    "gradient": "linear-gradient(135deg, #f9ce34 0%, #fa7e1e 28%, #ee2a7b 58%, #6228d7 100%)",
     "cta": "Full price history on the site",
 }
 
@@ -321,12 +322,15 @@ def render_html(view: dict[str, Any], per_slide: int) -> list[Slide]:
     env.filters["money"] = lambda n: Markup(fmt_money(n))
 
     common = {k: view[k] for k in ("set", "pricing", "market", "minifigs", "branding", "assets")}
-    slides = [Slide(1, "hero", env.get_template("hero.html").render(**common))]
     pages = view["minifigs"]["pages"]
+    total = 1 + len(pages)
+    # `nav` drives the story-style progress bar at the top of every slide.
+    slides = [Slide(1, "hero", env.get_template("hero.html").render(nav={"index": 0, "total": total}, **common))]
     for i, items in enumerate(pages, start=1):
         page = {"index": i, "total": len(pages), "figs": items,
                 "per_slide": per_slide, "is_last": i == len(pages)}
-        slides.append(Slide(i + 1, "minifigs", env.get_template("minifigs.html").render(page=page, **common)))
+        slides.append(Slide(i + 1, "minifigs", env.get_template("minifigs.html").render(
+            page=page, nav={"index": i, "total": total}, **common)))
     return slides
 
 

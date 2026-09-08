@@ -7,10 +7,19 @@ feed shows uncropped).
 | Slide | Content |
 | --- | --- |
 | 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value, month-over-month trend, growth vs retail, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
-| 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, progress dots, watermark. A free slot on the last slide becomes a call-to-action card |
+| 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
 
-Sample output for **76269 Avengers Tower** is in [`out/76269/`](out/76269/)
-(rendered offline, so the images are the built-in placeholders).
+The look is Instagram-native rather than the web app's: dark glass cards on
+near-black, the Instagram brand gradient (yellow → orange → pink → purple)
+for the story-style progress bar along the top, the "story ring" around
+every image, the highlighted value card and the handle line with the
+Instagram glyph.
+
+Sample output for **76269 Avengers Tower** is in [`out/76269/`](out/76269/).
+It was rendered on a machine that cannot reach `img.bricklink.com`, so the
+pictures are the built-in placeholders; the site itself hotlinks the same
+BrickLink URLs, and running the command below on a normal connection fills
+in the real set and minifig images.
 
 ## Why HTML/CSS + Chromium rather than Pillow
 
@@ -91,8 +100,9 @@ Notes:
   404, HTML instead of an image) falls back to a generated placeholder and
   is reported on stderr, so a missing picture never blocks a post.
 - **Branding.** `branding.logo` (SVG/PNG, light-on-dark) replaces the
-  default brick mark + wordmark. `accent` recolours the highlights; the
-  default is the site's lime so posts match the web app.
+  default brick mark + wordmark. `gradient` (any CSS gradient) recolours the
+  progress bar, rings, highlight card and gradient text; `accent` is the
+  matching solid colour. Both default to Instagram's brand colours.
 
 ## Rounding
 
@@ -105,8 +115,8 @@ Displayed values are rounded for the feed; the payload keeps the raw numbers.
 
 ## Customising the look
 
-- `templates/base.html` – shell shared by every slide: palette tokens
-  (mirroring `brickonomy/web/static/style.css`), header, footer/watermark.
+- `templates/base.html` – shell shared by every slide: palette and gradient
+  tokens, story progress bar, header, footer/watermark.
 - `templates/hero.html` – slide 1.
 - `templates/minifigs.html` – the 2×2 figure grid.
 - `assets/fonts/` – Manrope (SIL OFL), embedded so output is identical on any machine.
