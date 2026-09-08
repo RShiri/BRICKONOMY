@@ -18,14 +18,13 @@
     --ink: #ffffff; --muted: #9a9aa8; --muted-2: #d6d6df;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
     --chamfer: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
-    --hazard: repeating-linear-gradient(-45deg, var(--black) 0 12px, var(--yellow) 12px 24px);
-    --hazard-red: repeating-linear-gradient(-45deg, var(--black) 0 12px, var(--red) 12px 24px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: var(--w); height: var(--h); overflow: hidden; }
   body { font-family: "Manrope", "Inter", "Segoe UI", Roboto, Arial, sans-serif; background: var(--black); color: var(--ink); -webkit-font-smoothing: antialiased; font-feature-settings: "tnum" 1; }
 
   .slide { position: relative; width: var(--w); height: var(--h); background: var(--black); overflow: hidden; display: flex; flex-direction: column; }
+  .body { padding-top: 6px; }
   /* Perspective grid floor + glows. */
   .grid-bg { position: absolute; inset: 0; pointer-events: none;
     background:
@@ -42,7 +41,6 @@
 
   /* ---------- yellow band ---------- */
   .band { background: var(--yellow); color: var(--black); padding: 0 var(--pad); height: 150px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
-  .band::after { content: ""; position: absolute; left: 0; right: 0; bottom: -14px; height: 14px; background: var(--hazard); }
   .story { display: flex; gap: 6px; height: 8px; margin-top: 18px; }
   .story i { flex: 1; display: block; background: rgba(0,0,0,0.18); }
   .story i.done { background: rgba(0,0,0,0.45); }
@@ -86,14 +84,13 @@
   .bar::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, transparent 0 14px, var(--black) 14px 17px); }
 
   /* ---------- footer + stud strip ---------- */
-  .footer { margin-top: auto; padding: 0 var(--pad); height: 84px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 18px; font-weight: 600; border-top: 2px solid var(--red); font-family: var(--mono); letter-spacing: 0.04em; }
+  .footer { margin-top: auto; padding: 0 var(--pad); height: 84px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 18px; font-weight: 600; border-top: 1px solid var(--line); font-family: var(--mono); letter-spacing: 0.04em; }
   .footer strong { color: var(--yellow); font-weight: 700; }
   .footer .handle { display: inline-flex; align-items: center; gap: 10px; color: var(--yellow); font-weight: 800; font-size: 22px; font-family: "Manrope", sans-serif; letter-spacing: 0; }
   .footer .handle svg { width: 24px; height: 24px; }
   .studs { height: 34px; background: var(--yellow); position: relative; }
   .studs::before { content: ""; position: absolute; left: var(--pad); right: var(--pad); top: -14px; height: 14px;
     background-image: radial-gradient(circle at 50% 100%, var(--yellow) 0 15px, transparent 16px); background-size: 52px 14px; background-repeat: repeat-x; }
-  .studs::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--hazard-red); }
 
   {% block style %}{% endblock %}
 </style>
