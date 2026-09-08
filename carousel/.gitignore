@@ -1,0 +1,4 @@
+# downloaded set / minifig images
+.cache/
+# rendered HTML kept with --keep-html
+out/**/*.html

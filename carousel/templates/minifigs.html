@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .sub-head { margin-top: 30px; display: flex; align-items: baseline; justify-content: space-between; }
+  .sub-head h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+  .sub-head h2 small { color: var(--muted); font-weight: 700; font-size: 26px; margin-left: 12px; }
+  .sub-head .hint { font-size: 21px; color: var(--muted); font-weight: 600; }
+
+  .grid {
+    margin-top: 26px;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+    gap: 22px;
+    height: 968px;
+  }
+  .fig {
+    position: relative;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 24px;
+    padding: 18px; display: flex; flex-direction: column; gap: 14px;
+    overflow: hidden;
+  }
+  .fig .img {
+    flex: 1 1 auto; min-height: 0;
+    border-radius: 16px; background: var(--well);
+    display: flex; align-items: center; justify-content: center;
+    background-image: radial-gradient(50% 60% at 50% 70%, rgba(255,255,255,0.05), transparent 80%);
+  }
+  .fig .img img { max-width: 78%; max-height: 86%; object-fit: contain; filter: drop-shadow(0 16px 24px rgba(0,0,0,0.55)); }
+  .fig .row { display: flex; align-items: center; justify-content: space-between; }
+  .fig .code-chip {
+    display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 20px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-2);
+  }
+  .fig .qty {
+    display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px;
+    background: var(--accent); color: var(--accent-ink); font-size: 20px; font-weight: 800;
+  }
+  .fig .name { min-height: 58px; }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 25px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-weight: 600; font-size: 20px; margin-top: 4px; line-height: 1.2; }
+  .fig .price { display: flex; align-items: baseline; justify-content: space-between; }
+  .fig .price .val { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .fig .price .lbl { font-size: 18px; color: var(--muted); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+  .fig.empty { background: transparent; border: 1px dashed var(--line); }
+  .fig.cta {
+    justify-content: center; align-items: flex-start; gap: 18px; padding: 34px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 22%, var(--surface)), var(--surface));
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .fig.cta .big { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+  .fig.cta .url { font-size: 22px; font-weight: 800; color: var(--accent); }
+{% endblock %}
+
+{% block header_right %}
+  <span class="pill">Minifigures <span class="num">{{ page.index }}/{{ page.total }}</span></span>
+{% endblock %}
+
+{% block body %}
+  <div class="sub-head">
+    <h2>{{ set.name }} <small class="code">{{ set.number }}</small></h2>
+    <span class="hint">used value · per figure</span>
+  </div>
+
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="fig">
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="row">
+          <span class="code-chip">{{ f.code }}</span>
+          {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        </div>
+        <div class="name"><b>{{ f.title }}</b>{% if f.subtitle %}<small>{{ f.subtitle }}</small>{% endif %}</div>
+        <div class="price">
+          <span class="val money">{{ f.used_display | money }}</span>
+          <span class="lbl">used</span>
+        </div>
+      </div>
+    {% endfor %}
+    {# Pad the last slide; the first free slot becomes a call-to-action card. #}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.url }}</div></div>
+      {% else %}
+        <div class="fig empty"></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block footnote %}
+  <span class="dots">{% for i in range(page.total + 1) %}<i class="{{ 'on' if i == page.index else '' }}"></i>{% endfor %}</span>
+{% endblock %}

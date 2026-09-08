@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rshiri.github.io/BRICKONOMY/carousel/schema.json",
+  "title": "Brickonomy Instagram carousel payload",
+  "description": "One LEGO set's market snapshot, rendered into a 4:5 (1080x1350) Instagram carousel. All money values are USD.",
+  "type": "object",
+  "required": ["set", "pricing", "market", "minifigs"],
+  "additionalProperties": false,
+  "properties": {
+    "set": {
+      "type": "object",
+      "required": ["number", "name", "year", "pieces"],
+      "additionalProperties": false,
+      "properties": {
+        "number": { "type": "string", "pattern": "^[0-9A-Za-z]+(-[0-9]+)?$", "description": "Set number, e.g. \"76269\"." },
+        "name":   { "type": "string", "minLength": 1 },
+        "theme":  { "type": "string", "description": "Optional theme line shown under the name." },
+        "year":   { "type": "integer", "minimum": 1949, "maximum": 2100 },
+        "pieces": { "type": "integer", "minimum": 0 },
+        "image_url": {
+          "type": "string",
+          "description": "http(s) URL, file:// URL, or a local path. Falls back to a generated placeholder when missing or unreachable."
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "required": ["msrp", "new_value", "used_value"],
+      "additionalProperties": false,
+      "properties": {
+        "currency":   { "type": "string", "const": "USD" },
+        "msrp":       { "type": "number", "minimum": 0, "description": "Retail price. Displayed rounded to the nearest $5." },
+        "new_value":  { "type": "number", "minimum": 0, "description": "Current sealed/new market value. Displayed rounded to the nearest $5." },
+        "used_value": { "type": "number", "minimum": 0, "description": "Current used/complete market value. Displayed rounded to the nearest $5." },
+        "minifigs_used_total": {
+          "type": "number", "minimum": 0,
+          "description": "Combined used value of every minifigure (quantity-weighted). Computed from `minifigs` when omitted."
+        }
+      }
+    },
+    "market": {
+      "type": "object",
+      "required": ["updated_at"],
+      "additionalProperties": false,
+      "properties": {
+        "updated_at": {
+          "type": "string",
+          "description": "ISO-8601 date or datetime (\"2026-09-08\" or \"2026-09-08T06:00:00Z\"). Rendered as \"Prices valid as of Sep 8, 2026\"."
+        },
+        "previous_new_value": {
+          "type": "number", "minimum": 0,
+          "description": "Last month's new value. Used to derive `trend` when `trend` is omitted."
+        },
+        "trend": {
+          "type": "object",
+          "required": ["direction"],
+          "additionalProperties": false,
+          "properties": {
+            "direction":  { "type": "string", "enum": ["up", "down", "flat"] },
+            "change_pct": { "type": "number", "description": "Signed percent change vs last month, e.g. 4.1 or -2.5." },
+            "change_usd": { "type": "number", "description": "Signed USD change vs last month." },
+            "period":     { "type": "string", "default": "vs last month" }
+          }
+        }
+      }
+    },
+    "minifigs": {
+      "type": "array",
+      "description": "Rendered 4 per slide in the order given (or by value with --sort value).",
+      "items": {
+        "type": "object",
+        "required": ["code", "name", "used_price"],
+        "additionalProperties": false,
+        "properties": {
+          "code":       { "type": "string", "minLength": 1, "description": "BrickLink minifig ID, e.g. \"sh0916\"." },
+          "name":       { "type": "string", "minLength": 1, "description": "Character name. Long BrickLink variant descriptions are fine; the card clamps to two lines." },
+          "used_price": { "type": "number", "minimum": 0, "description": "Used unit price. Displayed rounded to the nearest $1." },
+          "quantity":   { "type": "integer", "minimum": 1, "default": 1, "description": "How many of this figure the set contains (shows a x4 badge and weights the total)." },
+          "image_url":  { "type": "string", "description": "http(s) URL, file:// URL or local path. Placeholder on failure." }
+        }
+      }
+    },
+    "branding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "site_name": { "type": "string", "default": "BRICKONOMY", "description": "Wordmark text used when no logo is supplied." },
+        "url":       { "type": "string", "default": "rshiri.github.io/BRICKONOMY", "description": "Watermark line in the footer." },
+        "handle":    { "type": "string", "description": "Instagram handle, e.g. \"@brickonomy\"." },
+        "logo":      { "type": "string", "description": "Path/URL of a logo (SVG/PNG, light-on-dark). Replaces the text wordmark. Defaults to carousel/assets/logo.svg." },
+        "accent":    { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "default": "#d7ff3a", "description": "Accent colour; defaults to the site's lime." },
+        "cta":       { "type": "string", "default": "Full price history on the site", "description": "Last-slide call to action." }
+      }
+    }
+  }
+}

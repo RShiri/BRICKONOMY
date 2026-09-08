@@ -1,0 +1,150 @@
+{#
+  Shared shell for every slide. Rendered by carousel/generate.py into a
+  self-contained HTML document (font, logo and images are inlined as data
+  URIs) and screenshotted by Chromium at exactly 1080x1350.
+#}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face {
+    font-family: "Manrope";
+    src: url("{{ assets.font }}") format("truetype");
+    font-weight: 200 800;
+    font-display: block;
+  }
+
+  :root {
+    --w: 1080px;
+    --h: 1350px;
+    --pad: 64px;
+
+    /* Palette mirrors brickonomy/web/static/style.css so posts match the site. */
+    --page:    #0c0d10;
+    --surface: #15171c;
+    --well:    #090a0d;
+    --line:        rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.18);
+    --ink:   #f5f7fa;
+    --muted: #7e8794;
+    --muted-2: #a7afbd;
+    --accent: {{ branding.accent }};
+    --accent-ink: #0c0d10;
+    --up:   #3ddc84;
+    --down: #ff5c6c;
+    --flat: #a7afbd;
+
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: var(--w); height: var(--h); overflow: hidden; }
+  body {
+    font-family: "Manrope", "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" 1, "ss01" 1;
+  }
+
+  .slide {
+    position: relative;
+    width: var(--w); height: var(--h);
+    padding: var(--pad);
+    display: flex; flex-direction: column;
+    background:
+      radial-gradient(900px 520px at 85% -10%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+      radial-gradient(700px 600px at -10% 110%, rgba(120,140,255,0.10), transparent 70%),
+      var(--page);
+    overflow: hidden;
+  }
+  /* Faint stud grid, like the site's background. */
+  .slide::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.05) 1.6px, transparent 1.7px);
+    background-size: 36px 36px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.25));
+  }
+  .slide > * { position: relative; }
+
+  /* ---------- header ---------- */
+  .header { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand img.logo { height: 48px; width: auto; display: block; }
+  .brand img.mark { width: 48px; height: 48px; display: block; }
+  .brand .wordmark { font-weight: 800; font-size: 30px; letter-spacing: 0.14em; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    height: 48px; padding: 0 20px; border-radius: 999px;
+    border: 1.5px solid var(--line-strong); color: var(--muted-2);
+    font-size: 20px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    background: rgba(255,255,255,0.03);
+  }
+  .pill.accent { border-color: transparent; background: var(--accent); color: var(--accent-ink); }
+  .pill .num { font-family: var(--mono); letter-spacing: 0.04em; }
+
+  /* ---------- footer ---------- */
+  .footer {
+    position: absolute; left: var(--pad); right: var(--pad); bottom: var(--pad);
+    display: flex; align-items: flex-end; justify-content: space-between;
+    color: var(--muted); font-size: 21px; font-weight: 600;
+  }
+  .footer .stamp { display: flex; flex-direction: column; gap: 6px; }
+  .footer .stamp strong { color: var(--muted-2); font-weight: 700; }
+  .footer .wm { text-align: right; display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .footer .wm .url { color: var(--ink); font-weight: 800; letter-spacing: 0.02em; font-size: 22px; }
+  .footer .wm .handle { color: var(--muted); }
+
+  .dots { display: flex; gap: 8px; align-items: center; }
+  .dots i { width: 8px; height: 8px; border-radius: 999px; background: var(--line-strong); display: block; }
+  .dots i.on { background: var(--accent); width: 26px; }
+
+  /* ---------- shared bits ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px; border-radius: 999px;
+    font-size: 20px; font-weight: 800; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+  }
+  .chip.up   { color: var(--up);   background: rgba(61,220,132,0.12);  border-color: rgba(61,220,132,0.35); }
+  .chip.down { color: var(--down); background: rgba(255,92,108,0.12);  border-color: rgba(255,92,108,0.35); }
+  .chip.flat { color: var(--flat); }
+  .chip svg { width: 18px; height: 18px; }
+
+  .code { font-family: var(--mono); font-weight: 600; letter-spacing: 0.04em; }
+  .money { font-variant-numeric: tabular-nums; }
+  .money .cur { font-size: 0.55em; vertical-align: 0.42em; margin-right: 0.06em; opacity: 0.85; font-weight: 700; }
+
+  {% block style %}{% endblock %}
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="header">
+    <div class="brand">
+      {% if assets.logo %}
+        <img class="logo" src="{{ assets.logo }}" alt="">
+      {% else %}
+        <img class="mark" src="{{ assets.mark }}" alt="">
+        <span class="wordmark">{{ branding.site_name }}</span>
+      {% endif %}
+    </div>
+    {% block header_right %}{% endblock %}
+  </div>
+
+  {% block body %}{% endblock %}
+
+  <div class="footer">
+    <div class="stamp">
+      <span>Prices valid as of <strong>{{ market.updated_label }}</strong></span>
+      <span>{% block footnote %}USD · BrickLink sold data · not financial advice{% endblock %}</span>
+    </div>
+    <div class="wm">
+      <span class="url">{{ branding.url }}</span>
+      {% if branding.handle %}<span class="handle">{{ branding.handle }}</span>{% endif %}
+    </div>
+  </div>
+</div>
+</body>
+</html>
