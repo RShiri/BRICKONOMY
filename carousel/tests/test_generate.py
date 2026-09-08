@@ -45,6 +45,9 @@ def test_white_background_is_cut_out_but_inner_white_is_kept(tmp_path):
         for y in range(15, 45):
             img.putpixel((x, y), (200, 30, 30))          # red subject
     img.putpixel((30, 30), (255, 255, 255))               # white "eye" inside it
+    for y in range(15, 45):
+        img.putpixel((14, y), (230, 200, 200))            # anti-aliased fringe pixel
+    img.putpixel((5, 52), (225, 225, 225))                # lone shadow speckle
     buf = io.BytesIO(); img.save(buf, format="PNG")
     data, mime = g.cut_out_white_background(buf.getvalue())
     out = Image.open(io.BytesIO(data))
@@ -52,6 +55,12 @@ def test_white_background_is_cut_out_but_inner_white_is_kept(tmp_path):
     assert out.getpixel((0, 0))[3] == 0                  # background gone
     assert out.getpixel((20, 20))[3] == 255              # subject kept
     assert out.getpixel((30, 30)) == (255, 255, 255, 255)  # enclosed white kept
+    assert 0 < out.getpixel((14, 30))[3] < 255           # fringe faded, not clipped
+    assert out.getpixel((5, 52))[3] == 0                 # speckle removed
+
+    # A photo with no white border is left untouched.
+    dark = Image.new("RGB", (20, 20), (30, 30, 30)); b2 = io.BytesIO(); dark.save(b2, format="PNG")
+    assert g.cut_out_white_background(b2.getvalue())[0] == b2.getvalue()
 
     # A local file goes through the same path via the fetcher.
     f = tmp_path / "fig.png"; f.write_bytes(buf.getvalue())

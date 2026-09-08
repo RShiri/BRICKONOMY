@@ -176,17 +176,24 @@ def bricklink_image_url(item_id: str, kind: str) -> str:
     return f"https://img.bricklink.com/ItemImage/SN/0/{suffix}.png"
 
 
-def cut_out_white_background(data: bytes, threshold: int = 28) -> tuple[bytes, str]:
+def cut_out_white_background(data: bytes, threshold: int = 40, feather: int = 5) -> tuple[bytes, str]:
     """Make the white studio background of a catalog photo transparent.
 
     BrickLink (and most catalog) pictures sit on plain white, which shows as a
-    white box on a dark slide. Flood-filling from the image border turns the
-    connected near-white region transparent while leaving white *inside* the
-    subject (eyes, prints, trans-clear parts) alone. Needs Pillow; without it
-    the picture is returned unchanged.
+    white box on a dark slide. Steps:
+
+    1. Flood-fill near-white from the image border. Only the region connected
+       to the edge goes, so white *inside* the subject (eyes, prints,
+       trans-clear parts) stays.
+    2. In a `feather`-px band around that region, alpha follows brightness:
+       pure white -> transparent, darker -> opaque. That fades the anti-aliased
+       fringe and the soft drop shadow instead of leaving a hard white halo.
+    3. A median filter on the band's alpha removes shadow speckles.
+
+    Needs Pillow; without it the picture is returned unchanged.
     """
     try:
-        from PIL import Image, ImageChops, ImageDraw
+        from PIL import Image, ImageChops, ImageDraw, ImageFilter
     except ImportError:
         return data, _sniff_mime(data)
     import io
@@ -197,14 +204,29 @@ def cut_out_white_background(data: bytes, threshold: int = 28) -> tuple[bytes, s
     sentinel = (1, 255, 2)
     seeds = [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1),
              (w // 2, 0), (w // 2, h - 1), (0, h // 2), (w - 1, h // 2)]
+    filled = False
     for xy in seeds:
         if all(c >= 255 - threshold for c in rgb.getpixel(xy)):
             ImageDraw.floodfill(rgb, xy, sentinel, thresh=threshold)
-    # Pixels that became the sentinel -> alpha 0; everything else keeps its alpha.
-    diff = ImageChops.difference(rgb, Image.new("RGB", (w, h), sentinel)).convert("L")
-    keep = diff.point(lambda v: 0 if v == 0 else 255)
+            filled = True
+    if not filled:  # no white border: not a studio shot, leave it alone
+        return data, _sniff_mime(data)
+
+    # Background region (255 where flood-filled) and a feathered band around it.
+    bg = ImageChops.difference(rgb, Image.new("RGB", (w, h), sentinel)).convert("L")
+    bg = bg.point(lambda v: 255 if v == 0 else 0)
+    band = bg.filter(ImageFilter.MaxFilter(2 * feather + 1))
+
+    # Brightness -> alpha ramp: >= 247 transparent, <= 191 opaque.
+    ramp = img.convert("L").point(lambda v: max(0, min(255, (247 - v) * 4)))
+    ramp = ramp.filter(ImageFilter.MedianFilter(5))
+    opaque = Image.new("L", (w, h), 255)
+    alpha = Image.composite(ramp, opaque, band)          # ramp inside the band
+    alpha = Image.composite(Image.new("L", (w, h), 0), alpha, bg)  # background fully clear
+    alpha = ImageChops.multiply(img.getchannel("A"), alpha)
+
     out = img.copy()
-    out.putalpha(ImageChops.multiply(img.getchannel("A"), keep))
+    out.putalpha(alpha)
     buf = io.BytesIO()
     out.save(buf, format="PNG", optimize=True)
     return buf.getvalue(), "image/png"
