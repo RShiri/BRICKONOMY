@@ -108,10 +108,12 @@ class ImageFetcher:
     placeholder, so the pipeline never fails because of an image.
     """
 
-    def __init__(self, cache_dir: Path, enabled: bool = True, timeout: float = 15.0):
+    def __init__(self, cache_dir: Path, enabled: bool = True, timeout: float = 15.0,
+                 cutout: bool = True):
         self.cache_dir = cache_dir
         self.enabled = enabled
         self.timeout = timeout
+        self.cutout = cutout
         self.failures: list[str] = []
         cache_dir.mkdir(parents=True, exist_ok=True)
 
@@ -135,6 +137,8 @@ class ImageFetcher:
         mime = mimetypes.guess_type(ref)[0] or ""
         if not mime.startswith("image/") or mime == "image/svg+xml":
             mime = _sniff_mime(data, mime or "image/png")
+        if self.cutout and mime in ("image/png", "image/jpeg", "image/webp"):
+            data, mime = cut_out_white_background(data)
         return _data_uri(data, mime)
 
     def _http(self, url: str) -> bytes:
@@ -170,6 +174,40 @@ def bricklink_image_url(item_id: str, kind: str) -> str:
         return f"https://img.bricklink.com/ItemImage/MN/0/{item_id}.png"
     suffix = item_id if "-" in item_id else f"{item_id}-1"
     return f"https://img.bricklink.com/ItemImage/SN/0/{suffix}.png"
+
+
+def cut_out_white_background(data: bytes, threshold: int = 28) -> tuple[bytes, str]:
+    """Make the white studio background of a catalog photo transparent.
+
+    BrickLink (and most catalog) pictures sit on plain white, which shows as a
+    white box on a dark slide. Flood-filling from the image border turns the
+    connected near-white region transparent while leaving white *inside* the
+    subject (eyes, prints, trans-clear parts) alone. Needs Pillow; without it
+    the picture is returned unchanged.
+    """
+    try:
+        from PIL import Image, ImageChops, ImageDraw
+    except ImportError:
+        return data, _sniff_mime(data)
+    import io
+
+    img = Image.open(io.BytesIO(data)).convert("RGBA")
+    rgb = img.convert("RGB")
+    w, h = rgb.size
+    sentinel = (1, 255, 2)
+    seeds = [(0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1),
+             (w // 2, 0), (w // 2, h - 1), (0, h // 2), (w - 1, h // 2)]
+    for xy in seeds:
+        if all(c >= 255 - threshold for c in rgb.getpixel(xy)):
+            ImageDraw.floodfill(rgb, xy, sentinel, thresh=threshold)
+    # Pixels that became the sentinel -> alpha 0; everything else keeps its alpha.
+    diff = ImageChops.difference(rgb, Image.new("RGB", (w, h), sentinel)).convert("L")
+    keep = diff.point(lambda v: 0 if v == 0 else 255)
+    out = img.copy()
+    out.putalpha(ImageChops.multiply(img.getchannel("A"), keep))
+    buf = io.BytesIO()
+    out.save(buf, format="PNG", optimize=True)
+    return buf.getvalue(), "image/png"
 
 
 def placeholder_minifig(code: str) -> str:
@@ -392,6 +430,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="device scale factor; 2 renders 2160x2700 for print-quality previews")
     ap.add_argument("--no-fetch", action="store_true",
                     help="never hit the network; use cached files or placeholders")
+    ap.add_argument("--keep-background", action="store_true",
+                    help="leave photo backgrounds as-is instead of cutting out the white studio background")
     ap.add_argument("--cache", type=Path, default=DEFAULT_CACHE, help="image cache directory")
     ap.add_argument("--chromium", default=os.environ.get("CAROUSEL_CHROMIUM"),
                     help="path to a Chromium binary (else Playwright's own; env CAROUSEL_CHROMIUM)")
@@ -402,7 +442,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = json.loads(args.payload.read_text(encoding="utf-8"))
     validate(payload)
 
-    fetcher = ImageFetcher(args.cache, enabled=not args.no_fetch)
+    fetcher = ImageFetcher(args.cache, enabled=not args.no_fetch, cutout=not args.keep_background)
     view = build_view(payload, fetcher, args.payload.resolve().parent, args.sort, args.per_slide)
     slides = render_html(view, args.per_slide)
 

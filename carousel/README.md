@@ -55,6 +55,7 @@ python -m carousel.generate payload.json --out /tmp/post --sort value --keep-htm
 | `--per-slide 1-4` | Figures per minifig slide (default and maximum 4) |
 | `--scale 2` | Render at 2160×2700 for a crisper preview (Instagram downsizes anyway) |
 | `--no-fetch` | Never touch the network: cached images or placeholders |
+| `--keep-background` | Don't cut the white studio background out of photos |
 | `--cache DIR` | Where downloaded images are kept (default `carousel/.cache`, git-ignored) |
 | `--keep-html` | Write each slide's HTML next to its PNG (open it in a browser to tweak CSS live) |
 | `--html-only` | Skip Chromium entirely; handy for template work and CI |
@@ -101,7 +102,10 @@ Notes:
   path (relative to the payload). Downloads are cached; any failure
   (offline, 404, HTML instead of an image) falls back to a generated
   placeholder and is reported on stderr, so a missing picture never blocks
-  a post.
+  a post. Catalog photos come on a white studio background; the generator
+  flood-fills that from the edges to transparent so figures float on the
+  dark cards (white inside the subject is untouched). `--keep-background`
+  turns this off.
 - **Branding.** `branding.logo` (SVG/PNG, light-on-dark) replaces the
   default brick mark + wordmark. `gradient` (any CSS gradient) recolours the
   progress bar, rings, highlight card and gradient text; `accent` is the

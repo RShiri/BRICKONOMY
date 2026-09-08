@@ -1,5 +1,7 @@
 jinja2>=3.1
 requests>=2.31
 playwright>=1.40
+# cuts the white studio background out of catalog photos
+pillow>=10.0
 # optional: validates payloads against carousel/schema.json before rendering
 jsonschema>=4.0

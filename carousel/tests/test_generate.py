@@ -37,6 +37,28 @@ def test_default_image_urls_follow_bricklink_convention():
     assert g.bricklink_image_url("sh0916", "M") == "https://img.bricklink.com/ItemImage/MN/0/sh0916.png"
 
 
+def test_white_background_is_cut_out_but_inner_white_is_kept(tmp_path):
+    from PIL import Image
+    import io
+    img = Image.new("RGB", (60, 60), (255, 255, 255))
+    for x in range(15, 45):
+        for y in range(15, 45):
+            img.putpixel((x, y), (200, 30, 30))          # red subject
+    img.putpixel((30, 30), (255, 255, 255))               # white "eye" inside it
+    buf = io.BytesIO(); img.save(buf, format="PNG")
+    data, mime = g.cut_out_white_background(buf.getvalue())
+    out = Image.open(io.BytesIO(data))
+    assert mime == "image/png" and out.mode == "RGBA"
+    assert out.getpixel((0, 0))[3] == 0                  # background gone
+    assert out.getpixel((20, 20))[3] == 255              # subject kept
+    assert out.getpixel((30, 30)) == (255, 255, 255, 255)  # enclosed white kept
+
+    # A local file goes through the same path via the fetcher.
+    f = tmp_path / "fig.png"; f.write_bytes(buf.getvalue())
+    uri = g.ImageFetcher(tmp_path / "cache", enabled=False).get(str(f))
+    assert uri.startswith("data:image/png;base64,")
+
+
 def test_split_name():
     assert g.split_name("Vision - Dark Turquoise") == ("Vision", "Dark Turquoise")
     assert g.split_name("Kevin Feige") == ("Kevin Feige", "")
