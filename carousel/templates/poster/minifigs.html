@@ -40,7 +40,7 @@
 {% block body %}
   <div class="head">
     <h2><small><i class="dot"></i>Figures {{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small>Minifigures</h2>
-    <span class="hint">Used value · each<br>Bar = share of top fig <b>#1</b></span>
+    <span class="hint">Used value · each<br>Bar = share of figs total <b>{{ minifigs.total_display | money }}</b></span>
   </div>
   <div class="grid">
     {% for f in page.figs %}
@@ -50,7 +50,7 @@
         <div class="img"><img src="{{ f.image }}" alt=""></div>
         <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
         <div class="price"><span class="v money">{{ f.used_display | money }}<span class="lbl">used</span></span><span class="code">{{ f.code }}</span></div>
-        <div class="meter"><div class="bar"><i style="width: {{ f.share_of_top }}%"></i></div><span>{{ f.share_of_top }}% of #1</span></div>
+        <div class="meter"><div class="bar"><i style="width: {{ [f.share_of_total * 2, 100] | min }}%"></i></div><span>{{ f.share_label }} of figs total</span></div>
       </div>
     {% endfor %}
     {% for _ in range(page.per_slide - page.figs | length) %}

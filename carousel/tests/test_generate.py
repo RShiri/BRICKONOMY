@@ -106,6 +106,9 @@ def test_view_paginates_four_per_slide_and_weights_quantity(view):
     assert v["pricing"]["used_display"] == 390
     assert v["market"]["trend"]["direction"] == "up" and v["market"]["trend"]["label"] == "1.7%"
     assert v["minifigs"]["figs"][0]["used_display"] == 48      # Vision 145.94 ILS
+    shares = [f["share_of_total"] for f in v["minifigs"]["figs"]]
+    assert round(sum(shares)) == 100 and v["minifigs"]["figs"][0]["share_label"] == "17%"
+    assert v["minifigs"]["share_label"] == "72%" and v["minifigs"]["set_used_display"] == 390
     assert v["market"]["updated_label"] == "Sep 4, 2026"
     # Offline: every image became a placeholder rather than an error.
     assert len(fetcher.failures) == len(figs) + 1

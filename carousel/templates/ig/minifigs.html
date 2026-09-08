@@ -9,7 +9,7 @@
   .grid {
     margin-top: 22px;
     display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-    gap: 20px; height: 900px;
+    gap: 20px; height: 910px;
   }
   .fig {
     position: relative;
@@ -46,6 +46,10 @@
     font-family: var(--mono); font-size: 19px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-2);
   }
   .fig .price .lbl { font-size: 17px; color: var(--muted); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-left: 10px; }
+  .fig .share { display: flex; align-items: center; gap: 10px; }
+  .fig .share .bar { flex: 1; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.10); overflow: hidden; }
+  .fig .share .bar i { display: block; height: 100%; background: var(--ig); border-radius: 999px; }
+  .fig .share span { font-size: 16px; color: var(--muted); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
   .fig.empty { background: transparent; border: 1px dashed var(--line); backdrop-filter: none; }
   .fig.cta { justify-content: center; align-items: flex-start; gap: 18px; padding: 34px; background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.38); }
   .fig.cta .big { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: #fff; }
@@ -60,7 +64,7 @@
 {% block body %}
   <div class="sub-head">
     <h2>Minifigures <small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small></h2>
-    <span class="hint">used value · each</span>
+    <span class="hint">bar = share of figs total {{ minifigs.total_display | money }}</span>
   </div>
 
   <div class="grid">
@@ -74,6 +78,7 @@
           <span class="val money">{{ f.used_display | money }}<span class="lbl">used</span></span>
           <span class="code-chip">{{ f.code }}</span>
         </div>
+        <div class="share"><div class="bar"><i style="width: {{ [f.share_of_total * 2, 100] | min }}%"></i></div><span>{{ f.share_label }} of figs total</span></div>
       </div>
     {% endfor %}
     {# Pad the last slide; the first free slot becomes a call-to-action card. #}

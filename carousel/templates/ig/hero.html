@@ -48,10 +48,17 @@
   .figs .icon svg { width: 28px; height: 28px; }
   .figs .txt b { display: block; font-size: 26px; font-weight: 800; }
   .figs .txt span { display: block; margin-top: 4px; font-size: 20px; color: var(--muted); font-weight: 600; }
+  .figs { position: relative; overflow: hidden; }
   .figs .right { display: flex; align-items: center; gap: 22px; }
   .figs .total { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; }
   .figs .total .cur { opacity: 1; }
-  .figs .swipe { font-size: 19px; color: var(--muted-2); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .figs .of { font-size: 20px; color: var(--muted); font-weight: 700; }
+  .figs .of b { color: var(--ink); font-size: 28px; font-weight: 800; }
+  .figs .pct { text-align: right; }
+  .figs .pct b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .figs .pct span { display: block; font-size: 16px; color: var(--muted); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+  .figs .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: rgba(255,255,255,0.08); }
+  .figs .bar i { display: block; height: 100%; background: var(--ig); }
 {% endblock %}
 
 {% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
@@ -121,14 +128,14 @@
       </span></div>
       <div class="txt">
         <b>{{ minifigs.count }} minifigure{{ '' if minifigs.count == 1 else 's' }} inside</b>
-        <span>combined used value · {{ minifigs.unique }} unique</span>
+        <span>figs used value vs set used value · swipe →</span>
       </div>
     </div>
     <div class="right">
       <span class="total money grad-text">{{ minifigs.total_display | money }}</span>
-      <span class="swipe">Swipe
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </span>
+      <span class="of">of <b class="money">{{ minifigs.set_used_display | money }}</b></span>
+      <span class="pct"><b class="grad-text">{{ minifigs.share_label }}</b><span>of set used</span></span>
     </div>
+    <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
   </div>
 {% endblock %}

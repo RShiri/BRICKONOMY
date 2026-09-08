@@ -51,9 +51,17 @@
   .figs::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--hazard); }
   .figs .l b { display: block; font-size: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
   .figs .l span { display: block; font-size: 17px; font-weight: 700; opacity: 0.9; margin-top: 4px; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
-  .figs .r { display: flex; align-items: center; gap: 24px; }
+  .figs .r { display: flex; align-items: center; gap: 22px; }
+  .figs .vs { display: flex; align-items: baseline; gap: 12px; }
   .figs .total { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
-  .figs .swipe { font-size: 18px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .figs .of { font-size: 20px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.9; }
+  .figs .of b { font-size: 30px; letter-spacing: -0.01em; }
+  .figs .pct { text-align: right; }
+  .figs .pct b { display: block; font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .figs .pct span { display: block; font-family: var(--mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.9; margin-top: 4px; }
+  .figs .bar { position: absolute; left: 0; right: 0; bottom: 8px; height: 6px; background: rgba(0,0,0,0.35); }
+  .figs .bar i { background: var(--yellow); }
+  .figs .bar::after { display: none; }
 {% endblock %}
 
 {% block header_sub %}Price check · set {{ set.number }}{% endblock %}
@@ -110,10 +118,11 @@
   </div>
 
   <div class="figs">
-    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>combined used value · {{ minifigs.unique }} unique</span></div>
+    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
     <div class="r">
-      <span class="total money">{{ minifigs.total_display | money }}</span>
-      <span class="swipe">Swipe <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <span class="vs"><span class="total money">{{ minifigs.total_display | money }}</span><span class="of">of <b class="money">{{ minifigs.set_used_display | money }}</b></span></span>
+      <span class="pct"><b>{{ minifigs.share_label }}</b><span>of set used</span></span>
     </div>
+    <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
   </div>
 {% endblock %}

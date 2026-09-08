@@ -403,14 +403,15 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
     msrp, new, used = round_to_5(p["msrp"]), round_to_5(p["new_value"]), round_to_5(p["used_value"])
     vs_retail = ((p["new_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
 
-    # Extra readouts some themes show: price per piece, how much of the used
-    # value the figures account for, and each figure's price relative to the
-    # most valuable one (drives the little value bars).
+    # Extra readouts: price per piece, the figures' combined value as a share
+    # of the set's used value, and each figure's (quantity-weighted) slice of
+    # that combined value (drives the little value bars).
     per_piece = (p["new_value"] / s["pieces"]) if s.get("pieces") else None
     fig_share = (raw_total / p["used_value"] * 100) if p["used_value"] else None
-    top_price = max((f["used_price"] for f in figs), default=0) or 1
     for f in figs:
-        f["share_of_top"] = round(f["used_price"] / top_price * 100)
+        slice_pct = (f["used_price"] * f["quantity"] / raw_total * 100) if raw_total else 0
+        f["share_of_total"] = slice_pct
+        f["share_label"] = f"{slice_pct:.1f}%" if slice_pct < 10 else f"{slice_pct:.0f}%"
 
     return {
         "set": {**s, "number": str(s["number"])},
@@ -435,6 +436,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "total_display": round_to_5(raw_total),
             "share_label": f"{fig_share:.0f}%" if fig_share is not None else "—",
             "share_meter": min(fig_share, 100) if fig_share is not None else 0,
+            "set_used_display": used,
             "pages": pages,
         },
         "branding": branding,
