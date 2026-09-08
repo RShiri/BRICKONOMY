@@ -310,6 +310,7 @@ def build_trend(market: dict[str, Any], new_value: float) -> dict[str, Any]:
         t = {"direction": "flat"}
     t.setdefault("period", "vs last month")
     pct = t.get("change_pct")
+    t["meter"] = min(abs(pct) * 10, 100) if pct is not None else 0
     if pct is not None:
         t["label"] = f"{abs(pct):.1f}%"
     elif t.get("change_usd") is not None:
@@ -400,12 +401,26 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
     msrp, new, used = round_to_5(p["msrp"]), round_to_5(p["new_value"]), round_to_5(p["used_value"])
     vs_retail = ((p["new_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
 
+    # Extra readouts some themes show: price per piece, how much of the used
+    # value the figures account for, and each figure's price relative to the
+    # most valuable one (drives the little value bars).
+    per_piece = (p["new_value"] / s["pieces"]) if s.get("pieces") else None
+    fig_share = (raw_total / p["used_value"] * 100) if p["used_value"] else None
+    top_price = max((f["used_price"] for f in figs), default=0) or 1
+    for f in figs:
+        f["share_of_top"] = round(f["used_price"] / top_price * 100)
+
     return {
         "set": {**s, "number": str(s["number"])},
         "pricing": {
             "msrp_display": msrp, "new_display": new, "used_display": used,
             "vs_retail_pct": vs_retail,
             "vs_retail_label": f"{'+' if vs_retail >= 0 else '−'}{abs(vs_retail):.0f}%",
+            "per_piece_label": f"${per_piece:.2f}" if per_piece is not None else "—",
+            # Meter widths (0-100) for themes with bars: growth capped at +100%,
+            # month move at +-10%, $/piece against a $0.20 reference.
+            "vs_retail_meter": min(abs(vs_retail), 100),
+            "per_piece_meter": min(per_piece / 0.20 * 100, 100) if per_piece is not None else 0,
         },
         "market": {
             "updated_label": parse_date(m["updated_at"]).strftime("%b %-d, %Y"),
@@ -416,6 +431,8 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "count": sum(f["quantity"] for f in figs),
             "unique": len(figs),
             "total_display": round_to_5(raw_total),
+            "share_label": f"{fig_share:.0f}%" if fig_share is not None else "—",
+            "share_meter": min(fig_share, 100) if fig_share is not None else 0,
             "pages": pages,
         },
         "branding": branding,

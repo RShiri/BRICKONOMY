@@ -22,7 +22,7 @@ Two designs ship, chosen with `--theme`:
 | Theme | Look | Sample |
 | --- | --- | --- |
 | `ig` (default) | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269/`](out/76269/) |
-| `poster` | Flat toy-shelf poster: LEGO yellow band, white price tag with a punched hole, red used values, stud strip | [`out/76269-poster/`](out/76269-poster/) |
+| `poster` | LEGO yellow and red HUD: hazard stripes, perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode, stat meters (vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269-poster/`](out/76269-poster/) |
 
 Sample output for **76269 Avengers Tower** is in those folders.
 It was rendered on a machine that cannot reach `img.bricklink.com`, so the

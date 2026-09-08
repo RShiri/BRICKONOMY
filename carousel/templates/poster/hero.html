@@ -1,74 +1,116 @@
 {% extends "base.html" %}
 
 {% block style %}
-  .top { display: grid; grid-template-columns: 1fr 380px; gap: 28px; margin-top: 44px; height: 690px; }
-  .stage { position: relative; background: var(--panel); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .stage::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.07) 2px, transparent 2.5px); background-size: 34px 34px; }
-  .stage::after { content: ""; position: absolute; left: -80px; bottom: -160px; width: 420px; height: 420px; border-radius: 50%; background: var(--yellow); opacity: 0.16; }
-  .stage img { position: relative; max-width: 88%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.7)); }
-  .stage .num { position: absolute; top: 18px; left: 18px; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; }
+  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 34px; height: 640px; }
 
-  /* Price tag, punched hole and all. */
-  .tagcard { position: relative; background: #fff; color: var(--black); padding: 30px 28px 26px; display: flex; flex-direction: column; justify-content: space-between; transform: rotate(-2.5deg); transform-origin: 50% 40%; box-shadow: 0 30px 60px rgba(0,0,0,0.55); }
-  .tagcard::before { content: ""; position: absolute; top: 18px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de; }
-  .tagcard .k { font-size: 16px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: #6b6b78; }
+  /* Stage: HUD frame, reticle behind the set, ticks along the edges. */
+  .stage { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .stage .reticle { position: absolute; width: 440px; height: 440px; border-radius: 50%; border: 2px dashed rgba(255,213,0,0.55); }
+  .stage .reticle::before { content: ""; position: absolute; inset: 26px; border-radius: 50%; border: 1px solid rgba(255,213,0,0.25); }
+  .stage .reticle::after { content: ""; position: absolute; inset: -30px; border-radius: 50%; border: 1px solid rgba(227,0,11,0.45); border-left-color: transparent; border-right-color: transparent; }
+  .stage .cross { position: absolute; width: 540px; height: 540px; }
+  .stage .cross::before, .stage .cross::after { content: ""; position: absolute; background: rgba(227,0,11,0.6); }
+  .stage .cross::before { left: 50%; top: 0; width: 2px; height: 100%; margin-left: -1px; mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); }
+  .stage .cross::after { top: 50%; left: 0; height: 2px; width: 100%; margin-top: -1px; mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); }
+  .stage .glow { position: absolute; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,213,0,0.35), rgba(227,0,11,0.18) 60%, transparent); filter: blur(24px); }
+  .stage img { position: relative; max-width: 86%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
+  .stage .num { position: absolute; top: 16px; left: 16px; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+  .stage .readout { position: absolute; right: 16px; top: 16px; text-align: right; font-family: var(--mono); font-size: 14px; letter-spacing: 0.14em; color: var(--muted); line-height: 1.7; text-transform: uppercase; }
+  .stage .readout b { color: var(--yellow); font-weight: 700; }
+  .stage .ticks { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 10px; background-image: repeating-linear-gradient(90deg, rgba(255,213,0,0.7) 0 2px, transparent 2px 22px); }
+  .stage .ticks::after { content: ""; position: absolute; left: 0; width: 34%; top: 0; bottom: 0; background-image: repeating-linear-gradient(90deg, var(--red) 0 2px, transparent 2px 22px); }
+
+  /* Price tag with barcode. */
+  .tagcard { position: relative; background: #fff; color: var(--black); padding: 26px 26px 22px; display: flex; flex-direction: column; justify-content: space-between; transform: rotate(-2deg); transform-origin: 50% 40%; clip-path: var(--chamfer); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+  .tagcard .hole { position: absolute; top: 16px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de; }
+  .tagcard .k { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #6b6b78; }
   .tagcard .msrp { margin-top: 30px; }
-  .tagcard .msrp .v { font-size: 34px; font-weight: 800; text-decoration: line-through; text-decoration-thickness: 4px; text-decoration-color: var(--red); color: #6b6b78; }
+  .tagcard .msrp .v { font-size: 32px; font-weight: 800; text-decoration: line-through; text-decoration-thickness: 4px; text-decoration-color: var(--red); color: #6b6b78; }
   .tagcard .new .v { font-size: 92px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; }
-  .tagcard .new .vs { display: inline-block; margin-top: 10px; background: var(--yellow); font-size: 19px; font-weight: 800; padding: 6px 10px; letter-spacing: 0.04em; }
-  .tagcard .used { border-top: 3px dashed #e1e1e6; padding-top: 16px; display: flex; justify-content: space-between; align-items: baseline; }
-  .tagcard .used .v { font-size: 44px; font-weight: 800; color: var(--red); letter-spacing: -0.02em; }
-  .tagcard .trend { margin-top: 12px; }
+  .tagcard .new .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .tagcard .used { background: var(--red); color: #fff; margin: 0 -26px; padding: 14px 26px; display: flex; justify-content: space-between; align-items: baseline; }
+  .tagcard .used .k { color: rgba(255,255,255,0.8); }
+  .tagcard .used .v { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; }
+  .tagcard .barcode { margin-top: 14px; height: 38px; background-image: repeating-linear-gradient(90deg, #111 0 2px, transparent 2px 5px, #111 5px 6px, transparent 6px 9px, #111 9px 12px, transparent 12px 14px); }
+  .tagcard .sku { font-family: var(--mono); font-size: 13px; letter-spacing: 0.3em; color: #6b6b78; margin-top: 6px; text-align: center; }
 
-  .title { margin-top: 44px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
-  .title h1 { font-size: 84px; line-height: 0.95; font-weight: 800; letter-spacing: -0.035em; text-transform: uppercase; max-width: 700px; }
-  .title .meta { text-align: right; color: var(--muted-2); font-size: 22px; font-weight: 700; line-height: 1.5; }
-  .title .meta b { color: var(--yellow); }
+  .title { margin-top: 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .title h1 { font-size: 84px; line-height: 0.92; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 680px; }
+  .title h1 span { color: var(--yellow); }
+  .title .meta { font-family: var(--mono); text-align: right; font-size: 17px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); line-height: 1.9; }
+  .title .meta b { color: var(--yellow); font-weight: 700; }
 
-  .figs { margin-top: 40px; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; }
+  .stats { margin-top: 26px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .stat { padding: 16px 18px 14px; }
+  .stat .lbl { font-size: 13px; }
+  .stat .v { margin-top: 8px; font-size: 34px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .stat .v.y { color: var(--yellow); } .stat .v.r { color: var(--red-2); } .stat .v.g { color: var(--green); }
+  .stat .bar { margin-top: 12px; }
+
+  .figs { margin-top: 22px; background: var(--red); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 20px 28px; position: relative; clip-path: var(--chamfer); }
+  .figs::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--hazard); }
   .figs .l b { display: block; font-size: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
-  .figs .l span { display: block; font-size: 19px; font-weight: 700; opacity: 0.85; margin-top: 4px; }
+  .figs .l span { display: block; font-size: 17px; font-weight: 700; opacity: 0.9; margin-top: 4px; font-family: var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
   .figs .r { display: flex; align-items: center; gap: 24px; }
-  .figs .total { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+  .figs .total { font-size: 60px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
   .figs .swipe { font-size: 18px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 {% endblock %}
 
-{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
-{% block header_right %}<span class="tag">Price check</span>{% endblock %}
+{% block header_sub %}Price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="tag red">Price check</span>{% endblock %}
 
 {% block body %}
+  {% set t = market.trend %}
   <div class="top">
-    <div class="stage">
+    <div class="stage hud">
+      <div class="glow"></div><div class="cross"></div><div class="reticle"></div>
       <span class="num">#{{ set.number }}</span>
+      <div class="readout">{{ set.year }} · {{ set.pieces | thousands }} PCS<br><b>{{ set.theme or 'LEGO' }}</b><br>SCAN OK</div>
       <img src="{{ assets.set_image }}" alt="">
+      <div class="ticks"></div>
     </div>
+
     <div class="tagcard">
+      <div class="hole"></div>
       <div class="msrp"><div class="k">Retail {{ set.year }}</div><div class="v money">{{ pricing.msrp_display | money }}</div></div>
       <div class="new">
         <div class="k">Value · new</div>
         <div class="v money">{{ pricing.new_display | money }}</div>
-        <span class="vs">{{ pricing.vs_retail_label }} vs retail</span>
-        {% set t = market.trend %}
-        <div class="trend"><span class="chip {{ t.direction }}">
-          {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
-          {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
-          {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
-          {{ t.label }} {{ t.period }}</span></div>
+        <div class="row">
+          <span class="chip yellow">{{ pricing.vs_retail_label }} vs retail</span>
+          <span class="chip {{ t.direction }}">
+            {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
+            {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
+            {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
+            {{ t.label }} {{ t.period }}</span>
+        </div>
       </div>
-      <div class="used"><div class="k">Value · used</div><div class="v money">{{ pricing.used_display | money }}</div></div>
+      <div>
+        <div class="used"><div class="k">Value · used</div><div class="v money">{{ pricing.used_display | money }}</div></div>
+        <div class="barcode"></div>
+        <div class="sku">{{ set.number }}-{{ set.year }}-USD</div>
+      </div>
     </div>
   </div>
 
   <div class="title">
     <h1>{{ set.name }}</h1>
     <div class="meta">
-      <b>{{ set.year }}</b> release<br>
-      <b>{{ set.pieces | thousands }}</b> pieces{% if set.theme %}<br>{{ set.theme }}{% endif %}
+      Year <b>{{ set.year }}</b><br>
+      Pieces <b>{{ set.pieces | thousands }}</b><br>
+      Minifigs <b>{{ minifigs.count }}</b>
     </div>
   </div>
 
+  <div class="stats">
+    <div class="stat hud"><div class="lbl"><i class="dot"></i>vs retail</div><div class="v {{ 'g' if pricing.vs_retail_pct >= 0 else 'r' }}">{{ pricing.vs_retail_label }}</div><div class="bar"><i style="width: {{ pricing.vs_retail_meter }}%"></i></div></div>
+    <div class="stat hud"><div class="lbl"><i class="dot"></i>{{ t.period }}</div><div class="v {{ 'g' if t.direction == 'up' else ('r' if t.direction == 'down' else '') }}">{{ '▲' if t.direction == 'up' else ('▼' if t.direction == 'down' else '■') }} {{ t.label }}</div><div class="bar"><i style="width: {{ t.meter }}%"></i></div></div>
+    <div class="stat hud"><div class="lbl"><i class="dot"></i>per piece</div><div class="v y">{{ pricing.per_piece_label }}</div><div class="bar"><i style="width: {{ pricing.per_piece_meter }}%"></i></div></div>
+    <div class="stat hud"><div class="lbl"><i class="dot"></i>figs share</div><div class="v y">{{ minifigs.share_label }}</div><div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div></div>
+  </div>
+
   <div class="figs">
-    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>combined used value · {{ minifigs.unique }} unique figures</span></div>
+    <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>combined used value · {{ minifigs.unique }} unique</span></div>
     <div class="r">
       <span class="total money">{{ minifigs.total_display | money }}</span>
       <span class="swipe">Swipe <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
