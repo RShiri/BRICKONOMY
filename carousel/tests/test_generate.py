@@ -136,9 +136,22 @@ def test_every_theme_renders(view):
     assert set(g.THEMES) >= {"ig", "poster"}
     for theme in g.THEMES:
         slides = g.render_html(v, per_slide=4, theme=theme)
-        assert len(slides) == 8 and all("brickanalyst.en" in s.html for s in slides)
+        has_hook = (g.TEMPLATES / theme / "hook.html").exists()
+        assert len(slides) == (9 if has_hook else 8)
+        assert all("brickanalyst.en" in s.html for s in slides)
     with pytest.raises(ValueError):
         g.render_html(v, per_slide=4, theme="nope")
+
+
+def test_hook_slide_precedes_hero(view):
+    _, v, _ = view
+    slides = g.render_html(v, per_slide=4, theme="poster")
+    assert [s.kind for s in slides[:2]] == ["hook", "hero"]
+    assert len(slides) == 2 + len(v["minifigs"]["pages"])
+    hook_html = slides[0].html
+    # No hook given in the sample payload -> falls back to a short stat line.
+    assert v["hook"]["headline"] == "+1% since 2023"
+    assert "+1% since 2023" in hook_html and "Price check" in hook_html
 
 
 def test_from_site_builds_76051(tmp_path):
@@ -162,11 +175,12 @@ def test_cli_html_only(tmp_path):
     assert g.main([str(SAMPLE), "--out", str(out), "--no-fetch", "--html-only",
                    "--cache", str(tmp_path / "cache")]) == 0
     files = sorted(out.glob("76269-slide-*.html"))
-    assert len(files) == 8
+    assert len(files) == 9
     manifest = json.loads((out / "manifest.json").read_text())
     assert manifest["displayed"] == {"msrp": 500, "new_value": 505, "used_value": 390,
                                      "minifigs_used_total": 285, "trend": "up"}
     assert manifest["theme"] == "poster"
     assert manifest["source_currency"] == "ILS" and manifest["fx_rate"] == 3.0193
-    assert manifest["slides"][0]["kind"] == "hero"
+    assert manifest["slides"][0]["kind"] == "hook"
+    assert manifest["slides"][1]["kind"] == "hero"
     assert manifest["size"] == [2160, 2700]

@@ -8,8 +8,13 @@ better than a 1080 one; `--scale 1` gives exact 1080×1350 files.
 
 | Slide | Content |
 | --- | --- |
-| 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value (each shown as a % vs retail), month-over-month trend, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
-| 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
+| 1 · Hook *(themes with `hook.html`)* | Big set photo, a one-line headline meant to stop the scroll, a small kicker badge. Content, not a dashboard — the data lives on the next slide. Written per post via the `hook` field, or auto-generated from the pricing data when omitted |
+| Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value (each shown as a % vs retail), month-over-month trend, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
+| Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
+
+The hook slide is opt-in per theme: a theme only gets one if its folder has
+a `hook.html` (`poster` does; the rest currently start on the hero, as
+before).
 
 Every theme carries the same building blocks — a story-style progress bar,
 a post header with the **brickanalyst.en** avatar, both new and used value
@@ -26,7 +31,7 @@ yellow, for posting sets from that theme specifically.
 
 | Theme | Look | Sample |
 | --- | --- | --- |
-| `poster` (default) | LEGO yellow and red HUD: perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with a growth starburst, stat meters (new vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
+| `poster` (default) | LEGO yellow and red, flat and bold: a hook slide up front, plain rounded panels with a stud dot in each corner and a stud strip along the footer (the one LEGO signature that stays), a white price tag, stat blocks (new vs retail, month move, $/piece, minifig share), a value bar per figure. No gradients, no glow, no grid | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
 | `marvel` | The poster layout in Marvel's own colors: a red header band (not yellow), a halftone Ben-Day dot backdrop with comic speed lines instead of the tech grid, a black-stroked comic-ink headline, gold/red corner studs | [`out/76269-marvel/`](out/76269-marvel/), [`out/76051-marvel/`](out/76051-marvel/) |
 | `dc` | The same layout in DC's colors: an electric-blue header band, a searchlight beam and tech-lattice backdrop, a soft blue energy glow on the headline instead of a comic-ink stroke, gold/blue corner studs | [`out/76269-dc/`](out/76269-dc/), [`out/76051-dc/`](out/76051-dc/) |
 | `ig` | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269-ig/`](out/76269-ig/), [`out/76051-ig/`](out/76051-ig/) |
@@ -180,6 +185,11 @@ Notes:
   website line under the handle. `gradient` (any CSS gradient) recolours the
   progress bar, rings, highlight card and gradient text; `accent` is the
   matching solid colour. Both default to Instagram's brand colours.
+- **Hook slide.** Optional `hook` object — `kicker`, `headline`, `sub` —
+  for the lead-in slide on themes that have one. Write your own per post
+  (e.g. `"headline": "When will the Avengers Tower retire?"`) or leave any
+  field out and it's generated from the pricing data, e.g. `"+1% since
+  2023"`.
 
 ## Currency
 
@@ -206,10 +216,13 @@ Displayed values are rounded for the feed; the payload keeps the raw numbers.
 
 - `templates/<theme>/base.html` – shell shared by every slide of that theme:
   palette tokens, progress bar, header, footer/watermark.
-- `templates/<theme>/hero.html` – slide 1.
+- `templates/<theme>/hero.html` – the hero slide.
 - `templates/<theme>/minifigs.html` – the 2×2 figure grid.
-- A new theme is a new folder with those three files; it shows up in
-  `--theme` automatically.
+- `templates/<theme>/hook.html` *(optional)* – the lead-in slide, rendered
+  first when present.
+- A new theme is a new folder with `base.html`, `hero.html` and
+  `minifigs.html`; it shows up in `--theme` automatically. Add `hook.html`
+  too if it should open on a hook slide.
 - `assets/fonts/` – Manrope (SIL OFL), embedded so output is identical on any machine.
 - `assets/profile.jpg` – the avatar; `assets/brick-mark.svg` is the fallback
   when a payload sets `avatar` to an empty string.

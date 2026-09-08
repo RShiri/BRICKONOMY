@@ -422,6 +422,17 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
     msrp, new, used = round_to_5(p["msrp"]), round_to_5(p["new_value"]), round_to_5(p["used_value"])
     vs_retail = ((p["new_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
     used_vs_retail = ((p["used_value"] - p["msrp"]) / p["msrp"] * 100) if p["msrp"] else 0.0
+    vs_retail_label = f"{'+' if vs_retail >= 0 else '−'}{abs(vs_retail):.0f}%"
+
+    # Hook slide copy: a punchy lead-in line before the data-dense hero.
+    # Any field left out of the payload falls back to a short stat headline
+    # generated from the same numbers the burst badge already shows.
+    hook_in = payload.get("hook") or {}
+    hook = {
+        "kicker": hook_in.get("kicker") or "Price check",
+        "headline": hook_in.get("headline") or f"{vs_retail_label} since {s['year']}",
+        "sub": hook_in.get("sub") or "Swipe for the full breakdown",
+    }
 
     # Extra readouts: price per piece, the figures' combined value as a share
     # of the set's used value, and each figure's (quantity-weighted) slice of
@@ -439,7 +450,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         "pricing": {
             "msrp_display": msrp, "new_display": new, "used_display": used,
             "vs_retail_pct": vs_retail,
-            "vs_retail_label": f"{'+' if vs_retail >= 0 else '−'}{abs(vs_retail):.0f}%",
+            "vs_retail_label": vs_retail_label,
             "used_vs_retail_pct": used_vs_retail,
             "used_vs_retail_label": f"{'+' if used_vs_retail >= 0 else '−'}{abs(used_vs_retail):.0f}%",
             "per_piece_label": f"${per_piece:.2f}" if per_piece is not None else "—",
@@ -469,6 +480,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "pages": pages,
         },
         "branding": branding,
+        "hook": hook,
         "fx_rate": fx,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
@@ -506,15 +518,26 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
 
     common = {k: view[k] for k in ("set", "pricing", "market", "minifigs", "branding", "assets")}
     pages = view["minifigs"]["pages"]
-    total = 1 + len(pages)
+    # A theme may add its own hook.html for a bold, low-chrome lead-in slide
+    # before the data-dense hero; themes without one just start on the hero,
+    # same as before.
+    has_hook = (TEMPLATES / theme / "hook.html").exists()
+    offset = 1 if has_hook else 0
+    total = 1 + offset + len(pages)
+
     # `nav` drives the story-style progress bar at the top of every slide.
-    slides = [Slide(1, "hero", env.get_template("hero.html").render(nav={"index": 0, "total": total}, **common))]
+    slides: list[Slide] = []
+    if has_hook:
+        slides.append(Slide(1, "hook", env.get_template("hook.html").render(
+            nav={"index": 0, "total": total}, hook=view["hook"], **common)))
+    slides.append(Slide(1 + offset, "hero", env.get_template("hero.html").render(
+        nav={"index": offset, "total": total}, **common)))
     for i, items in enumerate(pages, start=1):
         page = {"index": i, "total": len(pages), "figs": items,
                 "per_slide": per_slide, "is_last": i == len(pages),
                 "first_rank": items[0]["rank"], "last_rank": items[-1]["rank"]}
-        slides.append(Slide(i + 1, "minifigs", env.get_template("minifigs.html").render(
-            page=page, nav={"index": i, "total": total}, **common)))
+        slides.append(Slide(1 + offset + i, "minifigs", env.get_template("minifigs.html").render(
+            page=page, nav={"index": offset + i, "total": total}, **common)))
     return slides
 
 

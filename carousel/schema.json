@@ -93,6 +93,16 @@
         "gradient":  { "type": "string", "default": "linear-gradient(135deg, #f9ce34 0%, #fa7e1e 28%, #ee2a7b 58%, #6228d7 100%)", "description": "CSS gradient used for the progress bar, story rings, highlight card and gradient text. Defaults to the Instagram brand gradient." },
         "cta":       { "type": "string", "default": "Full price history on the site", "description": "Last-slide call to action." }
       }
+    },
+    "hook": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Copy for the bold lead-in slide shown before the hero (only rendered by themes that provide a hook.html; poster has one, currently). Any field left out is auto-generated from the pricing data.",
+      "properties": {
+        "kicker":   { "type": "string", "description": "Small badge above the image, e.g. \"Retirement watch\". Defaults to \"Price check\"." },
+        "headline": { "type": "string", "description": "The big bold hook line, e.g. \"When will the Avengers Tower retire?\". Defaults to a short stat line like \"+1% since 2023\"." },
+        "sub":      { "type": "string", "description": "Small line under the headline. Defaults to \"Swipe for the full breakdown\"." }
+      }
     }
   }
 }

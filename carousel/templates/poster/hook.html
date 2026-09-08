@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{#
+  Hook slide: a bold, low-chrome lead-in before the data-dense hero — a big
+  image and a punchy headline, nothing else competing for attention. Modeled
+  on how a "did you know" LEGO fan post grabs the thumb: full-size photo,
+  one line of copy, a small kicker tag, done.
+#}
+
+{% block style %}
+  .kicker { margin-top: 26px; display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 22px; background: var(--yellow); color: var(--black); font-size: 19px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; }
+  .kicker .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+
+  /* Fills whatever room the kicker + headline don't need, instead of a
+     fixed height, so a one-line headline still gets a big image and a
+     three-line one doesn't get squeezed. */
+  .stage { position: relative; margin-top: 22px; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+  .stage .frame { position: absolute; inset: 16px; display: flex; align-items: center; justify-content: center; }
+  .stage img { position: relative; max-width: 92%; max-height: 92%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); }
+  .stage .num { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 16px; border-radius: 999px; }
+
+  .hook { margin-top: 28px; }
+  .hook h1 { font-size: 58px; line-height: 1.06; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
+  .hook .sub { margin-top: 14px; font-family: var(--mono); font-size: 19px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow); }
+{% endblock %}
+
+{% block header_sub %}Price check · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="tag red">Price check</span>{% endblock %}
+
+{% block body %}
+  <span class="kicker"><i class="dot"></i>{{ hook.kicker }}</span>
+
+  <div class="stage hud">
+    <div class="frame"><img src="{{ assets.set_image }}" alt=""></div>
+    <span class="num">#{{ set.number }}</span>
+  </div>
+
+  <div class="hook">
+    <h1>{{ hook.headline }}</h1>
+    <div class="sub">{{ hook.sub }}</div>
+  </div>
+{% endblock %}
