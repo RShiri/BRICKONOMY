@@ -1,0 +1,62 @@
+{
+  "set": "76269",
+  "name": "Avengers Tower",
+  "theme": "dc",
+  "source_currency": "ILS",
+  "fx_rate": 3.0193,
+  "size": [
+    2160,
+    2700
+  ],
+  "updated_at": "2026-09-04",
+  "displayed": {
+    "msrp": 500,
+    "new_value": 505,
+    "used_value": 390,
+    "minifigs_used_total": 285,
+    "trend": "up"
+  },
+  "slides": [
+    {
+      "index": 1,
+      "kind": "hero",
+      "file": "76269-slide-01.png"
+    },
+    {
+      "index": 2,
+      "kind": "minifigs",
+      "file": "76269-slide-02.png"
+    },
+    {
+      "index": 3,
+      "kind": "minifigs",
+      "file": "76269-slide-03.png"
+    },
+    {
+      "index": 4,
+      "kind": "minifigs",
+      "file": "76269-slide-04.png"
+    },
+    {
+      "index": 5,
+      "kind": "minifigs",
+      "file": "76269-slide-05.png"
+    },
+    {
+      "index": 6,
+      "kind": "minifigs",
+      "file": "76269-slide-06.png"
+    },
+    {
+      "index": 7,
+      "kind": "minifigs",
+      "file": "76269-slide-07.png"
+    },
+    {
+      "index": 8,
+      "kind": "minifigs",
+      "file": "76269-slide-08.png"
+    }
+  ],
+  "image_fallbacks": 0
+}
