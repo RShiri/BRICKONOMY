@@ -1,8 +1,8 @@
 {#
-  "Poster" theme, HUD edition: LEGO yellow and red on black, a perspective
-  grid, hazard stripes, chamfered panels with corner brackets and mono
-  readouts. Same blocks as the ig theme so hero.html / minifigs.html only
-  differ in layout.
+  "Poster" theme: LEGO yellow and red on flat black. Bold, high-contrast,
+  no HUD chrome — no perspective grid, no glow, no chamfered panels. The
+  one LEGO signature that stays is literal brick studs: a small stud dot
+  in each panel corner and a stud strip along the footer.
 #}
 <!doctype html>
 <html lang="en">
@@ -17,7 +17,6 @@
     --yellow: #ffd500; --yellow-2: #ffb000; --red: #e3000b; --red-2: #ff2d3a; --green: #22d36b;
     --ink: #ffffff; --muted: #aab0bd; --muted-2: #d6d6df;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-    --chamfer: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
     /* A raised LEGO stud: highlight top-left, rim shadow bottom-right.
        Used to fill shapes that already have their own outline (badges,
        ribbons, the burst) — its last stop is opaque so it reads as a solid
@@ -37,19 +36,6 @@
 
   .slide { position: relative; width: var(--w); height: var(--h); background: var(--black); overflow: hidden; display: flex; flex-direction: column; }
   .body { padding-top: 6px; }
-  /* Perspective grid floor + glows. */
-  .grid-bg { position: absolute; inset: 0; pointer-events: none;
-    background:
-      radial-gradient(600px 400px at 100% 100%, rgba(227,0,11,0.28), transparent 70%),
-      radial-gradient(520px 380px at 0% 30%, rgba(255,213,0,0.14), transparent 70%);
-  }
-  .grid-bg::before { content: ""; position: absolute; left: -40%; right: -40%; top: 52%; bottom: 0;
-    background-image: linear-gradient(rgba(255,213,0,0.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,213,0,0.14) 1px, transparent 1px);
-    background-size: 90px 70px; transform: perspective(700px) rotateX(58deg); transform-origin: 50% 0;
-    mask-image: linear-gradient(180deg, transparent, #000 30%, #000 80%, transparent); }
-  .grid-bg::after { content: ""; position: absolute; inset: 0;
-    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 6px); }
-  .slide > *:not(.grid-bg) { position: relative; z-index: 1; }
 
   /* ---------- yellow band ---------- */
   .band { background: var(--yellow); color: var(--black); padding: 0 var(--pad); height: 150px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
@@ -62,19 +48,16 @@
   .brand .avatar { width: 70px; height: 70px; border-radius: 50%; border: 4px solid var(--black); object-fit: cover; background: var(--black); box-shadow: 0 0 0 3px var(--red); }
   .brand .who b { display: block; font-size: 30px; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; }
   .brand .who small { display: block; font-size: 18px; font-weight: 700; opacity: 0.75; margin-top: 3px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
-  .tag { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; background: var(--black); color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); }
+  .tag { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 24px; background: var(--black); color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; }
   .tag.red { background: var(--red); color: #fff; }
   .tag .num { font-family: var(--mono); letter-spacing: 0.04em; }
 
   .body { flex: 1 1 auto; padding: 14px var(--pad) 0; display: flex; flex-direction: column; }
 
-  /* ---------- HUD panel: a raised brick slab with a stud in each corner
-     (was a flat targeting-bracket frame — this is the literal LEGO version:
-     every panel reads as a molded piece, not a scanner overlay). ---------- */
-  .hud { position: relative; background: linear-gradient(155deg, #1a1a24, var(--panel) 45%, #0c0c11); clip-path: var(--chamfer);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -1px 0 rgba(0,0,0,0.55), 0 16px 30px rgba(0,0,0,0.4); }
+  /* ---------- panel: flat, no chrome — a plain rounded slab. The one LEGO
+     touch that stays is a small stud dot in each corner. ---------- */
+  .hud { position: relative; background: var(--panel); border-radius: 24px; }
   .hud::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.55));
     background:
       var(--stud-yellow-dot) top 5px left 5px / 18px 18px no-repeat,
       var(--stud-yellow-dot) top 5px right 5px / 18px 18px no-repeat,
@@ -87,13 +70,12 @@
   .money .cur { font-size: 0.55em; vertical-align: 0.42em; margin-right: 0.04em; font-weight: 800; }
   .lbl { font-family: var(--mono); font-size: 17px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
   .lbl .dot { display: inline-block; width: 8px; height: 8px; background: var(--red); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 10px var(--red-2); }
-  .chip { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; font-size: 19px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+  .chip { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 14px; font-size: 19px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; }
   .chip.up { background: var(--green); color: #052; } .chip.down { background: var(--red); color: #fff; } .chip.flat { background: var(--panel-2); color: var(--muted-2); }
   .chip.yellow { background: var(--yellow); color: var(--black); }
   .chip svg { width: 18px; height: 18px; }
-  .bar { height: 8px; background: var(--panel-2); position: relative; overflow: hidden; }
+  .bar { height: 8px; background: var(--panel-2); border-radius: 999px; position: relative; overflow: hidden; }
   .bar i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--yellow), var(--red)); }
-  .bar::after { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, transparent 0 14px, var(--black) 14px 17px); }
 
   /* ---------- footer + stud strip ---------- */
   .footer { margin-top: auto; padding: 0 var(--pad); height: 84px; display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 19px; font-weight: 600; border-top: 1px solid var(--line); font-family: var(--mono); letter-spacing: 0.04em; }
@@ -110,7 +92,6 @@
 </head>
 <body>
 <div class="slide">
-  <div class="grid-bg"></div>
   <div class="band">
     <div class="story">{% for i in range(nav.total) %}<i class="{{ 'on' if i == nav.index else ('done' if i < nav.index else '') }}"></i>{% endfor %}</div>
     <div class="row">
