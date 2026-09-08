@@ -1,49 +1,45 @@
 {% extends "base.html" %}
 
 {% block style %}
-  .hero { margin-top: 34px; height: 500px; }
-  .hero .inner {
-    display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
-    background:
-      radial-gradient(70% 80% at 50% 65%, rgba(238,42,123,0.16), transparent 75%),
-      linear-gradient(180deg, #17111f, #0e0a14);
+  .stage { margin-top: 18px; height: 520px; position: relative; display: flex; align-items: center; justify-content: center; }
+  .stage .glow {
+    position: absolute; width: 640px; height: 640px; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(238,42,123,0.42), rgba(98,40,215,0.22) 55%, transparent);
+    filter: blur(30px);
   }
-  .hero .inner img { max-width: 90%; max-height: 88%; object-fit: contain; filter: drop-shadow(0 26px 44px rgba(0,0,0,0.6)); }
-  .hero .year {
-    position: absolute; top: 18px; left: 18px;
-    display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px;
-    background: rgba(10,7,16,0.7); border: 1px solid var(--line); backdrop-filter: blur(8px);
-    font-size: 19px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted-2);
+  .stage .halo {
+    position: absolute; width: 470px; height: 470px; border-radius: 50%; padding: 3px; background: var(--ig); opacity: 0.9;
+    mask: radial-gradient(closest-side, transparent 97%, #000 98%);
+    -webkit-mask: radial-gradient(closest-side, transparent 97%, #000 98%);
   }
+  .stage img { position: relative; max-width: 96%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 34px 50px rgba(0,0,0,0.65)); }
 
-  .title { margin-top: 32px; }
-  .title h1 { font-size: 64px; line-height: 1.02; font-weight: 800; letter-spacing: -0.025em; }
-  .title .meta { margin-top: 12px; font-size: 25px; color: var(--muted-2); font-weight: 600; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-  .title .meta .sep { color: var(--muted); opacity: 0.7; }
+  .title { margin-top: 20px; }
+  .title h1 { font-size: 74px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; }
+  .title .meta { margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap; }
 
-  .prices { margin-top: 30px; display: grid; grid-template-columns: 0.85fr 1.6fr 0.85fr; gap: 18px; }
+  .prices { margin-top: 28px; display: grid; grid-template-columns: 0.85fr 1.6fr 0.85fr; gap: 16px; }
   .card {
-    background: var(--glass); border: 1px solid var(--line); border-radius: 24px;
-    padding: 22px 24px 20px; min-height: 178px;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 26px;
+    padding: 22px 24px 20px; min-height: 176px;
     display: flex; flex-direction: column; justify-content: space-between;
     backdrop-filter: blur(10px);
   }
   .card .lbl { font-size: 18px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
   .card .val { font-size: 56px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; margin-top: 12px; }
   .card .sub { margin-top: 10px; font-size: 20px; color: var(--muted); font-weight: 600; }
-  .card.new { background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.35); }
+  .card.new { background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.38); }
   .card.new .lbl { color: rgba(255,255,255,0.85); }
   .card.new .val { color: #fff; }
-  .card.new .sub { color: rgba(255,255,255,0.92); }
-  .card.new .chip { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); color: #fff; font-size: 18px; }
+  .card.new .sub { color: #fff; }
+  .card.new .chip { background: rgba(255,255,255,0.20); border-color: rgba(255,255,255,0.35); color: #fff; font-size: 18px; font-weight: 800; height: 36px; }
   .card.msrp .val { color: var(--muted-2); }
   .sub svg { width: 20px; height: 20px; vertical-align: -3px; margin-right: 2px; }
-  .card.new .sub.down { color: #ffd7de; }
 
   .figs {
-    margin-top: 20px;
+    margin-top: 16px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 26px; border-radius: 24px;
+    padding: 18px 26px; border-radius: 26px;
     background: var(--glass); border: 1px solid var(--line);
   }
   .figs .left { display: flex; align-items: center; gap: 18px; }
@@ -52,31 +48,31 @@
   .figs .icon svg { width: 28px; height: 28px; }
   .figs .txt b { display: block; font-size: 26px; font-weight: 800; }
   .figs .txt span { display: block; margin-top: 4px; font-size: 20px; color: var(--muted); font-weight: 600; }
-  .figs .right { text-align: right; display: flex; align-items: center; gap: 22px; }
+  .figs .right { display: flex; align-items: center; gap: 22px; }
   .figs .total { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; }
   .figs .total .cur { opacity: 1; }
   .figs .swipe { font-size: 19px; color: var(--muted-2); font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
 {% endblock %}
 
+{% block header_sub %}LEGO price check · set {{ set.number }}{% endblock %}
 {% block header_right %}
-  <span class="pill ig">Price check <span class="num">#{{ set.number }}</span></span>
+  <span class="pill ig">Price check</span>
 {% endblock %}
 
 {% block body %}
-  <div class="hero ring-tile">
-    <div class="inner">
-      <span class="year">{{ set.year }} · {{ set.pieces | thousands }} pcs</span>
-      <img src="{{ assets.set_image }}" alt="">
-    </div>
+  <div class="stage">
+    <div class="glow"></div>
+    <div class="halo"></div>
+    <img src="{{ assets.set_image }}" alt="">
   </div>
 
   <div class="title">
     <h1>{{ set.name }}</h1>
     <div class="meta">
-      <span class="code">{{ set.number }}</span>
-      <span class="sep">·</span><span>{{ set.year }}</span>
-      <span class="sep">·</span><span>{{ set.pieces | thousands }} pieces</span>
-      {% if set.theme %}<span class="sep">·</span><span>{{ set.theme }}</span>{% endif %}
+      <span class="chip ig code">#{{ set.number }}</span>
+      <span class="chip">{{ set.year }}</span>
+      <span class="chip">{{ set.pieces | thousands }} pieces</span>
+      {% if set.theme %}<span class="chip">{{ set.theme }}</span>{% endif %}
     </div>
   </div>
 

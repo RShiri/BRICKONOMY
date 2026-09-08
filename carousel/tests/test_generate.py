@@ -109,7 +109,7 @@ def test_html_renders_every_slide(view):
     assert "4.0% vs last month" in hero
     figs = "".join(s.html for s in slides[1:])
     assert figs.count('class="qty">×4') == 1     # the Chitauri card, once
-    assert "Minifigures <span" in slides[-1].html
+    assert "Minifigs <span" in slides[-1].html
     assert f"{len(slides) - 1}/{len(slides) - 1}" in slides[-1].html
 
 

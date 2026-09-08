@@ -121,7 +121,9 @@ The price is determined based on the **volume of sales**:
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ### 📸 Instagram carousel generator (`carousel/`)
-Renders a set's market snapshot (JSON) into 1080×1350 carousel slides: a hero
-slide (set image, MSRP vs new/used value, trend, minifig total, timestamp) and
-2×2 minifigure slides. Sample output for 76269 is in `carousel/out/76269/`.
+Renders a set's market snapshot (JSON) into 1080×1350 carousel slides for
+the **@brickanalyst.en** account: a hero slide (set image, MSRP vs new/used
+value, trend, minifig total, timestamp) and 2×2 minifigure slides. A GitHub
+Actions workflow renders them with real BrickLink pictures. Sample output
+for 76269 is in `carousel/out/76269/`.
 See [`carousel/README.md`](carousel/README.md).

@@ -1,85 +1,85 @@
 {% extends "base.html" %}
 
 {% block style %}
-  .sub-head { margin-top: 30px; display: flex; align-items: baseline; justify-content: space-between; }
+  .sub-head { margin-top: 26px; display: flex; align-items: baseline; justify-content: space-between; }
   .sub-head h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
   .sub-head h2 small { color: var(--muted); font-weight: 700; font-size: 26px; margin-left: 12px; }
-  .sub-head .hint { font-size: 21px; color: var(--muted); font-weight: 600; }
+  .sub-head .hint { font-size: 20px; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
   .grid {
-    margin-top: 26px;
+    margin-top: 22px;
     display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-    gap: 22px;
-    height: 905px;
+    gap: 20px; height: 900px;
   }
   .fig {
     position: relative;
-    background: var(--glass); border: 1px solid var(--line); border-radius: 26px;
-    padding: 16px; display: flex; flex-direction: column; gap: 14px;
+    background: var(--glass); border: 1px solid var(--line); border-radius: 28px;
+    padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 12px;
     overflow: hidden; backdrop-filter: blur(10px);
   }
-  .fig .img { flex: 1 1 auto; min-height: 0; padding: 3px; border-radius: 20px; background: var(--ig); }
-  .fig .img .inner {
-    height: 100%; border-radius: 17px; background: #120d1a;
-    display: flex; align-items: center; justify-content: center;
-    background-image: radial-gradient(55% 65% at 50% 70%, rgba(238,42,123,0.14), transparent 80%);
+  .fig .img { position: relative; flex: 1 1 auto; min-height: 0; border-radius: 20px; display: flex; align-items: center; justify-content: center; }
+  .fig .img::before {
+    content: ""; position: absolute; width: 62%; height: 70%; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(238,42,123,0.35), rgba(98,40,215,0.18) 60%, transparent);
+    filter: blur(18px);
   }
-  .fig .img img { max-width: 78%; max-height: 86%; object-fit: contain; filter: drop-shadow(0 16px 24px rgba(0,0,0,0.6)); }
-  .fig .row { display: flex; align-items: center; justify-content: space-between; }
-  .fig .code-chip {
-    display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px;
-    background: var(--glass-2); border: 1px solid var(--line);
-    font-family: var(--mono); font-size: 20px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-2);
+  .fig .img img { position: relative; max-width: 80%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 18px 26px rgba(0,0,0,0.6)); }
+  .fig .rank {
+    position: absolute; top: 4px; left: 2px; z-index: 2;
+    display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px;
+    background: var(--ig); color: #fff; font-size: 19px; font-weight: 800; letter-spacing: 0.02em;
+    box-shadow: 0 8px 20px rgba(238,42,123,0.35);
   }
   .fig .qty {
-    display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px;
-    background: var(--ig); color: #fff; font-size: 20px; font-weight: 800;
+    position: absolute; top: 4px; right: 2px; z-index: 2;
+    display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 999px;
+    background: rgba(255,255,255,0.14); border: 1px solid var(--line); color: #fff; font-size: 20px; font-weight: 800;
   }
-  .fig .name { min-height: 58px; }
   .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .fig .name b { font-size: 25px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; }
-  .fig .name small { color: var(--muted); font-weight: 600; font-size: 20px; margin-top: 4px; line-height: 1.2; }
-  .fig .price { display: flex; align-items: baseline; justify-content: space-between; }
-  .fig .price .val { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
-  .fig .price .lbl { font-size: 18px; color: var(--muted); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-  .fig.empty { background: transparent; border: 1px dashed var(--line); backdrop-filter: none; }
-  .fig.cta {
-    justify-content: center; align-items: flex-start; gap: 18px; padding: 34px;
-    background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.35);
+  .fig .name b { font-size: 26px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-weight: 600; font-size: 20px; margin-top: 4px; line-height: 1.2; min-height: 24px; }
+  .fig .price { display: flex; align-items: center; justify-content: space-between; }
+  .fig .price .val { font-size: 46px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }
+  .fig .price .code-chip {
+    display: inline-flex; align-items: center; height: 34px; padding: 0 12px; border-radius: 10px;
+    background: var(--glass-2); border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 19px; font-weight: 600; letter-spacing: 0.05em; color: var(--muted-2);
   }
+  .fig .price .lbl { font-size: 17px; color: var(--muted); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-left: 10px; }
+  .fig.empty { background: transparent; border: 1px dashed var(--line); backdrop-filter: none; }
+  .fig.cta { justify-content: center; align-items: flex-start; gap: 18px; padding: 34px; background: var(--ig); border-color: transparent; box-shadow: 0 24px 60px rgba(238,42,123,0.38); }
   .fig.cta .big { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: #fff; }
   .fig.cta .url { font-size: 22px; font-weight: 800; color: rgba(255,255,255,0.9); }
 {% endblock %}
 
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
 {% block header_right %}
-  <span class="pill">Minifigures <span class="num">{{ page.index }}/{{ page.total }}</span></span>
+  <span class="pill">Minifigs <span class="num">{{ page.index }}/{{ page.total }}</span></span>
 {% endblock %}
 
 {% block body %}
   <div class="sub-head">
-    <h2>{{ set.name }} <small class="code">{{ set.number }}</small></h2>
-    <span class="hint">used value · per figure</span>
+    <h2>Minifigures <small>{{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small></h2>
+    <span class="hint">used value · each</span>
   </div>
 
   <div class="grid">
     {% for f in page.figs %}
       <div class="fig">
-        <div class="img"><div class="inner"><img src="{{ f.image }}" alt=""></div></div>
-        <div class="row">
-          <span class="code-chip">{{ f.code }}</span>
-          {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
-        </div>
-        <div class="name"><b>{{ f.title }}</b>{% if f.subtitle %}<small>{{ f.subtitle }}</small>{% endif %}</div>
+        <span class="rank">#{{ f.rank }}</span>
+        {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
         <div class="price">
-          <span class="val money">{{ f.used_display | money }}</span>
-          <span class="lbl">used</span>
+          <span class="val money">{{ f.used_display | money }}<span class="lbl">used</span></span>
+          <span class="code-chip">{{ f.code }}</span>
         </div>
       </div>
     {% endfor %}
     {# Pad the last slide; the first free slot becomes a call-to-action card. #}
     {% for _ in range(page.per_slide - page.figs | length) %}
       {% if loop.first and page.is_last and branding.cta %}
-        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.url }}</div></div>
+        <div class="fig cta"><div class="big">{{ branding.cta }}</div><div class="url">{{ branding.handle or branding.url }}</div></div>
       {% else %}
         <div class="fig empty"></div>
       {% endif %}

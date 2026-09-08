@@ -46,10 +46,10 @@ MAX_PER_SLIDE = 4
 INSTAGRAM_MAX_SLIDES = 20
 
 DEFAULT_BRANDING = {
-    "site_name": "BRICKONOMY",
-    "url": "rshiri.github.io/BRICKONOMY",
-    "handle": "",
-    "logo": "",
+    "site_name": "brickanalyst.en",
+    "url": "",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
     "accent": "#ee2a7b",
     "gradient": "linear-gradient(135deg, #f9ce34 0%, #fa7e1e 28%, #ee2a7b 58%, #6228d7 100%)",
     "cta": "Full price history on the site",
@@ -319,6 +319,21 @@ def split_name(name: str) -> tuple[str, str]:
     return (head.strip(), tail.strip()) if sep else (name.strip(), "")
 
 
+def _asset_or_ref(ref: str | None, fetcher: ImageFetcher, base: Path) -> str | None:
+    """Resolve a branding image: a bundled asset (relative to carousel/), a
+    payload-relative path, or a URL. The avatar is used as-is (no cutout)."""
+    if not ref:
+        return None
+    bundled = HERE / ref
+    if bundled.exists():
+        return _data_uri(bundled.read_bytes(), mimetypes.guess_type(str(bundled))[0] or "image/jpeg")
+    cutout, fetcher.cutout = fetcher.cutout, False
+    try:
+        return fetcher.get(ref, base)
+    finally:
+        fetcher.cutout = cutout
+
+
 def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
                sort: str, per_slide: int) -> dict[str, Any]:
     s, p, m = payload["set"], payload["pricing"], payload["market"]
@@ -334,7 +349,8 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
     if raw_total is None:
         raw_total = sum(f["used_price"] * f["quantity"] for f in figs)
 
-    for f in figs:
+    for rank, f in enumerate(figs, start=1):
+        f["rank"] = rank
         f["title"], f["subtitle"] = split_name(f["name"])
         f["used_display"] = round_dollar(f["used_price"])
         url = f.get("image_url") or bricklink_image_url(f["code"], "M")
@@ -367,7 +383,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
             "mark": _data_uri((ASSETS / "brick-mark.svg").read_bytes(), "image/svg+xml"),
-            "logo": fetcher.get(branding.get("logo"), base) if branding.get("logo") else None,
+            "avatar": _asset_or_ref(branding.get("avatar"), fetcher, base),
             "set_image": fetcher.get(s.get("image_url") or bricklink_image_url(str(s["number"]), "S"), base)
             or placeholder_set(str(s["number"])),
         },
@@ -403,7 +419,8 @@ def render_html(view: dict[str, Any], per_slide: int) -> list[Slide]:
     slides = [Slide(1, "hero", env.get_template("hero.html").render(nav={"index": 0, "total": total}, **common))]
     for i, items in enumerate(pages, start=1):
         page = {"index": i, "total": len(pages), "figs": items,
-                "per_slide": per_slide, "is_last": i == len(pages)}
+                "per_slide": per_slide, "is_last": i == len(pages),
+                "first_rank": items[0]["rank"], "last_rank": items[-1]["rank"]}
         slides.append(Slide(i + 1, "minifigs", env.get_template("minifigs.html").render(
             page=page, nav={"index": i, "total": total}, **common)))
     return slides

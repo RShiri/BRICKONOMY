@@ -9,11 +9,13 @@ feed shows uncropped).
 | 1 · Hero | Set image, name / number / year / pieces / theme, MSRP vs current **new** and **used** value, month-over-month trend, growth vs retail, combined used value of all minifigures, "Prices valid as of …" stamp, watermark |
 | 2 … N · Minifigures | Four figures per slide: image, BrickLink code, name, used price, ×quantity badge. Page counter, watermark. A free slot on the last slide becomes a call-to-action card |
 
-The look is Instagram-native rather than the web app's: dark glass cards on
-near-black, the Instagram brand gradient (yellow → orange → pink → purple)
-for the story-style progress bar along the top, the "story ring" around
-every image, the highlighted value card and the handle line with the
-Instagram glyph.
+The look is an Instagram post, not a web page: a story-style progress bar
+along the top, a post header with the **brickanalyst.en** avatar in a
+gradient story ring, the Instagram brand gradient (yellow → orange → pink →
+purple) on the highlighted value card, pills and rank badges, dark glass
+cards on near-black, and the handle with the Instagram glyph as watermark.
+`assets/profile.jpg` is the avatar; a 1080×1080 copy for the Instagram
+profile itself is in `out/profile-1080.jpg`.
 
 Sample output for **76269 Avengers Tower** is in [`out/76269/`](out/76269/).
 It was rendered on a machine that cannot reach `img.bricklink.com`, so the
@@ -81,9 +83,9 @@ automatically when `jsonschema` is installed). A minimal payload:
     { "code": "sh0730", "name": "Chitauri - Dark Bluish Gray", "used_price": 5.09, "quantity": 4,
       "image_url": "https://img.bricklink.com/ItemImage/MN/0/sh0730.png" }
   ],
-  "branding": { "site_name": "BRICKONOMY", "url": "rshiri.github.io/BRICKONOMY",
-                "handle": "@brickonomy", "logo": "", "accent": "#d7ff3a",
-                "cta": "Full price history on the site" }
+  "branding": { "site_name": "brickanalyst.en", "handle": "@brickanalyst.en",
+                "avatar": "assets/profile.jpg", "url": "",
+                "cta": "Follow for weekly LEGO price checks" }
 }
 ```
 
@@ -106,8 +108,10 @@ Notes:
   flood-fills that from the edges to transparent so figures float on the
   dark cards (white inside the subject is untouched). `--keep-background`
   turns this off.
-- **Branding.** `branding.logo` (SVG/PNG, light-on-dark) replaces the
-  default brick mark + wordmark. `gradient` (any CSS gradient) recolours the
+- **Branding.** `site_name` and `handle` default to brickanalyst.en.
+  `avatar` is the profile picture in the story ring (bundled asset path,
+  payload-relative path or URL; square works best). `url` adds an optional
+  website line under the handle. `gradient` (any CSS gradient) recolours the
   progress bar, rings, highlight card and gradient text; `accent` is the
   matching solid colour. Both default to Instagram's brand colours.
 
@@ -127,7 +131,8 @@ Displayed values are rounded for the feed; the payload keeps the raw numbers.
 - `templates/hero.html` – slide 1.
 - `templates/minifigs.html` – the 2×2 figure grid.
 - `assets/fonts/` – Manrope (SIL OFL), embedded so output is identical on any machine.
-- `assets/brick-mark.svg` – default logo mark; swap it or set `branding.logo`.
+- `assets/profile.jpg` – the avatar; `assets/brick-mark.svg` is the fallback
+  when a payload sets `avatar` to an empty string.
 
 Run with `--keep-html`, open the HTML in a browser at 1080×1350 and iterate
 on the CSS; re-run to regenerate the PNGs.

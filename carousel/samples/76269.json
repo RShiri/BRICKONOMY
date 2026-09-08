@@ -189,9 +189,9 @@
     }
   ],
   "branding": {
-    "site_name": "BRICKONOMY",
-    "url": "rshiri.github.io/BRICKONOMY",
-    "handle": "@brickonomy",
-    "cta": "Full price history & every minifig on the site"
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
   }
 }
