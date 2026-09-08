@@ -1,41 +1,48 @@
 {% extends "base.html" %}
 
 {#
-  Hook slide: a bold, low-chrome lead-in before the data-dense hero — a big
-  image and a punchy headline, nothing else competing for attention. Modeled
-  on how a "did you know" LEGO fan post grabs the thumb: full-size photo,
-  one line of copy, a small kicker tag, done.
+  Hook slide: no dashboard chrome at all — Instagram already shows the
+  account handle and its own carousel position dots above every post, so
+  baking our own header band and footer bar in here just competes with the
+  photo. Instead: the set photo fills almost the whole canvas, and the
+  headline sits directly over the bottom of it on a dark scrim, the way a
+  fan "did you know" post reads — one big image, one line of copy.
 #}
 
 {% block style %}
-  .kicker { margin-top: 26px; display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 22px; background: var(--yellow); color: var(--black); font-size: 19px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 999px; }
-  .kicker .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  /* The rest of this theme's slides keep the yellow header band and the
+     footer/stud strip; this one drops both so the photo runs edge to edge. */
+  .band, .footer, .studs { display: none; }
+  .body { padding: 0; }
 
-  /* Fills whatever room the kicker + headline don't need, instead of a
-     fixed height, so a one-line headline still gets a big image and a
-     three-line one doesn't get squeezed. */
-  .stage { position: relative; margin-top: 22px; flex: 1 1 auto; min-height: 0; overflow: hidden; }
-  .stage .frame { position: absolute; inset: 16px; display: flex; align-items: center; justify-content: center; }
-  .stage img { position: relative; max-width: 92%; max-height: 92%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); }
-  .stage .num { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 16px; border-radius: 999px; }
+  .hookstage { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden;
+    background: radial-gradient(ellipse 900px 700px at 50% 32%, #1c1c26, var(--black) 70%); }
+  .hookstage img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    max-width: 90%; max-height: 88%; width: auto; height: auto; object-fit: contain;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.7)); }
+  .hookstage .num { position: absolute; top: 32px; left: 32px; z-index: 2; background: var(--yellow); color: var(--black);
+    font-family: var(--mono); font-weight: 800; font-size: 20px; padding: 8px 16px; border-radius: 999px; }
+  /* Dark gradient behind the headline so white text reads over the photo. */
+  .hookstage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46%; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--black) 80%); }
 
-  .hook { margin-top: 28px; }
-  .hook h1 { font-size: 58px; line-height: 1.06; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
-  .hook .sub { margin-top: 14px; font-family: var(--mono); font-size: 19px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow); }
+  .hookcopy { position: relative; z-index: 2; margin-top: -180px; padding: 0 var(--pad) 64px; }
+  .hookcopy .kicker { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px;
+    background: var(--yellow); color: var(--black); font-size: 17px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; border-radius: 999px; }
+  .hookcopy h1 { margin-top: 20px; font-size: 62px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em;
+    text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+  .hookcopy .sub { margin-top: 16px; font-family: var(--mono); font-size: 19px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--yellow); }
 {% endblock %}
 
-{% block header_sub %}Price check · set {{ set.number }}{% endblock %}
-{% block header_right %}<span class="tag red">Price check</span>{% endblock %}
-
 {% block body %}
-  <span class="kicker"><i class="dot"></i>{{ hook.kicker }}</span>
-
-  <div class="stage hud">
-    <div class="frame"><img src="{{ assets.set_image }}" alt=""></div>
+  <div class="hookstage">
+    <img src="{{ assets.set_image }}" alt="">
     <span class="num">#{{ set.number }}</span>
   </div>
-
-  <div class="hook">
+  <div class="hookcopy">
+    <span class="kicker">{{ hook.kicker }}</span>
     <h1>{{ hook.headline }}</h1>
     <div class="sub">{{ hook.sub }}</div>
   </div>
