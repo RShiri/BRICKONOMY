@@ -159,6 +159,19 @@ class ImageFetcher:
         return data
 
 
+def bricklink_image_url(item_id: str, kind: str) -> str:
+    """Default picture for an item, same convention the web app uses.
+
+    BrickLink serves catalog images at a predictable URL, so payloads may omit
+    `image_url` entirely: sets -> ItemImage/SN/0/<number>-1.png, minifigs ->
+    ItemImage/MN/0/<code>.png.
+    """
+    if kind == "M":
+        return f"https://img.bricklink.com/ItemImage/MN/0/{item_id}.png"
+    suffix = item_id if "-" in item_id else f"{item_id}-1"
+    return f"https://img.bricklink.com/ItemImage/SN/0/{suffix}.png"
+
+
 def placeholder_minifig(code: str) -> str:
     """Inline SVG silhouette used when a minifig image can't be fetched."""
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" width="200" height="260">
@@ -264,7 +277,8 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
     for f in figs:
         f["title"], f["subtitle"] = split_name(f["name"])
         f["used_display"] = round_dollar(f["used_price"])
-        f["image"] = fetcher.get(f.get("image_url"), base) or placeholder_minifig(f["code"])
+        url = f.get("image_url") or bricklink_image_url(f["code"], "M")
+        f["image"] = fetcher.get(url, base) or placeholder_minifig(f["code"])
 
     pages = [figs[i:i + per_slide] for i in range(0, len(figs), per_slide)]
 
@@ -294,7 +308,8 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
             "mark": _data_uri((ASSETS / "brick-mark.svg").read_bytes(), "image/svg+xml"),
             "logo": fetcher.get(branding.get("logo"), base) if branding.get("logo") else None,
-            "set_image": fetcher.get(s.get("image_url"), base) or placeholder_set(str(s["number"])),
+            "set_image": fetcher.get(s.get("image_url") or bricklink_image_url(str(s["number"]), "S"), base)
+            or placeholder_set(str(s["number"])),
         },
     }
 

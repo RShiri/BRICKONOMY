@@ -95,10 +95,13 @@ Notes:
   it is the quantity-weighted sum of `minifigs[].used_price`.
 - **Names.** BrickLink names ("Vision - Dark Turquoise") are split at the
   first " - " into a bold character line and a muted variant line.
-- **Images.** `image_url` accepts http(s), `file://` or a local path
-  (relative to the payload). Downloads are cached; any failure (offline,
-  404, HTML instead of an image) falls back to a generated placeholder and
-  is reported on stderr, so a missing picture never blocks a post.
+- **Images.** `image_url` is optional: when omitted the generator uses
+  BrickLink's catalog picture for the set number / minifig code, the same
+  URLs the website hotlinks. It also accepts http(s), `file://` or a local
+  path (relative to the payload). Downloads are cached; any failure
+  (offline, 404, HTML instead of an image) falls back to a generated
+  placeholder and is reported on stderr, so a missing picture never blocks
+  a post.
 - **Branding.** `branding.logo` (SVG/PNG, light-on-dark) replaces the
   default brick mark + wordmark. `gradient` (any CSS gradient) recolours the
   progress bar, rings, highlight card and gradient text; `accent` is the
@@ -124,6 +127,15 @@ Displayed values are rounded for the feed; the payload keeps the raw numbers.
 
 Run with `--keep-html`, open the HTML in a browser at 1080×1350 and iterate
 on the CSS; re-run to regenerate the PNGs.
+
+## Rendering in GitHub Actions
+
+`.github/workflows/carousel.yml` renders a payload on a GitHub runner (which
+can reach BrickLink), uploads the slides as a workflow artifact and commits
+them under `carousel/out/<set>/` on the branch it ran from. It runs on
+every push that touches `carousel/` (except the rendered output itself) and
+can be started by hand from the Actions tab with any payload path, so a
+machine that cannot download the pictures can still get finished slides.
 
 ## Tests
 

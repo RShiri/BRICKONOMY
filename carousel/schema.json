@@ -19,7 +19,7 @@
         "pieces": { "type": "integer", "minimum": 0 },
         "image_url": {
           "type": "string",
-          "description": "http(s) URL, file:// URL, or a local path. Falls back to a generated placeholder when missing or unreachable."
+          "description": "http(s) URL, file:// URL, or a local path. Omit to use BrickLink's catalog image (img.bricklink.com/ItemImage/SN/0/<number>-1.png). A generated placeholder is drawn if the picture cannot be fetched."
         }
       }
     },
@@ -76,7 +76,7 @@
           "name":       { "type": "string", "minLength": 1, "description": "Character name. Long BrickLink variant descriptions are fine; the card clamps to two lines." },
           "used_price": { "type": "number", "minimum": 0, "description": "Used unit price. Displayed rounded to the nearest $1." },
           "quantity":   { "type": "integer", "minimum": 1, "default": 1, "description": "How many of this figure the set contains (shows a x4 badge and weights the total)." },
-          "image_url":  { "type": "string", "description": "http(s) URL, file:// URL or local path. Placeholder on failure." }
+          "image_url":  { "type": "string", "description": "http(s) URL, file:// URL or local path. Omit to use BrickLink's catalog image (img.bricklink.com/ItemImage/MN/0/<code>.png). Placeholder on failure." }
         }
       }
     },

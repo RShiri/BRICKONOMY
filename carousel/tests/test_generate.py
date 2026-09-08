@@ -31,6 +31,12 @@ def test_trend_is_derived_from_previous_value():
     assert g.build_trend({}, 100)["direction"] == "flat"
 
 
+def test_default_image_urls_follow_bricklink_convention():
+    assert g.bricklink_image_url("76269", "S") == "https://img.bricklink.com/ItemImage/SN/0/76269-1.png"
+    assert g.bricklink_image_url("76269-1", "S") == "https://img.bricklink.com/ItemImage/SN/0/76269-1.png"
+    assert g.bricklink_image_url("sh0916", "M") == "https://img.bricklink.com/ItemImage/MN/0/sh0916.png"
+
+
 def test_split_name():
     assert g.split_name("Vision - Dark Turquoise") == ("Vision", "Dark Turquoise")
     assert g.split_name("Kevin Feige") == ("Kevin Feige", "")

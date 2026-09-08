@@ -1,0 +1,81 @@
+# Render Instagram carousel slides on a GitHub runner.
+#
+# The generator downloads set and minifig pictures from img.bricklink.com,
+# which some machines (locked-down networks, CI sandboxes) cannot reach.
+# A GitHub-hosted runner can, so this workflow renders the payload here,
+# uploads the PNGs as an artifact and commits them under carousel/out/<set>/
+# on the branch it ran from.
+name: Render carousel
+
+on:
+  push:
+    paths:
+      - "carousel/**"
+      - "!carousel/out/**"
+      - ".github/workflows/carousel.yml"
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: "Payload JSON to render"
+        default: "carousel/samples/76269.json"
+        required: true
+      sort:
+        description: "Minifig order: none (as in payload) or value (most valuable first)"
+        default: "none"
+        type: choice
+        options: [none, value]
+      commit:
+        description: "Commit the rendered slides back to this branch"
+        default: true
+        type: boolean
+
+concurrency:
+  group: carousel-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      PAYLOAD: ${{ inputs.payload || 'carousel/samples/76269.json' }}
+      SORT: ${{ inputs.sort || 'none' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: carousel/requirements.txt
+
+      - name: Install
+        run: |
+          pip install -r carousel/requirements.txt pytest
+          python -m playwright install --with-deps chromium
+
+      - name: Test
+        run: python -m pytest carousel/tests -q
+
+      - name: Render
+        run: python -m carousel.generate "$PAYLOAD" --sort "$SORT"
+
+      - name: Upload slides
+        uses: actions/upload-artifact@v4
+        with:
+          name: carousel-slides
+          path: carousel/out/
+          retention-days: 30
+
+      - name: Commit slides
+        if: ${{ github.event_name == 'push' || inputs.commit }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add carousel/out
+          git diff --staged --quiet && { echo "slides unchanged"; exit 0; }
+          git commit -m "Render carousel slides for $(basename "$PAYLOAD" .json)"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
