@@ -16,9 +16,9 @@ on:
   workflow_dispatch:
     inputs:
       payload:
-        description: "Payload JSON to render"
-        default: "carousel/samples/76269.json"
-        required: true
+        description: "Payload JSON to render (empty = every file in carousel/samples/)"
+        default: ""
+        required: false
       sort:
         description: "Minifig order: none (as in payload) or value (most valuable first)"
         default: "none"
@@ -40,7 +40,7 @@ jobs:
     permissions:
       contents: write
     env:
-      PAYLOAD: ${{ inputs.payload || 'carousel/samples/76269.json' }}
+      PAYLOAD: ${{ inputs.payload }}
       SORT: ${{ inputs.sort || 'none' }}
     steps:
       - uses: actions/checkout@v4
@@ -61,8 +61,12 @@ jobs:
 
       - name: Render (both designs)
         run: |
-          python -m carousel.generate "$PAYLOAD" --sort "$SORT" --theme ig
-          python -m carousel.generate "$PAYLOAD" --sort "$SORT" --theme poster
+          shopt -s nullglob
+          payloads=("$PAYLOAD"); [ -z "$PAYLOAD" ] && payloads=(carousel/samples/*.json)
+          for p in "${payloads[@]}"; do
+            python -m carousel.generate "$p" --sort "$SORT" --theme poster
+            python -m carousel.generate "$p" --sort "$SORT" --theme ig
+          done
 
       - name: Upload slides
         uses: actions/upload-artifact@v4
@@ -78,6 +82,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add carousel/out
           git diff --staged --quiet && { echo "slides unchanged"; exit 0; }
-          git commit -m "Render carousel slides for $(basename "$PAYLOAD" .json)"
+          git commit -m "Render carousel slides for ${PAYLOAD:+$(basename "$PAYLOAD" .json)}${PAYLOAD:-all samples}"
           git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"

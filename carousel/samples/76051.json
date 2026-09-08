@@ -1,0 +1,58 @@
+{
+  "set": {
+    "number": "76051",
+    "name": "Super Hero Airport Battle",
+    "theme": "Marvel Super Heroes",
+    "year": 2016,
+    "pieces": 807
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 241.51,
+    "new_value": 485.94,
+    "used_value": 289.82
+  },
+  "market": {
+    "updated_at": "2026-08-28",
+    "previous_new_value": 461.6
+  },
+  "minifigs": [
+    {
+      "code": "sh0254",
+      "name": "Iron Man - Mark 46 Armor, Small Helmet Visor, Foot Repulsors",
+      "used_price": 52.25
+    },
+    {
+      "code": "sh0258",
+      "name": "War Machine - with Shooter",
+      "used_price": 51.0
+    },
+    {
+      "code": "sh0256",
+      "name": "The Scarlet Witch (Wanda Maximoff) - Plain Legs, Reddish Brown Hair, Dark Red Cloth Skirt",
+      "used_price": 37.87
+    },
+    {
+      "code": "sh0257",
+      "name": "Winter Soldier - Dark Brown Hair, Black Hands",
+      "used_price": 28.87
+    },
+    {
+      "code": "sh0255",
+      "name": "Agent 13 (Sharon Carter)",
+      "used_price": 15.84
+    },
+    {
+      "code": "sh0177",
+      "name": "Captain America - Dark Blue Suit with Reddish Brown Belt and Harness, Reddish Brown Hands, Mask",
+      "used_price": 9.66
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  }
+}

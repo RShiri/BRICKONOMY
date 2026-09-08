@@ -38,7 +38,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoes
 HERE = Path(__file__).resolve().parent
 TEMPLATES = HERE / "templates"
 THEMES = sorted(p.name for p in TEMPLATES.iterdir() if (p / "hero.html").exists())
-DEFAULT_THEME = "ig"
+DEFAULT_THEME = "poster"
 
 # Units of each currency per 1 USD, used only when a payload in that currency
 # gives no fx_rate of its own (mirrors brickonomy/currency.py's fallbacks).
@@ -540,7 +540,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("payload", type=Path, help="JSON file matching carousel/schema.json")
     ap.add_argument("--out", type=Path, help="output directory (default: carousel/out/<set number>)")
     ap.add_argument("--theme", choices=THEMES, default=DEFAULT_THEME,
-                    help="visual design: 'ig' (Instagram gradient, glass cards) or 'poster' (flat LEGO yellow/red)")
+                    help="visual design: 'poster' (LEGO yellow/red HUD, default) or 'ig' (Instagram gradient, glass cards)")
     ap.add_argument("--sort", choices=["none", "value"], default="none",
                     help="order minifigs as given, or most valuable first")
     ap.add_argument("--per-slide", type=int, default=MAX_PER_SLIDE, choices=[1, 2, 3, 4],

@@ -117,7 +117,7 @@ def test_view_paginates_four_per_slide_and_weights_quantity(view):
 
 def test_html_renders_every_slide(view):
     _, v, _ = view
-    slides = g.render_html(v, per_slide=4)
+    slides = g.render_html(v, per_slide=4, theme="ig")
     assert slides[0].kind == "hero" and all(s.kind == "minifigs" for s in slides[1:])
     assert len(slides) == 1 + len(v["minifigs"]["pages"])
     hero = slides[0].html
@@ -139,6 +139,22 @@ def test_every_theme_renders(view):
         g.render_html(v, per_slide=4, theme="nope")
 
 
+def test_from_site_builds_76051(tmp_path):
+    from carousel import from_site
+    out = tmp_path / "76051.json"
+    assert from_site.main(["76051", "--figs", "sh0177,sh0254,sh0255,sh0256,sh0257,sh0258",
+                           "--msrp", "79.99", "--out", str(out)]) == 0
+    p = json.loads(out.read_text())
+    assert p["set"]["name"] == "Super Hero Airport Battle" and p["set"]["pieces"] == 807
+    assert p["pricing"]["currency"] == "ILS" and p["pricing"]["fx_rate"] == 3.0193
+    assert round(p["pricing"]["msrp"] / p["pricing"]["fx_rate"], 2) == 79.99
+    assert [f["code"] for f in p["minifigs"]][:2] == ["sh0254", "sh0258"]   # most valuable first
+    assert p["market"]["previous_new_value"] == 461.6
+    html = Path("brickonomy/tests/fixtures/bricklink_inv_figs_76051.html")
+    if html.exists():
+        assert dict(from_site.figs_from_inventory_html(html))["sh0254"] == 1
+
+
 def test_cli_html_only(tmp_path):
     out = tmp_path / "out"
     assert g.main([str(SAMPLE), "--out", str(out), "--no-fetch", "--html-only",
@@ -148,6 +164,7 @@ def test_cli_html_only(tmp_path):
     manifest = json.loads((out / "manifest.json").read_text())
     assert manifest["displayed"] == {"msrp": 500, "new_value": 505, "used_value": 390,
                                      "minifigs_used_total": 285, "trend": "up"}
+    assert manifest["theme"] == "poster"
     assert manifest["source_currency"] == "ILS" and manifest["fx_rate"] == 3.0193
     assert manifest["slides"][0]["kind"] == "hero"
     assert manifest["size"] == [2160, 2700]

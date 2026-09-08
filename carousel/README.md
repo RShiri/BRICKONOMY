@@ -23,10 +23,11 @@ Two designs ship, chosen with `--theme`:
 
 | Theme | Look | Sample |
 | --- | --- | --- |
-| `ig` (default) | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269/`](out/76269/) |
-| `poster` | LEGO yellow and red HUD: hazard stripes, perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode, stat meters (vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269-poster/`](out/76269-poster/) |
+| `poster` (default) | LEGO yellow and red HUD: hazard stripes, perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with barcode, stat meters (vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
+| `ig` | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269-ig/`](out/76269-ig/), [`out/76051-ig/`](out/76051-ig/) |
 
-Sample output for **76269 Avengers Tower** is in those folders.
+Sample output for **76269 Avengers Tower** and **76051 Super Hero Airport
+Battle** is in those folders.
 It was rendered on a machine that cannot reach `img.bricklink.com`, so the
 pictures are the built-in placeholders; the site itself hotlinks the same
 BrickLink URLs, and running the command below on a normal connection fills
@@ -62,7 +63,7 @@ python -m carousel.generate payload.json --out /tmp/post --sort value --keep-htm
 | Flag | Meaning |
 | --- | --- |
 | `--out DIR` | Output directory (default `carousel/out/<set number>`) |
-| `--theme ig\|poster` | Which design to render (see table above) |
+| `--theme poster\|ig` | Which design to render (see table above) |
 | `--sort none\|value` | Keep payload order, or most valuable figure first |
 | `--per-slide 1-4` | Figures per minifig slide (default and maximum 4) |
 | `--scale 1\|2\|3` | 1080×1350, 2160×2700 (default) or 3240×4050 |
@@ -75,6 +76,22 @@ python -m carousel.generate payload.json --out /tmp/post --sort value --keep-htm
 
 `manifest.json` lists the slides in order plus the rounded numbers that were
 actually printed, so a posting script can build the caption from it.
+
+## Building a payload from the site export
+
+`from_site.py` turns the static export under `docs/api/` into a payload:
+
+```bash
+python -m carousel.from_site 76051 --figs sh0177,sh0254,sh0255,sh0256,sh0257,sh0258 --msrp 79.99
+python -m carousel.from_site 76051 --inventory-html brickonomy/tests/fixtures/bricklink_inv_figs_76051.html --msrp 79.99
+```
+
+It reads the set's `facts.json` (values, year, parts, theme) and
+`history.json` (the value about a month earlier, for the trend), and looks
+each minifig code up in `index.json` for its name and used value. Append
+`:N` to a code for quantity (`sh0730:4`). `--msrp` is only needed when the
+export has no retail price for the set. The payload is written in ILS with
+the exchange rate the export itself implies.
 
 ## Input payload
 
@@ -167,8 +184,9 @@ on the CSS; re-run to regenerate the PNGs.
 can reach BrickLink), uploads the slides as a workflow artifact and commits
 them under `carousel/out/<set>/` on the branch it ran from. It runs on
 every push that touches `carousel/` (except the rendered output itself) and
-can be started by hand from the Actions tab with any payload path, so a
-machine that cannot download the pictures can still get finished slides.
+can be started by hand from the Actions tab with any payload path (or none,
+to render every file in `samples/`), so a machine that cannot download the
+pictures can still get finished slides.
 
 ## Tests
 
