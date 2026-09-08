@@ -9,18 +9,23 @@
   .burst b { display: block; font-size: 46px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; }
   .burst small { display: block; font-size: 14px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
 
-  /* Stage: HUD frame, reticle behind the set, ticks along the edges. */
-  .stage { display: flex; align-items: flex-start; justify-content: center; overflow: hidden; padding-top: 44px; }
-  .stage .reticle { position: absolute; top: 90px; width: 440px; height: 440px; border-radius: 50%; border: 2px dashed rgba(255,213,0,0.55); }
+  /* Stage: HUD frame, reticle behind the set, ticks along the edges.
+     .frame is the centering reference for the reticle/cross/glow AND the
+     image, so any set photo (tall box art or a wide, short one like
+     76051's) lands dead center of the same visual middle instead of the
+     image drifting off on its own axis. */
+  .stage { position: relative; overflow: hidden; }
+  .stage .frame { position: absolute; top: 8px; left: 0; right: 0; bottom: 60px; display: flex; align-items: center; justify-content: center; }
+  .stage .reticle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 440px; height: 440px; border-radius: 50%; border: 2px dashed rgba(255,213,0,0.55); }
   .stage .reticle::before { content: ""; position: absolute; inset: 26px; border-radius: 50%; border: 1px solid rgba(255,213,0,0.25); }
   .stage .reticle::after { content: ""; position: absolute; inset: -30px; border-radius: 50%; border: 1px solid rgba(227,0,11,0.45); border-left-color: transparent; border-right-color: transparent; }
-  .stage .cross { position: absolute; top: 40px; width: 540px; height: 540px; }
+  .stage .cross { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 540px; height: 540px; }
   .stage .cross::before, .stage .cross::after { content: ""; position: absolute; background: rgba(227,0,11,0.6); }
   .stage .cross::before { left: 50%; top: 0; width: 2px; height: 100%; margin-left: -1px; mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(#000 0 14%, transparent 14% 86%, #000 86%); }
   .stage .cross::after { top: 50%; left: 0; height: 2px; width: 100%; margin-top: -1px; mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); -webkit-mask-image: linear-gradient(90deg, #000 0 14%, transparent 14% 86%, #000 86%); }
-  .stage .glow { position: absolute; top: 90px; width: 440px; height: 460px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,213,0,0.45), rgba(227,0,11,0.22) 60%, transparent); filter: blur(26px); }
-  .stage img { position: relative; max-width: 92%; max-height: 490px; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
-  .stage .num { position: absolute; top: 16px; left: 16px; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+  .stage .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,213,0,0.45), rgba(227,0,11,0.22) 60%, transparent); filter: blur(26px); }
+  .stage img { position: relative; max-width: 90%; max-height: 90%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 26px 40px rgba(0,0,0,0.8)); }
+  .stage .num { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 14px; clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
   .stage .readout { position: absolute; left: 16px; right: 16px; bottom: 34px; font-family: var(--mono); font-size: 14px; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; white-space: nowrap; display: flex; justify-content: space-between; }
   .stage .readout b { color: var(--yellow); font-weight: 700; }
   .stage .ticks { position: absolute; left: 16px; right: 16px; bottom: 14px; height: 10px; background-image: repeating-linear-gradient(90deg, rgba(255,213,0,0.7) 0 2px, transparent 2px 22px); }
@@ -81,10 +86,12 @@
   {% set t = market.trend %}
   <div class="top" style="position: relative;">
     <div class="stage hud">
-      <div class="glow"></div><div class="cross"></div><div class="reticle"></div>
+      <div class="frame">
+        <div class="glow"></div><div class="cross"></div><div class="reticle"></div>
+        <img src="{{ assets.set_image }}" alt="">
+      </div>
       <span class="num">#{{ set.number }}</span>
       <div class="readout"><span>{{ set.year }} · {{ set.pieces | thousands }} PCS · <b>{{ set.theme or 'LEGO' }}</b></span><span>SCAN <b>OK</b></span></div>
-      <img src="{{ assets.set_image }}" alt="">
       <div class="ticks"></div>
     </div>
     <div class="burst {{ 'down' if pricing.vs_retail_pct < 0 else '' }}"><div><b>{{ pricing.vs_retail_label }}</b><small>since {{ set.year }}</small></div></div>
