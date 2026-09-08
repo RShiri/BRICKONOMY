@@ -17,18 +17,27 @@ shown against retail, and a footer watermark — just drawn in a different
 visual language. `assets/profile.jpg` is the avatar; a 1080×1080 copy for
 the Instagram profile itself is in `out/profile-1080.jpg`.
 
-Five designs ship, chosen with `--theme`. The last three (`bento`,
-`contrast`, `card`) were built after a look at what's actually driving
-Instagram carousel engagement in 2026 — see [Design research](#design-research-2026)
-below.
+Seven designs ship, chosen with `--theme`. `bento`, `contrast` and `card`
+were built after a look at what's actually driving Instagram carousel
+engagement in 2026 — see [Design research](#design-research-2026) below.
+`marvel` and `dc` are the `poster` layout itself — the account's favorite —
+recolored into each universe's own brand language rather than generic LEGO
+yellow, for posting sets from that theme specifically.
 
 | Theme | Look | Sample |
 | --- | --- | --- |
 | `poster` (default) | LEGO yellow and red HUD: perspective grid, chamfered panels with corner brackets, reticle behind the set, white price tag with a growth starburst, stat meters (new vs retail, month move, $/piece, minifig share), value bars per figure | [`out/76269/`](out/76269/), [`out/76051/`](out/76051/) |
+| `marvel` | The poster layout in Marvel's own colors: a red header band (not yellow), a halftone Ben-Day dot backdrop with comic speed lines instead of the tech grid, a black-stroked comic-ink headline, gold/red corner studs | [`out/76269-marvel/`](out/76269-marvel/), [`out/76051-marvel/`](out/76051-marvel/) |
+| `dc` | The same layout in DC's colors: an electric-blue header band, a searchlight beam and tech-lattice backdrop, a soft blue energy glow on the headline instead of a comic-ink stroke, gold/blue corner studs | [`out/76269-dc/`](out/76269-dc/), [`out/76051-dc/`](out/76051-dc/) |
 | `ig` | Instagram post: story progress bar, avatar in a gradient ring, glass cards, brand gradient highlights | [`out/76269-ig/`](out/76269-ig/), [`out/76051-ig/`](out/76051-ig/) |
-| `bento` | Light mode — the only light theme of the five, which is the point of the contrast. Modular boxed tiles (2026's dominant layout trend), one accent color, no gradients or glow, generous whitespace | [`out/76269-bento/`](out/76269-bento/), [`out/76051-bento/`](out/76051-bento/) |
+| `bento` | Light mode — the only light theme of the set, which is the point of the contrast. Modular boxed tiles (2026's dominant layout trend), one accent color, no gradients or glow, generous whitespace | [`out/76269-bento/`](out/76269-bento/), [`out/76051-bento/`](out/76051-bento/) |
 | `contrast` | A literal then/now split screen: muted release-era half (desaturated photo, retail price) against a vivid electric-blue "today" half (current value, trend), joined by a growth badge straddling the seam | [`out/76269-contrast/`](out/76269-contrast/), [`out/76051-contrast/`](out/76051-contrast/) |
 | `card` | A collectible trading card: holographic corner foil, a metallic border colored by rarity tier, a rarity badge derived from the set's growth (or, per minifigure, its share of the figs total), card-stat rows, an edition number | [`out/76269-card/`](out/76269-card/), [`out/76051-card/`](out/76051-card/) |
+
+`marvel` and `dc` always render negative/positive deltas (a fallen used
+value, a down month) in a fixed alarm-red / green regardless of the
+theme's own palette — a "down" reading should never quietly borrow the
+brand's cool blue or gold and stop looking like bad news.
 
 Sample output for **76269 Avengers Tower** and **76051 Super Hero Airport
 Battle** is in those folders, in every theme.

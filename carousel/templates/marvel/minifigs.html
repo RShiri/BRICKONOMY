@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .head { margin-top: 34px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .head h2 { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; line-height: 1; }
+  .head h2 small { display: block; font-family: var(--mono); font-size: 17px; letter-spacing: 0.18em; color: var(--yellow); margin-bottom: 12px; font-weight: 700; }
+  .head h2 small .dot { display: inline-block; width: 10px; height: 10px; background: var(--red); margin-right: 10px; box-shadow: 0 0 10px var(--red-2); }
+  .head .hint { font-family: var(--mono); color: var(--muted); font-size: 16px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; text-align: right; line-height: 1.8; }
+  .head .hint b { color: var(--yellow); }
+
+  .grid { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; height: 880px; }
+  .fig { padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+  .fig .rank { position: absolute; top: 0; left: 0; background: var(--stud-red); color: #fff; font-weight: 800; font-size: 20px; padding: 9px 14px; font-family: var(--mono); clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); z-index: 3; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
+  .fig .qty { position: absolute; top: 0; right: 0; background: var(--stud-yellow); color: var(--black); font-weight: 800; font-size: 20px; padding: 9px 14px; clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%); z-index: 3; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
+  .fig .img { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+  .fig .img::before { content: ""; position: absolute; width: 60%; height: 64%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--yellow) 28%, transparent), color-mix(in srgb, var(--red) 12%, transparent) 60%, transparent); filter: blur(10px); }
+  /* A little LEGO baseplate behind each figure, not a scanner ring. */
+  .fig .img::after { content: ""; position: absolute; width: 220px; height: 220px; border-radius: 50%;
+    background-color: color-mix(in srgb, var(--yellow) 4%, transparent);
+    background-image: radial-gradient(color-mix(in srgb, var(--yellow) 32%, transparent) 2.4px, transparent 2.8px);
+    background-size: 24px 24px; background-position: center;
+    mask-image: radial-gradient(closest-side, #000 74%, transparent 100%);
+    -webkit-mask-image: radial-gradient(closest-side, #000 74%, transparent 100%); }
+  .fig .img img { position: relative; z-index: 1; max-width: 78%; max-height: 92%; object-fit: contain; filter: drop-shadow(0 16px 24px rgba(0,0,0,0.8)); }
+  .fig .name b, .fig .name small { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fig .name b { font-size: 27px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+  .fig .name small { color: var(--muted); font-size: 19px; font-weight: 600; margin-top: 3px; min-height: 22px; }
+  .fig .price { display: flex; align-items: center; justify-content: space-between; padding-right: 8px; }
+  .fig .price .v { font-size: 48px; font-weight: 800; color: var(--yellow); letter-spacing: -0.03em; line-height: 1; }
+  .fig .price .v .lbl { margin-left: 10px; }
+  .fig .price .code { color: var(--muted-2); font-size: 19px; background: var(--panel-2); padding: 6px 10px; }
+  .fig .meter { display: flex; align-items: center; gap: 10px; padding-right: 8px; }
+  .fig .meter .bar { flex: 1; }
+  .fig .meter span { font-family: var(--mono); font-size: 15px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+  .fig.empty { background: transparent; border: 2px dashed var(--line); clip-path: none; }
+  .fig.empty::before { display: none; }
+  .fig.cta { background: var(--yellow); color: var(--black); justify-content: center; gap: 16px; padding: 34px; }
+  .fig.cta::before { display: none; }
+  .fig.cta .big { font-size: 38px; font-weight: 800; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.02em; }
+  .fig.cta .url { font-size: 22px; font-weight: 800; background: var(--red); color: #fff; display: inline-block; padding: 8px 14px; }
+{% endblock %}
+
+{% block header_sub %}{{ set.name }} · set {{ set.number }}{% endblock %}
+{% block header_right %}<span class="tag">Minifigs <span class="num">{{ page.index }}/{{ page.total }}</span></span>{% endblock %}
+
+{% block body %}
+  <div class="head">
+    <h2><small><i class="dot"></i>Figures {{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small>Minifigures</h2>
+    <span class="hint">Used value · each<br>Bar = share of figs total <b>{{ minifigs.total_display | money }}</b></span>
+  </div>
+  <div class="grid">
+    {% for f in page.figs %}
+      <div class="fig hud">
+        <span class="rank">#{{ f.rank }}</span>
+        {% if f.quantity > 1 %}<span class="qty">×{{ f.quantity }}</span>{% endif %}
+        <div class="img"><img src="{{ f.image }}" alt=""></div>
+        <div class="name"><b>{{ f.title }}</b><small>{{ f.subtitle }}</small></div>
+        <div class="price"><span class="v money">{{ f.used_display | money }}<span class="lbl">used</span></span><span class="code">{{ f.code }}</span></div>
+        <div class="meter"><div class="bar"><i style="width: {{ [f.share_of_total * 2, 100] | min }}%"></i></div><span>{{ f.share_label }} share</span></div>
+      </div>
+    {% endfor %}
+    {% for _ in range(page.per_slide - page.figs | length) %}
+      {% if loop.first and page.is_last and branding.cta %}
+        <div class="fig cta hud"><div class="big">{{ branding.cta }}</div><span class="url">{{ branding.handle or branding.url }}</span></div>
+      {% else %}<div class="fig empty"></div>{% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
