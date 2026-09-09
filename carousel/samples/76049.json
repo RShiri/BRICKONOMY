@@ -1,0 +1,56 @@
+{
+  "set": {
+    "number": "76049",
+    "name": "Avenjet Space Mission",
+    "theme": "Marvel Super Heroes",
+    "year": 2016,
+    "pieces": 523
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 180.68,
+    "new_value": 456.99,
+    "used_value": 357.79
+  },
+  "market": {
+    "updated_at": "2026-09-06",
+    "previous_new_value": 473.65
+  },
+  "minifigs": [
+    {
+      "code": "sh0229",
+      "name": "Space Iron Man",
+      "used_price": 175.97
+    },
+    {
+      "code": "sh0230",
+      "name": "Thanos - Large Figure, Dark Blue and Pearl Gold Outfit, Arms, and Helmet",
+      "used_price": 65.52
+    },
+    {
+      "code": "sh0227",
+      "name": "Hyperion",
+      "used_price": 38.93
+    },
+    {
+      "code": "sh0226",
+      "name": "Captain Marvel - Red Sash",
+      "used_price": 24.44
+    },
+    {
+      "code": "sh0228",
+      "name": "Space Captain America",
+      "used_price": 9.59
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "One exclusive minifig from this $60 set is now worth $58 used — nearly its entire original retail price."
+  }
+}

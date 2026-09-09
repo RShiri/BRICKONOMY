@@ -1,0 +1,56 @@
+{
+  "set": {
+    "number": "76108",
+    "name": "Sanctum Sanctorum Showdown",
+    "theme": "Marvel Super Heroes",
+    "year": 2018,
+    "pieces": 1004
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 301.15,
+    "new_value": 562.8,
+    "used_value": 331.71
+  },
+  "market": {
+    "updated_at": "2026-09-08",
+    "previous_new_value": 568.41
+  },
+  "minifigs": [
+    {
+      "code": "sh0507",
+      "name": "Cull Obsidian",
+      "used_price": 82.64
+    },
+    {
+      "code": "sh0510",
+      "name": "Iron Spider-Man - Mechanical Arms with Barbs",
+      "used_price": 71.81
+    },
+    {
+      "code": "sh0509",
+      "name": "Doctor Strange - Necklace, Cloth Spongy Cape and Starched Collar",
+      "used_price": 35.48
+    },
+    {
+      "code": "sh0508",
+      "name": "Ebony Maw - Light Aqua Head",
+      "used_price": 18.25
+    },
+    {
+      "code": "sh0496",
+      "name": "Iron Man - Mark 50 Armor, Small Helmet Visor",
+      "used_price": 13.89
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This $100 Doctor Strange set nearly doubled in value — mostly thanks to two minifigs."
+  }
+}

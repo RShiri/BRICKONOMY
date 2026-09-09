@@ -1,0 +1,66 @@
+{
+  "set": {
+    "number": "76057",
+    "name": "Spider-Man: Web Warriors Ultimate Bridge Battle",
+    "theme": "Marvel Super Heroes",
+    "year": 2016,
+    "pieces": 1092
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 301.9,
+    "new_value": 975.1,
+    "used_value": 695.84
+  },
+  "market": {
+    "updated_at": "2026-09-09",
+    "previous_new_value": 1006.42
+  },
+  "minifigs": [
+    {
+      "code": "sh0274",
+      "name": "Scarlet Spider",
+      "used_price": 198.89
+    },
+    {
+      "code": "sh0270",
+      "name": "Kraven The Hunter",
+      "used_price": 125.72
+    },
+    {
+      "code": "sh0271",
+      "name": "Green Goblin - Bright Green Skin, Magenta Outfit",
+      "used_price": 62.49
+    },
+    {
+      "code": "sh0269",
+      "name": "Scorpion",
+      "used_price": 52.56
+    },
+    {
+      "code": "sh0273",
+      "name": "Spider-Girl (Jessica Drew) - Red Outfit",
+      "used_price": 52.19
+    },
+    {
+      "code": "sh0272",
+      "name": "Aunt May - Medium Lavender Scarf",
+      "used_price": 8.04
+    },
+    {
+      "code": "sh0038",
+      "name": "Spider-Man - Black Web Pattern",
+      "used_price": 4.84
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This $100 Spider-Man set nearly tripled in value, and its 7 minifigs are most of the reason why."
+  }
+}
