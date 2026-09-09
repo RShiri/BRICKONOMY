@@ -623,8 +623,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="visual design: 'poster' (LEGO yellow/red HUD, default) or 'ig' (Instagram gradient, glass cards)")
     ap.add_argument("--sort", choices=["none", "value"], default="none",
                     help="order minifigs as given, or most valuable first")
-    ap.add_argument("--per-slide", type=int, default=MAX_PER_SLIDE, choices=[1, 2, 3, 4],
-                    help="minifigs per slide (max 4)")
+    ap.add_argument("--per-slide", type=int, default=MAX_PER_SLIDE, choices=[1, 2, 3, 4, 9],
+                    help="minifigs per slide (2x2 grid up to 4; 9 switches to a denser 3x3 grid)")
     ap.add_argument("--scale", type=int, default=DEFAULT_SCALE, choices=[1, 2, 3],
                     help="device scale factor: 1 = 1080x1350, 2 = 2160x2700 (default), 3 = 3240x4050")
     ap.add_argument("--format", choices=["png", "jpg"], default="png",

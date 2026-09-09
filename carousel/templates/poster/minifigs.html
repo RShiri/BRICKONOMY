@@ -9,6 +9,21 @@
   .head .hint b { color: var(--yellow); }
 
   .grid { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 18px; height: 880px; }
+  /* Denser 3x3 layout for --per-slide 9: same card language, everything
+     scaled down so nine figures still fit the canvas. */
+  .grid.grid-9 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 12px; }
+  .grid-9 .fig { padding: 8px 10px 10px; gap: 4px; }
+  .grid-9 .fig .rank, .grid-9 .fig .qty { font-size: 15px; padding: 6px 10px; }
+  .grid-9 .fig .name b { font-size: 17px; }
+  .grid-9 .fig .name small { font-size: 13px; margin-top: 1px; min-height: 16px; }
+  .grid-9 .fig .price .v { font-size: 26px; }
+  .grid-9 .fig .price .v .lbl { display: none; }
+  .grid-9 .fig .price .code { font-size: 13px; padding: 3px 6px; }
+  .grid-9 .fig .meter { gap: 6px; }
+  .grid-9 .fig .meter .bar { height: 5px; }
+  .grid-9 .fig .meter span { font-size: 11px; }
+  .grid-9 .fig.cta .big { font-size: 20px; }
+  .grid-9 .fig.cta .url { font-size: 14px; padding: 6px 10px; }
   .fig { padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
   .fig.hud::before { display: none; } /* no corner studs over the figure photo */
   .fig .rank { position: absolute; top: 0; left: 0; background: var(--red); color: #fff; font-weight: 800; font-size: 20px; padding: 9px 16px; font-family: var(--mono); border-radius: 0 0 14px 0; z-index: 3; }
@@ -41,7 +56,7 @@
     <h2><small><i class="dot"></i>Figures {{ page.first_rank }}–{{ page.last_rank }} of {{ minifigs.unique }}</small>Minifigures</h2>
     <span class="hint">Used value · each<br>Bar = share of figs total <b>{{ minifigs.total_display | money }}</b></span>
   </div>
-  <div class="grid">
+  <div class="grid {{ 'grid-9' if page.per_slide == 9 else '' }}">
     {% for f in page.figs %}
       <div class="fig hud">
         <span class="rank">#{{ f.rank }}</span>
