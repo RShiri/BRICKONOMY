@@ -113,7 +113,8 @@
         "year":        { "type": "integer", "minimum": 1949, "maximum": 2100, "description": "Year the predicted value is for." },
         "value":       { "type": "number", "minimum": 0, "description": "Predicted value, in `pricing.currency`." },
         "retire_note": { "type": "string", "description": "Short line about expected retirement, e.g. \"Still active -- expected to stay in stores until 2028\"." },
-        "caption":     { "type": "string", "description": "Optional longer analysis paragraph. When set, it becomes the main content of the slide (a text-heavy closer) instead of the year/value stat card." }
+        "caption":     { "type": "string", "description": "Optional longer analysis paragraph. When set, it becomes the main content of the slide (a text-heavy closer) instead of the year/value stat card. Blank lines split it into separate paragraphs." },
+        "highlight":   { "type": "string", "description": "Optional short bold takeaway line shown under the caption, e.g. \"Predicted price right after retirement: 1.2x more!\"." }
       }
     }
   }

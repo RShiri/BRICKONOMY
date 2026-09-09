@@ -34,9 +34,12 @@
 
   /* A long-form analysis paragraph instead of the stat card -- a text-heavy
      closer rather than another number. Runs straight on the black canvas,
-     no boxed panel, big and bold so it reads as the whole picture. */
-  .predict-caption { flex: 1 1 auto; display: flex; align-items: center; }
-  .predict-caption p { font-size: 46px; line-height: 1.32; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
+     no boxed panel, big and bold so it reads as the whole picture. A short
+     bold takeaway line (yellow) can follow as the payoff. */
+  .predict-caption { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  .predict-caption .text p { font-size: 39px; line-height: 1.32; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
+  .predict-caption .text p + p { margin-top: 22px; }
+  .predict-caption .highlight { font-size: 44px; line-height: 1.22; font-weight: 800; letter-spacing: -0.01em; color: var(--yellow); }
 
   .predict-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .predict-cta .who b { display: block; font-size: 22px; font-weight: 800; }
@@ -53,7 +56,14 @@
 
     {% if forecast.caption %}
     <div class="predict-caption">
-      <p>{{ forecast.caption }}</p>
+      <div class="text">
+        {% for para in forecast.caption.split('\n\n') %}
+        <p>{{ para }}</p>
+        {% endfor %}
+      </div>
+      {% if forecast.highlight %}
+      <p class="highlight">{{ forecast.highlight }}</p>
+      {% endif %}
     </div>
     {% else %}
     <div class="predict-stat hud">
