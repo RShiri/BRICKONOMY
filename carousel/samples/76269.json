@@ -170,5 +170,10 @@
   "hook": {
     "headline": "Will the Avengers Tower retire soon?",
     "sub": "Scroll"
+  },
+  "forecast": {
+    "year": 2031,
+    "value": 1588.83,
+    "retire_note": "Expected to stay in stores until 2028"
   }
 }

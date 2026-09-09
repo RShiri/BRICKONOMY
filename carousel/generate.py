@@ -434,6 +434,22 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         "sub": hook_in.get("sub") or "Swipe for the full breakdown",
     }
 
+    # Optional closing slide: a forward-looking price forecast. Only built
+    # when the payload provides one -- unlike hook, there's no sensible
+    # fallback for a number this speculative.
+    forecast_in = payload.get("forecast")
+    forecast = None
+    if forecast_in:
+        f_value_raw = forecast_in["value"] / fx
+        change_pct = ((f_value_raw - p["new_value"]) / p["new_value"] * 100) if p["new_value"] else 0.0
+        forecast = {
+            "year": forecast_in["year"],
+            "value_display": round_to_5(f_value_raw),
+            "change_pct": change_pct,
+            "change_label": f"{'+' if change_pct >= 0 else '−'}{abs(change_pct):.0f}%",
+            "retire_note": forecast_in.get("retire_note", ""),
+        }
+
     # Extra readouts: price per piece, the figures' combined value as a share
     # of the set's used value, and each figure's (quantity-weighted) slice of
     # that combined value (drives the little value bars).
@@ -481,6 +497,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         },
         "branding": branding,
         "hook": hook,
+        "forecast": forecast,
         "fx_rate": fx,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
@@ -524,7 +541,11 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
     # same as before.
     has_hook = (TEMPLATES / theme / "hook.html").exists()
     offset = 1 if has_hook else 0
-    total = 1 + offset + len(pages)
+    # A theme may add its own forecast.html for a closing "looking ahead"
+    # slide; it only appears when the payload also supplies a forecast
+    # (there's no sensible fallback for a number this speculative).
+    has_forecast = bool(view.get("forecast")) and (TEMPLATES / theme / "forecast.html").exists()
+    total = 1 + offset + len(pages) + (1 if has_forecast else 0)
 
     # `nav` drives the story-style progress bar at the top of every slide.
     slides: list[Slide] = []
@@ -539,6 +560,9 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
                 "first_rank": items[0]["rank"], "last_rank": items[-1]["rank"]}
         slides.append(Slide(1 + offset + i, "minifigs", env.get_template("minifigs.html").render(
             page=page, nav={"index": offset + i, "total": total}, **common)))
+    if has_forecast:
+        slides.append(Slide(len(slides) + 1, "forecast", env.get_template("forecast.html").render(
+            nav={"index": total - 1, "total": total}, forecast=view["forecast"], **common)))
     return slides
 
 

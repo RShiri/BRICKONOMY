@@ -103,6 +103,17 @@
         "headline": { "type": "string", "description": "The big bold hook line, e.g. \"When will the Avengers Tower retire?\". Defaults to a short stat line like \"+1% since 2023\"." },
         "sub":      { "type": "string", "description": "Small line under the headline. Defaults to \"Swipe for the full breakdown\"." }
       }
+    },
+    "forecast": {
+      "type": "object",
+      "required": ["year", "value"],
+      "additionalProperties": false,
+      "description": "Optional forward-looking price prediction, rendered as an extra closing slide (only by themes with a forecast.html; poster has one). Omit this field entirely to skip the slide -- unlike hook, there's no auto-generated fallback for a number this speculative.",
+      "properties": {
+        "year":        { "type": "integer", "minimum": 1949, "maximum": 2100, "description": "Year the predicted value is for." },
+        "value":       { "type": "number", "minimum": 0, "description": "Predicted value, in `pricing.currency`." },
+        "retire_note": { "type": "string", "description": "Short line about expected retirement, e.g. \"Still active -- expected to stay in stores until 2028\"." }
+      }
     }
   }
 }

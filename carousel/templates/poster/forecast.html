@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{#
+  Forecast slide: an optional closing slide with a forward-looking price
+  prediction and a note on expected retirement timing, plus the account's
+  usual follow CTA since this is the last thing a viewer sees. Only
+  appears when the payload supplies a `forecast` object -- there's no
+  sensible auto-generated fallback for a number this speculative.
+#}
+
+{% block style %}
+  .predict { flex: 1 1 auto; display: flex; flex-direction: column; gap: 46px; padding-top: 18px; }
+  .predict .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .predict .eyebrow .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--red); }
+  .predict h1 { font-size: 62px; line-height: 1.03; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; max-width: 900px; }
+
+  .predict-stat { margin-top: 6px; padding: 56px 44px 60px; }
+  .predict-stat .row { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .predict-stat .k { font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .predict-stat .v { margin-top: 16px; font-size: 128px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.92; color: var(--yellow); }
+  .predict-stat .today { text-align: right; }
+  .predict-stat .today .k { text-align: right; }
+  .predict-stat .today .v2 { margin-top: 14px; font-size: 56px; font-weight: 800; letter-spacing: -0.03em; color: var(--muted-2); }
+  .predict-stat .delta { margin-top: 30px; font-family: var(--mono); font-size: 21px; font-weight: 700; }
+  .predict-stat .delta.up { color: var(--green); }
+  .predict-stat .delta.down { color: var(--red-2); }
+  .predict-stat .bar { margin-top: 22px; height: 12px; border-radius: 999px; background: var(--panel-2); overflow: hidden; }
+  .predict-stat .bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--red), var(--yellow), var(--green)); }
+
+  .predict-note.hud { padding: 38px 40px; display: flex; align-items: center; gap: 24px; }
+  .predict-note .icon { width: 56px; height: 56px; border-radius: 50%; background: var(--yellow); color: var(--black); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 28px; font-weight: 800; }
+  .predict-note .body b { display: block; font-size: 25px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+  .predict-note .body span { display: block; margin-top: 8px; font-size: 22px; color: var(--muted-2); font-weight: 600; }
+
+  .predict-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .predict-cta .who b { display: block; font-size: 22px; font-weight: 800; }
+  .predict-cta .who span { display: block; font-family: var(--mono); font-size: 16px; color: var(--muted); margin-top: 2px; }
+  .predict-cta .handle { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; background: var(--yellow); color: var(--black); font-weight: 800; font-size: 19px; border-radius: 999px; }
+{% endblock %}
+
+{% block header_sub %}Price forecast · set {{ set.number }}{% endblock %}
+
+{% block body %}
+  <div class="predict">
+    <span class="eyebrow"><i class="dot"></i>Looking ahead</span>
+    <h1>Where's this set headed?</h1>
+
+    <div class="predict-stat hud">
+      <div class="row">
+        <div>
+          <div class="k">Projected value by {{ forecast.year }}</div>
+          <div class="v money">{{ forecast.value_display | money }}</div>
+        </div>
+        <div class="today">
+          <div class="k">Today</div>
+          <div class="v2 money">{{ pricing.new_display | money }}</div>
+        </div>
+      </div>
+      <div class="delta {{ 'up' if forecast.change_pct >= 0 else 'down' }}">{{ forecast.change_label }} projected by {{ forecast.year }}</div>
+      <div class="bar"><i></i></div>
+    </div>
+
+    {% if forecast.retire_note %}
+    <div class="predict-note hud">
+      <span class="icon">!</span>
+      <div class="body"><b>Still on shelves</b><span>{{ forecast.retire_note }}</span></div>
+    </div>
+    {% endif %}
+
+    <div class="predict-cta">
+      <div class="who"><b>{{ branding.cta }}</b><span>{{ set.name }} · #{{ set.number }}</span></div>
+      <span class="handle">{{ branding.handle or branding.site_name }}</span>
+    </div>
+  </div>
+{% endblock %}
