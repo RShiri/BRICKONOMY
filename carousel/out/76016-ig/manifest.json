@@ -1,0 +1,32 @@
+{
+  "set": "76016",
+  "name": "Spider-Helicopter Rescue",
+  "theme": "ig",
+  "source_currency": "ILS",
+  "fx_rate": 3.0193,
+  "size": [
+    2160,
+    2700
+  ],
+  "updated_at": "2026-09-04",
+  "displayed": {
+    "msrp": 45,
+    "new_value": 80,
+    "used_value": 50,
+    "minifigs_used_total": 45,
+    "trend": "down"
+  },
+  "slides": [
+    {
+      "index": 1,
+      "kind": "hero",
+      "file": "76016-slide-01.png"
+    },
+    {
+      "index": 2,
+      "kind": "minifigs",
+      "file": "76016-slide-02.png"
+    }
+  ],
+  "image_fallbacks": 0
+}
