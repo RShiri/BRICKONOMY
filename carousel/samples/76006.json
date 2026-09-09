@@ -17,7 +17,23 @@
     "updated_at": "2026-09-01",
     "previous_new_value": 141.43
   },
-  "minifigs": [],
+  "minifigs": [
+    {
+      "code": "sh0066",
+      "name": "War Machine - Dark Bluish Gray and Silver Armor with Backpack",
+      "used_price": 37.13
+    },
+    {
+      "code": "sh0065",
+      "name": "Iron Man - Mark 42 Armor",
+      "used_price": 22.78
+    },
+    {
+      "code": "sh0067",
+      "name": "Aldrich Killian - Tan Suit",
+      "used_price": 7.95
+    }
+  ],
   "branding": {
     "site_name": "brickanalyst.en",
     "handle": "@brickanalyst.en",
