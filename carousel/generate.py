@@ -449,7 +449,8 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "change_label": f"{'+' if change_pct >= 0 else '−'}{abs(change_pct):.0f}%",
             "retire_note": forecast_in.get("retire_note", ""),
             "caption": forecast_in.get("caption", ""),
-            "highlight": forecast_in.get("highlight", ""),
+            "highlight_label": forecast_in.get("highlight_label", ""),
+            "highlight_value": forecast_in.get("highlight_value", ""),
         }
 
     # Extra readouts: price per piece, the figures' combined value as a share

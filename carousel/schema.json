@@ -114,7 +114,8 @@
         "value":       { "type": "number", "minimum": 0, "description": "Predicted value, in `pricing.currency`." },
         "retire_note": { "type": "string", "description": "Short line about expected retirement, e.g. \"Still active -- expected to stay in stores until 2028\"." },
         "caption":     { "type": "string", "description": "Optional longer analysis paragraph. When set, it becomes the main content of the slide (a text-heavy closer) instead of the year/value stat card. Blank lines split it into separate paragraphs." },
-        "highlight":   { "type": "string", "description": "Optional short bold takeaway line shown under the caption, e.g. \"Predicted price right after retirement: 1.2x more!\"." }
+        "highlight_label": { "type": "string", "description": "Optional small lead-in line above the highlight value, e.g. \"Predicted price right after retirement:\"." },
+        "highlight_value": { "type": "string", "description": "Optional short bold takeaway shown big under the caption, e.g. \"1.2x more!\". Requires highlight_label to make sense, but either can be set alone." }
       }
     }
   }

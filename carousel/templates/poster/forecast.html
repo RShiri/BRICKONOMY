@@ -39,7 +39,8 @@
   .predict-caption { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
   .predict-caption .text p { font-size: 39px; line-height: 1.32; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
   .predict-caption .text p + p { margin-top: 22px; }
-  .predict-caption .highlight { font-size: 44px; line-height: 1.22; font-weight: 800; letter-spacing: -0.01em; color: var(--yellow); }
+  .predict-caption .highlight-label { font-size: 24px; font-weight: 700; letter-spacing: -0.005em; color: var(--muted-2); }
+  .predict-caption .highlight-value { margin-top: 8px; font-size: 76px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: var(--yellow); }
 
   .predict-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .predict-cta .who b { display: block; font-size: 22px; font-weight: 800; }
@@ -61,8 +62,11 @@
         <p>{{ para }}</p>
         {% endfor %}
       </div>
-      {% if forecast.highlight %}
-      <p class="highlight">{{ forecast.highlight }}</p>
+      {% if forecast.highlight_label or forecast.highlight_value %}
+      <div class="highlight">
+        {% if forecast.highlight_label %}<div class="highlight-label">{{ forecast.highlight_label }}</div>{% endif %}
+        {% if forecast.highlight_value %}<div class="highlight-value">{{ forecast.highlight_value }}</div>{% endif %}
+      </div>
       {% endif %}
     </div>
     {% else %}
