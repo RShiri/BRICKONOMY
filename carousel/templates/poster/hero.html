@@ -68,11 +68,10 @@
   .figs .pct b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--red-2); }
   .figs .pct span { display: block; font-family: var(--mono); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
   .figs .bar { height: 8px; border-radius: 999px; background: var(--panel-2); overflow: hidden; }
-  .figs .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--yellow), var(--red)); }
+  .figs .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--red), var(--yellow), var(--green)); }
 {% endblock %}
 
 {% block header_sub %}Price check · set {{ set.number }}{% endblock %}
-{% block header_right %}<span class="tag red">Price check</span>{% endblock %}
 
 {% block body %}
   {% set t = market.trend %}
