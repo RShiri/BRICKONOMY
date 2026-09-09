@@ -1,0 +1,26 @@
+name: Fetch price probe (one-off diagnostic)
+
+on:
+  workflow_dispatch:
+    inputs:
+      codes:
+        description: "Space-separated BrickLink minifig codes"
+        required: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Fetch
+        run: python carousel/fetch_price_probe.py ${{ inputs.codes }}
+      - name: Upload fetched HTML
+        uses: actions/upload-artifact@v4
+        with:
+          name: price-guide-html
+          path: /tmp/pg_*.html
+          if-no-files-found: ignore
