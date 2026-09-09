@@ -1,0 +1,37 @@
+{
+  "set": "76049",
+  "name": "Avenjet Space Mission",
+  "theme": "dc",
+  "source_currency": "ILS",
+  "fx_rate": 3.0193,
+  "size": [
+    2160,
+    2700
+  ],
+  "updated_at": "2026-09-06",
+  "displayed": {
+    "msrp": 60,
+    "new_value": 150,
+    "used_value": 120,
+    "minifigs_used_total": 105,
+    "trend": "down"
+  },
+  "slides": [
+    {
+      "index": 1,
+      "kind": "hero",
+      "file": "76049-slide-01.png"
+    },
+    {
+      "index": 2,
+      "kind": "minifigs",
+      "file": "76049-slide-02.png"
+    },
+    {
+      "index": 3,
+      "kind": "minifigs",
+      "file": "76049-slide-03.png"
+    }
+  ],
+  "image_fallbacks": 0
+}
