@@ -1,0 +1,51 @@
+{
+  "set": {
+    "number": "76016",
+    "name": "Spider-Helicopter Rescue",
+    "theme": "Marvel Super Heroes",
+    "year": 2014,
+    "pieces": 299
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 135.84,
+    "new_value": 245.35,
+    "used_value": 145.7
+  },
+  "market": {
+    "updated_at": "2026-09-04",
+    "previous_new_value": 250.71
+  },
+  "minifigs": [
+    {
+      "code": "sh0103",
+      "name": "Mary Jane 5",
+      "used_price": 58.2
+    },
+    {
+      "code": "sh0102",
+      "name": "Green Goblin - Olive Green Skin, Large Figure",
+      "used_price": 49.8
+    },
+    {
+      "code": "sh0104",
+      "name": "Power Man (Luke Cage)",
+      "used_price": 25.16
+    },
+    {
+      "code": "sh0038",
+      "name": "Spider-Man - Black Web Pattern",
+      "used_price": 4.81
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This tiny $19.99 set now has a minifig worth more than the whole box."
+  }
+}
