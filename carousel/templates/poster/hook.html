@@ -26,19 +26,22 @@
   .hookstage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46%; pointer-events: none;
     background: linear-gradient(180deg, transparent, var(--black) 80%); }
 
-  .hookcopy { position: relative; z-index: 2; margin-top: -180px; padding: 0 var(--pad) 64px; }
+  .hookcopy { position: relative; z-index: 2; margin-top: -180px; padding: 0 var(--pad) 56px;
+    display: flex; flex-direction: column; }
   .hookcopy .kicker { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px;
     background: var(--yellow); color: var(--black); font-size: 17px; font-weight: 800; letter-spacing: 0.12em;
     text-transform: uppercase; border-radius: 999px; }
   .hookcopy h1 { margin-top: 20px; font-size: 62px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em;
-    text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
+    text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); max-width: 900px; }
   /* The sub line as a bordered chip -- a small CTA pointing at the next
      slide, not just a caption. Green (not the theme's yellow/red) so it
-     reads as a distinct "go" signal, pinned to the opposite corner from
-     the headline so the two don't compete. Both the word and the arrow are
-     drawn, not typeset: a marker-pen script instead of the theme's mono
-     caps, and a solid brush-stroke swoosh instead of a straight glyph. */
-  .hookcopy .sub { position: absolute; right: var(--pad); bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+     reads as a distinct "go" signal. Flows below the headline (never pinned
+     over it) so a long headline that wraps to 3 lines can never collide
+     with it -- length here isn't predictable, it's driven by whatever hook
+     copy gets approved per set. Both the word and the arrow are drawn, not
+     typeset: a marker-pen script instead of the theme's mono caps, and a
+     solid brush-stroke swoosh instead of a straight glyph. */
+  .hookcopy .sub { align-self: flex-end; margin-top: 28px; display: inline-flex; align-items: center; gap: 10px;
     height: 64px; padding: 0 26px 4px; border: 3px solid var(--green); border-radius: 999px;
     font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 30px; color: var(--green); }
   .hookcopy .sub svg { width: 52px; height: 24px; flex-shrink: 0; }
