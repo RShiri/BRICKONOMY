@@ -32,6 +32,11 @@
   .predict-note .body b { display: block; font-size: 25px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
   .predict-note .body span { display: block; margin-top: 8px; font-size: 22px; color: var(--muted-2); font-weight: 600; }
 
+  /* A long-form analysis paragraph instead of the stat card -- a text-heavy
+     closer rather than another number. */
+  .predict-caption.hud { flex: 1 1 auto; padding: 48px 46px; display: flex; align-items: center; }
+  .predict-caption p { font-size: 33px; line-height: 1.46; font-weight: 600; color: var(--muted-2); }
+
   .predict-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .predict-cta .who b { display: block; font-size: 22px; font-weight: 800; }
   .predict-cta .who span { display: block; font-family: var(--mono); font-size: 16px; color: var(--muted); margin-top: 2px; }
@@ -45,6 +50,11 @@
     <span class="eyebrow"><i class="dot"></i>Looking ahead</span>
     <h1>Where's this set headed?</h1>
 
+    {% if forecast.caption %}
+    <div class="predict-caption hud">
+      <p>{{ forecast.caption }}</p>
+    </div>
+    {% else %}
     <div class="predict-stat hud">
       <div class="row">
         <div>
@@ -65,6 +75,7 @@
       <span class="icon">!</span>
       <div class="body"><b>Still on shelves</b><span>{{ forecast.retire_note }}</span></div>
     </div>
+    {% endif %}
     {% endif %}
 
     <div class="predict-cta">
