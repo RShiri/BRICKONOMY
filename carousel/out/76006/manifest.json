@@ -13,7 +13,7 @@
     "msrp": 20,
     "new_value": 50,
     "used_value": 20,
-    "minifigs_used_total": 0,
+    "minifigs_used_total": 20,
     "trend": "up"
   },
   "slides": [
@@ -26,6 +26,11 @@
       "index": 2,
       "kind": "hero",
       "file": "76006-slide-02.png"
+    },
+    {
+      "index": 3,
+      "kind": "minifigs",
+      "file": "76006-slide-03.png"
     }
   ],
   "image_fallbacks": 0
