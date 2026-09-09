@@ -46,6 +46,20 @@ def figs_from_inventory_html(path: Path) -> list[tuple[str, int]]:
     return out
 
 
+def figs_from_set_page(path: Path) -> list[tuple[str, int]]:
+    """(code, quantity) pairs from this site's own static set page
+    (docs/sets/<number>.html), which already embeds the exact BrickLink
+    figure list -- no network fetch needed."""
+    text = path.read_text(errors="ignore")
+    out: list[tuple[str, int]] = []
+    for block in re.findall(r'<a class="figtile".*?</a>', text, re.S):
+        qty_m = re.search(r'data-qty="(\d+)"', block)
+        id_m = re.search(r'figtile-id">([a-z0-9]+)</div>', block)
+        if qty_m and id_m:
+            out.append((id_m.group(1), int(qty_m.group(1))))
+    return out
+
+
 def build(set_number: str, figs: list[tuple[str, int]], msrp_usd: float | None,
           fx: float, updated: str | None) -> dict:
     facts = json.loads((API / "sets" / set_number / "facts.json").read_text())
@@ -101,6 +115,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("set", help="set number, e.g. 76051")
     ap.add_argument("--figs", help="comma-separated minifig codes (append :N for quantity, e.g. sh0730:4)")
     ap.add_argument("--inventory-html", type=Path, help="saved BrickLink minifig inventory page to read codes from")
+    ap.add_argument("--set-html", type=Path, help="this site's own static set page (docs/sets/<set>.html) to read "
+                     "the minifig list from; used automatically when present and no other fig source is given")
     ap.add_argument("--msrp", type=float, help="retail price in USD when the export has none")
     ap.add_argument("--fx", type=float, help="ILS per USD (default: implied by the export, else 3.0193)")
     ap.add_argument("--updated", help="override the 'prices valid as of' date (ISO)")
@@ -115,7 +131,11 @@ def main(argv: list[str] | None = None) -> int:
             code, _, qty = item.strip().partition(":")
             figs.append((code, int(qty) if qty else 1))
     if not figs:
-        sys.exit("give --figs or --inventory-html")
+        site_html = args.set_html or (ROOT / "docs" / "sets" / f"{args.set}.html")
+        if site_html.exists():
+            figs = figs_from_set_page(site_html)
+    if not figs:
+        sys.exit("give --figs, --inventory-html or --set-html (or place docs/sets/<set>.html)")
 
     fx = args.fx or implied_fx_rate() or 3.0193
     payload = build(args.set, figs, args.msrp, fx, args.updated)
