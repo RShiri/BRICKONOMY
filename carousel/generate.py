@@ -484,6 +484,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         "fx_rate": fx,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
+            "font_hand": _data_uri((ASSETS / "fonts" / "PermanentMarker-Regular.ttf").read_bytes(), "font/ttf"),
             "mark": _data_uri((ASSETS / "brick-mark.svg").read_bytes(), "image/svg+xml"),
             "avatar": _asset_or_ref(branding.get("avatar"), fetcher, base),
             "set_image": fetcher.get(s.get("image_url") or bricklink_image_url(str(s["number"]), "S"), base)

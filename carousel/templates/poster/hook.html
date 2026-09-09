@@ -32,16 +32,16 @@
     text-transform: uppercase; border-radius: 999px; }
   .hookcopy h1 { margin-top: 20px; font-size: 62px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em;
     text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); }
-  /* The sub line as a bordered arrow chip -- a small CTA pointing at the
-     next slide, not just a caption. Green (not the theme's yellow/red) so
-     it reads as a distinct "go" signal, pinned to the opposite corner from
-     the headline so the two don't compete. The arrow is a loose hand-drawn
-     doodle (sketchy stroke, not a straight typographic arrow) so the chip
-     reads as a scribbled note rather than a UI button. */
-  .hookcopy .sub { position: absolute; right: var(--pad); bottom: 24px; display: inline-flex; align-items: center; gap: 14px;
-    height: 62px; padding: 0 28px; border: 3px solid var(--green); border-radius: 999px; font-family: var(--mono);
-    font-size: 22px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); }
-  .hookcopy .sub svg { width: 46px; height: 24px; flex-shrink: 0; }
+  /* The sub line as a bordered chip -- a small CTA pointing at the next
+     slide, not just a caption. Green (not the theme's yellow/red) so it
+     reads as a distinct "go" signal, pinned to the opposite corner from
+     the headline so the two don't compete. Both the word and the arrow are
+     drawn, not typeset: a marker-pen script instead of the theme's mono
+     caps, and a solid brush-stroke swoosh instead of a straight glyph. */
+  .hookcopy .sub { position: absolute; right: var(--pad); bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+    height: 64px; padding: 0 26px 4px; border: 3px solid var(--green); border-radius: 999px;
+    font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 30px; color: var(--green); }
+  .hookcopy .sub svg { width: 52px; height: 24px; flex-shrink: 0; }
 {% endblock %}
 
 {% block body %}
@@ -53,9 +53,8 @@
     <span class="kicker">{{ hook.kicker }}</span>
     <h1>{{ hook.headline }}</h1>
     <div class="sub">{{ hook.sub }}
-      <svg viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 21c9-3 17-10 26-13 8-3 17-3 24 3"/>
-        <path d="M41 5c4 2 9 4 13 7-3 3-7 9-9 13"/>
+      <svg viewBox="0 0 200 90" fill="currentColor">
+        <path d="M6,48 C40,58 90,60 128,52 C120,42 122,30 130,20 C154,32 176,44 194,46 C176,54 156,62 138,74 C142,62 138,50 128,44 C92,52 44,50 6,42 Z"/>
       </svg>
     </div>
   </div>
