@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block style %}
-  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 30px; height: 604px; }
+  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 30px; height: 480px; }
   /* Growth badge: the one thing the thumb stops for. A plain tilted
      rounded tag, not a jagged sticker burst. */
   .burst { position: absolute; z-index: 5; top: -22px; right: -22px; width: 172px; height: 172px; display: grid; place-items: center; text-align: center;
@@ -35,8 +35,8 @@
   .tagcard .trend-mini.down { background: rgba(227,0,11,0.1); color: var(--red); }
   .tagcard .trend-mini svg { width: 15px; height: 15px; }
 
-  .title { margin-top: 36px; }
-  .title h1 { font-size: 80px; line-height: 0.92; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 900px; }
+  .title { margin-top: 20px; }
+  .title h1 { font-size: 72px; line-height: 0.94; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 900px; }
   .title .meta { margin-top: 16px; font-family: var(--mono); font-size: 23px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-2); }
   .title .meta .sep { color: var(--muted); margin: 0 10px; }
   .title .meta b { color: var(--yellow); font-weight: 800; }
@@ -44,8 +44,8 @@
   /* Clean stat blocks — no corner studs, no dot marker, no dashed meter.
      Just a label, a big number and (where there's a comparison worth
      making) a small colored delta underneath. */
-  .clean-stats { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  .clean-stat { background: var(--panel); border-radius: 22px; padding: 26px 26px 22px; display: flex; flex-direction: column; justify-content: center; }
+  .clean-stats { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .clean-stat { background: var(--panel); border-radius: 22px; padding: 20px 26px 18px; display: flex; flex-direction: column; justify-content: center; }
   .clean-stat .k { font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .clean-stat .v { margin-top: 12px; font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
   .clean-stat .delta { margin-top: 10px; font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.04em; }
@@ -56,7 +56,7 @@
 
   /* Minifigs vs. set-used comparison band — the payoff stat, flat panel,
      solid gradient bar (never dashed). */
-  .figs { margin-top: 18px; background: var(--panel); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 22px 28px 26px; position: relative; border-radius: 22px; }
+  .figs { margin-top: 12px; background: var(--panel); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 18px 28px 20px; position: relative; border-radius: 22px; }
   .figs .row { display: flex; align-items: center; justify-content: space-between; }
   .figs .l b { display: block; font-size: 26px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
   .figs .l span { display: block; font-size: 16px; font-weight: 700; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
