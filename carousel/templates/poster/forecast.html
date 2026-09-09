@@ -33,9 +33,10 @@
   .predict-note .body span { display: block; margin-top: 8px; font-size: 22px; color: var(--muted-2); font-weight: 600; }
 
   /* A long-form analysis paragraph instead of the stat card -- a text-heavy
-     closer rather than another number. */
-  .predict-caption.hud { flex: 1 1 auto; padding: 48px 46px; display: flex; align-items: center; }
-  .predict-caption p { font-size: 33px; line-height: 1.46; font-weight: 600; color: var(--muted-2); }
+     closer rather than another number. Runs straight on the black canvas,
+     no boxed panel, big and bold so it reads as the whole picture. */
+  .predict-caption { flex: 1 1 auto; display: flex; align-items: center; }
+  .predict-caption p { font-size: 46px; line-height: 1.32; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
 
   .predict-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .predict-cta .who b { display: block; font-size: 22px; font-weight: 800; }
@@ -51,7 +52,7 @@
     <h1>Where's this set headed?</h1>
 
     {% if forecast.caption %}
-    <div class="predict-caption hud">
+    <div class="predict-caption">
       <p>{{ forecast.caption }}</p>
     </div>
     {% else %}
