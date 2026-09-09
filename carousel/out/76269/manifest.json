@@ -61,6 +61,11 @@
       "index": 9,
       "kind": "minifigs",
       "file": "76269-slide-09.png"
+    },
+    {
+      "index": 10,
+      "kind": "forecast",
+      "file": "76269-slide-10.png"
     }
   ],
   "image_fallbacks": 0
