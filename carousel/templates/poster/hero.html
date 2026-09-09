@@ -125,6 +125,7 @@
     </div>
   </div>
 
+  {% if minifigs.count > 0 %}
   <div class="figs">
     <div class="row">
       <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
@@ -135,4 +136,5 @@
     </div>
     <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
   </div>
+  {% endif %}
 {% endblock %}

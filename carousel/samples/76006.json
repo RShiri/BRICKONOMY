@@ -1,0 +1,30 @@
+{
+  "set": {
+    "number": "76006",
+    "name": "Iron Man: Extremis Sea Port Battle",
+    "theme": "Marvel Super Heroes",
+    "year": 2013,
+    "pieces": 195
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 60.36,
+    "new_value": 143.54,
+    "used_value": 64.04
+  },
+  "market": {
+    "updated_at": "2026-09-01",
+    "previous_new_value": 141.43
+  },
+  "minifigs": [],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This 2013 Iron Man set has been retired for over a decade — what's it worth now?"
+  }
+}
