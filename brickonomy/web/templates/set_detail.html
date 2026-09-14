@@ -152,6 +152,16 @@
     <div class="value">{{ buy_target|money(ccy) if buy_target else '—' }}</div>
     <div class="delta">80% of the BrickLink average</div>
   </div>
+  {% if figs %}
+  <div class="tile">
+    <div class="label-row"><div class="label">Avg minifig value</div><span class="tile-dot"></span></div>
+    <div class="value">{{ figs_avg.used|money(ccy) if figs_avg.used else (figs_avg.new|money(ccy) if figs_avg.new else '—') }}</div>
+    <div class="delta">
+      {% if figs_totals.used or figs_totals.new %}{{ (figs_totals.used or figs_totals.new)|money(ccy) }} total{% endif %}
+      · {{ figs_priced.used or figs_priced.new }} of {{ figs|length }} priced
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 {% if deal and deal.rating != 'IRRELEVANT' %}

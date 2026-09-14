@@ -812,6 +812,14 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
             # share rather than admit the number is not known yet.
             figs_priced[condition] = sum(1 for f in figs if f[condition]["value"])
 
+        # Average price of one minifig in the set (per unique figure, not
+        # weighted by quantity) — the number people actually ask for
+        # ("what's a figure from this set worth on average").
+        figs_avg = {}
+        for condition in ("new", "used"):
+            priced_vals = [f[condition]["value"] for f in figs if f[condition]["value"]]
+            figs_avg[condition] = (sum(priced_vals) / len(priced_vals)) if priced_vals else None
+
         # Most valuable first, on the condition being led with, so the first
         # paint is already the useful order (matters for the static export and
         # with JS disabled).
@@ -935,7 +943,7 @@ def set_detail(request: Request, item_id: str, parts_q: str = ""):
             buy_target=buy_target, per_source=per_source_all, source_stats=stats,
             offers=offers, best_source=best_source,
             figs=figs, figs_totals=figs_totals, figs_pcts=figs_pcts,
-            figs_priced=figs_priced, figs_partial=figs_partial,
+            figs_priced=figs_priced, figs_partial=figs_partial, figs_avg=figs_avg,
             parts=parts, parts_summary=psum, parts_q=parts_q,
             pov=pov_disp, pov_premium=pov_premium,
             related=related, ppp=ppp, ppp_theme_avg=ppp_theme_avg, deal=deal,
