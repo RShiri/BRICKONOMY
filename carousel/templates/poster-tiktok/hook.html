@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{#
+  Hook slide: no dashboard chrome at all — Instagram already shows the
+  account handle and its own carousel position dots above every post, so
+  baking our own header band and footer bar in here just competes with the
+  photo. Instead: the set photo fills almost the whole canvas, and the
+  headline sits directly over the bottom of it on a dark scrim, the way a
+  fan "did you know" post reads — one big image, one line of copy.
+#}
+
+{% block style %}
+  /* The rest of this theme's slides keep the yellow header band and the
+     footer/stud strip; this one drops both so the photo runs edge to edge. */
+  .band, .footer { display: none; }
+  .body { padding: 0; }
+
+  /* Fixed heights (not flex-grow/content-driven) for both the photo stage
+     and the copy block below it -- otherwise a 2-line headline (76269) and
+     a 4-line one (76006) push the stage to two different heights, and the
+     same photo box looks like a different size post to post in the grid.
+     Fixing both means every post's photo sits in an identical box; the
+     apparent size of the model *inside* that box still depends on how
+     tightly its own source photo is cropped, which this can't normalize. */
+  .hookstage { position: relative; height: 1580px; flex: none; min-height: 0; overflow: hidden;
+    background: radial-gradient(ellipse 900px 700px at 50% 32%, #1c1c26, var(--black) 70%); }
+  .hookstage img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    max-width: 100%; max-height: 98%; width: auto; height: auto; object-fit: contain;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.7)); }
+  .hookstage .num { position: absolute; top: 32px; left: 32px; z-index: 2; background: var(--yellow); color: var(--black);
+    font-family: var(--mono); font-weight: 800; font-size: 20px; padding: 8px 16px; border-radius: 999px; }
+  /* Dark gradient behind the headline so white text reads over the photo. */
+  .hookstage::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46%; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--black) 80%); }
+
+  .hookcopy { position: relative; z-index: 2; height: 520px; margin-top: -180px; padding: 0 var(--pad) 56px;
+    display: flex; flex-direction: column; box-sizing: border-box; }
+  .hookcopy .kicker { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px;
+    background: var(--yellow); color: var(--black); font-size: 17px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; border-radius: 999px; }
+  .hookcopy h1 { margin-top: 20px; font-size: 62px; line-height: 1.05; font-weight: 800; letter-spacing: -0.03em;
+    text-transform: uppercase; text-shadow: 0 6px 24px rgba(0,0,0,0.7); max-width: 900px; }
+  /* The sub line as a bordered chip -- a small CTA pointing at the next
+     slide, not just a caption. Green (not the theme's yellow/red) so it
+     reads as a distinct "go" signal. Flows below the headline (never pinned
+     over it) so a long headline that wraps to 3 lines can never collide
+     with it -- length here isn't predictable, it's driven by whatever hook
+     copy gets approved per set. Both the word and the arrow are drawn, not
+     typeset: a marker-pen script instead of the theme's mono caps, and a
+     solid brush-stroke swoosh instead of a straight glyph. */
+  .hookcopy .sub { align-self: flex-end; margin-top: auto; display: inline-flex; align-items: center; gap: 10px;
+    height: 64px; padding: 0 26px 4px; border: 3px solid var(--green); border-radius: 999px;
+    font-family: "Permanent Marker", cursive; font-weight: 400; font-size: 30px; color: var(--green); }
+  .hookcopy .sub svg { width: 52px; height: 24px; flex-shrink: 0; }
+{% endblock %}
+
+{% block body %}
+  <div class="hookstage">
+    <img src="{{ assets.set_image }}" alt="">
+    <span class="num">#{{ set.number }}</span>
+  </div>
+  <div class="hookcopy">
+    <span class="kicker">{{ hook.kicker }}</span>
+    <h1>{{ hook.headline }}</h1>
+    <div class="sub">{{ hook.sub }}
+      <svg viewBox="0 0 200 90" fill="currentColor">
+        <path d="M6,48 C40,58 90,60 128,52 C120,42 122,30 130,20 C154,32 176,44 194,46 C176,54 156,62 138,74 C142,62 138,50 128,44 C92,52 44,50 6,42 Z"/>
+      </svg>
+    </div>
+  </div>
+{% endblock %}

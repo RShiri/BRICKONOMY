@@ -48,6 +48,10 @@ SCHEMA = HERE / "schema.json"
 DEFAULT_CACHE = HERE / ".cache"
 
 WIDTH, HEIGHT = 1080, 1350          # Instagram portrait, 4:5 (CSS pixels)
+# Themes whose canvas isn't the 4:5 default -- each entry's own base.html
+# sets matching --w/--h CSS vars; this is what actually drives the browser
+# viewport and screenshot clip, since a theme's CSS can't do that itself.
+THEME_SIZE: dict[str, tuple[int, int]] = {"poster-tiktok": (1080, 1920)}
 DEFAULT_SCALE = 2                   # rendered at 2160x2700: crisper after Instagram's recompression
 MAX_PER_SLIDE = 4
 INSTAGRAM_MAX_SLIDES = 20
@@ -580,7 +584,8 @@ def _optimize_png(path: Path) -> None:
 
 
 def screenshot(slides: list[Slide], out_dir: Path, stem: str, scale: int,
-               chromium: str | None, keep_html: bool, fmt: str = "png", quality: int = 95) -> list[Path]:
+               chromium: str | None, keep_html: bool, fmt: str = "png", quality: int = 95,
+               width: int = WIDTH, height: int = HEIGHT) -> list[Path]:
     from playwright.sync_api import sync_playwright
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -590,7 +595,7 @@ def screenshot(slides: list[Slide], out_dir: Path, stem: str, scale: int,
         launch_kwargs["executable_path"] = chromium
     with sync_playwright() as pw:
         browser = pw.chromium.launch(**launch_kwargs)
-        ctx = browser.new_context(viewport={"width": WIDTH, "height": HEIGHT},
+        ctx = browser.new_context(viewport={"width": width, "height": height},
                                   device_scale_factor=scale)
         page = ctx.new_page()
         for slide in slides:
@@ -602,10 +607,10 @@ def screenshot(slides: list[Slide], out_dir: Path, stem: str, scale: int,
             target = out_dir / f"{name}.{fmt}"
             if fmt == "jpg":
                 page.screenshot(path=str(target), type="jpeg", quality=quality,
-                                clip={"x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+                                clip={"x": 0, "y": 0, "width": width, "height": height})
             else:
                 page.screenshot(path=str(target), type="png",
-                                clip={"x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+                                clip={"x": 0, "y": 0, "width": width, "height": height})
                 _optimize_png(target)
             written.append(target)
         browser.close()
@@ -665,8 +670,9 @@ def main(argv: list[str] | None = None) -> int:
             f.write_text(s.html, encoding="utf-8")
             files.append(f)
     else:
+        theme_w, theme_h = THEME_SIZE.get(args.theme, (WIDTH, HEIGHT))
         files = screenshot(slides, out_dir, stem, args.scale, args.chromium, args.keep_html,
-                           args.format, args.quality)
+                           args.format, args.quality, theme_w, theme_h)
 
     manifest = {
         "set": view["set"]["number"],
@@ -674,7 +680,7 @@ def main(argv: list[str] | None = None) -> int:
         "theme": args.theme,
         "source_currency": (payload["pricing"].get("currency") or "USD").upper(),
         "fx_rate": view["fx_rate"],
-        "size": [WIDTH * args.scale, HEIGHT * args.scale],
+        "size": [w * args.scale for w in THEME_SIZE.get(args.theme, (WIDTH, HEIGHT))],
         "updated_at": payload["market"]["updated_at"],
         "displayed": {
             "msrp": view["pricing"]["msrp_display"],

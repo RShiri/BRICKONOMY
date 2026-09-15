@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block style %}
+  .top { display: grid; grid-template-columns: 1fr 372px; gap: 26px; margin-top: 30px; height: 900px; }
+  /* Growth badge: the one thing the thumb stops for. A plain tilted
+     rounded tag, not a jagged sticker burst. */
+  .burst { position: absolute; z-index: 5; top: -22px; right: -22px; width: 172px; height: 172px; display: grid; place-items: center; text-align: center;
+    background: var(--yellow); color: var(--black); border-radius: 50%; transform: rotate(-6deg); box-shadow: 0 14px 26px rgba(0,0,0,0.4); }
+  .burst.down { background: var(--red); color: #fff; }
+  .burst b { display: block; font-size: 44px; font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; }
+  .burst small { display: block; font-size: 15px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* Stage: the set sits on a flat panel, nothing behind it — no glow, no
+     scanner ring. .frame centers the image so any set photo (tall box art
+     or a wide, short one like 76051's) lands dead center regardless of its
+     own aspect ratio. */
+  .stage { position: relative; overflow: hidden; }
+  .stage.hud::before { display: none; } /* no corner studs over the photo itself */
+  .stage .frame { position: absolute; top: 8px; left: 0; right: 0; bottom: 16px; display: flex; align-items: center; justify-content: center; }
+  .stage img { position: relative; max-width: 98%; max-height: 96%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 18px 24px rgba(0,0,0,0.6)); }
+  .stage .num { position: absolute; top: 16px; left: 16px; z-index: 2; background: var(--yellow); color: var(--black); font-family: var(--mono); font-weight: 800; font-size: 22px; padding: 8px 16px; border-radius: 999px; }
+
+  /* Price tag: what it cost, what it's worth now, plus a small inline
+     trend so the receipt still tells the month-over-month story without
+     going back to a full labeled row for it. */
+  .tagcard { position: relative; background: #fff; color: var(--black); padding: 30px 28px; display: flex; flex-direction: column; justify-content: center; gap: 22px; border-radius: 24px; box-shadow: 0 18px 34px rgba(0,0,0,0.35); }
+  .tagcard .hole { position: absolute; top: 16px; left: 50%; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: var(--black); box-shadow: inset 0 0 0 5px #d9d9de, inset 0 2px 3px rgba(0,0,0,0.6); }
+  .tagcard .k { font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6b6b78; }
+  .tagcard .retail { margin-top: 12px; }
+  .tagcard .retail .v { margin-top: 8px; font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #3a3a44; }
+  .tagcard .divider { height: 3px; background: repeating-linear-gradient(90deg, #d9d9de 0 8px, transparent 8px 14px); }
+  .tagcard .current .v { margin-top: 8px; font-size: 96px; font-weight: 800; letter-spacing: -0.045em; line-height: 0.92; }
+  .tagcard .trend-mini { margin-top: 10px; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px; border-radius: 999px; font-size: 16px; font-weight: 800; }
+  .tagcard .trend-mini.up { background: rgba(34,211,107,0.14); color: #189656; }
+  .tagcard .trend-mini.down { background: rgba(227,0,11,0.1); color: var(--red); }
+  .tagcard .trend-mini svg { width: 15px; height: 15px; }
+
+  .title { margin-top: 32px; }
+  .title h1 { font-size: 72px; line-height: 0.94; font-weight: 800; letter-spacing: -0.04em; text-transform: uppercase; max-width: 900px; }
+  .title .meta { margin-top: 16px; font-family: var(--mono); font-size: 23px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-2); }
+  .title .meta .sep { color: var(--muted); margin: 0 10px; }
+  .title .meta b { color: var(--yellow); font-weight: 800; }
+
+  /* Clean stat blocks — no corner studs, no dot marker, no dashed meter.
+     Just a label, a big number and (where there's a comparison worth
+     making) a small colored delta underneath. */
+  .clean-stats { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .clean-stat { background: var(--panel); border-radius: 22px; padding: 28px 26px 24px; display: flex; flex-direction: column; justify-content: center; }
+  .clean-stat .k { font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .clean-stat .v { margin-top: 12px; font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--ink); }
+  .clean-stat .delta { margin-top: 10px; font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: 0.04em; }
+  .clean-stat .delta.up { color: var(--green); } .clean-stat .delta.down { color: var(--red-2); }
+  .clean-stat.highlight { background: var(--panel-2); }
+  .clean-stat.highlight .k { color: var(--yellow-2); }
+  .clean-stat.highlight .v { color: var(--yellow); }
+
+  /* Minifigs vs. set-used comparison band — the payoff stat, flat panel,
+     solid gradient bar (never dashed). */
+  .figs { margin-top: 22px; background: var(--panel); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: 24px 28px 26px; position: relative; border-radius: 22px; }
+  .figs .row { display: flex; align-items: center; justify-content: space-between; }
+  .figs .l b { display: block; font-size: 26px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; }
+  .figs .l span { display: block; font-size: 16px; font-weight: 700; color: var(--muted); margin-top: 4px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  .figs .r { display: flex; align-items: center; gap: 20px; }
+  .figs .vs { display: flex; align-items: baseline; gap: 10px; }
+  .figs .total { font-size: 50px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--yellow); }
+  .figs .of { font-size: 18px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-2); }
+  .figs .of b { font-size: 26px; letter-spacing: -0.01em; }
+  .figs .pct { text-align: right; }
+  .figs .pct b { display: block; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--red-2); }
+  .figs .pct span { display: block; font-family: var(--mono); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  .figs .bar { height: 8px; border-radius: 999px; background: var(--panel-2); overflow: hidden; }
+  .figs .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--red), var(--yellow), var(--green)); }
+{% endblock %}
+
+{% block header_sub %}Price check · set {{ set.number }}{% endblock %}
+
+{% block body %}
+  {% set t = market.trend %}
+  <div class="top" style="position: relative;">
+    <div class="stage hud">
+      <div class="frame">
+        <img src="{{ assets.set_image }}" alt="">
+      </div>
+      <span class="num">#{{ set.number }}</span>
+    </div>
+    <div class="burst {{ 'down' if pricing.vs_retail_pct < 0 else '' }}"><div><b>{{ pricing.vs_retail_label }}</b><small>since {{ set.year }}</small></div></div>
+
+    <div class="tagcard">
+      <div class="hole"></div>
+      <div class="retail">
+        <div class="k">Retail price</div>
+        <div class="v money">{{ pricing.msrp_display | money }}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="current">
+        <div class="k">Current value</div>
+        <div class="v money">{{ pricing.new_display | money }}</div>
+        <span class="trend-mini {{ t.direction }}">
+          {% if t.direction == "up" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-6"/><path d="M14 8h6v6"/></svg>
+          {% elif t.direction == "down" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l6 6 4-4 6 6"/><path d="M14 16h6v-6"/></svg>
+          {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M4 12h16"/></svg>{% endif %}
+          {{ t.label }} {{ t.period }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="title">
+    <h1>{{ set.name }}</h1>
+    <div class="meta">{{ set.year }}<span class="sep">·</span><b>{{ set.pieces | thousands }}</b> pieces<span class="sep">·</span><b>{{ minifigs.count }}</b> minifigs</div>
+  </div>
+
+  <div class="clean-stats">
+    <div class="clean-stat">
+      <div class="k">Used value</div>
+      <div class="v money">{{ pricing.used_display | money }}</div>
+      <div class="delta {{ 'up' if pricing.used_vs_retail_pct >= 0 else 'down' }}">{{ pricing.used_vs_retail_label }} vs retail</div>
+    </div>
+    <div class="clean-stat">
+      <div class="k">Price per piece</div>
+      <div class="v">{{ pricing.per_piece_label }}</div>
+    </div>
+    <div class="clean-stat highlight">
+      <div class="k">Minifigs value share</div>
+      <div class="v">{{ minifigs.share_label }}</div>
+    </div>
+  </div>
+
+  {% if minifigs.count > 0 %}
+  <div class="figs">
+    <div class="row">
+      <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
+      <div class="r">
+        <span class="vs"><span class="total money">{{ minifigs.total_display | money }}</span><span class="of">of <b class="money">{{ minifigs.set_used_display | money }}</b></span></span>
+        <span class="pct"><b>{{ minifigs.share_label }}</b><span>of set used</span></span>
+      </div>
+    </div>
+    <div class="bar"><i style="width: {{ minifigs.share_meter }}%"></i></div>
+  </div>
+  {% endif %}
+{% endblock %}
