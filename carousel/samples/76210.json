@@ -1,0 +1,36 @@
+{
+  "set": {
+    "number": "76210",
+    "name": "Hulkbuster",
+    "theme": "Marvel Super Heroes",
+    "year": 2022,
+    "pieces": 4049
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 1656.46,
+    "new_value": 1476.47,
+    "used_value": 1210.53
+  },
+  "market": {
+    "updated_at": "2026-09-08",
+    "previous_new_value": 1500.25
+  },
+  "minifigs": [
+    {
+      "code": "sh0850",
+      "name": "Tony Stark - Dark Bluish Gray Iron Man Suit with Dark Red Right Arm",
+      "used_price": 134.31
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This $550 Hulkbuster is actually worth less than retail, sealed or used — not every big set is an investment."
+  }
+}

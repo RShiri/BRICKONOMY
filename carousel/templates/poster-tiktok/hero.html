@@ -106,7 +106,7 @@
 
   <div class="title">
     <h1>{{ set.name }}</h1>
-    <div class="meta">{{ set.year }}<span class="sep">·</span><b>{{ set.pieces | thousands }}</b> pieces<span class="sep">·</span><b>{{ minifigs.count }}</b> minifigs</div>
+    <div class="meta">{{ set.year }}<span class="sep">·</span><b>{{ set.pieces | thousands }}</b> pieces<span class="sep">·</span><b>{{ minifigs.count }}</b> minifig{{ "" if minifigs.count == 1 else "s" }}</div>
   </div>
 
   <div class="clean-stats">
@@ -128,7 +128,7 @@
   {% if minifigs.count > 0 %}
   <div class="figs">
     <div class="row">
-      <div class="l"><b>{{ minifigs.count }} minifigures inside</b><span>figs used value vs set used value · swipe →</span></div>
+      <div class="l"><b>{{ minifigs.count }} minifigure{{ "" if minifigs.count == 1 else "s" }} inside</b><span>figs used value vs set used value · swipe →</span></div>
       <div class="r">
         <span class="vs"><span class="total money">{{ minifigs.total_display | money }}</span><span class="of">of <b class="money">{{ minifigs.set_used_display | money }}</b></span></span>
         <span class="pct"><b>{{ minifigs.share_label }}</b><span>of set used</span></span>

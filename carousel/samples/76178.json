@@ -1,0 +1,156 @@
+{
+  "set": {
+    "number": "76178",
+    "name": "Daily Bugle",
+    "theme": "Marvel Super Heroes",
+    "year": 2021,
+    "pieces": 3772
+  },
+  "pricing": {
+    "currency": "ILS",
+    "fx_rate": 3.0193,
+    "msrp": 1054.1,
+    "new_value": 1295.11,
+    "used_value": 986.98
+  },
+  "market": {
+    "updated_at": "2026-09-08",
+    "previous_new_value": 1214.44
+  },
+  "minifigs": [
+    {
+      "code": "sh0722",
+      "name": "The Punisher",
+      "used_price": 111.51
+    },
+    {
+      "code": "sh0724",
+      "name": "Daredevil",
+      "used_price": 93.94
+    },
+    {
+      "code": "sh0715",
+      "name": "Black Cat",
+      "used_price": 52.24
+    },
+    {
+      "code": "sh0713",
+      "name": "Blade",
+      "used_price": 51.46
+    },
+    {
+      "code": "sh0638",
+      "name": "Spider-Ham",
+      "used_price": 37.21
+    },
+    {
+      "code": "sh0727",
+      "name": "Dr. Octopus (Otto Octavius) / Doc Ock - Dark Green Suit, Mechanical Arms with Bars",
+      "used_price": 31.97
+    },
+    {
+      "code": "sh0712",
+      "name": "Firestar",
+      "used_price": 31.27
+    },
+    {
+      "code": "sh0685",
+      "name": "Sandman - Green Outfit, Swirling Base",
+      "used_price": 18.07
+    },
+    {
+      "code": "sh0711",
+      "name": "Venom - White Teeth Parted, 4 Back Appendages Medium",
+      "used_price": 17.15
+    },
+    {
+      "code": "sh0709",
+      "name": "Mysterio - Light Bluish Gray Head, Satin Trans-Light Blue Helmet, Double Hole Cape",
+      "used_price": 16.19
+    },
+    {
+      "code": "sh0723",
+      "name": "Carnage - 2 Long and 2 Short Appendages",
+      "used_price": 16.15
+    },
+    {
+      "code": "sh0695",
+      "name": "Green Goblin - Bright Green Skin, Dark Purple Outfit, Small Yellow Eyes, Printed Legs",
+      "used_price": 15.54
+    },
+    {
+      "code": "sh0710",
+      "name": "J. Jonah Jameson - Vest with Striped Tie, Swept Back Hair",
+      "used_price": 15.1
+    },
+    {
+      "code": "sh0714",
+      "name": "Peter Parker - Red Jacket",
+      "used_price": 12.24
+    },
+    {
+      "code": "sh0682",
+      "name": "Ghost-Spider / Spider-Gwen (Gwen Stacy) - Black Legs, White Basic Smooth Hood, White Hands",
+      "used_price": 12.12
+    },
+    {
+      "code": "sh0679",
+      "name": "Spider-Man (Miles Morales) - Dark Red Hood, Black Lower Legs",
+      "used_price": 11.7
+    },
+    {
+      "code": "sh0708",
+      "name": "Spider-Man - Printed Blue Arms, Red Boots",
+      "used_price": 11.04
+    },
+    {
+      "code": "sh0718",
+      "name": "Gwen Stacy",
+      "used_price": 10.86
+    },
+    {
+      "code": "sh0719",
+      "name": "Ben Urich",
+      "used_price": 8.62
+    },
+    {
+      "code": "sh0716",
+      "name": "Robbie Robertson",
+      "used_price": 8.27
+    },
+    {
+      "code": "sh0720",
+      "name": "Bernie the Cab Driver",
+      "used_price": 8.24
+    },
+    {
+      "code": "sh0717",
+      "name": "Ron Barney",
+      "used_price": 8.17
+    },
+    {
+      "code": "sh0726",
+      "name": "Betty Brant",
+      "used_price": 8.02
+    },
+    {
+      "code": "sh0725",
+      "name": "Amber Grant",
+      "used_price": 7.9
+    },
+    {
+      "code": "sh0721",
+      "name": "Aunt May - Light Bluish Gray Sweater",
+      "used_price": 7.47
+    }
+  ],
+  "branding": {
+    "site_name": "brickanalyst.en",
+    "handle": "@brickanalyst.en",
+    "avatar": "assets/profile.jpg",
+    "cta": "Follow for weekly LEGO price checks"
+  },
+  "hook": {
+    "headline": "This $350 Marvel set has 25 minifigures — more than any other LEGO Super Heroes set ever made."
+  }
+}
