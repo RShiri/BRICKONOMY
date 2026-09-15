@@ -31,6 +31,11 @@
       "index": 3,
       "kind": "minifigs",
       "file": "76210-slide-03.png"
+    },
+    {
+      "index": 4,
+      "kind": "moc",
+      "file": "76210-slide-04.png"
     }
   ],
   "image_fallbacks": 0
