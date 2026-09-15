@@ -457,6 +457,22 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
             "highlight_value": forecast_in.get("highlight_value", ""),
         }
 
+    # Optional bonus slide: a notable fan-made alternate build (MOC) using
+    # the same set's parts. Only built when the payload supplies one --
+    # there's no sensible auto-generated fallback for "is there a good MOC
+    # of this set", unlike hook's vs-retail-derived default.
+    moc_in = payload.get("moc")
+    moc = None
+    if moc_in:
+        moc = {
+            "creator": moc_in["creator"],
+            "title": moc_in["title"],
+            "pieces": moc_in.get("pieces"),
+            "price_display": f"${moc_in['price']:.2f}" if moc_in.get("price") is not None else "",
+            "note": moc_in.get("note", ""),
+            "stock_parts": bool(moc_in.get("stock_parts")),
+        }
+
     # Extra readouts: price per piece, the figures' combined value as a share
     # of the set's used value, and each figure's (quantity-weighted) slice of
     # that combined value (drives the little value bars).
@@ -505,6 +521,7 @@ def build_view(payload: dict[str, Any], fetcher: ImageFetcher, base: Path,
         "branding": branding,
         "hook": hook,
         "forecast": forecast,
+        "moc": moc,
         "fx_rate": fx,
         "assets": {
             "font": _data_uri((ASSETS / "fonts" / "Manrope-VariableFont_wght.ttf").read_bytes(), "font/ttf"),
@@ -552,7 +569,12 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
     # slide; it only appears when the payload also supplies a forecast
     # (there's no sensible fallback for a number this speculative).
     has_forecast = bool(view.get("forecast")) and (TEMPLATES / theme / "forecast.html").exists()
-    total = 1 + offset + len(pages) + (1 if has_forecast else 0)
+    # A theme may add its own moc.html for a bonus "there's a fan rebuild"
+    # slide; like forecast, it only appears when the payload supplies one.
+    # Sits after the minifig pages and before forecast, since forecast is
+    # meant to be the closing CTA slide.
+    has_moc = bool(view.get("moc")) and (TEMPLATES / theme / "moc.html").exists()
+    total = 1 + offset + len(pages) + (1 if has_moc else 0) + (1 if has_forecast else 0)
 
     # `nav` drives the story-style progress bar at the top of every slide.
     slides: list[Slide] = []
@@ -567,6 +589,9 @@ def render_html(view: dict[str, Any], per_slide: int, theme: str = DEFAULT_THEME
                 "first_rank": items[0]["rank"], "last_rank": items[-1]["rank"]}
         slides.append(Slide(1 + offset + i, "minifigs", env.get_template("minifigs.html").render(
             page=page, nav={"index": offset + i, "total": total}, **common)))
+    if has_moc:
+        slides.append(Slide(len(slides) + 1, "moc", env.get_template("moc.html").render(
+            nav={"index": len(slides), "total": total}, moc=view["moc"], **common)))
     if has_forecast:
         slides.append(Slide(len(slides) + 1, "forecast", env.get_template("forecast.html").render(
             nav={"index": total - 1, "total": total}, forecast=view["forecast"], **common)))

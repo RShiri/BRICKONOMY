@@ -32,5 +32,13 @@
   },
   "hook": {
     "headline": "This $550 Hulkbuster is actually worth less than retail, sealed or used — not every big set is an investment."
+  },
+  "moc": {
+    "creator": "Ransom_Fern",
+    "title": "Iron Man Mark 44 Hulkbuster — Alternate Build",
+    "pieces": 3923,
+    "price": 19.99,
+    "stock_parts": true,
+    "note": "Reviewers call the proportions more accurate than LEGO's own design — chunkier limbs, a bigger silhouette, fewer gaps — built entirely from parts already in the box."
   }
 }

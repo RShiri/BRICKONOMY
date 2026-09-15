@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{#
+  Bonus slide: a notable fan-made alternate build (MOC) using the same
+  set's own parts. Sits after the minifig pages, before forecast if any --
+  a "there's more to this box than the official build" payoff, not part
+  of the core price story, so it gets its own light eyebrow/heading
+  language rather than borrowing forecast's "looking ahead" framing.
+#}
+
+{% block style %}
+  .mocwrap { flex: 1 1 auto; display: flex; flex-direction: column; gap: 40px; padding-top: 18px; }
+  .mocwrap .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .mocwrap .eyebrow .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); }
+  .mocwrap h1 { font-size: 58px; line-height: 1.04; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; max-width: 900px; }
+
+  .moccard.hud { padding: 40px 40px 36px; display: flex; flex-direction: column; gap: 22px; }
+  .moccard .by { font-family: var(--mono); font-size: 18px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--yellow); }
+  .moccard .title { margin-top: 8px; font-size: 38px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .moccard .stats { margin-top: 8px; display: flex; gap: 40px; }
+  .moccard .stats .stat .k { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .moccard .stats .stat .v { margin-top: 8px; font-size: 42px; font-weight: 800; letter-spacing: -0.03em; color: var(--ink); }
+  .moccard .badge { align-self: flex-start; display: inline-flex; align-items: center; height: 40px; padding: 0 18px; background: var(--green); color: #052; font-size: 16px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; }
+
+  .mocnote { font-size: 29px; line-height: 1.38; font-weight: 700; letter-spacing: -0.005em; color: var(--muted-2); }
+
+  .moc-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .moc-cta .who b { display: block; font-size: 22px; font-weight: 800; }
+  .moc-cta .who span { display: block; font-family: var(--mono); font-size: 16px; color: var(--muted); margin-top: 2px; }
+  .moc-cta .handle { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; background: var(--yellow); color: var(--black); font-weight: 800; font-size: 19px; border-radius: 999px; }
+{% endblock %}
+
+{% block header_sub %}Fan rebuild · set {{ set.number }}{% endblock %}
+
+{% block body %}
+  <div class="mocwrap">
+    <span class="eyebrow"><i class="dot"></i>Bonus build</span>
+    <h1>There's a better build hiding in this box</h1>
+
+    <div class="moccard hud">
+      <div>
+        <div class="by">By {{ moc.creator }}</div>
+        <div class="title">{{ moc.title }}</div>
+      </div>
+      {% if moc.pieces or moc.price_display %}
+      <div class="stats">
+        {% if moc.pieces %}
+        <div class="stat"><div class="k">Parts</div><div class="v">{{ moc.pieces | thousands }}</div></div>
+        {% endif %}
+        {% if moc.price_display %}
+        <div class="stat"><div class="k">Instructions</div><div class="v">{{ moc.price_display }}</div></div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% if moc.stock_parts %}<span class="badge">Built from the stock set — no extra parts</span>{% endif %}
+    </div>
+
+    {% if moc.note %}<p class="mocnote">{{ moc.note }}</p>{% endif %}
+
+    <div class="moc-cta">
+      <div class="who"><b>{{ branding.cta }}</b><span>{{ set.name }} · #{{ set.number }}</span></div>
+      <span class="handle">{{ branding.handle or branding.site_name }}</span>
+    </div>
+  </div>
+{% endblock %}

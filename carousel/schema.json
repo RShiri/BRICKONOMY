@@ -117,6 +117,20 @@
         "highlight_label": { "type": "string", "description": "Optional small lead-in line above the highlight value, e.g. \"Predicted price right after retirement:\"." },
         "highlight_value": { "type": "string", "description": "Optional short bold takeaway shown big under the caption, e.g. \"1.2x more!\". Requires highlight_label to make sense, but either can be set alone." }
       }
+    },
+    "moc": {
+      "type": "object",
+      "required": ["creator", "title"],
+      "additionalProperties": false,
+      "description": "Optional bonus slide calling out a notable fan-made alternate build (MOC) for this set, rendered after the minifig pages and before forecast (only by themes with a moc.html; poster has one). Omit this field entirely to skip the slide.",
+      "properties": {
+        "creator":     { "type": "string", "minLength": 1, "description": "MOC designer's name/handle, e.g. \"Ransom_Fern\"." },
+        "title":       { "type": "string", "minLength": 1, "description": "What the rebuild is, e.g. \"Iron Man Mark 44 Hulkbuster - Alternate Build\"." },
+        "pieces":      { "type": "integer", "minimum": 0, "description": "Part count of the MOC, if known." },
+        "price":       { "type": "number", "minimum": 0, "description": "Price of the instructions in USD, if they're sold." },
+        "stock_parts": { "type": "boolean", "default": false, "description": "True if the MOC is buildable entirely from the original set's own parts, no extra pieces needed -- worth calling out." },
+        "note":        { "type": "string", "description": "Short line of color/context, e.g. a notable review quote or what makes it stand out." }
+      }
     }
   }
 }
